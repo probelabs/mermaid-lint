@@ -11,7 +11,10 @@ This file contains invalid pie test fixtures with:
 
 1. [Colon Only](#1-colon-only)
 2. [Invalid Header](#2-invalid-header)
-3. [Missing Label](#3-missing-label)
+3. [Missing Colon](#3-missing-colon)
+4. [Missing Label](#4-missing-label)
+5. [Missing Number](#5-missing-number)
+6. [Unclosed Quote](#6-unclosed-quote)
 
 ---
 
@@ -19,9 +22,12 @@ This file contains invalid pie test fixtures with:
 
 | # | Diagram | mermaid-cli | mermaid-lint |
 |---:|---|:---:|:---:|
-| 1 | [Colon Only](#1-colon-only) | VALID | INVALID |
-| 2 | [Invalid Header](#2-invalid-header) | VALID | INVALID |
-| 3 | [Missing Label](#3-missing-label) | VALID | INVALID |
+| 1 | [Colon Only](#1-colon-only) | INVALID | INVALID |
+| 2 | [Invalid Header](#2-invalid-header) | INVALID | INVALID |
+| 3 | [Missing Colon](#3-missing-colon) | INVALID | INVALID |
+| 4 | [Missing Label](#4-missing-label) | INVALID | INVALID |
+| 5 | [Missing Number](#5-missing-number) | INVALID | INVALID |
+| 6 | [Unclosed Quote](#6-unclosed-quote) | INVALID | INVALID |
 
 ---
 
@@ -40,7 +46,11 @@ pie
 
 ```
 
-### mermaid-cli Result: VALID
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
 
 ### mermaid-lint Result: INVALID
 
@@ -78,7 +88,11 @@ piee
 
 ```
 
-### mermaid-cli Result: VALID
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
 
 ### mermaid-lint Result: INVALID
 
@@ -101,7 +115,49 @@ piee
 
 ---
 
-## 3. Missing Label
+## 3. Missing Colon
+
+📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+pie
+  title "Pets"
+  "Dogs" 10
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
+
+### mermaid-lint Result: INVALID
+
+```
+Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/missing-colon.mmd:
+
+[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/missing-colon.mmd:3:10 - Expecting token of type --> Colon <-- but found --> '10' <--
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie
+  title "Pets"
+  "Dogs" 10
+
+```
+</details>
+
+---
+
+## 4. Missing Label
 
 📄 **Source**: [`missing-label.mmd`](./invalid/missing-label.mmd)
 
@@ -116,7 +172,11 @@ pie
 
 ```
 
-### mermaid-cli Result: VALID
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
 
 ### mermaid-lint Result: INVALID
 
@@ -139,11 +199,94 @@ pie
 
 ---
 
+## 5. Missing Number
+
+📄 **Source**: [`missing-number.mmd`](./invalid/missing-number.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+pie
+  "Dogs" :
+  "Cats" : 
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
+
+### mermaid-lint Result: INVALID
+
+```
+Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/missing-number.mmd:
+
+[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/missing-number.mmd:2:11 - Expecting token of type --> NumberLiteral <-- but found --> '
+' <--
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie
+  "Dogs" :
+  "Cats" : 
+
+```
+</details>
+
+---
+
+## 6. Unclosed Quote
+
+📄 **Source**: [`unclosed-quote.mmd`](./invalid/unclosed-quote.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+pie
+  "Dogs : 10
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
+
+### mermaid-lint Result: INVALID
+
+```
+Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/unclosed-quote.mmd:
+
+[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/unclosed-quote.mmd:2:3 - Redundant input, expecting EOF but found: "Dogs
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie
+  "Dogs : 10
+
+```
+</details>
+
+---
+
 ## Notes
 
 This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Last generated: 2025-09-29T14:55:35.035Z
+Last generated: 2025-09-29T15:16:51.521Z
 
 ## How to Regenerate
 

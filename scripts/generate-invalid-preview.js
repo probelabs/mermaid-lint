@@ -9,18 +9,38 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 function runMermaidCli(filepath) {
+  // mermaid-cli sometimes exits 0 but emits an "error SVG". Detect that.
+  const outSvg = `/tmp/mermaid-cli-${path.basename(filepath)}.svg`;
   try {
-    execSync(`npx @mermaid-js/mermaid-cli -i "${filepath}" -o /tmp/test.svg`, {
+    execSync(`npx @mermaid-js/mermaid-cli -i "${filepath}" -o "${outSvg}"`, {
       stdio: 'pipe',
       encoding: 'utf8',
-      timeout: 8000,
+      timeout: 12000,
     });
-    try { fs.unlinkSync('/tmp/test.svg'); } catch {}
-    return { valid: true, message: 'VALID' };
   } catch (error) {
     const msg = (error.stderr || error.stdout || error.message || '').toString();
-    try { fs.unlinkSync('/tmp/test.svg'); } catch {}
+    try { fs.unlinkSync(outSvg); } catch {}
     return { valid: false, message: msg.trim() || 'INVALID (no message)' };
+  }
+
+  // Exit code was 0; inspect SVG for error markers
+  try {
+    const svg = fs.readFileSync(outSvg, 'utf8');
+    // Mermaid renders error pages with aria-roledescription="error" and error-text classes
+    const isError = /aria-roledescription\s*=\s*"error"/.test(svg) || /class=\"error-text\"/.test(svg);
+    if (isError) {
+      // Try to extract the first error-text message
+      const texts = Array.from(svg.matchAll(/<text[^>]*class=\"error-text\"[^>]*>([^<]*)<\/text>/g)).map(m => m[1].trim()).filter(Boolean);
+      const message = texts[0] || 'Syntax error (from mermaid-cli error SVG)';
+      try { fs.unlinkSync(outSvg); } catch {}
+      return { valid: false, message };
+    }
+    try { fs.unlinkSync(outSvg); } catch {}
+    return { valid: true, message: 'VALID' };
+  } catch {
+    // If we can't read the file, assume invalid
+    try { fs.unlinkSync(outSvg); } catch {}
+    return { valid: false, message: 'INVALID (could not read output SVG)' };
   }
 }
 

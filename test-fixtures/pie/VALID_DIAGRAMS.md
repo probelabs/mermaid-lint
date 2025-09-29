@@ -8,10 +8,7 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 ## Table of Contents
 
 1. [Labels And Formats](#1-labels-and-formats)
-2. [Missing Colon](#2-missing-colon)
-3. [Missing Number](#3-missing-number)
-4. [Simple](#4-simple)
-5. [Unclosed Quote](#5-unclosed-quote)
+2. [Simple](#2-simple)
 
 ---
 
@@ -21,15 +18,12 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 ```mermaid
 pie
-  title: Sales Q1
-  %%%% comments and blanks
-  
+  title "Sales Q1"
   "Apples" : 10
-  'Bananas' 15
-  Cherries : 7
+  'Bananas' : 15
+  "Cherries" : 7
   "He said 'Hi'" : 3
-  'She said "Yo"' 4
-
+  'She said "Yo"' : 4
 
 ```
 
@@ -38,84 +32,27 @@ pie
 
 ```
 pie
-  title: Sales Q1
-  %%%% comments and blanks
-  
+  title "Sales Q1"
   "Apples" : 10
-  'Bananas' 15
-  Cherries : 7
+  'Bananas' : 15
+  "Cherries" : 7
   "He said 'Hi'" : 3
-  'She said "Yo"' 4
-
-
-```
-</details>
-
----
-
-## 2. Missing Colon
-
-📄 **Source**: [`missing-colon.mmd`](./valid/missing-colon.mmd)
-
-```mermaid
-pie
-  title Pets
-  "Dogs" 10
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-pie
-  title Pets
-  "Dogs" 10
-
+  'She said "Yo"' : 4
 
 ```
 </details>
 
 ---
 
-## 3. Missing Number
-
-📄 **Source**: [`missing-number.mmd`](./valid/missing-number.mmd)
-
-```mermaid
-pie
-  "Dogs" :
-  Cats : 
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-pie
-  "Dogs" :
-  Cats : 
-
-
-```
-</details>
-
----
-
-## 4. Simple
+## 2. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
 ```mermaid
 pie
-  title Pets
+  title "Pets"
   "Dogs" : 10
   "Cats" : 5
-  showData
-
 
 ```
 
@@ -124,35 +61,9 @@ pie
 
 ```
 pie
-  title Pets
+  title "Pets"
   "Dogs" : 10
   "Cats" : 5
-  showData
-
-
-```
-</details>
-
----
-
-## 5. Unclosed Quote
-
-📄 **Source**: [`unclosed-quote.mmd`](./valid/unclosed-quote.mmd)
-
-```mermaid
-pie
-  "Dogs : 10
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-pie
-  "Dogs : 10
-
 
 ```
 </details>
@@ -166,7 +77,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T14:24:24.748Z
+Last generated: 2025-09-29T15:16:43.109Z
 
 ## How to Regenerate
 

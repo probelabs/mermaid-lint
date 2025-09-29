@@ -584,7 +584,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T14:24:24.703Z
+Last generated: 2025-09-29T15:16:24.993Z
 
 ## How to Regenerate
 

@@ -1149,13 +1149,11 @@ flowchart XY
 
 ---
 
-## Validation Status
+## Notes
 
-All diagrams in this file are confirmed to be invalid by:
-- ❌ Our Mermaid linter (correctly rejects)
-- ❌ Official mermaid-cli (correctly rejects)
+This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Last generated: 2025-09-29T14:50:03.279Z
+Last generated: 2025-09-29T15:16:43.087Z
 
 ## How to Regenerate
 

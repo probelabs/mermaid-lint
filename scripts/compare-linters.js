@@ -18,23 +18,31 @@ const colors = {
 };
 
 function runMermaidCli(filepath) {
+  const outSvg = `/tmp/mermaid-cli-${path.basename(filepath)}.svg`;
   try {
-    execSync(`npx @mermaid-js/mermaid-cli -i "${filepath}" -o /tmp/test.svg`, {
+    execSync(`npx @mermaid-js/mermaid-cli -i "${filepath}" -o "${outSvg}"`, {
       stdio: 'pipe',
       encoding: 'utf8',
-      timeout: 5000
+      timeout: 12000
     });
-    return { valid: true, error: null };
   } catch (error) {
-    return { 
-      valid: false, 
-      error: error.stderr || error.message 
+    return {
+      valid: false,
+      error: (error.stderr || error.stdout || error.message || '').toString()
     };
+  }
+  try {
+    const svg = fs.readFileSync(outSvg, 'utf8');
+    const isError = /aria-roledescription\s*=\s*"error"/.test(svg) || /class=\"error-text\"/.test(svg);
+    if (isError) {
+      const texts = Array.from(svg.matchAll(/<text[^>]*class=\"error-text\"[^>]*>([^<]*)<\/text>/g)).map(m => m[1].trim()).filter(Boolean);
+      const msg = texts.join('\n') || 'Syntax error (from mermaid-cli error SVG)';
+      try { fs.unlinkSync(outSvg); } catch {}
+      return { valid: false, error: msg };
+    }
+    return { valid: true, error: null };
   } finally {
-    // Clean up generated file if it exists
-    try {
-      fs.unlinkSync('/tmp/test.svg');
-    } catch {}
+    try { fs.unlinkSync(outSvg); } catch {}
   }
 }
 
