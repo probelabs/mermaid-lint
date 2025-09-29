@@ -101,7 +101,7 @@ Diagnostics include stable error codes and hints for quick fixes. See the full l
 
 ### CLI Output Formats
 
-- Human (default): codes, hints, and an inline codeframe pointing at the exact location.
+- Human (default): caret-underlined snippet style with codes, hints, and precise spans.
 - JSON: machine-readable report for editors/CI.
 
 ```bash
@@ -110,6 +110,9 @@ npx mermaid-lint diagram.mmd
 
 # JSON
 npx mermaid-lint --format json diagram.mmd
+
+# Alias (still works):
+npx mermaid-lint --format rust diagram.mmd   # treated as human
 ```
 
 ## CI/CD Integration
