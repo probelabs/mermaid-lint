@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as fs from "fs";
+const fs = require("fs");
 
 function validateDiagram(text) {
     const errors = [];

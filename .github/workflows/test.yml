@@ -34,6 +34,13 @@ jobs:
     - name: Build TypeScript
       run: npm run build
     
+    - name: Prepare CLI for testing
+      run: |
+        echo "Setting up CLI for testing..."
+        cp src/cli-final.cjs out/cli.cjs
+        chmod +x out/cli.cjs
+        echo "CLI ready at out/cli.cjs"
+    
     - name: Run linter tests
       run: |
         echo "Running linter tests on flowchart diagrams..."

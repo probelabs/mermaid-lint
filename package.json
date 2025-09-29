@@ -8,7 +8,8 @@
   },
   "scripts": {
     "langium:generate": "langium generate",
-    "build": "npm run langium:generate && tsc",
+    "build": "npm run langium:generate && tsc && npm run prepare:cli",
+    "prepare:cli": "cp src/cli-final.cjs out/cli.cjs && chmod +x out/cli.cjs",
     "test": "node scripts/test-linter.js flowchart",
     "test:compare": "node scripts/compare-linters.js flowchart",
     "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.cjs \"$file\" || exit 1; done",
