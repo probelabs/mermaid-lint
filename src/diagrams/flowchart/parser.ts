@@ -326,7 +326,7 @@ export class MermaidParser extends CstParser {
 
     // direction TB/RL/LR/BT as a standalone statement
     private directionStatement = this.RULE("directionStatement", () => {
-        this.CONSUME(tokens.DirectionKeyword);
+        this.CONSUME(tokens.Identifier, { LABEL: 'dirKw' });
         this.CONSUME(tokens.Direction);
         this.OPTION(() => this.CONSUME(tokens.Newline));
     });
