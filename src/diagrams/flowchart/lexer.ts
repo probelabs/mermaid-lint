@@ -328,10 +328,6 @@ export const MermaidLexer = new Lexer(allTokens);
 // Helper function to tokenize input
 export function tokenize(text: string) {
     const lexResult = MermaidLexer.tokenize(text);
-    
-    if (lexResult.errors.length > 0) {
-        console.error('Lexer errors:', lexResult.errors);
-    }
-    
+    // Do not log lexer errors directly; callers produce user-facing diagnostics.
     return lexResult;
 }

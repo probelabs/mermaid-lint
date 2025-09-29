@@ -38,9 +38,10 @@ export function validate(text: string): { type: DiagramType; errors: ValidationE
             column: 1,
             message: 'Diagram must start with "graph", "flowchart", or "pie"',
             severity: 'error',
+            code: 'GEN-HEADER-INVALID',
+            hint: 'Start your diagram with e.g. "flowchart TD" or "pie".'
           },
         ],
       };
   }
 }
-

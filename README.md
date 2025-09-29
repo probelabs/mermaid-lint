@@ -62,8 +62,8 @@ npm run generate:previews
 ```
 
 ### Test Coverage
-- Flowchart: [19 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [14 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
-- Pie: [2 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
+- Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [15 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
+- Pie: [4 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
 ## Diagram Type Coverage (Mermaid vs mermaid-lint)
@@ -98,6 +98,19 @@ Notes
 ## Error Codes
 
 Diagnostics include stable error codes and hints for quick fixes. See the full list in [docs/errors.md](./docs/errors.md).
+
+### CLI Output Formats
+
+- Human (default): codes, hints, and an inline codeframe pointing at the exact location.
+- JSON: machine-readable report for editors/CI.
+
+```bash
+# Human (default)
+npx mermaid-lint diagram.mmd
+
+# JSON
+npx mermaid-lint --format json diagram.mmd
+```
 
 ## CI/CD Integration
 

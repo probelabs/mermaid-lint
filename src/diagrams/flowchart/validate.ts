@@ -2,76 +2,46 @@ import type { ValidationError } from '../../core/types.js';
 import { tokenize, InvalidArrow } from './lexer.js';
 import { parse } from './parser.js';
 import { analyzeFlowchart } from './semantics.js';
-import type { ILexingError, IRecognitionException, IToken } from 'chevrotain';
+import type { IToken } from 'chevrotain';
+import { lintWithChevrotain } from '../../core/pipeline.js';
+import { coercePos, mapFlowchartParserError } from '../../core/diagnostics.js';
 
 export function validateFlowchart(text: string): ValidationError[] {
-  const errors: ValidationError[] = [];
-  const lines = text.split('\n');
-
-  // Tokenize
-  const lexResult = tokenize(text);
-
-  // Lexer errors
-  if (lexResult.errors.length > 0) {
-    lexResult.errors.forEach((error: ILexingError) => {
-      errors.push({
-        line: error.line ?? 1,
-        column: error.column ?? 1,
-        message: error.message,
-        severity: 'error',
-      });
-    });
-  }
-
-  // Invalid arrow check (flowchart-specific)
-  lexResult.tokens.forEach((token: IToken) => {
-    if (token.tokenType === InvalidArrow) {
-      errors.push({
-        line: token.startLine ?? 1,
-        column: token.startColumn ?? 1,
-        message: 'Invalid arrow syntax: -> (use --> instead)',
-        severity: 'error',
-        code: 'FL-ARROW-INVALID',
-        hint: 'Replace -> with -->, or use -- text --> for inline labels.'
-      });
+  return lintWithChevrotain(text, {
+    tokenize,
+    parse,
+    analyze: (cst, tokens) => analyzeFlowchart(cst as any, tokens as IToken[]),
+    mapParserError: (e, t) => mapFlowchartParserError(e, t),
+    postLex: (_text, tokens) => {
+      const errs: ValidationError[] = [];
+      for (const token of tokens as IToken[]) {
+        if (token.tokenType === InvalidArrow) {
+          errs.push({
+            line: token.startLine ?? 1,
+            column: token.startColumn ?? 1,
+            message: 'Invalid arrow syntax: -> (use --> instead)',
+            severity: 'error',
+            code: 'FL-ARROW-INVALID',
+            hint: 'Replace -> with -->, or use -- text --> for inline labels.'
+          });
+        }
+      }
+      return errs;
+    },
+    postParse: (_text, tokens, _cst, prevErrors) => {
+      // Token-level fallback: detect backslash-escaped quotes if not already reported
+      if (prevErrors.some(e => e.code === 'FL-LABEL-ESCAPED-QUOTE')) return [];
+      for (const tok of tokens as IToken[]) {
+        if (typeof tok.image === 'string' && tok.image.includes('\\"')) {
+          const { line, column } = coercePos(tok.startLine ?? null, tok.startColumn ?? null, 1, 1);
+          return [{
+            line, column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE',
+            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; or switch to single quotes.',
+            hint: 'Prefer "He said &quot;Hi&quot;" or use single quotes around the label.'
+          }];
+        }
+      }
+      return [];
     }
   });
-
-  // Parse if no critical lexer errors
-  let parseResult: { cst: any; errors: any[] } | null = null;
-  if (errors.filter((e) => e.severity === 'error').length === 0) {
-    parseResult = parse(lexResult.tokens);
-
-    if (parseResult.errors.length > 0) {
-      parseResult.errors.forEach((error: IRecognitionException) => {
-        const token = error.token;
-        errors.push({
-          line: token?.startLine ?? 1,
-          column: token?.startColumn ?? 1,
-          message: error.message || 'Parser error',
-          severity: 'error',
-        });
-      });
-    }
-  }
-
-  // Semantic pass: CST visitor for confident checks (no regex)
-  if (parseResult) {
-    try {
-      const semanticErrors = analyzeFlowchart(parseResult.cst as any, lexResult.tokens);
-      errors.push(...semanticErrors);
-    } catch (e) {
-      // Defensive: never crash; surface a single error if semantic pass fails
-      errors.push({
-        line: 1,
-        column: 1,
-        severity: 'error',
-        message: `Internal semantic analysis error: ${(e as Error).message}`,
-      });
-    }
-  }
-
-  // Link best-practice checks are token-aware and handled in the CST visitor when needed.
-
-  return errors;
 }

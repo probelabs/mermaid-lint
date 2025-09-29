@@ -34,6 +34,36 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
+  subgraph(ctx: any) {
+    if (ctx.subgraphStatement) ctx.subgraphStatement.forEach((s: CstNode) => this.visit(s));
+  }
+
+  subgraphStatement(ctx: any) {
+    // visit nested rules inside subgraph body
+    for (const k of Object.keys(ctx)) {
+      const arr = (ctx as any)[k];
+      if (Array.isArray(arr)) {
+        arr.forEach((n) => {
+          if (n && typeof (n as any).name === 'string') this.visit(n);
+        });
+      }
+    }
+  }
+
+  directionStatement(ctx: any) {
+    const kwTok = ctx.dirKw?.[0] as IToken | undefined;
+    if (kwTok && kwTok.image !== 'direction') {
+      this.ctx.errors.push({
+        line: kwTok.startLine ?? 1,
+        column: kwTok.startColumn ?? 1,
+        severity: 'error',
+        code: 'FL-DIR-KW-INVALID',
+        message: `Unknown keyword '${kwTok.image}' before direction. Use 'direction TB' / 'LR' / etc.`,
+        hint: "Example inside subgraph: 'direction TB'"
+      });
+    }
+  }
+
   nodeStatement(ctx: any) {
     if (ctx.nodeOrParallelGroup) ctx.nodeOrParallelGroup.forEach((n: CstNode) => this.visit(n));
     // links are syntactic; semantic link warnings stay outside for now
