@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maid - Your Mermaid.js Diagram Assistant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero {
+            padding: 80px 0;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-left {
+            order: 2;
+        }
+
+        .hero-right {
+            order: 1;
+        }
+
+        .maid-container {
+            position: relative;
+            display: inline-block;
+            animation: gentle-float 8s ease-in-out infinite;
+        }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .maid-img {
+            height: 600px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 20px 40px rgba(255, 182, 193, 0.2));
+        }
+
+        .speech-bubble {
+            position: absolute;
+            background: white;
+            border-radius: 20px;
+            padding: 18px 20px;
+            top: 80px;
+            left: -200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 2px solid #ff6b9d;
+            width: auto;
+            max-width: 200px;
+            animation: gentle-float 8s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 14px solid #ff6b9d;
+        }
+
+        .speech-bubble-text {
+            color: #ff6b9d;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #1a1a2e;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        h1 .meet {
+            font-size: 3rem;
+            font-weight: 400;
+            color: #666;
+            display: block;
+            margin-bottom: -10px;
+        }
+
+        h1 .maid {
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            color: #ff6b9d;
+            margin-bottom: 32px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .hero-description {
+            color: #4a4a4a;
+            font-size: 1.125rem;
+            margin-bottom: 48px;
+            line-height: 1.8;
+            max-width: 540px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #ff6b9d;
+            border: 2px solid #ff6b9d;
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f8;
+            transform: translateY(-2px);
+        }
+
+        .features {
+            padding: 100px 0;
+            background: #ffffff;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #1a1a2e;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+        }
+
+        .section-title .highlight {
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.25rem;
+            margin-bottom: 80px;
+            font-weight: 400;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #f5f5f5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: #ff6b9d;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #1a1a2e;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .comparison {
+            padding: 100px 0;
+            background: #ffffff;
+        }
+
+        .comparison-grid {
+            max-width: 900px;
+            margin: 60px auto 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .comparison-col h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-col li {
+            padding: 12px 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            line-height: 1.6;
+        }
+
+        .comparison-bad {
+            color: #666;
+        }
+
+        .comparison-good {
+            color: #1a1a2e;
+        }
+
+        .demo {
+            padding: 100px 0;
+            background: #ffffff;
+        }
+
+        .terminal {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot:nth-child(1) {
+            background: #ff5f57;
+        }
+
+        .terminal-dot:nth-child(2) {
+            background: #ffbd2e;
+        }
+
+        .terminal-dot:nth-child(3) {
+            background: #28ca42;
+        }
+
+        .terminal pre {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e0e0e0;
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .terminal .prompt {
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .terminal .success {
+            color: #5be584;
+        }
+
+        .terminal .error {
+            color: #ff6b9d;
+        }
+
+        .terminal .warning {
+            color: #feca57;
+        }
+
+        .terminal .info {
+            color: #48dbfb;
+        }
+
+        footer {
+            padding: 80px 0 40px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        footer p {
+            color: #666;
+            margin: 10px 0;
+            font-size: 1.05rem;
+        }
+
+        .footer-heart {
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            color: #ff6b9d;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-left, .hero-right {
+                order: unset;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            h1 .meet {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .maid-img {
+                height: 400px;
+            }
+
+            .speech-bubble {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -60px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-left">
+                    <div class="maid-container">
+                        <img src="maid_transparent.png" alt="Maid - Your Mermaid Assistant" class="maid-img">
+                        <div class="speech-bubble">
+                            <p class="speech-bubble-text">I'll make your<br>diagrams perfect! 💕</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-right">
+                    <h1>
+                        <span class="meet">Meet</span>
+                        <span class="maid">Maid</span>
+                    </h1>
+                    <p class="subtitle">Diagram Perfection Service</p>
+                    <p class="hero-description">
+                        Maid ensures your Mermaid diagrams always work. Lightweight and browser-free 
+                        (unlike mermaid-cli), she provides intelligent linting, automatic fixing, 
+                        and contextual error messages to help both humans and AI create flawless diagrams.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary">
+                            <span>Get Started</span>
+                            <span>→</span>
+                        </a>
+                        <a href="#" class="btn btn-secondary">
+                            <span>View on GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <h2 class="section-title">What Makes <span class="highlight">Maid</span> Special</h2>
+            <p class="section-subtitle">She's not just a linter — she's your diagram companion</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Smart Linting</h3>
+                    <p>Catches every syntax error before it breaks. From missing arrows to unbalanced brackets, Maid spots issues instantly and shows you exactly where they are.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">✨</span>
+                    <h3>Auto-Fixing Magic</h3>
+                    <p>Why just report errors when she can fix them? Maid automatically corrects common mistakes, adds missing syntax, and formats your diagrams beautifully.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">💬</span>
+                    <h3>Contextual Help</h3>
+                    <p>Every error comes with helpful context and suggestions. Perfect for learning Mermaid syntax or helping AI tools generate correct diagrams on the first try.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3>AI-Friendly</h3>
+                    <p>Designed to work seamlessly with AI code generators. Clear error messages help LLMs understand and fix diagram syntax issues automatically.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Lightning Fast</h3>
+                    <p>Validates complex diagrams in milliseconds. Real-time feedback as you type, whether in VSCode, your terminal, or CI/CD pipeline.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🪶</span>
+                    <h3>Featherweight</h3>
+                    <p>No browser, no puppeteer, no heavy dependencies. Unlike mermaid-cli, Maid runs in pure JavaScript. Tiny install size, instant startup, minimal memory usage.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="comparison">
+            <div class="container">
+                <h2 class="section-title">Why <span class="highlight">Maid</span>, Not Mermaid-CLI?</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-col">
+                        <h3 style="color: #dc2626;">❌ Mermaid-CLI</h3>
+                        <ul class="comparison-bad">
+                            <li>• Requires Puppeteer & Chromium (~170MB)</li>
+                            <li>• Slow startup (browser launch)</li>
+                            <li>• Memory hungry</li>
+                            <li>• Complex installation</li>
+                            <li>• Just renders, no validation</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-col">
+                        <h3 style="color: #16a34a;">✨ Maid</h3>
+                        <ul class="comparison-good">
+                            <li>• Pure JavaScript (~5MB)</li>
+                            <li>• Instant startup</li>
+                            <li>• Minimal memory footprint</li>
+                            <li>• Simple npm install</li>
+                            <li>• Validates, fixes, and educates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo" id="demo">
+            <div class="container">
+                <h2 class="section-title">See <span class="highlight">Maid</span> in Action</h2>
+                <p class="section-subtitle">Fixing your diagrams with style</p>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dot"></div>
+                        <div class="terminal-dot"></div>
+                        <div class="terminal-dot"></div>
+                    </div>
+                    <pre><span class="prompt">❯</span> maid check diagram.mmd
+
+<span class="success">✨</span> Checking your diagram, master...
+
+<span class="error">💔 Found 2 issues that need attention:</span>
+
+<span class="warning">Line 4:</span> Missing arrow between nodes
+  <span class="info">Before:</span> A[Start] B[Process]
+  <span class="success">Fixed:</span>  A[Start] --> B[Process]
+
+<span class="warning">Line 8:</span> Unclosed bracket in node definition
+  <span class="info">Before:</span> C[Final Step
+  <span class="success">Fixed:</span>  C[Final Step]
+
+<span class="success">✨ All fixed!</span> Your diagram is now perfect~
+<span class="info">💡 Run with --auto-fix to apply these changes automatically</span>
+
+<span class="prompt">❯</span> maid fix diagram.mmd
+<span class="success">✅ Fixed 2 issues and saved diagram.mmd</span></pre>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Made with <span class="footer-heart">💖</span> for developers who love clean diagrams</p>
+            <p>Maid — Because every diagram deserves perfection</p>
+        </footer>
+    </div>
+</body>
+</html>
