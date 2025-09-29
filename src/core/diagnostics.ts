@@ -140,6 +140,16 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     }
   }
 
+  // 4b) Quotes appear inside an unquoted label content
+  if (isInRule(err, 'nodeContent') && err.name === 'MismatchedTokenException' && tokType === 'QuotedString') {
+    return {
+      line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
+      message: 'Double quotes inside an unquoted label are not allowed. Wrap the entire label in quotes or use &quot;.',
+      hint: 'Example: A["Calls logger.debug(&quot;message&quot;, data)"]',
+      length: len
+    };
+  }
+
   
 
   // 5) Invalid/Incomplete class statement

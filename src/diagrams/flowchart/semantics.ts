@@ -161,6 +161,29 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
+  private warnParensInUnquoted(contentNodes: CstNode[] | undefined) {
+    if (!contentNodes) return;
+    for (const cn of contentNodes) {
+      const ch: any = (cn as any).children || {};
+      const hasQuoted: boolean = Array.isArray(ch.QuotedString) && ch.QuotedString.length > 0;
+      if (hasQuoted) continue; // wrapped, fine
+      const opens: IToken[] = ch.RoundOpen || [];
+      const closes: IToken[] = ch.RoundClose || [];
+      const offenders = [...opens, ...closes];
+      if (offenders.length > 0) {
+        const t = offenders[0];
+        this.ctx.errors.push({
+          line: t.startLine ?? 1,
+          column: t.startColumn ?? 1,
+          severity: 'warning',
+          code: 'FL-LABEL-PARENS-UNQUOTED',
+          message: 'Parentheses inside an unquoted label may be ambiguous. Wrap the label in quotes.',
+          hint: 'Example: A["Calls func(arg)"]'
+        });
+      }
+    }
+  }
+
   nodeShape(ctx: any) {
     // Determine shape and collect the corresponding content node array key
     const openTok: IToken | undefined =
@@ -186,6 +209,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
       this.checkEmptyContent(openTok, contentNodes.length ? contentNodes : undefined);
       this.checkEscapedQuotes(contentNodes);
       this.checkDoubleInSingleQuoted(contentNodes);
+      this.warnParensInUnquoted(contentNodes);
     }
   }
 }

@@ -44,6 +44,16 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
       A["She said &quot;Hello&quot;"] --> B
     ```
 
+- FL-LABEL-QUOTE-IN-UNQUOTED
+  - When: A double quote appears inside an unquoted label (e.g., within `[...]`).
+  - Message: "Double quotes inside an unquoted label are not allowed. Wrap the entire label in quotes or use &quot;."
+  - Hint: "Example: A[\"Calls logger.debug(&quot;message&quot;, data)\"]"
+  - Example (fixed):
+    ```mermaid
+    flowchart TD
+      A["Calls logger.debug(&quot;message&quot;, data)"] --> B
+    ```
+
 Tip: quoting inside labels
 - When you need double quotes inside a double‑quoted label, use the HTML entity `&quot;` instead of a backslash.
   - Correct: `A["He said &quot;Hi&quot;"]`
