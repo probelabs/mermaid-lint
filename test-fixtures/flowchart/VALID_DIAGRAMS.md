@@ -10,22 +10,23 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 1. [Chained Connections](#1-chained-connections)
 2. [Comments](#2-comments)
 3. [Complex Shapes](#3-complex-shapes)
-4. [Duplicate Subgraph](#4-duplicate-subgraph)
-5. [Link Styles](#5-link-styles)
-6. [Long Text](#6-long-text)
-7. [Mismatched Quotes](#7-mismatched-quotes)
-8. [Multidirectional Arrows](#8-multidirectional-arrows)
-9. [Nested Subgraphs](#9-nested-subgraphs)
-10. [Node Ids Special](#10-node-ids-special)
-11. [Only Nodes](#11-only-nodes)
-12. [Quotes Single Inside Double](#12-quotes-single-inside-double)
-13. [Simple Flow](#13-simple-flow)
-14. [Special Arrows](#14-special-arrows)
-15. [Styling Classes](#15-styling-classes)
-16. [Subgraphs](#16-subgraphs)
-17. [Undefined Node](#17-undefined-node)
-18. [Unicode Text](#18-unicode-text)
-19. [With Text](#19-with-text)
+4. [Custom Auth Subgraph](#4-custom-auth-subgraph)
+5. [Duplicate Subgraph](#5-duplicate-subgraph)
+6. [Link Styles](#6-link-styles)
+7. [Long Text](#7-long-text)
+8. [Mismatched Quotes](#8-mismatched-quotes)
+9. [Multidirectional Arrows](#9-multidirectional-arrows)
+10. [Nested Subgraphs](#10-nested-subgraphs)
+11. [Node Ids Special](#11-node-ids-special)
+12. [Only Nodes](#12-only-nodes)
+13. [Quotes Single Inside Double](#13-quotes-single-inside-double)
+14. [Simple Flow](#14-simple-flow)
+15. [Special Arrows](#15-special-arrows)
+16. [Styling Classes](#16-styling-classes)
+17. [Subgraphs](#17-subgraphs)
+18. [Undefined Node](#18-undefined-node)
+19. [Unicode Text](#19-unicode-text)
+20. [With Text](#20-with-text)
 
 ---
 
@@ -121,7 +122,47 @@ flowchart TB
 
 ---
 
-## 4. Duplicate Subgraph
+## 4. Custom Auth Subgraph
+
+📄 **Source**: [`custom-auth-subgraph.mmd`](./valid/custom-auth-subgraph.mmd)
+
+```mermaid
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{Is Driver AND AuthCheck.Path configured?}
+        D -- No --> E[Inject PluginAuthGatekeeperMiddleware]
+        E --> F[API is now blocked. All requests will be rejected with 403 Forbidden.]
+        D -- Yes --> G[Load configured custom auth plugin]
+        G --> H[Add custom auth plugin to middleware chain]
+    end
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{Is Driver AND AuthCheck.Path configured?}
+        D -- No --> E[Inject PluginAuthGatekeeperMiddleware]
+        E --> F[API is now blocked. All requests will be rejected with 403 Forbidden.]
+        D -- Yes --> G[Load configured custom auth plugin]
+        G --> H[Add custom auth plugin to middleware chain]
+    end
+
+```
+</details>
+
+---
+
+## 5. Duplicate Subgraph
 
 📄 **Source**: [`duplicate-subgraph.mmd`](./valid/duplicate-subgraph.mmd)
 
@@ -151,7 +192,7 @@ flowchart TD
 
 ---
 
-## 5. Link Styles
+## 6. Link Styles
 
 📄 **Source**: [`link-styles.mmd`](./valid/link-styles.mmd)
 
@@ -185,7 +226,7 @@ flowchart LR
 
 ---
 
-## 6. Long Text
+## 7. Long Text
 
 📄 **Source**: [`long-text.mmd`](./valid/long-text.mmd)
 
@@ -207,7 +248,7 @@ flowchart TD
 
 ---
 
-## 7. Mismatched Quotes
+## 8. Mismatched Quotes
 
 📄 **Source**: [`mismatched-quotes.mmd`](./valid/mismatched-quotes.mmd)
 
@@ -233,7 +274,7 @@ flowchart TD
 
 ---
 
-## 8. Multidirectional Arrows
+## 9. Multidirectional Arrows
 
 📄 **Source**: [`multidirectional-arrows.mmd`](./valid/multidirectional-arrows.mmd)
 
@@ -259,7 +300,7 @@ flowchart LR
 
 ---
 
-## 9. Nested Subgraphs
+## 10. Nested Subgraphs
 
 📄 **Source**: [`nested-subgraphs.mmd`](./valid/nested-subgraphs.mmd)
 
@@ -293,7 +334,7 @@ flowchart TD
 
 ---
 
-## 10. Node Ids Special
+## 11. Node Ids Special
 
 📄 **Source**: [`node-ids-special.mmd`](./valid/node-ids-special.mmd)
 
@@ -331,7 +372,7 @@ flowchart TD
 
 ---
 
-## 11. Only Nodes
+## 12. Only Nodes
 
 📄 **Source**: [`only-nodes.mmd`](./valid/only-nodes.mmd)
 
@@ -357,7 +398,7 @@ flowchart TD
 
 ---
 
-## 12. Quotes Single Inside Double
+## 13. Quotes Single Inside Double
 
 📄 **Source**: [`quotes-single-inside-double.mmd`](./valid/quotes-single-inside-double.mmd)
 
@@ -381,7 +422,7 @@ flowchart LR
 
 ---
 
-## 13. Simple Flow
+## 14. Simple Flow
 
 📄 **Source**: [`simple-flow.mmd`](./valid/simple-flow.mmd)
 
@@ -403,7 +444,7 @@ flowchart TD
 
 ---
 
-## 14. Special Arrows
+## 15. Special Arrows
 
 📄 **Source**: [`special-arrows.mmd`](./valid/special-arrows.mmd)
 
@@ -431,7 +472,7 @@ flowchart LR
 
 ---
 
-## 15. Styling Classes
+## 16. Styling Classes
 
 📄 **Source**: [`styling-classes.mmd`](./valid/styling-classes.mmd)
 
@@ -457,7 +498,7 @@ flowchart TD
 
 ---
 
-## 16. Subgraphs
+## 17. Subgraphs
 
 📄 **Source**: [`subgraphs.mmd`](./valid/subgraphs.mmd)
 
@@ -491,7 +532,7 @@ flowchart TD
 
 ---
 
-## 17. Undefined Node
+## 18. Undefined Node
 
 📄 **Source**: [`undefined-node.mmd`](./valid/undefined-node.mmd)
 
@@ -517,7 +558,7 @@ flowchart TD
 
 ---
 
-## 18. Unicode Text
+## 19. Unicode Text
 
 📄 **Source**: [`unicode-text.mmd`](./valid/unicode-text.mmd)
 
@@ -547,7 +588,7 @@ flowchart LR
 
 ---
 
-## 19. With Text
+## 20. With Text
 
 📄 **Source**: [`with-text.mmd`](./valid/with-text.mmd)
 
@@ -584,7 +625,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T14:24:24.703Z
+Generated by scripts/generate-preview.js (deterministic output)
 
 ## How to Regenerate
 

@@ -64,6 +64,7 @@ export const ClassDefKeyword = createToken({
     longer_alt: Identifier
 });
 
+
 // Special operators
 export const Ampersand = createToken({ 
     name: "Ampersand", 
@@ -334,4 +335,3 @@ export function tokenize(text: string) {
     
     return lexResult;
 }
-

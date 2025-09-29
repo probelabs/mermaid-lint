@@ -300,15 +300,35 @@ export class MermaidParser extends CstParser {
         
         this.CONSUME(tokens.Newline);
         
-        // Subgraph statements
+        // Subgraph statements (allow nested direction changes inside subgraphs)
         this.MANY(() => {
-            this.SUBRULE(this.statement);
+            this.SUBRULE(this.subgraphStatement);
         });
         
         this.CONSUME(tokens.EndKeyword);
         this.OPTION3(() => {
             this.CONSUME2(tokens.Newline);
         });
+    });
+
+    // Statements allowed inside a subgraph (includes local direction changes)
+    private subgraphStatement = this.RULE("subgraphStatement", () => {
+        this.OR([
+            { ALT: () => this.SUBRULE(this.directionStatement) },
+            { ALT: () => this.SUBRULE(this.nodeStatement) },
+            { ALT: () => this.SUBRULE(this.subgraph) },
+            { ALT: () => this.SUBRULE(this.classStatement) },
+            { ALT: () => this.SUBRULE(this.styleStatement) },
+            { ALT: () => this.SUBRULE(this.classDefStatement) },
+            { ALT: () => this.CONSUME(tokens.Newline) }
+        ]);
+    });
+
+    // direction TB/RL/LR/BT as a standalone statement
+    private directionStatement = this.RULE("directionStatement", () => {
+        this.CONSUME(tokens.Identifier, { LABEL: 'dirKw' });
+        this.CONSUME(tokens.Direction);
+        this.OPTION(() => this.CONSUME(tokens.Newline));
     });
     
     // Class statement: class nodeId,nodeId2 className
@@ -414,14 +434,9 @@ export const parserInstance = new MermaidParser();
 export function parse(tokensArr: IToken[]) {
     parserInstance.input = tokensArr;
     const cst = parserInstance.diagram();
-    
-    if (parserInstance.errors.length > 0) {
-        console.error('Parser errors:', parserInstance.errors);
-    }
-    
+    // Do not log internal parser errors here; callers handle user-facing diagnostics.
     return {
         cst,
         errors: parserInstance.errors
     };
 }
-

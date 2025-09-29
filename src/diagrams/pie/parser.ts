@@ -9,14 +9,15 @@ export class PieParser extends CstParser {
 
   public diagram = this.RULE('diagram', () => {
     this.CONSUME(t.PieKeyword);
-    this.OPTION(() => this.CONSUME(t.Newline));
+    // Optional inline flag: `pie showData`
+    this.OPTION(() => this.CONSUME(t.ShowDataKeyword));
+    this.OPTION2(() => this.CONSUME(t.Newline));
     this.MANY(() => this.SUBRULE(this.statement));
   });
 
   private statement = this.RULE('statement', () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.titleStmt) },
-      { ALT: () => this.SUBRULE(this.showDataStmt) },
       { ALT: () => this.SUBRULE(this.sliceStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
     ]);
@@ -24,7 +25,6 @@ export class PieParser extends CstParser {
 
   private titleStmt = this.RULE('titleStmt', () => {
     this.CONSUME(t.TitleKeyword);
-    this.OPTION(() => this.CONSUME(t.Colon));
     this.AT_LEAST_ONE(() => this.OR([
       { ALT: () => this.CONSUME(t.QuotedString) },
       { ALT: () => this.CONSUME(t.Text) },
@@ -33,23 +33,16 @@ export class PieParser extends CstParser {
     this.OPTION2(() => this.CONSUME(t.Newline));
   });
 
-  private showDataStmt = this.RULE('showDataStmt', () => {
-    this.CONSUME(t.ShowDataKeyword);
-    this.OPTION(() => this.CONSUME(t.Newline));
-  });
-
   private sliceStmt = this.RULE('sliceStmt', () => {
     this.SUBRULE(this.sliceLabel);
-    this.OPTION(() => this.CONSUME(t.Colon));
-    this.OPTION2(() => this.CONSUME(t.NumberLiteral));
+    this.CONSUME(t.Colon);
+    this.CONSUME(t.NumberLiteral);
     this.OPTION3(() => this.CONSUME(t.Newline));
   });
 
   private sliceLabel = this.RULE('sliceLabel', () => {
-    this.OR([
-      { ALT: () => this.CONSUME(t.QuotedString) },
-      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Text)) },
-    ]);
+    // Mermaid requires labels to be quoted (single or double quotes)
+    this.CONSUME(t.QuotedString);
   });
 }
 
