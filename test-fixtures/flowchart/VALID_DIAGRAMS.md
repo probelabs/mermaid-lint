@@ -13,17 +13,19 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 4. [Duplicate Subgraph](#4-duplicate-subgraph)
 5. [Link Styles](#5-link-styles)
 6. [Long Text](#6-long-text)
-7. [Multidirectional Arrows](#7-multidirectional-arrows)
-8. [Nested Subgraphs](#8-nested-subgraphs)
-9. [Node Ids Special](#9-node-ids-special)
-10. [Only Nodes](#10-only-nodes)
-11. [Simple Flow](#11-simple-flow)
-12. [Special Arrows](#12-special-arrows)
-13. [Styling Classes](#13-styling-classes)
-14. [Subgraphs](#14-subgraphs)
-15. [Undefined Node](#15-undefined-node)
-16. [Unicode Text](#16-unicode-text)
-17. [With Text](#17-with-text)
+7. [Mismatched Quotes](#7-mismatched-quotes)
+8. [Multidirectional Arrows](#8-multidirectional-arrows)
+9. [Nested Subgraphs](#9-nested-subgraphs)
+10. [Node Ids Special](#10-node-ids-special)
+11. [Only Nodes](#11-only-nodes)
+12. [Quotes Single Inside Double](#12-quotes-single-inside-double)
+13. [Simple Flow](#13-simple-flow)
+14. [Special Arrows](#14-special-arrows)
+15. [Styling Classes](#15-styling-classes)
+16. [Subgraphs](#16-subgraphs)
+17. [Undefined Node](#17-undefined-node)
+18. [Unicode Text](#18-unicode-text)
+19. [With Text](#19-with-text)
 
 ---
 
@@ -205,7 +207,33 @@ flowchart TD
 
 ---
 
-## 7. Multidirectional Arrows
+## 7. Mismatched Quotes
+
+📄 **Source**: [`mismatched-quotes.mmd`](./valid/mismatched-quotes.mmd)
+
+```mermaid
+flowchart TD
+  A["Mismatched label'] --> B
+  C['Another mismatch"] --> D
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  A["Mismatched label'] --> B
+  C['Another mismatch"] --> D
+
+
+```
+</details>
+
+---
+
+## 8. Multidirectional Arrows
 
 📄 **Source**: [`multidirectional-arrows.mmd`](./valid/multidirectional-arrows.mmd)
 
@@ -231,7 +259,7 @@ flowchart LR
 
 ---
 
-## 8. Nested Subgraphs
+## 9. Nested Subgraphs
 
 📄 **Source**: [`nested-subgraphs.mmd`](./valid/nested-subgraphs.mmd)
 
@@ -265,7 +293,7 @@ flowchart TD
 
 ---
 
-## 9. Node Ids Special
+## 10. Node Ids Special
 
 📄 **Source**: [`node-ids-special.mmd`](./valid/node-ids-special.mmd)
 
@@ -303,7 +331,7 @@ flowchart TD
 
 ---
 
-## 10. Only Nodes
+## 11. Only Nodes
 
 📄 **Source**: [`only-nodes.mmd`](./valid/only-nodes.mmd)
 
@@ -329,7 +357,31 @@ flowchart TD
 
 ---
 
-## 11. Simple Flow
+## 12. Quotes Single Inside Double
+
+📄 **Source**: [`quotes-single-inside-double.mmd`](./valid/quotes-single-inside-double.mmd)
+
+```mermaid
+flowchart LR
+  A["He said 'Hi'"] --> B
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart LR
+  A["He said 'Hi'"] --> B
+
+
+```
+</details>
+
+---
+
+## 13. Simple Flow
 
 📄 **Source**: [`simple-flow.mmd`](./valid/simple-flow.mmd)
 
@@ -351,7 +403,7 @@ flowchart TD
 
 ---
 
-## 12. Special Arrows
+## 14. Special Arrows
 
 📄 **Source**: [`special-arrows.mmd`](./valid/special-arrows.mmd)
 
@@ -379,7 +431,7 @@ flowchart LR
 
 ---
 
-## 13. Styling Classes
+## 15. Styling Classes
 
 📄 **Source**: [`styling-classes.mmd`](./valid/styling-classes.mmd)
 
@@ -405,7 +457,7 @@ flowchart TD
 
 ---
 
-## 14. Subgraphs
+## 16. Subgraphs
 
 📄 **Source**: [`subgraphs.mmd`](./valid/subgraphs.mmd)
 
@@ -439,7 +491,7 @@ flowchart TD
 
 ---
 
-## 15. Undefined Node
+## 17. Undefined Node
 
 📄 **Source**: [`undefined-node.mmd`](./valid/undefined-node.mmd)
 
@@ -465,7 +517,7 @@ flowchart TD
 
 ---
 
-## 16. Unicode Text
+## 18. Unicode Text
 
 📄 **Source**: [`unicode-text.mmd`](./valid/unicode-text.mmd)
 
@@ -495,7 +547,7 @@ flowchart LR
 
 ---
 
-## 17. With Text
+## 19. With Text
 
 📄 **Source**: [`with-text.mmd`](./valid/with-text.mmd)
 
@@ -532,7 +584,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T10:24:18.928Z
+Last generated: 2025-09-29T14:24:24.703Z
 
 ## How to Regenerate
 
