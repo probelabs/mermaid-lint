@@ -44,6 +44,11 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
       A["She said &quot;Hello&quot;"] --> B
     ```
 
+Tip: quoting inside labels
+- When you need double quotes inside a double‑quoted label, use the HTML entity `&quot;` instead of a backslash.
+  - Correct: `A["He said &quot;Hi&quot;"]`
+  - Avoid: `A["He said \"Hi\""]` (Mermaid does not support `\"`)
+
 - FL-DIR-MISSING
   - When: Diagram header lacks a direction after `flowchart`/`graph`.
   - Message: "Missing direction after diagram header. Use TD, TB, BT, RL, or LR."
