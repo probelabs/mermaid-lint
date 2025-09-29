@@ -9,7 +9,10 @@
   "scripts": {
     "langium:generate": "langium generate",
     "build": "npm run langium:generate && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node scripts/test-linter.js flowchart",
+    "test:compare": "node scripts/compare-linters.js flowchart",
+    "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.cjs \"$file\" || exit 1; done",
+    "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.cjs \"$file\" 2>/dev/null && exit 1 || true; done"
   },
   "keywords": [],
   "author": "",
