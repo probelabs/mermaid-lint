@@ -55,6 +55,10 @@ function sanitizeMermaidMessage(input) {
   out = out.replace(/file:\/\/[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
   out = out.replace(/\/(?:[A-Za-z]:)?[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
   out = out.replace(/file:\/\/[A-Za-z]:\\[^\s)]+node_modules\\(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  out = out
+    .split(/\r?\n/)
+    .filter((line) => !/\s+at\s+.*\(node:internal\//.test(line))
+    .join('\n');
   return out;
 }
 

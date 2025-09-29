@@ -56,6 +56,11 @@ function sanitizeMermaidMessage(input) {
   out = out.replace(/\/(?:[A-Za-z]:)?[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
   // Normalize Windows paths with backslashes if any
   out = out.replace(/file:\/\/[A-Za-z]:\\[^\s)]+node_modules\\(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  // Drop Node internal stack frames (vary across versions)
+  out = out
+    .split(/\r?\n/)
+    .filter((line) => !/\s+at\s+.*\(node:internal\//.test(line))
+    .join('\n');
   return out;
 }
 
