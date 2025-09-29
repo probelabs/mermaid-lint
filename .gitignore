@@ -3,3 +3,10 @@ out/
 *.log
 .DS_Store
 syntaxes/
+
+# Ignore stray ad-hoc test files at repo root
+/test*.mmd
+/test-*.mmd
+/test-*.js
+/comparison-results.txt
+/debug-tokens.js

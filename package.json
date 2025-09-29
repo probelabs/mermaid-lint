@@ -7,18 +7,25 @@
     "mermaid-lint": "./out/cli.js"
   },
   "scripts": {
-    "langium:generate": "langium generate",
-    "build": "npm run langium:generate && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "test": "node scripts/test-chevrotain.js",
+    "test:compare": "node scripts/compare-linters.js flowchart",
+    "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.js \"$file\" || exit 1; done",
+    "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
+    "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart",
+    "generate:valid": "node scripts/generate-preview.js flowchart",
+    "generate:invalid": "node scripts/generate-invalid-preview.js flowchart"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.12.0",
     "@types/node": "^24.5.2",
-    "langium": "^4.1.0",
-    "langium-cli": "^4.1.0",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "chevrotain": "^11.0.3"
   }
 }

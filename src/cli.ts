@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-import * as fs from 'fs';
+import * as fs from 'node:fs';
+import { tokenize, InvalidArrow } from './chevrotain-lexer.js';
+import { parse } from './chevrotain-parser.js';
+import type { ILexingError, IRecognitionException, IToken } from 'chevrotain';
 
 interface ValidationError {
     line: number;
@@ -9,72 +12,129 @@ interface ValidationError {
     severity: 'error' | 'warning';
 }
 
-function validateDiagram(text: string): ValidationError[] {
+function validateWithChevrotain(text: string): ValidationError[] {
     const errors: ValidationError[] = [];
-    
-    // Check for problematic HTML entities
     const lines = text.split('\n');
-    lines.forEach((line, lineNum) => {
-        // Check for &apos; which causes issues
-        if (line.includes('&apos;')) {
-            const column = line.indexOf('&apos;') + 1;
+    
+    // First do basic validation
+    const firstNonEmptyLine = lines.find(line => line.trim() && !line.trim().startsWith('%%'));
+    if (!firstNonEmptyLine || !firstNonEmptyLine.match(/^\s*(graph|flowchart)\s/)) {
+        errors.push({
+            line: 1,
+            column: 1,
+            message: 'Diagram must start with "graph" or "flowchart"',
+            severity: 'error'
+        });
+        return errors;
+    }
+    
+    // Tokenize
+    const lexResult = tokenize(text);
+    
+    // Check for lexer errors
+    if (lexResult.errors.length > 0) {
+        lexResult.errors.forEach((error: ILexingError) => {
             errors.push({
-                line: lineNum + 1,
-                column,
-                message: "Found '&apos;' HTML entity. Use &#39; or escape quotes properly",
+                line: error.line ?? 1,
+                column: error.column ?? 1,
+                message: error.message,
+                severity: 'error'
+            });
+        });
+    }
+    
+    // Check for invalid arrows in tokens
+    lexResult.tokens.forEach((token: IToken) => {
+        if (token.tokenType === InvalidArrow) {
+            errors.push({
+                line: token.startLine ?? 1,
+                column: token.startColumn ?? 1,
+                message: 'Invalid arrow syntax: -> (use --> instead)',
                 severity: 'error'
             });
         }
+    });
+    
+    // Parse if no critical lexer errors
+    if (errors.filter(e => e.severity === 'error').length === 0) {
+        const parseResult = parse(lexResult.tokens);
         
-        // Check for nested unescaped quotes in square brackets
-        const squareBracketMatch = line.match(/\[([^[\]]+)\]/g);
-        if (squareBracketMatch) {
-            squareBracketMatch.forEach(match => {
-                const content = match.slice(1, -1);
-                // If content has outer quotes, check for unescaped inner quotes
-                if (content.startsWith('"') && content.endsWith('"')) {
-                    const innerContent = content.slice(1, -1);
-                    if (innerContent.includes('"') && !innerContent.includes('&quot;') && !innerContent.includes('\\"')) {
-                        errors.push({
-                            line: lineNum + 1,
-                            column: line.indexOf(match) + 1,
-                            message: "Unescaped double quotes inside quoted node label",
-                            severity: 'error'
-                        });
-                    }
-                } else if (content.startsWith("'") && content.endsWith("'")) {
-                    const innerContent = content.slice(1, -1);
-                    if (innerContent.includes("'") && !innerContent.includes('&#39;') && !innerContent.includes("\\'")) {
-                        errors.push({
-                            line: lineNum + 1,
-                            column: line.indexOf(match) + 1,
-                            message: "Unescaped single quotes inside quoted node label",
-                            severity: 'error'
-                        });
-                    }
-                }
-            });
-        }
-        
-        // Check for double-encoded entities
-        if (line.includes('&amp;#') || line.includes('&amp;quot;') || line.includes('&amp;apos;')) {
-            const column = line.search(/&amp;(#|quot|apos)/) + 1;
-            errors.push({
-                line: lineNum + 1,
-                column,
-                message: "Double-encoded HTML entity detected",
-                severity: 'error'
-            });
-        }
-        
-        // Check for invalid arrow syntax
-        if (line.includes('-->') || line.includes('---')) {
-            // Check if there's text after arrow without pipe separators
-            const arrowMatch = line.match(/(-->|---)\s*([^|\s]+)/);
-            if (arrowMatch && arrowMatch[2] && !line.includes('|')) {
+        // Check for parser errors
+        if (parseResult.errors.length > 0) {
+            parseResult.errors.forEach((error: IRecognitionException) => {
+                const token = error.token;
                 errors.push({
-                    line: lineNum + 1, 
-                    column: line.indexOf(arrowMatch[0]) + 1,
+                    line: token?.startLine ?? 1,
+                    column: token?.startColumn ?? 1,
+                    message: error.message || 'Parser error',
+                    severity: 'error'
+                });
+            });
+        }
+    }
+    
+    // Additional semantic validation (keep compatibility with mermaid-cli)
+    // Note: header-only diagrams (no statements) are considered valid by mermaid-cli
+    
+    // Check for specific patterns
+    lines.forEach((line, lineNum) => {
+        // Check for empty node content
+        const emptyNodePatterns = [
+            /\[""\]/,          // Empty quotes
+            /\["\s+"\]/,       // Only whitespace
+            /\[''\]/,          // Empty single quotes
+            /\['\s+'\]/,
+            /\(\("\s*"\)\)/,
+            /\(\(\s*\)\)/,
+        ];
+        
+        for (const pattern of emptyNodePatterns) {
+            if (pattern.test(line)) {
+                errors.push({
+                    line: lineNum + 1,
+                    column: 1,
+                    message: 'Empty node content is not allowed',
+                    severity: 'error'
+                });
+                break;
+            }
+        }
+        
+        // Check for escaped quotes
+        if (line.includes('\\"') && line.match(/\[[^\]]*\\"/)) {
+            errors.push({
+                line: lineNum + 1,
+                column: line.indexOf('\\"') + 1,
+                message: 'Escaped quotes in node labels are not supported',
+                severity: 'error'
+            });
+        }
+        
+        // Check for incomplete class syntax
+        if (line.trim().startsWith('class ')) {
+            const classLine = line.trim();
+            const parts = classLine.split(/\s+/);
+            if (parts.length < 3) {
+                errors.push({
+                    line: lineNum + 1,
+                    column: 1,
+                    message: 'Incomplete class syntax: needs format "class nodeId className"',
+                    severity: 'error'
+                });
+            }
+        }
+        
+        // Warning for link text not in pipes (but allow inline text patterns)
+        const hasArrow = line.match(/-->|<--|-.->|<-.-|==>|<==/);
+        const hasLinkText = line.match(/-->[^|]*\w+[^|]*(?:-->|--|$)/);
+        const hasInlineText = line.match(/--\s+\w+\s+-->|-\.\w+\.->|==\w+==>|--\s*\w+/);
+        
+        if (hasArrow && hasLinkText && !line.match(/-->\s*\|[^|]*\|/) && !hasInlineText) {
+            const linkTextMatch = line.match(/-->\s*(\w+)/);
+            if (linkTextMatch) {
+                errors.push({
+                    line: lineNum + 1,
+                    column: line.indexOf(linkTextMatch[0]) + 1,
                     message: "Link text must be enclosed in pipes: |text|",
                     severity: 'warning'
                 });
@@ -82,92 +142,67 @@ function validateDiagram(text: string): ValidationError[] {
         }
     });
     
-    // Try basic Langium parsing (simplified without full services)
-    try {
-        // Check basic structure
-        if (!text.match(/^(graph|flowchart)\s+(TD|TB|BT|RL|LR)/m)) {
-            errors.push({
-                line: 1,
-                column: 1,
-                message: 'Diagram must start with "graph" or "flowchart" followed by direction (TD, TB, BT, RL, LR)',
-                severity: 'error'
-            });
-        }
-        
-        // Check for unclosed subgraphs
-        const subgraphStarts = (text.match(/\bsubgraph\b/g) || []).length;
-        const subgraphEnds = (text.match(/\bend\b/g) || []).length;
-        if (subgraphStarts !== subgraphEnds) {
-            errors.push({
-                line: 1,
-                column: 1,
-                message: `Mismatched subgraphs: ${subgraphStarts} 'subgraph' but ${subgraphEnds} 'end'`,
-                severity: 'error'
-            });
-        }
-        
-    } catch (e: any) {
-        errors.push({
-            line: 1,
-            column: 1,
-            message: `Parsing error: ${e.message}`,
-            severity: 'error'
-        });
-    }
-    
     return errors;
 }
 
-function formatError(error: ValidationError, filename: string): string {
-    const severityColor = error.severity === 'error' ? '\x1b[31m' : '\x1b[33m';
-    const reset = '\x1b[0m';
-    return `${severityColor}${error.severity}${reset}: ${filename}:${error.line}:${error.column} - ${error.message}`;
+// Main CLI execution
+function printUsage() {
+    console.log('Usage: mermaid-lint <file.mmd>');
+    console.log('       cat diagram.mmd | mermaid-lint -');
+}
+
+function readInput(arg: string): { content: string; filename: string } {
+    if (arg === '-') {
+        return { content: fs.readFileSync(0, 'utf8'), filename: '<stdin>' };
+    }
+    if (!fs.existsSync(arg)) {
+        console.error(`File not found: ${arg}`);
+        process.exit(1);
+    }
+    return { content: fs.readFileSync(arg, 'utf8'), filename: arg };
 }
 
 function main() {
     const args = process.argv.slice(2);
-    
-    if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
-        console.log('Usage: mermaid-lint <file.mmd>');
-        console.log('       cat diagram.mmd | mermaid-lint -');
-        console.log('');
-        console.log('Validates Mermaid flowchart/graph diagrams for syntax errors.');
-        console.log('Specifically checks for:');
-        console.log('  - Problematic HTML entities (&apos;)');
-        console.log('  - Nested unescaped quotes');
-        console.log('  - Double-encoded entities');
-        console.log('  - Invalid arrow syntax');
-        console.log('  - Unclosed subgraphs');
-        process.exit(0);
+    if (args.length === 0 || args[0] === '-h' || args[0] === '--help') {
+        printUsage();
+        process.exit(args.length === 0 ? 1 : 0);
     }
-    
-    let content: string;
-    let filename: string;
-    
-    if (args[0] === '-') {
-        // Read from stdin
-        content = fs.readFileSync(0, 'utf-8');
-        filename = '<stdin>';
-    } else {
-        // Read from file
-        filename = args[0];
-        if (!fs.existsSync(filename)) {
-            console.error(`Error: File '${filename}' not found`);
-            process.exit(1);
+
+    const { content, filename } = readInput(args[0]);
+    const errors = validateWithChevrotain(content);
+
+    const errorCount = errors.filter(e => e.severity === 'error').length;
+    const warningCount = errors.filter(e => e.severity === 'warning').length;
+
+    if (errorCount === 0 && warningCount === 0) {
+        console.log('Valid');
+        process.exit(0);
+    } else if (errorCount === 0) {
+        // Only warnings - still valid
+        if (warningCount > 0) {
+            console.error(`Found ${warningCount} warning(s) in ${filename}:\n`);
+            errors.filter(e => e.severity === 'warning').forEach(warning => {
+                console.error(`\x1b[33mwarning\x1b[0m: ${filename}:${warning.line}:${warning.column} - ${warning.message}`);
+            });
         }
-        content = fs.readFileSync(filename, 'utf-8');
-    }
-    
-    const errors = validateDiagram(content);
-    
-    if (errors.length === 0) {
-        console.log(`✅ ${filename}: No errors found`);
+        console.log('Valid'); // File is still valid despite warnings
         process.exit(0);
     } else {
-        console.log(`Found ${errors.length} issue(s) in ${filename}:\n`);
-        errors.forEach(error => {
-            console.log(formatError(error, filename));
+        // Has errors
+        console.error(`Found ${errorCount} error(s) in ${filename}:\n`);
+
+        errors.filter(e => e.severity === 'error').forEach(error => {
+            console.error(`\x1b[31merror\x1b[0m: ${filename}:${error.line}:${error.column} - ${error.message}`);
         });
+
+        if (warningCount > 0) {
+            console.error(`\nFound ${warningCount} warning(s) in ${filename}:\n`);
+            errors.filter(e => e.severity === 'warning').forEach(warning => {
+                console.error(`\x1b[33mwarning\x1b[0m: ${filename}:${warning.line}:${warning.column} - ${warning.message}`);
+            });
+        }
+
         process.exit(1);
     }
 }
