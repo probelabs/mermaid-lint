@@ -10,10 +10,11 @@
     "build": "tsc",
     "test": "node scripts/test-chevrotain.js",
     "test:compare": "node scripts/compare-linters.js flowchart",
+    "test:compare:pie": "node scripts/compare-linters.js pie",
     "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.js \"$file\" || exit 1; done",
     "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
-    "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart",
-    "generate:valid": "node scripts/generate-preview.js flowchart",
+    "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart && node scripts/generate-preview.js pie",
+    "generate:valid": "node scripts/generate-preview.js flowchart && node scripts/generate-preview.js pie",
     "generate:invalid": "node scripts/generate-invalid-preview.js flowchart"
   },
   "keywords": [],

@@ -17,18 +17,25 @@ This guide covers all development workflows for the mermaid-lint project.
 ```
 mermaid-lint/
 ├── src/
-│   ├── chevrotain-lexer.ts    # Tokens and lexer
-│   ├── chevrotain-parser.ts   # Parser rules
+│   ├── core/
+│   │   ├── router.ts          # Detects diagram type and routes
+│   │   └── types.ts           # Shared types
+│   ├── diagrams/
+│   │   ├── flowchart/         # Flowchart lexer/parser/validate
+│   │   └── pie/               # Pie lexer/parser/validate
 │   └── cli.ts                 # CLI implementation
 ├── out/                       # Compiled output (gitignored)
 ├── test-fixtures/             # Test cases
-│   └── flowchart/
-│       ├── valid/             # Should pass validation
-│       ├── invalid/           # Should fail validation
-│       ├── VALID_DIAGRAMS.md  # Visual preview of valid
-│       └── INVALID_DIAGRAMS.md# Visual preview of invalid
+│   ├── flowchart/
+│   │   ├── valid/             # Should pass validation
+│   │   ├── invalid/           # Should fail validation
+│   │   ├── VALID_DIAGRAMS.md  # Visual preview of valid
+│   │   └── INVALID_DIAGRAMS.md# Visual preview of invalid
+│   └── pie/
+│       ├── valid/
+│       └── invalid/
 └── scripts/
-    ├── test-chevrotain.js     # Test runner
+    ├── test-chevrotain.js     # Test runner (flowchart)
     ├── compare-linters.js     # mermaid-cli comparison
     ├── generate-preview.js    # Generate markdown previews
     └── generate-invalid-preview.js

@@ -1,5 +1,5 @@
 import { CstParser, EOF, type IToken } from 'chevrotain';
-import * as tokens from './chevrotain-lexer.js';
+import * as tokens from './lexer.js';
 
 export class MermaidParser extends CstParser {
     constructor() {
@@ -411,8 +411,8 @@ export class MermaidParser extends CstParser {
 export const parserInstance = new MermaidParser();
 
 // Helper function to parse input
-export function parse(tokens: IToken[]) {
-    parserInstance.input = tokens;
+export function parse(tokensArr: IToken[]) {
+    parserInstance.input = tokensArr;
     const cst = parserInstance.diagram();
     
     if (parserInstance.errors.length > 0) {
@@ -424,3 +424,4 @@ export function parse(tokens: IToken[]) {
         errors: parserInstance.errors
     };
 }
+

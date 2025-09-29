@@ -27,6 +27,11 @@ cat diagram.mmd | npx mermaid-lint -
 npm test
 ```
 
+## Supported Diagrams
+
+- Flowchart (`flowchart`, `graph`)
+- Pie (`pie`)
+
 ## What It Catches
 
 ### ❌ Common Errors
@@ -57,9 +62,13 @@ npm run generate:previews
 ```
 
 ### Test Coverage
-- **17 valid diagrams** - [View all rendered diagrams](./test-fixtures/flowchart/VALID_DIAGRAMS.md)
-- **13 invalid diagrams** - [View error cases](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
-- **100% accuracy** - Every test case validated against mermaid-cli
+- Flowchart: [19 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [14 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
+- Pie: [5 valid](./test-fixtures/pie/VALID_DIAGRAMS.md)
+- 100% accuracy against mermaid-cli on fixtures
+
+## Error Codes
+
+Diagnostics include stable error codes and hints for quick fixes. See the full list in [docs/errors.md](./docs/errors.md).
 
 ## CI/CD Integration
 
@@ -96,13 +105,19 @@ Built with modern tooling for reliability and performance:
 ### Project Structure
 ```
 ├── src/
-│   ├── chevrotain-lexer.ts   # Tokens and lexer
-│   ├── chevrotain-parser.ts  # Parser rules
+│   ├── core/
+│   │   ├── router.ts         # Detects diagram type and routes
+│   │   └── types.ts          # Shared types
+│   ├── diagrams/
+│   │   ├── flowchart/        # Flowchart lexer/parser/validation
+│   │   └── pie/              # Pie lexer/parser/validation
 │   └── cli.ts                # CLI implementation
 ├── test-fixtures/
-│   └── flowchart/
-│       ├── valid/            # Valid test cases
-│       └── invalid/          # Invalid test cases
+│   ├── flowchart/
+│   │   ├── valid/
+│   │   └── invalid/
+│   └── pie/
+│       └── valid/
 └── scripts/
     ├── test-chevrotain.js    # Test runner
     ├── test-linter.js        # Alternate test runner
@@ -130,20 +145,33 @@ npm test
 
 ### Extending the Linter
 
-1. Update tokens in `src/chevrotain-lexer.ts` (for new shapes/arrows)
-2. Update grammar rules in `src/chevrotain-parser.ts`
-3. Extend semantic checks in `src/cli.ts`
-4. Add fixtures under `test-fixtures/`
-5. Build and verify: `npm run build && npm test && npm run test:compare`
+1. Add a new module: `src/diagrams/<type>/{lexer.ts,parser.ts,validate.ts}`
+2. Register in `src/core/router.ts` via header detection
+3. Add fixtures under `test-fixtures/<type>/{valid,invalid}`
+4. Build and verify: `npm run build && node scripts/compare-linters.js <type>`
+5. Regenerate previews: `node scripts/generate-preview.js <type>`
 
 ## Roadmap
 
+- [x] Support for pie charts
 - [ ] Support for sequence diagrams
 - [ ] Support for class diagrams
 - [ ] Support for state diagrams
 - [ ] VS Code extension
 - [ ] ESLint plugin
 - [ ] Online playground
+
+## Edge Cases Covered
+
+- Flowchart:
+  - Escaped quotes in labels (rejected)
+  - Double quotes inside single-quoted labels (rejected, mermaid-compat)
+  - Mismatched quotes inside labels (accepted, mermaid-compat)
+  - Link text outside pipes triggers warnings
+- Pie:
+  - Optional colon between label and value (accepted)
+  - Missing value lines (accepted by mermaid; accepted for parity)
+  - Unclosed quotes treated as free text label (accepted)
 
 ## Contributing
 
