@@ -139,7 +139,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T15:24:14.406Z
+Generated for commit e5790f5c685d (2025-09-29T15:24:29Z)
 
 ## How to Regenerate
 

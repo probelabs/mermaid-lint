@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -88,6 +89,14 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
     markdown += `---\n\n`;
   });
   
+  // Commit metadata for stable CI output
+  let commit = 'unknown';
+  let commitDate = '';
+  try {
+    commit = execSync('git rev-parse --short=12 HEAD', { encoding: 'utf8' }).trim();
+    commitDate = execSync('git show -s --format=%cI HEAD', { encoding: 'utf8' }).trim();
+  } catch {}
+
   // Add footer
   markdown += `## Validation Status
 
@@ -96,7 +105,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: ${new Date().toISOString()}
+Generated for commit ${commit}${commitDate ? ` (${commitDate})` : ''}
 
 ## How to Regenerate
 

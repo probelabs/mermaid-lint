@@ -20,7 +20,9 @@ const colors = {
 function runMermaidCli(filepath) {
   const outSvg = `/tmp/mermaid-cli-${path.basename(filepath)}.svg`;
   try {
-    execSync(`npx @mermaid-js/mermaid-cli -i "${filepath}" -o "${outSvg}"`, {
+    const puppeteerCfg = path.resolve(__dirname, 'puppeteer-ci.json');
+    const pFlag = fs.existsSync(puppeteerCfg) ? ` -p "${puppeteerCfg}"` : '';
+    execSync(`npx @mermaid-js/mermaid-cli${pFlag} -i "${filepath}" -o "${outSvg}"`, {
       stdio: 'pipe',
       encoding: 'utf8',
       timeout: 12000

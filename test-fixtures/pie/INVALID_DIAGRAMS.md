@@ -286,7 +286,7 @@ pie
 
 This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Last generated: 2025-09-29T15:24:22.911Z
+Generated for commit e5790f5c685d (2025-09-29T15:24:29Z)
 
 ## How to Regenerate
 

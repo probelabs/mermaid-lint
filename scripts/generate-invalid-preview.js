@@ -12,7 +12,9 @@ function runMermaidCli(filepath) {
   // mermaid-cli sometimes exits 0 but emits an "error SVG". Detect that.
   const outSvg = `/tmp/mermaid-cli-${path.basename(filepath)}.svg`;
   try {
-    execSync(`npx @mermaid-js/mermaid-cli -i "${filepath}" -o "${outSvg}"`, {
+    const puppeteerCfg = path.resolve(__dirname, 'puppeteer-ci.json');
+    const pFlag = fs.existsSync(puppeteerCfg) ? ` -p "${puppeteerCfg}"` : '';
+    execSync(`npx @mermaid-js/mermaid-cli${pFlag} -i "${filepath}" -o "${outSvg}"`, {
       stdio: 'pipe',
       encoding: 'utf8',
       timeout: 12000,
@@ -171,12 +173,20 @@ This file contains invalid ${diagramType} test fixtures with:
     markdown += `---\n\n`;
   });
   
+  // Commit metadata for stable CI output
+  let commit = 'unknown';
+  let commitDate = '';
+  try {
+    commit = execSync('git rev-parse --short=12 HEAD', { encoding: 'utf8' }).trim();
+    commitDate = execSync('git show -s --format=%cI HEAD', { encoding: 'utf8' }).trim();
+  } catch {}
+
   // Add footer (capture outputs; don't assert overall validity)
   markdown += `## Notes
 
 This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Last generated: ${new Date().toISOString()}
+Generated for commit ${commit}${commitDate ? ` (${commitDate})` : ''}
 
 ## How to Regenerate
 
