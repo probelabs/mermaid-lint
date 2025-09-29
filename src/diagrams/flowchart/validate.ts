@@ -36,8 +36,8 @@ export function validateFlowchart(text: string): ValidationError[] {
           const { line, column } = coercePos(tok.startLine ?? null, tok.startColumn ?? null, 1, 1);
           return [{
             line, column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE',
-            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; or switch to single quotes.',
-            hint: 'Prefer "He said &quot;Hi&quot;" or use single quotes around the label.'
+            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
+            hint: 'Prefer "He said &quot;Hi&quot;".'
           }];
         }
       }

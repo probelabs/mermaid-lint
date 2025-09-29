@@ -26,22 +26,22 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
 
 - FL-LABEL-ESCAPED-QUOTE
   - When: Backslash-escaped quotes appear inside a node label (Mermaid does not support `\"`).
-  - Message: "Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; or switch to single quotes."
-  - Hint: "Prefer \"He said &quot;Hi&quot;\" or use single quotes around the label."
-  - Example:
+  - Message: "Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead."
+  - Hint: "Prefer \"He said &quot;Hi&quot;\"."
+  - Example (fixed):
     ```mermaid
     flowchart LR
-      A["He said \"Hi\""] --> B
+      A["He said &quot;Hi&quot;"] --> B
     ```
 
 - FL-LABEL-DOUBLE-IN-SINGLE
   - When: A single-quoted label contains an unescaped double quote.
-  - Message: "Double quotes inside a single-quoted label are not supported by Mermaid. Use double-quoted label or replace \" with &quot;."
-  - Hint: "Change to \"She said \\\"Hello\\\"\" or replace inner \" with &quot;."
-  - Example:
+  - Message: "Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner \" with &quot; or use a double-quoted label with &quot;."
+  - Hint: "Change to \"She said &quot;Hello&quot;\" or replace inner \" with &quot;."
+  - Example (fixed):
     ```mermaid
     flowchart LR
-      A['She said "Hello"'] --> B
+      A["She said &quot;Hello&quot;"] --> B
     ```
 
 - FL-DIR-MISSING

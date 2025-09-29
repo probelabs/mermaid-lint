@@ -131,9 +131,9 @@ class FlowSemanticsVisitor extends BaseVisitor {
             line: t.startLine ?? 1,
             column: t.startColumn ?? 1,
             severity: 'error',
-            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; or switch to single quotes.',
+            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
             code: 'FL-LABEL-ESCAPED-QUOTE',
-            hint: 'Prefer "He said &quot;Hi&quot;" or use single quotes around the label.'
+            hint: 'Prefer "He said &quot;Hi&quot;".'
           });
         }
       }
@@ -152,9 +152,9 @@ class FlowSemanticsVisitor extends BaseVisitor {
             line: q.startLine ?? 1,
             column: q.startColumn ?? 1,
             severity: 'error',
-            message: 'Double quotes inside a single-quoted label are not supported by Mermaid. Use double-quoted label or replace " with &quot;.',
+            message: 'Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.',
             code: 'FL-LABEL-DOUBLE-IN-SINGLE',
-            hint: 'Change to "She said \"Hello\"" or replace inner " with &quot;.'
+            hint: 'Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.'
           });
         }
       }

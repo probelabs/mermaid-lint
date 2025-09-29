@@ -675,8 +675,8 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Found 1 error(s) in test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:
 
-[31merror[0m: test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5 [FL-LABEL-DOUBLE-IN-SINGLE] - Double quotes inside a single-quoted label are not supported by Mermaid. Use double-quoted label or replace " with &quot;.
-        hint: Change to "She said "Hello"" or replace inner " with &quot;.
+[31merror[0m: test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5 [FL-LABEL-DOUBLE-IN-SINGLE] - Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
+        hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
         1 | flowchart LR
         2 |   A['She said "Hello"'] --> B
           |     ^
