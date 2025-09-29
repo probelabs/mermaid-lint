@@ -1,0 +1,27 @@
+name: CI - Previews up-to-date
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  previews:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install deps
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Generate previews and verify no diff
+        run: npm run ci:previews
+
