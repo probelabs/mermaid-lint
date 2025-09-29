@@ -2,6 +2,14 @@
 
 This directory contains comprehensive test fixtures for validating the Mermaid linter's behavior against the official mermaid-cli.
 
+## 📊 Visual Previews
+
+View all test fixtures rendered in markdown:
+
+### Flowchart Diagrams
+- 📗 [**Valid Flowchart Diagrams**](./flowchart/VALID_DIAGRAMS.md) - 17 diagrams that render correctly on GitHub
+- 📕 [**Invalid Flowchart Diagrams**](./flowchart/INVALID_DIAGRAMS.md) - 13 diagrams with documented syntax errors
+
 ## Structure
 
 ```
@@ -67,4 +75,9 @@ Current accuracy: **100%**
 1. Add `.mmd` file to appropriate directory (valid/invalid)
 2. Run `npm test` to verify
 3. Run `npm run test:compare` to check against mermaid-cli
-4. Update this README with the new test case
+4. Regenerate preview markdown:
+   ```bash
+   node scripts/generate-preview.js flowchart
+   node scripts/generate-invalid-preview.js flowchart
+   ```
+5. Commit the updated preview files
