@@ -66,6 +66,35 @@ npm run generate:previews
 - Pie: [2 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
+## Diagram Type Coverage (Mermaid vs mermaid-lint)
+
+As of 2025-09-29, Mermaid 11.x documents support for the following diagram types. Items marked experimental/beta indicate syntax may change. References: Mermaid docs pages for each diagram type.
+
+- Flowchart — stable. We support now. [Docs]
+- Sequence diagram — stable. Planned. [Docs]
+- Class diagram — stable. Planned. [Docs]
+- State diagram — stable. Planned. [Docs]
+- Entity Relationship (ER) — experimental. Planned. [Docs]
+- Gantt — stable. Planned. [Docs]
+- User Journey — stable. Planned. [Docs]
+- GitGraph — stable. Planned. [Docs]
+- Pie chart — stable. We support now. [Docs]
+- Mindmap — stable (icon integration experimental). Planned. [Docs]
+- Timeline — stable (icon integration experimental). Planned. [Docs]
+- Quadrant Chart — stable. Planned. [Docs]
+- XY Chart (bar, line) — stable in 11.x. Planned. [Docs]
+- Requirement Diagram — stable (SysML v1.6). Planned. [Docs]
+- C4 — experimental/subject to change. Planned. [Docs]
+- Sankey — experimental. Planned. [Docs]
+- Block Diagram — new. Planned. [Docs]
+- Treemap — beta/new. Planned. [Docs]
+
+Notes
+- We validate against `@mermaid-js/mermaid-cli` v11.12.0 (see `package.json`).
+- When Mermaid returns an “error SVG” instead of a non‑zero exit code, our preview scripts detect and surface the actual error text for parity.
+
+[Docs]: https://mermaid.js.org/
+
 ## Error Codes
 
 Diagnostics include stable error codes and hints for quick fixes. See the full list in [docs/errors.md](./docs/errors.md).
