@@ -69,8 +69,13 @@ function runOurLinter(filepath) {
     });
     return { valid: true, message: out.trim() || 'VALID' };
   } catch (error) {
-    const msg = ((error.stdout || '') + (error.stderr || '')).toString();
-    return { valid: false, message: msg.trim() || 'INVALID (no message)' };
+    const raw = ((error.stdout || '') + (error.stderr || '')).toString();
+    const repoRoot = path.resolve(__dirname, '..');
+    const msg = raw
+      .replaceAll(repoRoot + '/', '')
+      .replaceAll(repoRoot + '\\', '')
+      .trim();
+    return { valid: false, message: msg || 'INVALID (no message)' };
   }
 }
 
@@ -101,11 +106,13 @@ This file contains invalid ${diagramType} test fixtures with:
 `;
 
   // Prepare results by running both tools once per file
+  const repoRoot = path.resolve(__dirname, '..');
   const results = invalidFiles.map((file, index) => {
     const filePath = path.join(invalidDir, file);
-    const mermaidRes = runMermaidCli(filePath);
-    const ourRes = runOurLinter(filePath);
-    return { file, index, filePath, mermaidRes, ourRes };
+    const relPath = path.relative(repoRoot, filePath);
+    const mermaidRes = runMermaidCli(relPath);
+    const ourRes = runOurLinter(relPath);
+    return { file, index, filePath: relPath, mermaidRes, ourRes };
   });
 
   // Generate table of contents

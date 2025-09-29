@@ -232,16 +232,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   MismatchedTokenException: Expecting token of type --> Identifier <-- but found --> '' <--
-      at MermaidParser.consumeInternalError (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME3 (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:47:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:294:18)
-      at MermaidParser.invokeRuleWithTry [as classStatement] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:27:35)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME3 (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:47:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:294:18)
+      at MermaidParser.invokeRuleWithTry [as classStatement] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:27:35)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
     token: {
       image: '',
       startOffset: NaN,
@@ -326,16 +326,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   MismatchedTokenException: Expecting token of type --> DoubleRoundClose <-- but found --> '-->' <--
-      at MermaidParser.consumeInternalError (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:122:30)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:122:30)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
+      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
     token: {
       image: '-->',
       startOffset: 21,
@@ -422,16 +422,16 @@ Parser errors: [
     2. [SquareOpen]
   but found: '
   '
-      at MermaidParser.raiseNoAltException (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/error_handler.js:71:31)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:394:14)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:255:18)
-      at MermaidParser.invokeRuleWithTry [as subgraph] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:26:35)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
+      at MermaidParser.raiseNoAltException (file://node_modules/chevrotain/lib/src/parse/parser/traits/error_handler.js:71:31)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:394:14)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:255:18)
+      at MermaidParser.invokeRuleWithTry [as subgraph] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:26:35)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
     token: {
       image: '\n',
       startOffset: 25,
@@ -523,16 +523,16 @@ Parser errors: [
     1. [Newline]
     2. [EOF]
   but found: 'B'
-      at MermaidParser.raiseNoAltException (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/error_handler.js:71:31)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:394:14)
-      at MermaidParser.OR2 (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:134:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:48:18)
-      at MermaidParser.invokeRuleWithTry [as nodeStatement] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:25:35)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
+      at MermaidParser.raiseNoAltException (file://node_modules/chevrotain/lib/src/parse/parser/traits/error_handler.js:71:31)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:394:14)
+      at MermaidParser.OR2 (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:134:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:48:18)
+      at MermaidParser.invokeRuleWithTry [as nodeStatement] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:25:35)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
     token: {
       image: 'B',
       startOffset: 19,
@@ -619,16 +619,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   MismatchedTokenException: Expecting token of type --> RoundClose <-- but found --> ']' <--
-      at MermaidParser.consumeInternalError (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:114:30)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:114:30)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
+      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
     token: {
       image: ']',
       startOffset: 35,
@@ -825,16 +825,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   MismatchedTokenException: Expecting token of type --> SquareClose <-- but found --> 'quoted' <--
-      at MermaidParser.consumeInternalError (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:98:30)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:98:30)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
+      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
     token: {
       image: 'quoted',
       startOffset: 56,
@@ -922,16 +922,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   MismatchedTokenException: Expecting token of type --> SquareClose <-- but found --> '-->' <--
-      at MermaidParser.consumeInternalError (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:98:30)
-      at MermaidParser.orInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:98:30)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
+      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
     token: {
       image: '-->',
       startOffset: 25,
@@ -1016,13 +1016,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   NotAllInputParsedException: Redundant input, expecting EOF but found: end
-      at MermaidParser.ruleFinallyStateUpdate (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:407:29)
-      at MermaidParser.invokeRuleWithTry [as diagram] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:119:26)
-      at parse (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:377:32)
-      at validateFlowchart (file:///home/buger/projects/maid/out/diagrams/flowchart/validate.js:36:23)
-      at validate (file:///home/buger/projects/maid/out/core/router.js:29:36)
-      at main (file:///home/buger/projects/maid/out/cli.js:26:24)
-      at file:///home/buger/projects/maid/out/cli.js:68:1
+      at MermaidParser.ruleFinallyStateUpdate (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:407:29)
+      at MermaidParser.invokeRuleWithTry [as diagram] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:119:26)
+      at parse (file://out/diagrams/flowchart/parser.js:377:32)
+      at validateFlowchart (file://out/diagrams/flowchart/validate.js:36:23)
+      at validate (file://out/core/router.js:29:36)
+      at main (file://out/cli.js:26:24)
+      at file://out/cli.js:68:1
       at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
       at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
       at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
@@ -1097,16 +1097,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 Parser errors: [
   MismatchedTokenException: Expecting token of type --> Direction <-- but found --> 'XY' <--
-      at MermaidParser.consumeInternalError (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.<anonymous> (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:12:18)
-      at MermaidParser.invokeRuleWithTry [as diagram] (file:///home/buger/projects/maid/node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at parse (file:///home/buger/projects/maid/out/diagrams/flowchart/parser.js:377:32)
-      at validateFlowchart (file:///home/buger/projects/maid/out/diagrams/flowchart/validate.js:36:23)
-      at validate (file:///home/buger/projects/maid/out/core/router.js:29:36)
-      at main (file:///home/buger/projects/maid/out/cli.js:26:24)
-      at file:///home/buger/projects/maid/out/cli.js:68:1 {
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:12:18)
+      at MermaidParser.invokeRuleWithTry [as diagram] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at parse (file://out/diagrams/flowchart/parser.js:377:32)
+      at validateFlowchart (file://out/diagrams/flowchart/validate.js:36:23)
+      at validate (file://out/core/router.js:29:36)
+      at main (file://out/cli.js:26:24)
+      at file://out/cli.js:68:1 {
     token: {
       image: 'XY',
       startOffset: 10,
@@ -1153,7 +1153,7 @@ flowchart XY
 
 This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Generated for commit 4c26c1c2d04f (2025-09-29T16:57:48Z)
+Generated for commit c12aaf417cb2 (2025-09-29T17:01:24Z)
 
 ## How to Regenerate
 

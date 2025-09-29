@@ -68,7 +68,11 @@ function runOurLinter(filepath) {
     });
     return { valid: true, error: null };
   } catch (error) {
-    const output = (error.stdout || '') + (error.stderr || '');
+    const root = path.resolve(__dirname, '..');
+    const output = ((error.stdout || '') + (error.stderr || ''))
+      .toString()
+      .replaceAll(root + '/', '')
+      .replaceAll(root + '\\', '');
     return { 
       valid: false,
       error: output || error.message
@@ -108,6 +112,7 @@ function compareResults(file, mermaidResult, ourResult) {
 
 async function main() {
   const fixturesDir = path.resolve(__dirname, '..', 'test-fixtures');
+  const repoRoot = path.resolve(__dirname, '..');
   const diagramType = process.argv[2] || 'flowchart';
   const typeDir = path.join(fixturesDir, diagramType);
   
@@ -135,8 +140,9 @@ async function main() {
     
     for (const file of validFiles) {
       totalTests++;
-      const mermaidResult = runMermaidCli(file);
-      const ourResult = runOurLinter(file);
+      const rel = path.relative(repoRoot, file);
+      const mermaidResult = runMermaidCli(rel);
+      const ourResult = runOurLinter(rel);
       const match = compareResults(file, mermaidResult, ourResult);
       
       if (match) {
@@ -158,8 +164,9 @@ async function main() {
     
     for (const file of invalidFiles) {
       totalTests++;
-      const mermaidResult = runMermaidCli(file);
-      const ourResult = runOurLinter(file);
+      const rel = path.relative(repoRoot, file);
+      const mermaidResult = runMermaidCli(rel);
+      const ourResult = runOurLinter(rel);
       const match = compareResults(file, mermaidResult, ourResult);
       
       if (match) {
