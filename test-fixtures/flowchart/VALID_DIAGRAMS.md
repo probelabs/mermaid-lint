@@ -10,7 +10,7 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 1. [Chained Connections](#1-chained-connections)
 2. [Comments](#2-comments)
 3. [Complex Shapes](#3-complex-shapes)
-4. [Empty Nodes](#4-empty-nodes)
+4. [Duplicate Subgraph](#4-duplicate-subgraph)
 5. [Link Styles](#5-link-styles)
 6. [Long Text](#6-long-text)
 7. [Multidirectional Arrows](#7-multidirectional-arrows)
@@ -119,16 +119,18 @@ flowchart TB
 
 ---
 
-## 4. Empty Nodes
+## 4. Duplicate Subgraph
 
-📄 **Source**: [`empty-nodes.mmd`](./valid/empty-nodes.mmd)
-
-> Nodes with empty or whitespace-only content.
+📄 **Source**: [`duplicate-subgraph.mmd`](./valid/duplicate-subgraph.mmd)
 
 ```mermaid
 flowchart TD
-    A[""] --> B[" "]
-    B --> C[]
+    subgraph same[First]
+        A --> B
+    end
+    subgraph same[Second]
+        C --> D
+    end
 ```
 
 <details>
@@ -136,8 +138,12 @@ flowchart TD
 
 ```
 flowchart TD
-    A[""] --> B[" "]
-    B --> C[]
+    subgraph same[First]
+        A --> B
+    end
+    subgraph same[Second]
+        C --> D
+    end
 ```
 </details>
 
@@ -526,7 +532,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T09:56:31.751Z
+Last generated: 2025-09-29T10:24:18.928Z
 
 ## How to Regenerate
 

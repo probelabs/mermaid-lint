@@ -12,8 +12,8 @@ These diagrams demonstrate various syntax errors and how GitHub's Mermaid render
 
 ## Table of Contents
 
-1. [Duplicate Subgraph](#1-duplicate-subgraph)
-2. [Empty Diagram](#2-empty-diagram)
+1. [Empty Diagram](#1-empty-diagram)
+2. [Empty Nodes](#2-empty-nodes)
 3. [Invalid Arrow](#3-invalid-arrow)
 4. [Invalid Class](#4-invalid-class)
 5. [Invalid Node Syntax](#5-invalid-node-syntax)
@@ -28,43 +28,7 @@ These diagrams demonstrate various syntax errors and how GitHub's Mermaid render
 
 ---
 
-## 1. Duplicate Subgraph
-
-📄 **Source**: [`duplicate-subgraph.mmd`](./invalid/duplicate-subgraph.mmd)
-
-❌ **Error**: Duplicate subgraph IDs are not allowed.
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-flowchart TD
-    subgraph same[First]
-        A --> B
-    end
-    subgraph same[Second]
-        C --> D
-    end
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-flowchart TD
-    subgraph same[First]
-        A --> B
-    end
-    subgraph same[Second]
-        C --> D
-    end
-```
-</details>
-
----
-
-## 2. Empty Diagram
+## 1. Empty Diagram
 
 📄 **Source**: [`empty-diagram.mmd`](./invalid/empty-diagram.mmd)
 
@@ -83,6 +47,32 @@ flowchart TD
 
 ```
 flowchart TD
+```
+</details>
+
+---
+
+## 2. Empty Nodes
+
+📄 **Source**: [`empty-nodes.mmd`](./invalid/empty-nodes.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    A[""] --> B[" "]
+    B --> C[]
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A[""] --> B[" "]
+    B --> C[]
 ```
 </details>
 
@@ -404,7 +394,7 @@ All diagrams in this file are confirmed to be invalid by:
 - ❌ Our Mermaid linter (correctly rejects)
 - ❌ Official mermaid-cli (correctly rejects)
 
-Last generated: 2025-09-29T10:09:07.838Z
+Last generated: 2025-09-29T10:25:19.442Z
 
 ## How to Regenerate
 

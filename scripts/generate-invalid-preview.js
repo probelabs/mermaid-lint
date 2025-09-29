@@ -113,12 +113,15 @@ node scripts/generate-invalid-preview.js ${diagramType}
 function main() {
   const diagramType = process.argv[2] || 'flowchart';
   const outputPath = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'INVALID_DIAGRAMS.md');
+  const invalidDir = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'invalid');
   
   console.log(`Generating invalid preview for ${diagramType} diagrams...`);
   
   const markdown = generateInvalidMarkdown(diagramType);
   
   fs.writeFileSync(outputPath, markdown);
+  
+  const invalidFiles = fs.readdirSync(invalidDir).filter(f => f.endsWith('.mmd'));
   
   console.log(`✅ Generated invalid preview at: ${outputPath}`);
   console.log(`📊 Total invalid diagrams: ${invalidFiles.length}`);

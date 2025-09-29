@@ -83,6 +83,18 @@ function validateDiagram(text) {
         if (squareBracketMatch) {
             squareBracketMatch.forEach(match => {
                 const content = match.slice(1, -1);
+                
+                // Check for empty or whitespace-only nodes
+                if (content === '""' || content === "''" || content === '" "' || content === "' '" || 
+                    content.trim() === '' && content.length === 0) {
+                    errors.push({
+                        line: lineNum + 1,
+                        column: line.indexOf(match) + 1,
+                        message: "Empty node content is not allowed",
+                        severity: 'error'
+                    });
+                }
+                
                 // If content has outer quotes, check for escaped quotes inside (which are invalid in mermaid)
                 if (content.startsWith('"') && content.endsWith('"')) {
                     const innerContent = content.slice(1, -1);
@@ -252,25 +264,6 @@ function validateDiagram(text) {
                 message: 'Subgraph must have an ID or title',
                 severity: 'error'
             });
-        }
-    });
-    
-    // Check for duplicate subgraph IDs
-    const subgraphIds = [];
-    subgraphLines.forEach(line => {
-        const match = line.match(/subgraph\s+(\w+)/);
-        if (match) {
-            const id = match[1];
-            if (subgraphIds.includes(id)) {
-                const lineNum = lines.indexOf(line);
-                errors.push({
-                    line: lineNum + 1,
-                    column: line.indexOf(id) + 1,
-                    message: `Duplicate subgraph ID: ${id}`,
-                    severity: 'error'
-                });
-            }
-            subgraphIds.push(id);
         }
     });
     
