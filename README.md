@@ -63,7 +63,7 @@ npm run generate:previews
 
 ### Test Coverage
 - Flowchart: [19 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [14 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
-- Pie: [5 valid](./test-fixtures/pie/VALID_DIAGRAMS.md)
+- Pie: [2 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
 ## Error Codes
@@ -169,9 +169,10 @@ npm test
   - Mismatched quotes inside labels (accepted, mermaid-compat)
   - Link text outside pipes triggers warnings
 - Pie:
-  - Optional colon between label and value (accepted)
-  - Missing value lines (accepted by mermaid; accepted for parity)
-  - Unclosed quotes treated as free text label (accepted)
+  - Labels must be quoted (single or double quotes)
+  - Colon and numeric value are required for each slice
+  - `title` without colon is accepted (e.g., `title "Pets"`); `title:` is rejected by current mermaid-cli
+  - Current mermaid-cli may emit an error SVG instead of failing the process; our preview scripts detect this and surface the error text
 
 ## Contributing
 
