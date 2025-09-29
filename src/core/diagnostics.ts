@@ -78,6 +78,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
   const { line, column } = coercePos(tok?.startLine ?? null, tok?.startColumn ?? null, posFallback.line, posFallback.column);
   const found = tokenImage(tok);
   const tokType = tok?.tokenType?.name;
+  const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
 
   // 1) Direction after header
   if (atHeader(err) && expecting(err, 'Direction')) {
@@ -85,13 +86,15 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       return {
         line, column, severity: 'error', code: 'FL-DIR-MISSING',
         message: 'Missing direction after diagram header. Use TD, TB, BT, RL, or LR.',
-        hint: "Example: 'flowchart TD' for top-down layout."
+        hint: "Example: 'flowchart TD' for top-down layout.",
+        length: 1
       };
     }
     return {
       line, column, severity: 'error', code: 'FL-DIR-INVALID',
       message: `Invalid direction '${found}'. Use one of: TD, TB, BT, RL, LR.`,
-      hint: "Try 'TD' (top-down) or 'LR' (left-to-right)."
+      hint: "Try 'TD' (top-down) or 'LR' (left-to-right).",
+      length: len
     };
   }
 
@@ -102,7 +105,8 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       return {
         line, column, severity: 'error', code: 'FL-LINK-MISSING',
         message: `Two nodes on one line must be connected with an arrow before '${found}'.`,
-        hint: 'Insert --> between nodes, e.g., A --> B.'
+        hint: 'Insert --> between nodes, e.g., A --> B.',
+        length: len
       };
     }
   }
@@ -112,26 +116,27 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     return {
       line, column, severity: 'error', code: 'FL-NODE-MIXED-BRACKETS',
       message: "Mismatched brackets: opened '(' but closed with ']'.",
-      hint: "Close with ')' or change the opening bracket to '['."
+      hint: "Close with ')' or change the opening bracket to '['.",
+      length: len
     };
   }
 
   // 4) Unclosed/mismatched brackets inside a node
   if (isInRule(err, 'nodeShape') && err.name === 'MismatchedTokenException') {
     if (expecting(err, 'SquareClose')) {
-      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '['. Add a matching ']' before the arrow or newline.", hint: "Example: A[Label] --> B" };
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '['. Add a matching ']' before the arrow or newline.", hint: "Example: A[Label] --> B", length: 1 };
     }
     if (expecting(err, 'RoundClose')) {
-      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '('. Add a matching ')'.", hint: "Example: B(Label)" };
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '('. Add a matching ')'.", hint: "Example: B(Label)", length: 1 };
     }
     if (expecting(err, 'DiamondClose')) {
-      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '{'. Add a matching '}'.", hint: "Example: C{Decision}" };
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '{'. Add a matching '}'.", hint: "Example: C{Decision}", length: 1 };
     }
     if (expecting(err, 'DoubleRoundClose')) {
-      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '(( '. Add a matching '))'.", hint: "Example: A((Circle))" };
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '(( '. Add a matching '))'.", hint: "Example: A((Circle))", length: 2 };
     }
     if (expecting(err, 'DoubleSquareClose')) {
-      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '[[ '. Add a matching ']]'.", hint: "Example: [[Subroutine]]" };
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '[[ '. Add a matching ']]'.", hint: "Example: [[Subroutine]]", length: 2 };
     }
   }
 
@@ -142,7 +147,8 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     return {
       line, column, severity: 'error', code: 'FL-CLASS-MALFORMED',
       message: 'Invalid class statement. Provide node id(s) then a class name.',
-      hint: 'Example: class A,B important'
+      hint: 'Example: class A,B important',
+      length: len
     };
   }
 
@@ -151,7 +157,8 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     return {
       line, column, severity: 'error', code: 'FL-SUBGRAPH-MISSING-HEADER',
       message: 'Subgraph header is missing. Add an ID or a [Title] after the keyword.',
-      hint: 'Example: subgraph API [API Layer]'
+      hint: 'Example: subgraph API [API Layer]',
+      length: len
     };
   }
 
@@ -160,7 +167,8 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     return {
       line, column, severity: 'error', code: 'FL-END-WITHOUT-SUBGRAPH',
       message: "'end' without a matching 'subgraph'.",
-      hint: 'Remove this end or add a subgraph above.'
+      hint: 'Remove this end or add a subgraph above.',
+      length: len
     };
   }
 
@@ -170,6 +178,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     column,
     severity: 'error',
     message: err.message || 'Parser error',
+    length: len
   };
 }
 
@@ -178,13 +187,15 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
   const posFallback = endOfTextPos(text);
   const { line, column } = coercePos(tok?.startLine ?? null, tok?.startColumn ?? null, posFallback.line, posFallback.column);
   const found = tokenImage(tok);
+  const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
 
   // Colon at top-level usually means missing quoted label before it
   if (err.name === 'NotAllInputParsedException' && tok?.tokenType?.name === 'Colon') {
     return {
       line, column, severity: 'error', code: 'PI-LABEL-REQUIRES-QUOTES',
       message: 'Slice labels must be quoted (single or double quotes).',
-      hint: 'Example: "Dogs" : 10'
+      hint: 'Example: "Dogs" : 10',
+      length: len
     };
   }
 
@@ -195,7 +206,8 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
       return {
         line, column, severity: 'error', code: 'PI-QUOTE-UNCLOSED',
         message: 'Unclosed quote in slice label.',
-        hint: 'Close the quote: "Dogs" : 10'
+        hint: 'Close the quote: "Dogs" : 10',
+        length: len
       };
     }
   }
@@ -205,7 +217,8 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
     return {
       line, column, severity: 'error', code: 'PI-MISSING-COLON',
       message: 'Missing colon between slice label and value.',
-      hint: 'Use: "Label" : 10'
+      hint: 'Use: "Label" : 10',
+      length: len
     };
   }
 
@@ -214,7 +227,8 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
     return {
       line, column, severity: 'error', code: 'PI-MISSING-NUMBER',
       message: 'Missing numeric value after colon.',
-      hint: 'Use a number like 10 or 42.5'
+      hint: 'Use a number like 10 or 42.5',
+      length: len
     };
   }
 
@@ -223,9 +237,10 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
     return {
       line, column, severity: 'error', code: 'PI-LABEL-REQUIRES-QUOTES',
       message: 'Slice labels must be quoted (single or double quotes).',
-      hint: 'Example: "Dogs" : 10'
+      hint: 'Example: "Dogs" : 10',
+      length: len
     };
   }
 
-  return { line, column, severity: 'error', message: err.message || 'Parser error' };
+  return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
 }

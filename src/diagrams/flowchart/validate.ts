@@ -22,7 +22,8 @@ export function validateFlowchart(text: string): ValidationError[] {
             message: 'Invalid arrow syntax: -> (use --> instead)',
             severity: 'error',
             code: 'FL-ARROW-INVALID',
-            hint: 'Replace -> with -->, or use -- text --> for inline labels.'
+            hint: 'Replace -> with -->, or use -- text --> for inline labels.',
+            length: (token.image?.length ?? 2)
           });
         }
       }
@@ -33,11 +34,14 @@ export function validateFlowchart(text: string): ValidationError[] {
       if (prevErrors.some(e => e.code === 'FL-LABEL-ESCAPED-QUOTE')) return [];
       for (const tok of tokens as IToken[]) {
         if (typeof tok.image === 'string' && tok.image.includes('\\"')) {
-          const { line, column } = coercePos(tok.startLine ?? null, tok.startColumn ?? null, 1, 1);
+          const idx = tok.image.indexOf('\\"');
+          const col = (tok.startColumn ?? 1) + Math.max(0, idx);
+          const { line, column } = coercePos(tok.startLine ?? null, col, 1, 1);
           return [{
             line, column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE',
             message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
-            hint: 'Prefer "He said &quot;Hi&quot;".'
+            hint: 'Prefer "He said &quot;Hi&quot;".',
+            length: 2
           }];
         }
       }

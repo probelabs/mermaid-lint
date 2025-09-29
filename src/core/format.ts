@@ -1,7 +1,7 @@
 import type { ValidationError } from './types.js';
 import { codeFrame } from './diagnostics.js';
 
-export type OutputFormat = 'human' | 'json';
+export type OutputFormat = 'human' | 'json' | 'rust';
 
 export function groupErrors(errors: ValidationError[]) {
   const errs = errors.filter(e => e.severity === 'error');
@@ -54,3 +54,32 @@ export function toJsonResult(filename: string, errors: ValidationError[]) {
   };
 }
 
+export function rustReport(filename: string, content: string, errors: ValidationError[]): string {
+  const { errs, warns } = groupErrors(errors);
+  const lines: string[] = [];
+  const makeBlock = (kind: 'error' | 'warning', e: ValidationError) => {
+    const code = e.code ? `[${e.code}]` : '';
+    const kindColor = kind === 'error' ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarning\x1b[0m';
+    lines.push(`${kindColor}${code ? code : ''}: ${e.message}`);
+    lines.push(`  \x1b[2m┌─ ${filename}:${e.line}:${e.column}\x1b[0m`);
+    const fileLines = content.split(/\r?\n/);
+    const idx = Math.max(0, Math.min(fileLines.length - 1, e.line - 1));
+    const lnNum = String(e.line).padStart(String(fileLines.length).length, ' ');
+    const text = fileLines[idx] ?? '';
+    lines.push(`  \x1b[2m│\x1b[0m`);
+    lines.push(`  ${lnNum} │ ${text}`);
+    const caretPad = ' '.repeat(Math.max(0, e.column - 1));
+    const caretLen = Math.max(1, e.length ?? 1);
+    const carets = '^'.repeat(caretLen);
+    lines.push(`  \x1b[2m│\x1b[0m ${caretPad}\x1b[31m${carets}\x1b[0m`);
+    lines.push(`  \x1b[2m│\x1b[0m`);
+    if (e.hint) lines.push(`  help: ${e.hint}`);
+    lines.push('');
+  };
+
+  for (const e of errs) makeBlock('error', e);
+  for (const w of warns) makeBlock('warning', w);
+
+  if (errs.length === 0 && warns.length === 0) return 'Valid';
+  return lines.join('\n');
+}

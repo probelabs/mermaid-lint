@@ -3,7 +3,7 @@
 import * as fs from 'node:fs';
 import { validate } from './core/router.js';
 import type { ValidationError } from './core/types.js';
-import { humanReport, toJsonResult } from './core/format.js';
+import { humanReport, toJsonResult, rustReport } from './core/format.js';
 
 // Main CLI execution
 function printUsage() {
@@ -30,13 +30,13 @@ function main() {
     }
 
     // simple arg parsing: --format json|human (consume flag + value)
-    let format: 'human' | 'json' = 'human';
+    let format: 'human' | 'json' | 'rust' = 'human';
     const positionals: string[] = [];
     for (let i = 0; i < args.length; i++) {
         const a = args[i];
         if (a === '--format' || a === '-f') {
             const v = (args[i + 1] || '').toLowerCase();
-            if (v === 'json' || v === 'human') {
+            if (v === 'json' || v === 'human' || v === 'rust') {
                 format = v as any;
                 i++; // skip value
                 continue;
@@ -55,6 +55,12 @@ function main() {
         const json = toJsonResult(filename, errors);
         console.log(JSON.stringify(json, null, 2));
         process.exit(json.valid ? 0 : 1);
+    } else if (format === 'rust') {
+        const report = rustReport(filename, content, errors);
+        const errorCount = errors.filter(e => e.severity === 'error').length;
+        const outTo = errorCount > 0 ? 'stderr' : 'stdout';
+        if (outTo === 'stderr') console.error(report); else console.log(report);
+        process.exit(errorCount > 0 ? 1 : 0);
     } else {
         const report = humanReport(filename, content, errors);
         const outTo = errorCount > 0 ? 'stderr' : 'stdout';
