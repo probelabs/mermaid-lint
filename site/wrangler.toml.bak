@@ -1,0 +1,7 @@
+name = "maid-site"
+compatibility_date = "2025-01-14"
+
+# This is for static site deployment
+# The site will be accessible at probelabs.com/maid
+[site]
+bucket = "./"

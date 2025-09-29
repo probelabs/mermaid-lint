@@ -1,7 +1,12 @@
-name = "maid-site"
+name = "maid-router"
+main = "worker.js"
 compatibility_date = "2025-01-14"
 
-# This is for static site deployment
-# The site will be accessible at probelabs.com/maid
-[site]
-bucket = "./""
+# Routes configuration for probelabs.com subdirectory
+[[routes]]
+pattern = "probelabs.com/maid"
+zone_name = "probelabs.com"
+
+[[routes]]
+pattern = "probelabs.com/maid/*"
+zone_name = "probelabs.com"
