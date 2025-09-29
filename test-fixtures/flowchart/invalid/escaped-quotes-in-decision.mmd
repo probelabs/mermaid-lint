@@ -1,0 +1,8 @@
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+    end
+

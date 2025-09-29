@@ -11,18 +11,19 @@ This file contains invalid flowchart test fixtures with:
 
 1. [Empty Diagram](#1-empty-diagram)
 2. [Empty Nodes](#2-empty-nodes)
-3. [Invalid Arrow](#3-invalid-arrow)
-4. [Invalid Class](#4-invalid-class)
-5. [Invalid Node Syntax](#5-invalid-node-syntax)
-6. [Invalid Subgraph](#6-invalid-subgraph)
-7. [Missing Arrow](#7-missing-arrow)
-8. [Mixed Brackets](#8-mixed-brackets)
-9. [No Diagram Type](#9-no-diagram-type)
-10. [Quotes Double Inside Single](#10-quotes-double-inside-single)
-11. [Special Chars](#11-special-chars)
-12. [Unclosed Bracket](#12-unclosed-bracket)
-13. [Unmatched End](#13-unmatched-end)
-14. [Wrong Direction](#14-wrong-direction)
+3. [Escaped Quotes In Decision](#3-escaped-quotes-in-decision)
+4. [Invalid Arrow](#4-invalid-arrow)
+5. [Invalid Class](#5-invalid-class)
+6. [Invalid Node Syntax](#6-invalid-node-syntax)
+7. [Invalid Subgraph](#7-invalid-subgraph)
+8. [Missing Arrow](#8-missing-arrow)
+9. [Mixed Brackets](#9-mixed-brackets)
+10. [No Diagram Type](#10-no-diagram-type)
+11. [Quotes Double Inside Single](#11-quotes-double-inside-single)
+12. [Special Chars](#12-special-chars)
+13. [Unclosed Bracket](#13-unclosed-bracket)
+14. [Unmatched End](#14-unmatched-end)
+15. [Wrong Direction](#15-wrong-direction)
 
 ---
 
@@ -32,18 +33,19 @@ This file contains invalid flowchart test fixtures with:
 |---:|---|:---:|:---:|
 | 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID |
 | 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID |
-| 3 | [Invalid Arrow](#3-invalid-arrow) | INVALID | INVALID |
-| 4 | [Invalid Class](#4-invalid-class) | INVALID | INVALID |
-| 5 | [Invalid Node Syntax](#5-invalid-node-syntax) | INVALID | INVALID |
-| 6 | [Invalid Subgraph](#6-invalid-subgraph) | INVALID | INVALID |
-| 7 | [Missing Arrow](#7-missing-arrow) | INVALID | INVALID |
-| 8 | [Mixed Brackets](#8-mixed-brackets) | INVALID | INVALID |
-| 9 | [No Diagram Type](#9-no-diagram-type) | INVALID | INVALID |
-| 10 | [Quotes Double Inside Single](#10-quotes-double-inside-single) | INVALID | INVALID |
-| 11 | [Special Chars](#11-special-chars) | INVALID | INVALID |
-| 12 | [Unclosed Bracket](#12-unclosed-bracket) | INVALID | INVALID |
-| 13 | [Unmatched End](#13-unmatched-end) | INVALID | INVALID |
-| 14 | [Wrong Direction](#14-wrong-direction) | INVALID | INVALID |
+| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID |
+| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID |
+| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID |
+| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID |
+| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID |
+| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID |
+| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID |
+| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID |
+| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID |
+| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID |
+| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID |
+| 14 | [Unmatched End](#14-unmatched-end) | INVALID | INVALID |
+| 15 | [Wrong Direction](#15-wrong-direction) | INVALID | INVALID |
 
 ---
 
@@ -134,7 +136,111 @@ flowchart TD
 
 ---
 
-## 3. Invalid Arrow
+## 3. Escaped Quotes In Decision
+
+📄 **Source**: [`escaped-quotes-in-decision.mmd`](./invalid/escaped-quotes-in-decision.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+    end
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 6:
+...--> D{"Is \"Driver\" AND \"AuthCheck.Pat
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+Parser errors: [
+  MismatchedTokenException: Expecting token of type --> DiamondClose <-- but found --> 'Driver' <--
+      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
+      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
+      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
+      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:130:30)
+      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
+      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
+      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
+      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
+      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
+    token: {
+      image: 'Driver',
+      startOffset: 293,
+      endOffset: 298,
+      startLine: 6,
+      endLine: 6,
+      startColumn: 30,
+      endColumn: 35,
+      tokenTypeIdx: 3,
+      tokenType: [Object]
+    },
+    resyncedTokens: [],
+    previousToken: {
+      image: '"Is \\"',
+      startOffset: 287,
+      endOffset: 292,
+      startLine: 6,
+      endLine: 6,
+      startColumn: 24,
+      endColumn: 29,
+      tokenTypeIdx: 51,
+      tokenType: [Object]
+    },
+    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
+  }
+]
+Found 1 error(s) in test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:
+
+[31merror[0m: test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:30 - Expecting token of type --> DiamondClose <-- but found --> 'Driver' <--
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+    end
+
+
+```
+</details>
+
+---
+
+## 4. Invalid Arrow
 
 📄 **Source**: [`invalid-arrow.mmd`](./invalid/invalid-arrow.mmd)
 
@@ -191,7 +297,7 @@ flowchart TD
 
 ---
 
-## 4. Invalid Class
+## 5. Invalid Class
 
 📄 **Source**: [`invalid-class.mmd`](./invalid/invalid-class.mmd)
 
@@ -235,7 +341,7 @@ Parser errors: [
       at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
       at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
       at MermaidParser.CONSUME3 (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:47:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:294:18)
+      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:312:18)
       at MermaidParser.invokeRuleWithTry [as classStatement] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
       at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
       at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
@@ -285,7 +391,7 @@ flowchart TD
 
 ---
 
-## 5. Invalid Node Syntax
+## 6. Invalid Node Syntax
 
 📄 **Source**: [`invalid-node-syntax.mmd`](./invalid/invalid-node-syntax.mmd)
 
@@ -344,7 +450,7 @@ Parser errors: [
       endLine: 2,
       startColumn: 9,
       endColumn: 11,
-      tokenTypeIdx: 25,
+      tokenTypeIdx: 26,
       tokenType: [Object]
     },
     resyncedTokens: [],
@@ -356,7 +462,7 @@ Parser errors: [
       endLine: 2,
       startColumn: 6,
       endColumn: 7,
-      tokenTypeIdx: 34,
+      tokenTypeIdx: 35,
       tokenType: [Object]
     },
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
@@ -379,7 +485,7 @@ flowchart TD
 
 ---
 
-## 6. Invalid Subgraph
+## 7. Invalid Subgraph
 
 📄 **Source**: [`invalid-subgraph.mmd`](./invalid/invalid-subgraph.mmd)
 
@@ -440,7 +546,7 @@ Parser errors: [
       endLine: 2,
       startColumn: 13,
       endColumn: 13,
-      tokenTypeIdx: 56,
+      tokenTypeIdx: 57,
       tokenType: [Object]
     },
     resyncedTokens: [],
@@ -480,7 +586,7 @@ flowchart TD
 
 ---
 
-## 7. Missing Arrow
+## 8. Missing Arrow
 
 📄 **Source**: [`missing-arrow.mmd`](./invalid/missing-arrow.mmd)
 
@@ -578,7 +684,7 @@ flowchart TD
 
 ---
 
-## 8. Mixed Brackets
+## 9. Mixed Brackets
 
 📄 **Source**: [`mixed-brackets.mmd`](./invalid/mixed-brackets.mmd)
 
@@ -637,7 +743,7 @@ Parser errors: [
       endLine: 2,
       startColumn: 23,
       endColumn: 23,
-      tokenTypeIdx: 43,
+      tokenTypeIdx: 44,
       tokenType: [Object]
     },
     resyncedTokens: [],
@@ -672,7 +778,7 @@ flowchart LR
 
 ---
 
-## 9. No Diagram Type
+## 10. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -724,7 +830,7 @@ B --> C
 
 ---
 
-## 10. Quotes Double Inside Single
+## 11. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -781,7 +887,7 @@ flowchart LR
 
 ---
 
-## 11. Special Chars
+## 12. Special Chars
 
 📄 **Source**: [`special-chars.mmd`](./invalid/special-chars.mmd)
 
@@ -855,7 +961,7 @@ Parser errors: [
       endLine: 2,
       startColumn: 33,
       endColumn: 43,
-      tokenTypeIdx: 50,
+      tokenTypeIdx: 51,
       tokenType: [Object]
     },
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
@@ -881,7 +987,7 @@ flowchart LR
 
 ---
 
-## 12. Unclosed Bracket
+## 13. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -940,7 +1046,7 @@ Parser errors: [
       endLine: 2,
       startColumn: 13,
       endColumn: 15,
-      tokenTypeIdx: 25,
+      tokenTypeIdx: 26,
       tokenType: [Object]
     },
     resyncedTokens: [],
@@ -975,7 +1081,7 @@ flowchart LR
 
 ---
 
-## 13. Unmatched End
+## 14. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1018,7 +1124,7 @@ Parser errors: [
   NotAllInputParsedException: Redundant input, expecting EOF but found: end
       at MermaidParser.ruleFinallyStateUpdate (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:407:29)
       at MermaidParser.invokeRuleWithTry [as diagram] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:119:26)
-      at parse (file://out/diagrams/flowchart/parser.js:377:32)
+      at parse (file://out/diagrams/flowchart/parser.js:395:32)
       at validateFlowchart (file://out/diagrams/flowchart/validate.js:36:23)
       at validate (file://out/core/router.js:29:36)
       at main (file://out/cli.js:26:24)
@@ -1058,7 +1164,7 @@ flowchart TD
 
 ---
 
-## 14. Wrong Direction
+## 15. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
@@ -1102,7 +1208,7 @@ Parser errors: [
       at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
       at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:12:18)
       at MermaidParser.invokeRuleWithTry [as diagram] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at parse (file://out/diagrams/flowchart/parser.js:377:32)
+      at parse (file://out/diagrams/flowchart/parser.js:395:32)
       at validateFlowchart (file://out/diagrams/flowchart/validate.js:36:23)
       at validate (file://out/core/router.js:29:36)
       at main (file://out/cli.js:26:24)

@@ -1,0 +1,11 @@
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{Is Driver AND AuthCheck.Path configured?}
+        D -- No --> E[Inject PluginAuthGatekeeperMiddleware]
+        E --> F[API is now blocked. All requests will be rejected with 403 Forbidden.]
+        D -- Yes --> G[Load configured custom auth plugin]
+        G --> H[Add custom auth plugin to middleware chain]
+    end
