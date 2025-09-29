@@ -33,7 +33,7 @@ npm run test:compare
 ### Individual Tests
 ```bash
 # Test a specific file
-node out/cli.cjs test-fixtures/flowchart/valid/simple-flow.mmd
+node out/cli.js test-fixtures/flowchart/valid/simple-flow.mmd
 
 # Test all valid diagrams
 npm run lint:valid

@@ -34,8 +34,8 @@ function compareValidators() {
     
     validFiles.forEach(file => {
         const filePath = path.join(validDir, file);
-        const chevrotainResult = runValidator('node out/cli-chevrotain-v2.js', filePath);
-        const currentResult = runValidator('node out/cli-final.cjs', filePath);
+        const chevrotainResult = runValidator('node out/cli.js', filePath);
+        const currentResult = runValidator('node out/cli.js', filePath);
         
         if (chevrotainResult === currentResult && chevrotainResult === 'VALID') {
             results.valid.match++;
@@ -52,8 +52,8 @@ function compareValidators() {
     
     invalidFiles.forEach(file => {
         const filePath = path.join(invalidDir, file);
-        const chevrotainResult = runValidator('node out/cli-chevrotain-v2.js', filePath);
-        const currentResult = runValidator('node out/cli-final.cjs', filePath);
+        const chevrotainResult = runValidator('node out/cli.js', filePath);
+        const currentResult = runValidator('node out/cli.js', filePath);
         
         if (chevrotainResult === currentResult && chevrotainResult === 'INVALID') {
             results.invalid.match++;

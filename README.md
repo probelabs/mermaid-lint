@@ -89,23 +89,24 @@ fi
 
 Built with modern tooling for reliability and performance:
 
-- **[Langium](https://langium.org/)** - Grammar-based parser for accurate syntax validation
+- **[Chevrotain](https://chevrotain.io/)** - Fast, flexible tokenizer and parser for accurate syntax validation
 - **TypeScript** - Type-safe implementation with great IDE support
 - **Automated Testing** - GitHub Actions CI on every commit
 
 ### Project Structure
 ```
 ├── src/
-│   ├── flowchart.langium   # Grammar definition
-│   ├── cli.ts              # CLI implementation
-│   └── generated/          # Generated parser
+│   ├── chevrotain-lexer.ts   # Tokens and lexer
+│   ├── chevrotain-parser.ts  # Parser rules
+│   └── cli.ts                # CLI implementation
 ├── test-fixtures/
 │   └── flowchart/
-│       ├── valid/          # Valid test cases
-│       └── invalid/        # Invalid test cases
+│       ├── valid/            # Valid test cases
+│       └── invalid/          # Invalid test cases
 └── scripts/
-    ├── test-linter.js      # Test runner
-    └── compare-linters.js  # mermaid-cli comparison
+    ├── test-chevrotain.js    # Test runner
+    ├── test-linter.js        # Alternate test runner
+    └── compare-linters.js    # mermaid-cli comparison
 ```
 
 ## Development
@@ -129,11 +130,11 @@ npm test
 
 ### Extending the Linter
 
-1. **Grammar Changes**: Edit `src/flowchart.langium`
-2. **Regenerate Parser**: `npm run langium:generate`
-3. **Add Validation**: Modify `src/cli.ts`
-4. **Add Tests**: Place fixtures in `test-fixtures/`
-5. **Verify**: `npm test && npm run test:compare`
+1. Update tokens in `src/chevrotain-lexer.ts` (for new shapes/arrows)
+2. Update grammar rules in `src/chevrotain-parser.ts`
+3. Extend semantic checks in `src/cli.ts`
+4. Add fixtures under `test-fixtures/`
+5. Build and verify: `npm run build && npm test && npm run test:compare`
 
 ## Roadmap
 

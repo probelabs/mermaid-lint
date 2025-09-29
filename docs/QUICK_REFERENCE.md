@@ -4,7 +4,7 @@
 
 ```bash
 # Build
-npm run build                    # Full build (Langium + TypeScript + CLI)
+npm run build                    # TypeScript build
 
 # Test
 npm test                         # Run test suite
@@ -18,26 +18,25 @@ npm run generate:valid          # Regenerate valid diagrams preview
 npm run generate:invalid        # Regenerate invalid diagrams preview
 
 # Development
-npm run langium:generate        # Generate parser from grammar
-npm run prepare:cli            # Copy CLI to output
+# Update parser/tokens in src/chevrotain-*.ts and rebuild
 ```
 
 ## File Locations
 
 ```
-src/cli-final.cjs              # Main CLI implementation (100% accurate)
-src/flowchart.langium          # Grammar definition
+src/chevrotain-lexer.ts        # Tokens and lexer
+src/chevrotain-parser.ts       # Parser rules
 test-fixtures/flowchart/       # Test cases
 scripts/test-linter.js         # Test runner
 scripts/compare-linters.js     # Comparison tool
-out/cli.cjs                    # Runtime CLI (generated)
+out/cli.js                     # Runtime CLI (generated)
 ```
 
 ## Test Single File
 
 ```bash
 # Test with our linter
-node out/cli.cjs path/to/diagram.mmd
+node out/cli.js path/to/diagram.mmd
 
 # Test with mermaid-cli
 npx @mermaid-js/mermaid-cli -i path/to/diagram.mmd -o /tmp/test.svg
@@ -111,7 +110,7 @@ flowchart LR
 
 ## Debug Mode
 
-Add logging to `src/cli-final.cjs`:
+Add logging to `src/cli.ts`:
 
 ```javascript
 // Debug line processing
@@ -131,13 +130,13 @@ if (errors.length > 0) {
 
 ```bash
 # Time single file
-time node out/cli.cjs test.mmd
+time node out/cli.js test.mmd
 
 # Time test suite
 time npm test
 
 # Memory usage
-/usr/bin/time -l node out/cli.cjs test.mmd
+/usr/bin/time -l node out/cli.js test.mmd
 ```
 
 ## CI/CD Status Checks
@@ -188,7 +187,7 @@ npm run build
 ### Tests Fail
 ```bash
 # Check specific file
-node out/cli.cjs problem-file.mmd
+node out/cli.js problem-file.mmd
 
 # Compare with mermaid-cli
 npx @mermaid-js/mermaid-cli -i problem-file.mmd -o /tmp/test.svg
@@ -199,9 +198,6 @@ npx @mermaid-js/mermaid-cli -i problem-file.mmd -o /tmp/test.svg
 npx tsc --noEmit
 ```
 
-### Langium Issues
-```bash
-npx langium generate --debug
 ```
 
 ## Accuracy Requirement

@@ -3,7 +3,7 @@ import { createToken, Lexer, type IToken } from 'chevrotain';
 // Identifiers - define first since used by keywords
 export const Identifier = createToken({
     name: "Identifier",
-    pattern: /[a-zA-Z][a-zA-Z0-9_-]*/
+    pattern: /[a-zA-Z_][a-zA-Z0-9_-]*/
 });
 
 // Numbers (for node IDs like node1, node2)
@@ -83,6 +83,12 @@ export const Semicolon = createToken({
 export const Colon = createToken({ 
     name: "Colon", 
     pattern: /:/ 
+});
+
+// Triple colon for class annotations (e.g., A:::class)
+export const TripleColon = createToken({
+    name: "TripleColon",
+    pattern: /:::/
 });
 
 // Arrow/Link types - Order matters! More specific first
@@ -296,6 +302,7 @@ export const allTokens = [
     DiamondClose,
     AngleOpen,
     Pipe,
+    TripleColon,
     Ampersand,
     Comma,
     Semicolon,

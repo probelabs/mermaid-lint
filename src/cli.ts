@@ -158,51 +158,65 @@ function validateWithChevrotain(text: string): ValidationError[] {
 }
 
 // Main CLI execution
-if (process.argv.length < 3) {
-    console.error('Usage: node cli-chevrotain.js <file.mmd>');
-    process.exit(1);
+function printUsage() {
+    console.log('Usage: mermaid-lint <file.mmd>');
+    console.log('       cat diagram.mmd | mermaid-lint -');
 }
 
-const filePath = process.argv[2];
-
-if (!fs.existsSync(filePath)) {
-    console.error(`File not found: ${filePath}`);
-    process.exit(1);
-}
-
-const content = fs.readFileSync(filePath, 'utf8');
-const errors = validateWithChevrotain(content);
-
-const errorCount = errors.filter(e => e.severity === 'error').length;
-const warningCount = errors.filter(e => e.severity === 'warning').length;
-
-if (errorCount === 0 && warningCount === 0) {
-    console.log('Valid');
-    process.exit(0);
-} else if (errorCount === 0) {
-    // Only warnings - still valid
-    if (warningCount > 0) {
-        console.error(`Found ${warningCount} warning(s) in ${filePath}:\n`);
-        errors.filter(e => e.severity === 'warning').forEach(warning => {
-            console.error(`\x1b[33mwarning\x1b[0m: ${filePath}:${warning.line}:${warning.column} - ${warning.message}`);
-        });
+function readInput(arg: string): { content: string; filename: string } {
+    if (arg === '-') {
+        return { content: fs.readFileSync(0, 'utf8'), filename: '<stdin>' };
     }
-    console.log('Valid'); // File is still valid despite warnings
-    process.exit(0);
-} else {
-    // Has errors
-    console.error(`Found ${errorCount} error(s) in ${filePath}:\n`);
-    
-    errors.filter(e => e.severity === 'error').forEach(error => {
-        console.error(`\x1b[31merror\x1b[0m: ${filePath}:${error.line}:${error.column} - ${error.message}`);
-    });
-    
-    if (warningCount > 0) {
-        console.error(`\nFound ${warningCount} warning(s) in ${filePath}:\n`);
-        errors.filter(e => e.severity === 'warning').forEach(warning => {
-            console.error(`\x1b[33mwarning\x1b[0m: ${filePath}:${warning.line}:${warning.column} - ${warning.message}`);
-        });
+    if (!fs.existsSync(arg)) {
+        console.error(`File not found: ${arg}`);
+        process.exit(1);
     }
-    
-    process.exit(1);
+    return { content: fs.readFileSync(arg, 'utf8'), filename: arg };
 }
+
+function main() {
+    const args = process.argv.slice(2);
+    if (args.length === 0 || args[0] === '-h' || args[0] === '--help') {
+        printUsage();
+        process.exit(args.length === 0 ? 1 : 0);
+    }
+
+    const { content, filename } = readInput(args[0]);
+    const errors = validateWithChevrotain(content);
+
+    const errorCount = errors.filter(e => e.severity === 'error').length;
+    const warningCount = errors.filter(e => e.severity === 'warning').length;
+
+    if (errorCount === 0 && warningCount === 0) {
+        console.log('Valid');
+        process.exit(0);
+    } else if (errorCount === 0) {
+        // Only warnings - still valid
+        if (warningCount > 0) {
+            console.error(`Found ${warningCount} warning(s) in ${filename}:\n`);
+            errors.filter(e => e.severity === 'warning').forEach(warning => {
+                console.error(`\x1b[33mwarning\x1b[0m: ${filename}:${warning.line}:${warning.column} - ${warning.message}`);
+            });
+        }
+        console.log('Valid'); // File is still valid despite warnings
+        process.exit(0);
+    } else {
+        // Has errors
+        console.error(`Found ${errorCount} error(s) in ${filename}:\n`);
+
+        errors.filter(e => e.severity === 'error').forEach(error => {
+            console.error(`\x1b[31merror\x1b[0m: ${filename}:${error.line}:${error.column} - ${error.message}`);
+        });
+
+        if (warningCount > 0) {
+            console.error(`\nFound ${warningCount} warning(s) in ${filename}:\n`);
+            errors.filter(e => e.severity === 'warning').forEach(warning => {
+                console.error(`\x1b[33mwarning\x1b[0m: ${filename}:${warning.line}:${warning.column} - ${warning.message}`);
+            });
+        }
+
+        process.exit(1);
+    }
+}
+
+main();

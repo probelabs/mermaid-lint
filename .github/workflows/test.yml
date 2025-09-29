@@ -27,19 +27,9 @@ jobs:
     
     - name: Install dependencies
       run: npm ci
-    
-    - name: Generate Langium files
-      run: npm run langium:generate
-    
+
     - name: Build TypeScript
       run: npm run build
-    
-    - name: Prepare CLI for testing
-      run: |
-        echo "Setting up CLI for testing..."
-        cp src/cli-final.cjs out/cli-final.cjs
-        chmod +x out/cli-final.cjs
-        echo "CLI ready at out/cli-final.cjs"
     
     - name: Run linter tests
       run: |
@@ -51,7 +41,7 @@ jobs:
         echo "Testing valid diagrams..."
         for file in test-fixtures/flowchart/valid/*.mmd; do
           echo "Testing: $file"
-          node out/cli-final.cjs "$file" || exit 1
+          node out/cli.js "$file" || exit 1
         done
     
     - name: Test individual invalid diagrams
@@ -59,7 +49,7 @@ jobs:
         echo "Testing invalid diagrams (should fail)..."
         for file in test-fixtures/flowchart/invalid/*.mmd; do
           echo "Testing: $file"
-          if node out/cli-final.cjs "$file" 2>/dev/null; then
+          if node out/cli.js "$file" 2>/dev/null; then
             echo "ERROR: $file should have failed but passed!"
             exit 1
           else

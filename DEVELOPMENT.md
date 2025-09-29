@@ -17,21 +17,20 @@ This guide covers all development workflows for the mermaid-lint project.
 ```
 mermaid-lint/
 ├── src/
-│   ├── flowchart.langium    # Grammar definition
-│   ├── cli.ts               # TypeScript CLI (basic validator)
-│   ├── cli-final.cjs        # Production CLI (100% accurate)
-│   └── generated/           # Langium-generated parser
-├── out/                     # Compiled output (gitignored)
-├── test-fixtures/           # Test cases
+│   ├── chevrotain-lexer.ts    # Tokens and lexer
+│   ├── chevrotain-parser.ts   # Parser rules
+│   └── cli.ts                 # CLI implementation
+├── out/                       # Compiled output (gitignored)
+├── test-fixtures/             # Test cases
 │   └── flowchart/
-│       ├── valid/           # Should pass validation
-│       ├── invalid/         # Should fail validation
-│       ├── VALID_DIAGRAMS.md    # Visual preview of valid
-│       └── INVALID_DIAGRAMS.md  # Visual preview of invalid
+│       ├── valid/             # Should pass validation
+│       ├── invalid/           # Should fail validation
+│       ├── VALID_DIAGRAMS.md  # Visual preview of valid
+│       └── INVALID_DIAGRAMS.md# Visual preview of invalid
 └── scripts/
-    ├── test-linter.js       # Test runner
-    ├── compare-linters.js   # mermaid-cli comparison
-    ├── generate-preview.js  # Generate markdown previews
+    ├── test-chevrotain.js     # Test runner
+    ├── compare-linters.js     # mermaid-cli comparison
+    ├── generate-preview.js    # Generate markdown previews
     └── generate-invalid-preview.js
 ```
 
@@ -53,34 +52,13 @@ npm run build
 
 ### Build Process
 
-The build process consists of three steps:
+Build and type-check TypeScript sources:
 
-1. **Generate Langium Parser**
-   ```bash
-   npm run langium:generate
-   ```
-   - Reads `langium-config.json`
-   - Processes `src/flowchart.langium`
-   - Generates parser in `src/generated/`
-
-2. **Compile TypeScript**
-   ```bash
-   npx tsc
-   ```
-   - Compiles TypeScript files to `out/`
-   - Generates type definitions
-
-3. **Prepare CLI**
-   ```bash
-   npm run prepare:cli
-   ```
-   - Copies `src/cli-final.cjs` to `out/cli.cjs`
-   - Makes it executable
-
-The complete build:
 ```bash
-npm run build  # Does all three steps
+npm run build
 ```
+
+This compiles `src/*.ts` to `out/*.js` (ESM) and generates type maps.
 
 ## Testing Workflows
 
@@ -100,12 +78,12 @@ This runs `scripts/test-linter.js` which:
 
 Test a single diagram:
 ```bash
-node out/cli.cjs test-fixtures/flowchart/valid/simple-flow.mmd
+node out/cli.js test-fixtures/flowchart/valid/simple-flow.mmd
 ```
 
 Expected output for valid:
 ```
-✅ test-fixtures/flowchart/valid/simple-flow.mmd: Valid
+Valid
 ```
 
 Expected output for invalid:
@@ -216,7 +194,7 @@ echo "flowchart XY\n    A --> B" > test-fixtures/flowchart/invalid/bad-direction
 
 ```bash
 # Test with our linter
-node out/cli.cjs test-fixtures/flowchart/valid/new-test.mmd
+node out/cli.js test-fixtures/flowchart/valid/new-test.mmd
 
 # Test with mermaid-cli
 npx @mermaid-js/mermaid-cli -i test-fixtures/flowchart/valid/new-test.mmd -o /tmp/test.svg
@@ -312,8 +290,7 @@ npm run lint:invalid
 # Clean generated files
 rm -rf src/generated out/
 
-# Regenerate
-npm run langium:generate
+# Rebuild
 npm run build
 ```
 
@@ -322,7 +299,7 @@ npm run build
 Check specific file:
 ```bash
 # See exact output
-node out/cli.cjs test-fixtures/flowchart/valid/problem-file.mmd
+node out/cli.js test-fixtures/flowchart/valid/problem-file.mmd
 
 # Compare with mermaid-cli
 npx @mermaid-js/mermaid-cli -i test-fixtures/flowchart/valid/problem-file.mmd -o /tmp/test.svg
@@ -340,21 +317,9 @@ npx tsc --noEmit src/cli.ts
 
 ### Debugging Tips
 
-1. **Add console logs to cli-final.cjs:**
-   ```javascript
-   console.log('Checking line:', line);
-   console.log('Regex match:', match);
-   ```
-
-2. **Test regex patterns:**
+1. **Test regex patterns:**
    ```bash
    node -e "console.log('flowchart TD'.match(/^\s*(graph|flowchart)\s/))"
-   ```
-
-3. **Check Langium parser:**
-   ```bash
-   # Generate with debug info
-   npx langium generate --debug
    ```
 
 ## Performance Testing
@@ -363,7 +328,7 @@ npx tsc --noEmit src/cli.ts
 
 ```bash
 # Time single file
-time node out/cli.cjs test-fixtures/flowchart/valid/complex-shapes.mmd
+time node out/cli.js test-fixtures/flowchart/valid/complex-shapes.mmd
 
 # Time all files
 time npm test

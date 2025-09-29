@@ -66,7 +66,7 @@ test-fixtures/flowchart/
 **Algorithm:**
 ```javascript
 function testLinter(filepath) {
-  const output = execSync(`node ./out/cli.cjs "${filepath}"`);
+  const output = execSync(`node ./out/cli.js "${filepath}"`);
   const hasError = output.includes('error');
   const hasWarning = output.includes('warning');
   
@@ -126,7 +126,7 @@ Invalid diagrams: 13/13 correctly detected (100%)
    ```javascript
    function runOurLinter(filepath) {
      try {
-       execSync(`node ./out/cli.cjs "${filepath}"`);
+      execSync(`node ./out/cli.js "${filepath}"`);
        return { valid: true };
      } catch {
        return { valid: false };
@@ -241,13 +241,13 @@ Through testing, we discovered:
 - name: Test individual valid diagrams
   run: |
     for file in test-fixtures/flowchart/valid/*.mmd; do
-      node out/cli.cjs "$file" || exit 1
+      node out/cli.js "$file" || exit 1
     done
 
 - name: Test individual invalid diagrams
   run: |
     for file in test-fixtures/flowchart/invalid/*.mmd; do
-      if node out/cli.cjs "$file" 2>/dev/null; then
+      if node out/cli.js "$file" 2>/dev/null; then
         echo "ERROR: $file should have failed!"
         exit 1
       fi
@@ -283,7 +283,7 @@ npm test 2>&1 | grep "✗"
 
 ```bash
 # Our linter
-node out/cli.cjs test-fixtures/flowchart/valid/problem.mmd
+node out/cli.js test-fixtures/flowchart/valid/problem.mmd
 
 # mermaid-cli
 npx @mermaid-js/mermaid-cli -i test-fixtures/flowchart/valid/problem.mmd -o /tmp/test.svg
@@ -291,7 +291,7 @@ npx @mermaid-js/mermaid-cli -i test-fixtures/flowchart/valid/problem.mmd -o /tmp
 
 ### 3. Debug the Validation Logic
 
-Add logging to `src/cli-final.cjs`:
+Add logging to `src/cli.ts`:
 ```javascript
 console.log('Line:', line);
 console.log('Match:', line.match(/pattern/));
@@ -347,7 +347,7 @@ echo "flowchart LR
     A[Test] --> B[Case]" > test-fixtures/flowchart/valid/new-test.mmd
 
 # 2. Test locally
-node out/cli.cjs test-fixtures/flowchart/valid/new-test.mmd
+node out/cli.js test-fixtures/flowchart/valid/new-test.mmd
 
 # 3. Compare
 npm run test:compare

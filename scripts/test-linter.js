@@ -19,7 +19,7 @@ const colors = {
 
 function testLinter(filepath) {
   try {
-    const output = execSync(`node ./out/cli-final.cjs "${filepath}"`, {
+    const output = execSync(`node ./out/cli.js "${filepath}"`, {
       encoding: 'utf8',
       cwd: path.resolve(__dirname, '..'),
       timeout: 5000

@@ -1,4 +1,4 @@
-import { CstParser, type IToken } from 'chevrotain';
+import { CstParser, EOF, type IToken } from 'chevrotain';
 import * as tokens from './chevrotain-lexer.js';
 
 export class MermaidParser extends CstParser {
@@ -58,10 +58,11 @@ export class MermaidParser extends CstParser {
             });
         });
         
-        // Statement ends with optional newline
-        this.OPTION2(() => {
-            this.CONSUME(tokens.Newline);
-        });
+        // Statement must end at newline or EOF (prevents multiple nodes on one line without arrows)
+        this.OR2([
+            { ALT: () => this.CONSUME(tokens.Newline) },
+            { ALT: () => this.CONSUME(EOF as any) }
+        ]);
     });
     
     // Node or parallel group (A & B & C)
@@ -97,6 +98,12 @@ export class MermaidParser extends CstParser {
         // Optional shape and content
         this.OPTION2(() => {
             this.SUBRULE(this.nodeShape);
+        });
+
+        // Optional class annotation like :::className
+        this.OPTION3(() => {
+            this.CONSUME(tokens.TripleColon);
+            this.CONSUME3(tokens.Identifier, { LABEL: 'nodeClass' });
         });
     });
     
@@ -185,8 +192,6 @@ export class MermaidParser extends CstParser {
                             { ALT: () => this.CONSUME(tokens.NumberLiteral) },
                             { ALT: () => this.CONSUME(tokens.RoundOpen) },
                             { ALT: () => this.CONSUME(tokens.RoundClose) },
-                            { ALT: () => this.CONSUME(tokens.SquareOpen) },
-                            { ALT: () => this.CONSUME(tokens.SquareClose) },
                             { ALT: () => this.CONSUME(tokens.Comma) },
                             { ALT: () => this.CONSUME(tokens.Colon) }
                         ]);
@@ -213,6 +218,13 @@ export class MermaidParser extends CstParser {
                         { ALT: () => this.CONSUME(tokens.DottedArrowRight) },
                         { ALT: () => this.CONSUME(tokens.ThickArrowRight) }
                     ]);
+                }
+            },
+            // Inline text carrier patterns like '-.text.->' or '==text==>' tokenized as Text + '>'
+            {
+                ALT: () => {
+                    this.CONSUME(tokens.Text, { LABEL: 'inlineCarrier' });
+                    this.CONSUME(tokens.AngleOpen); // '>'
                 }
             },
             // Regular arrows/lines
@@ -265,18 +277,26 @@ export class MermaidParser extends CstParser {
     // Subgraph definition
     private subgraph = this.RULE("subgraph", () => {
         this.CONSUME(tokens.SubgraphKeyword);
-        
-        // Optional subgraph ID and/or title
-        this.OPTION(() => {
-            this.CONSUME(tokens.Identifier, { LABEL: "subgraphId" });
-            
-            // Optional title in brackets
-            this.OPTION2(() => {
-                this.CONSUME(tokens.SquareOpen);
-                this.SUBRULE(this.nodeContent);
-                this.CONSUME(tokens.SquareClose);
-            });
-        });
+        // Require at least an ID or a title in brackets
+        this.OR([
+            {
+                ALT: () => {
+                    this.CONSUME(tokens.Identifier, { LABEL: 'subgraphId' });
+                    this.OPTION(() => {
+                        this.CONSUME1(tokens.SquareOpen);
+                        this.SUBRULE(this.nodeContent);
+                        this.CONSUME1(tokens.SquareClose);
+                    });
+                }
+            },
+            {
+                ALT: () => {
+                    this.CONSUME2(tokens.SquareOpen);
+                    this.SUBRULE2(this.nodeContent);
+                    this.CONSUME2(tokens.SquareClose);
+                }
+            }
+        ]);
         
         this.CONSUME(tokens.Newline);
         
@@ -353,6 +373,38 @@ export class MermaidParser extends CstParser {
             this.CONSUME(tokens.Newline);
         });
     });
+
+    // Extend 'node' to support optional class annotations like A:::className
+    // Note: update is kept here to avoid reordering rule definitions
+    private _augmentNodeRule() {
+        const originalNode = this.node;
+        this.node = this.RULE("node", () => {
+            // original content
+            this.OR([
+                { 
+                    ALT: () => {
+                        this.CONSUME(tokens.Identifier, { LABEL: "nodeId" });
+                        this.OPTION(() => {
+                            this.CONSUME(tokens.NumberLiteral, { LABEL: "nodeIdSuffix" });
+                        });
+                    }
+                },
+                { 
+                    ALT: () => {
+                        this.CONSUME2(tokens.NumberLiteral, { LABEL: "nodeIdNum" });
+                    }
+                }
+            ]);
+            this.OPTION2(() => {
+                this.SUBRULE(this.nodeShape);
+            });
+            // Optional class annotation
+            this.OPTION3(() => {
+                this.CONSUME(tokens.TripleColon);
+                this.CONSUME3(tokens.Identifier, { LABEL: 'nodeClass' });
+            });
+        });
+    }
 }
 
 // Create parser instance
