@@ -7,12 +7,42 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 ## Table of Contents
 
-1. [Labels And Formats](#1-labels-and-formats)
-2. [Simple](#2-simple)
+1. [Inline Title](#1-inline-title)
+2. [Labels And Formats](#2-labels-and-formats)
+3. [Showdata Header](#3-showdata-header)
+4. [Simple](#4-simple)
 
 ---
 
-## 1. Labels And Formats
+## 1. Inline Title
+
+📄 **Source**: [`inline-title.mmd`](./valid/inline-title.mmd)
+
+```mermaid
+pie title Pets adopted by volunteers
+  "Dogs" : 386
+  "Cats" : 85
+  "Rats" : 15
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie title Pets adopted by volunteers
+  "Dogs" : 386
+  "Cats" : 85
+  "Rats" : 15
+
+
+```
+</details>
+
+---
+
+## 2. Labels And Formats
 
 📄 **Source**: [`labels-and-formats.mmd`](./valid/labels-and-formats.mmd)
 
@@ -44,7 +74,39 @@ pie
 
 ---
 
-## 2. Simple
+## 3. Showdata Header
+
+📄 **Source**: [`showdata-header.mmd`](./valid/showdata-header.mmd)
+
+```mermaid
+pie showData
+  title Key elements in Product X
+  "Calcium" : 42.96
+  "Potassium" : 50.05
+  "Magnesium" : 10.01
+  "Iron" : 5
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie showData
+  title Key elements in Product X
+  "Calcium" : 42.96
+  "Potassium" : 50.05
+  "Magnesium" : 10.01
+  "Iron" : 5
+
+
+```
+</details>
+
+---
+
+## 4. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -77,7 +139,7 @@ All diagrams in this file have been validated against:
 - ✅ Official mermaid-cli
 - ✅ GitHub's Mermaid renderer
 
-Last generated: 2025-09-29T15:16:43.109Z
+Last generated: 2025-09-29T15:24:14.406Z
 
 ## How to Regenerate
 

@@ -9,7 +9,9 @@ export class PieParser extends CstParser {
 
   public diagram = this.RULE('diagram', () => {
     this.CONSUME(t.PieKeyword);
-    this.OPTION(() => this.CONSUME(t.Newline));
+    // Optional inline flag: `pie showData`
+    this.OPTION(() => this.CONSUME(t.ShowDataKeyword));
+    this.OPTION2(() => this.CONSUME(t.Newline));
     this.MANY(() => this.SUBRULE(this.statement));
   });
 
