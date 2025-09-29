@@ -1,0 +1,24 @@
+{
+  "name": "mermaid-lint",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "mermaid-lint": "./out/cli.js"
+  },
+  "scripts": {
+    "langium:generate": "langium generate",
+    "build": "npm run langium:generate && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "langium": "^4.1.0",
+    "langium-cli": "^4.1.0",
+    "typescript": "^5.9.2"
+  }
+}

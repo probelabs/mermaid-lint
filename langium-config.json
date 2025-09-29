@@ -1,0 +1,13 @@
+{
+  "projectName": "MermaidLint",
+  "languages": [{
+    "id": "flowchart",
+    "grammar": "src/flowchart.langium",
+    "fileExtensions": [".mmd", ".mermaid"],
+    "textMate": {
+      "out": "syntaxes/flowchart.tmLanguage.json"
+    }
+  }],
+  "out": "src/generated",
+  "mode": "production"
+}
