@@ -133,3 +133,7 @@ Tip: quoting inside labels
 - Codes are stable and intended for CI tooling and editor integrations.
 - Hints suggest the most typical fix while preserving Mermaid compatibility.
 - Some best-practice advisories (style-only) may be added as warnings under opt-in rule sets in the future.
+- FL-STRICT-LABEL-QUOTES-REQUIRED
+  - When: Strict mode is enabled and a node label is not quoted.
+  - Message: "Strict mode: Node label must be quoted (use double quotes and &quot; inside)."
+  - Hint: "Example: A[\"Label with &quot;quotes&quot; and (parens)\"]"

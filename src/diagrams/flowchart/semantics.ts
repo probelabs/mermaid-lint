@@ -2,7 +2,7 @@ import type { IToken, CstNode } from 'chevrotain';
 import { parserInstance } from './parser.js';
 import type { ValidationError } from '../../core/types.js';
 
-type Ctx = { errors: ValidationError[] };
+type Ctx = { errors: ValidationError[]; strict?: boolean };
 
 // Build a CST visitor base from the parser instance
 const BaseVisitor: any = (parserInstance as any).getBaseCstVisitorConstructorWithDefaults();
@@ -210,12 +210,47 @@ class FlowSemanticsVisitor extends BaseVisitor {
       this.checkEscapedQuotes(contentNodes);
       this.checkDoubleInSingleQuoted(contentNodes);
       this.warnParensInUnquoted(contentNodes);
+
+      // Strict mode: require quoted labels inside shapes
+      if (this.ctx.strict) {
+        let quoted = false;
+        let firstContentTok: IToken | undefined;
+        for (const cn of contentNodes) {
+          const ch: any = (cn as any).children || {};
+          if ((ch.QuotedString && ch.QuotedString.length) || (ch.MultilineText && ch.MultilineText.length)) {
+            quoted = true;
+            break;
+          }
+          // track first token as pointer
+          const candidates: IToken[] = ([] as IToken[])
+            .concat(ch.Identifier || [])
+            .concat(ch.Text || [])
+            .concat(ch.NumberLiteral || [])
+            .concat(ch.RoundOpen || [])
+            .concat(ch.RoundClose || [])
+            .concat(ch.Comma || [])
+            .concat(ch.Colon || [])
+            .concat(ch.Pipe || []);
+          if (!firstContentTok && candidates.length) firstContentTok = candidates[0];
+        }
+        if (contentNodes.length > 0 && !quoted) {
+          const p = firstContentTok ?? openTok;
+          this.ctx.errors.push({
+            line: p.startLine ?? 1,
+            column: p.startColumn ?? 1,
+            severity: 'error',
+            code: 'FL-STRICT-LABEL-QUOTES-REQUIRED',
+            message: 'Strict mode: Node label must be quoted (use double quotes and &quot; inside).',
+            hint: 'Example: A["Label with &quot;quotes&quot; and (parens)"]'
+          });
+        }
+      }
     }
   }
 }
 
-export function analyzeFlowchart(cst: CstNode, _tokens: IToken[]): ValidationError[] {
-  const ctx: Ctx = { errors: [] };
+export function analyzeFlowchart(cst: CstNode, _tokens: IToken[], opts?: { strict?: boolean }): ValidationError[] {
+  const ctx: Ctx = { errors: [], strict: opts?.strict };
   const v = new FlowSemanticsVisitor(ctx);
   v.visit(cst);
   return ctx.errors;

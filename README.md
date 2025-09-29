@@ -115,6 +115,16 @@ npx mermaid-lint --format json diagram.mmd
 npx mermaid-lint --format rust diagram.mmd   # treated as human
 ```
 
+### Strict Mode
+
+Enable strict mode to require quoted labels inside shapes (e.g., `[ ... ]`, `{ ... }`, `( ... )`).
+
+```bash
+npx mermaid-lint --strict diagram.mmd
+```
+
+In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRED`. Use double quotes and `&quot;` for inner quotes.
+
 ## CI/CD Integration
 
 ### GitHub Actions

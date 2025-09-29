@@ -29,8 +29,9 @@ function main() {
         process.exit(args.length === 0 ? 1 : 0);
     }
 
-    // simple arg parsing: --format json|human (consume flag + value)
+    // simple arg parsing: --format json|human (consume flag + value) and --strict
     let format: 'human' | 'json' = 'human';
+    let strict = false;
     const positionals: string[] = [];
     for (let i = 0; i < args.length; i++) {
         const a = args[i];
@@ -42,11 +43,12 @@ function main() {
                 continue;
             }
         }
+        if (a === '--strict' || a === '-s') { strict = true; continue; }
         if (!a.startsWith('-')) positionals.push(a);
     }
     const target = positionals[0] || args[0];
     const { content, filename } = readInput(target);
-    const { errors } = validate(content);
+    const { errors } = validate(content, { strict });
 
     const errorCount = errors.filter(e => e.severity === 'error').length;
     const warningCount = errors.filter(e => e.severity === 'warning').length;

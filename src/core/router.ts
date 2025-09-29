@@ -1,4 +1,4 @@
-import { ValidationError, DiagramType } from './types.js';
+import { ValidationError, DiagramType, ValidateOptions } from './types.js';
 import { validateFlowchart } from '../diagrams/flowchart/validate.js';
 import { validatePie } from '../diagrams/pie/validate.js';
 
@@ -22,13 +22,13 @@ export function detectDiagramType(text: string): DiagramType {
   return 'unknown';
 }
 
-export function validate(text: string): { type: DiagramType; errors: ValidationError[] } {
+export function validate(text: string, options: ValidateOptions = {}): { type: DiagramType; errors: ValidationError[] } {
   const type = detectDiagramType(text);
   switch (type) {
     case 'flowchart':
-      return { type, errors: validateFlowchart(text) };
+      return { type, errors: validateFlowchart(text, options) };
     case 'pie':
-      return { type, errors: validatePie(text) };
+      return { type, errors: validatePie(text, options) };
     default:
       return {
         type,

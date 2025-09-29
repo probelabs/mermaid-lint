@@ -936,13 +936,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-UNCLOSED-BRACKET]: Unclosed '{'. Add a matching '}'.
-  [2m┌─ test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:2:42[0m
+[31merror[0m[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
+  [2m┌─ test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14[0m
   [2m│[0m
-   2 │     A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
-  [2m│[0m                                          [31m^[0m
+   6 │     subgraph "Runtime Execution"
+  [2m│[0m              [31m^^^^^^^^^^^^^^^^^^^[0m
   [2m│[0m
-  help: Example: C{Decision}
+  help: Example: subgraph API [API Layer]
 ```
 
 <details>

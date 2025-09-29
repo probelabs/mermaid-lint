@@ -1,4 +1,4 @@
-import type { ValidationError } from '../../core/types.js';
+import type { ValidationError, ValidateOptions } from '../../core/types.js';
 import { tokenize, InvalidArrow } from './lexer.js';
 import { parse } from './parser.js';
 import { analyzeFlowchart } from './semantics.js';
@@ -6,11 +6,11 @@ import type { IToken } from 'chevrotain';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import { coercePos, mapFlowchartParserError } from '../../core/diagnostics.js';
 
-export function validateFlowchart(text: string): ValidationError[] {
+export function validateFlowchart(text: string, options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
     tokenize,
     parse,
-    analyze: (cst, tokens) => analyzeFlowchart(cst as any, tokens as IToken[]),
+    analyze: (cst, tokens) => analyzeFlowchart(cst as any, tokens as IToken[], { strict: !!options.strict }),
     mapParserError: (e, t) => mapFlowchartParserError(e, t),
     postLex: (_text, tokens) => {
       const errs: ValidationError[] = [];

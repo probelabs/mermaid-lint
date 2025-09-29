@@ -9,3 +9,7 @@ export interface ValidationError {
 }
 
 export type DiagramType = 'flowchart' | 'pie' | 'unknown';
+
+export interface ValidateOptions {
+  strict?: boolean;
+}
