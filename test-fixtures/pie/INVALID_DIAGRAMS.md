@@ -55,9 +55,9 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/colon-only.mmd:
+Found 1 error(s) in test-fixtures/pie/invalid/colon-only.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/colon-only.mmd:2:3 - Redundant input, expecting EOF but found: :
+[31merror[0m: test-fixtures/pie/invalid/colon-only.mmd:2:3 - Redundant input, expecting EOF but found: :
 ```
 
 <details>
@@ -97,9 +97,9 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/invalid-header.mmd:
+Found 1 error(s) in test-fixtures/pie/invalid/invalid-header.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/invalid-header.mmd:1:1 - Diagram must start with "graph", "flowchart", or "pie"
+[31merror[0m: test-fixtures/pie/invalid/invalid-header.mmd:1:1 - Diagram must start with "graph", "flowchart", or "pie"
 ```
 
 <details>
@@ -139,9 +139,9 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/missing-colon.mmd:
+Found 1 error(s) in test-fixtures/pie/invalid/missing-colon.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/missing-colon.mmd:3:10 - Expecting token of type --> Colon <-- but found --> '10' <--
+[31merror[0m: test-fixtures/pie/invalid/missing-colon.mmd:3:10 - Expecting token of type --> Colon <-- but found --> '10' <--
 ```
 
 <details>
@@ -181,9 +181,9 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/missing-label.mmd:
+Found 1 error(s) in test-fixtures/pie/invalid/missing-label.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/missing-label.mmd:2:3 - Redundant input, expecting EOF but found: :
+[31merror[0m: test-fixtures/pie/invalid/missing-label.mmd:2:3 - Redundant input, expecting EOF but found: :
 ```
 
 <details>
@@ -223,9 +223,9 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/missing-number.mmd:
+Found 1 error(s) in test-fixtures/pie/invalid/missing-number.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/missing-number.mmd:2:11 - Expecting token of type --> NumberLiteral <-- but found --> '
+[31merror[0m: test-fixtures/pie/invalid/missing-number.mmd:2:11 - Expecting token of type --> NumberLiteral <-- but found --> '
 ' <--
 ```
 
@@ -265,9 +265,9 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/pie/invalid/unclosed-quote.mmd:
+Found 1 error(s) in test-fixtures/pie/invalid/unclosed-quote.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/pie/invalid/unclosed-quote.mmd:2:3 - Redundant input, expecting EOF but found: "Dogs
+[31merror[0m: test-fixtures/pie/invalid/unclosed-quote.mmd:2:3 - Redundant input, expecting EOF but found: "Dogs
 ```
 
 <details>
@@ -286,7 +286,7 @@ pie
 
 This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Generated for commit 0131ce1ef3aa (2025-09-29T16:54:07Z)
+Generated for commit 4c26c1c2d04f (2025-09-29T16:57:48Z)
 
 ## How to Regenerate
 

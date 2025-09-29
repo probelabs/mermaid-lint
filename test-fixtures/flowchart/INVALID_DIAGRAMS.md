@@ -112,13 +112,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Found 3 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/empty-nodes.mmd:
+Found 3 error(s) in test-fixtures/flowchart/invalid/empty-nodes.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7 [FL-NODE-EMPTY] - Empty node content is not allowed. Label cannot be just empty quotes.
+[31merror[0m: test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7 [FL-NODE-EMPTY] - Empty node content is not allowed. Label cannot be just empty quotes.
         hint: Use non-empty quoted text, e.g. "Start" or remove the quotes.
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17 [FL-NODE-EMPTY] - Empty node content is not allowed. Label cannot be just empty quotes.
+[31merror[0m: test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17 [FL-NODE-EMPTY] - Empty node content is not allowed. Label cannot be just empty quotes.
         hint: Use non-empty quoted text, e.g. "Start" or remove the quotes.
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12 [FL-NODE-EMPTY] - Empty node content is not allowed. Add a label inside the shape.
+[31merror[0m: test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12 [FL-NODE-EMPTY] - Empty node content is not allowed. Add a label inside the shape.
         hint: Put some text inside [], (), {}, etc. For example: A[Start]
 ```
 
@@ -173,9 +173,9 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-arrow.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-arrow.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7 [FL-ARROW-INVALID] - Invalid arrow syntax: -> (use --> instead)
+[31merror[0m: test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7 [FL-ARROW-INVALID] - Invalid arrow syntax: -> (use --> instead)
         hint: Replace -> with -->, or use -- text --> for inline labels.
 ```
 
@@ -268,9 +268,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-class.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-class.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-class.mmd:NaN:NaN - Expecting token of type --> Identifier <-- but found --> '' <--
+[31merror[0m: test-fixtures/flowchart/invalid/invalid-class.mmd:NaN:NaN - Expecting token of type --> Identifier <-- but found --> '' <--
 ```
 
 <details>
@@ -362,9 +362,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9 - Expecting token of type --> DoubleRoundClose <-- but found --> '-->' <--
+[31merror[0m: test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9 - Expecting token of type --> DoubleRoundClose <-- but found --> '-->' <--
 ```
 
 <details>
@@ -458,9 +458,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-subgraph.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-subgraph.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13 - Expecting: one of these possible Token sequences:
+[31merror[0m: test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13 - Expecting: one of these possible Token sequences:
   1. [Identifier]
   2. [SquareOpen]
 but found: '
@@ -559,9 +559,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/missing-arrow.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/missing-arrow.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7 - Expecting: one of these possible Token sequences:
+[31merror[0m: test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7 - Expecting: one of these possible Token sequences:
   1. [Newline]
   2. [EOF]
 but found: 'B'
@@ -655,9 +655,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/mixed-brackets.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/mixed-brackets.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23 - Expecting token of type --> RoundClose <-- but found --> ']' <--
+[31merror[0m: test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23 - Expecting token of type --> RoundClose <-- but found --> ']' <--
 ```
 
 <details>
@@ -708,9 +708,9 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/no-diagram-type.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/no-diagram-type.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1 - Diagram must start with "graph", "flowchart", or "pie"
+[31merror[0m: test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1 - Diagram must start with "graph", "flowchart", or "pie"
 ```
 
 <details>
@@ -762,9 +762,9 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5 [FL-LABEL-DOUBLE-IN-SINGLE] - Double quotes inside a single-quoted label are not supported by Mermaid. Use double-quoted label or replace " with &quot;.
+[31merror[0m: test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5 [FL-LABEL-DOUBLE-IN-SINGLE] - Double quotes inside a single-quoted label are not supported by Mermaid. Use double-quoted label or replace " with &quot;.
         hint: Change to "She said "Hello"" or replace inner " with &quot;.
 ```
 
@@ -861,9 +861,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/special-chars.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/special-chars.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/special-chars.mmd:2:44 - Expecting token of type --> SquareClose <-- but found --> 'quoted' <--
+[31merror[0m: test-fixtures/flowchart/invalid/special-chars.mmd:2:44 - Expecting token of type --> SquareClose <-- but found --> 'quoted' <--
 ```
 
 <details>
@@ -958,9 +958,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/unclosed-bracket.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/unclosed-bracket.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13 - Expecting token of type --> SquareClose <-- but found --> '-->' <--
+[31merror[0m: test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13 - Expecting token of type --> SquareClose <-- but found --> '-->' <--
 ```
 
 <details>
@@ -1041,9 +1041,9 @@ Parser errors: [
     context: { ruleStack: [], ruleOccurrenceStack: [] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/unmatched-end.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/unmatched-end.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5 - Redundant input, expecting EOF but found: end
+[31merror[0m: test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5 - Redundant input, expecting EOF but found: end
 ```
 
 <details>
@@ -1133,9 +1133,9 @@ Parser errors: [
     context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
   }
 ]
-Found 1 error(s) in /home/buger/projects/maid/test-fixtures/flowchart/invalid/wrong-direction.mmd:
+Found 1 error(s) in test-fixtures/flowchart/invalid/wrong-direction.mmd:
 
-[31merror[0m: /home/buger/projects/maid/test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11 - Expecting token of type --> Direction <-- but found --> 'XY' <--
+[31merror[0m: test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11 - Expecting token of type --> Direction <-- but found --> 'XY' <--
 ```
 
 <details>
@@ -1153,7 +1153,7 @@ flowchart XY
 
 This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
-Generated for commit 0131ce1ef3aa (2025-09-29T16:54:07Z)
+Generated for commit 4c26c1c2d04f (2025-09-29T16:57:48Z)
 
 ## How to Regenerate
 
