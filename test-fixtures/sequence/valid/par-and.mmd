@@ -1,0 +1,9 @@
+sequenceDiagram
+  participant Frontend as FE
+  participant Backend as BE
+  par Fetch in parallel
+    FE->>BE: Get /user
+  and
+    FE->>BE: Get /settings
+  end
+

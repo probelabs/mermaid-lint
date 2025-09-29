@@ -137,3 +137,55 @@ Tip: quoting inside labels
   - When: Strict mode is enabled and a node label is not quoted.
   - Message: "Strict mode: Node label must be quoted (use double quotes and &quot; inside)."
   - Hint: "Example: A[\"Label with &quot;quotes&quot; and (parens)\"]"
+
+## Sequence (SE-*)
+
+- SE-HEADER-MISSING
+  - When: File does not start with `sequenceDiagram`.
+  - Message: "Missing 'sequenceDiagram' header."
+  - Hint: "Start with: sequenceDiagram"
+
+- SE-MSG-COLON-MISSING
+  - When: A message line lacks a `:` before the message text.
+  - Message: "Missing colon after target actor in message."
+  - Hint: "Use: A->>B: Message text"
+
+- SE-ARROW-INVALID
+  - When: Unknown or malformed arrow token in a message.
+  - Message: "Invalid sequence arrow near 'X'."
+  - Hint: "Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>"
+
+- SE-NOTE-MALFORMED
+  - When: A note statement is incomplete or missing the colon.
+  - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
+  - Hint: "Examples: Note right of Alice: Hi | Note over A,B: Hello"
+
+- SE-ELSE-OUTSIDE-ALT
+  - When: `else` appears outside an `alt` block.
+  - Message: "'else' is only allowed inside 'alt' blocks."
+  - Hint: "Wrap with: alt ... else ... end"
+
+- SE-AND-OUTSIDE-PAR
+  - When: `and` appears outside a `par` block.
+  - Message: "'and' is only allowed inside 'par' blocks."
+  - Hint: "Wrap with: par ... and ... end"
+
+- SE-END-WITHOUT-BLOCK
+  - When: `end` appears with no open block.
+  - Message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box)."
+  - Hint: "Remove this end or start a block above."
+
+- SE-AUTONUMBER-MALFORMED
+  - When: `autonumber` has an invalid form.
+  - Message: "Malformed autonumber statement."
+  - Hint: "Use: autonumber | autonumber off | autonumber 10 10"
+
+- SE-CREATE-MALFORMED
+  - When: `create` is missing the target or has invalid syntax.
+  - Message: "Malformed create statement. Use: create [participant|actor] ID"
+  - Hint: "Example: create participant B"
+
+- SE-DESTROY-MALFORMED
+  - When: `destroy` is missing the target or has invalid syntax.
+  - Message: "Malformed destroy statement. Use: destroy [participant|actor] ID"
+  - Hint: "Example: destroy actor A"

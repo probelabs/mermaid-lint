@@ -254,3 +254,67 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
 
   return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
 }
+
+export function mapSequenceParserError(err: IRecognitionException, text: string): ValidationError {
+  const tok = err.token;
+  const posFallback = endOfTextPos(text);
+  const { line, column } = coercePos(tok?.startLine ?? null, tok?.startColumn ?? null, posFallback.line, posFallback.column);
+  const found = tokenImage(tok);
+  const tokType = tok?.tokenType?.name;
+  const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
+
+  const inRule = (name: string) => isInRule(err, name);
+  const exp = (name: string) => expecting(err, name);
+  const atHeader = (err as any)?.context?.ruleStack?.[0] === 'diagram' && ((err as any)?.context?.ruleStack?.length === 1);
+
+  // Header must be 'sequenceDiagram'
+  if (atHeader && exp('SequenceKeyword')) {
+    return { line, column, severity: 'error', code: 'SE-HEADER-MISSING', message: "Missing 'sequenceDiagram' header.", hint: "Start with: sequenceDiagram", length: len };
+  }
+
+  // Message syntax requires colon before message text
+  if (inRule('messageStmt') && err.name === 'MismatchedTokenException' && exp('Colon')) {
+    return { line, column, severity: 'error', code: 'SE-MSG-COLON-MISSING', message: 'Missing colon after target actor in message.', hint: 'Use: A->>B: Message text', length: len };
+  }
+
+  // Unknown/invalid arrow token
+  if (inRule('arrow') && err.name === 'NoViableAltException') {
+    return { line, column, severity: 'error', code: 'SE-ARROW-INVALID', message: `Invalid sequence arrow near '${found}'.`, hint: 'Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>', length: len };
+  }
+
+  // Note forms
+  if (inRule('noteStmt')) {
+    if (err.name === 'MismatchedTokenException' && exp('Colon')) {
+      return { line, column, severity: 'error', code: 'SE-NOTE-MALFORMED', message: 'Malformed note: missing colon before the note text.', hint: 'Example: Note right of Alice: Hello', length: len };
+    }
+    if (err.name === 'NoViableAltException') {
+      return { line, column, severity: 'error', code: 'SE-NOTE-MALFORMED', message: 'Malformed note statement. Use left|right of X or over X[,Y]: text', hint: 'Examples: Note over A,B: hi', length: len };
+    }
+  }
+
+  // Block control keywords outside blocks
+  if (err.name === 'NoViableAltException' && tokType === 'ElseKeyword') {
+    return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Start with: alt Condition ... else ... end', length: len };
+  }
+  if (err.name === 'NoViableAltException' && tokType === 'AndKeyword') {
+    return { line, column, severity: 'error', code: 'SE-AND-OUTSIDE-PAR', message: "'and' is only allowed inside 'par' blocks.", hint: 'Start with: par Branch A ... and Branch B ... end', length: len };
+  }
+  if (err.name === 'NoViableAltException' && tokType === 'EndKeyword') {
+    return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Remove this end or start a block above.', length: len };
+  }
+
+  // Autonumber malformed
+  if (inRule('autonumberStmt') && err.name === 'NoViableAltException') {
+    return { line, column, severity: 'error', code: 'SE-AUTONUMBER-MALFORMED', message: 'Malformed autonumber statement.', hint: 'Use: autonumber | autonumber off | autonumber 10 10', length: len };
+  }
+
+  // Create/destroy malformed
+  if (inRule('createStmt') && err.name === 'MismatchedTokenException') {
+    return { line, column, severity: 'error', code: 'SE-CREATE-MALFORMED', message: 'Malformed create statement. Use: create [participant|actor] ID', hint: 'Example: create participant B', length: len };
+  }
+  if (inRule('destroyStmt') && err.name === 'MismatchedTokenException') {
+    return { line, column, severity: 'error', code: 'SE-DESTROY-MALFORMED', message: 'Malformed destroy statement. Use: destroy [participant|actor] ID', hint: 'Example: destroy actor A', length: len };
+  }
+
+  return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
+}

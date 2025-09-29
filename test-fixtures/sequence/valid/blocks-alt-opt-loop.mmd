@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant Alice
+  participant Bob
+  alt Is morning?
+    Alice->>Bob: Good morning
+  else Is evening?
+    Alice->>Bob: Good evening
+  end
+
+  opt Optional check
+    Bob-->>Alice: OK
+  end
+
+  loop Until done
+    Alice->>Bob: Step
+  end
+

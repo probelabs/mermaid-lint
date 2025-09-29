@@ -101,13 +101,13 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", or "pie"
+[31merror[0m[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
   [2m┌─ test-fixtures/pie/invalid/invalid-header.mmd:1:1[0m
   [2m│[0m
   1 │ piee
   [2m│[0m [31m^[0m
   [2m│[0m
-  help: Start your diagram with e.g. "flowchart TD" or "pie".
+  help: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
 <details>

@@ -31,6 +31,7 @@ npm test
 
 - Flowchart (`flowchart`, `graph`)
 - Pie (`pie`)
+- Sequence (`sequenceDiagram`)
 
 ## What It Catches
 
@@ -62,8 +63,9 @@ npm run generate:previews
 ```
 
 ### Test Coverage
-- Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [15 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
+- Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [16 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
 - Pie: [4 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
+- Sequence: [11 valid](./test-fixtures/sequence/VALID_DIAGRAMS.md) • [11 invalid](./test-fixtures/sequence/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
 ## Diagram Type Coverage (Mermaid vs mermaid-lint)
@@ -71,7 +73,7 @@ npm run generate:previews
 As of 2025-09-29, Mermaid 11.x documents support for the following diagram types. Items marked experimental/beta indicate syntax may change. References: Mermaid docs pages for each diagram type.
 
 - Flowchart — stable. We support now. [Docs]
-- Sequence diagram — stable. Planned. [Docs]
+- Sequence diagram — stable. We support now. [Docs]
 - Class diagram — stable. Planned. [Docs]
 - State diagram — stable. Planned. [Docs]
 - Entity Relationship (ER) — experimental. Planned. [Docs]
