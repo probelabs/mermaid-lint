@@ -151,12 +151,10 @@ This file contains invalid ${diagramType} test fixtures with:
     markdown += `---\n\n`;
   });
   
-  // Add footer
-  markdown += `## Validation Status
+  // Add footer (capture outputs; don't assert overall validity)
+  markdown += `## Notes
 
-All diagrams in this file are confirmed to be invalid by:
-- ❌ Our Mermaid linter (correctly rejects)
-- ❌ Official mermaid-cli (correctly rejects)
+This document captures outputs from both tools for each fixture. Use the summary table above to spot mismatches.
 
 Last generated: ${new Date().toISOString()}
 
