@@ -179,44 +179,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> DiamondClose <-- but found --> 'Driver' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:130:30)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
-    token: {
-      image: 'Driver',
-      startOffset: 293,
-      endOffset: 298,
-      startLine: 6,
-      endLine: 6,
-      startColumn: 30,
-      endColumn: 35,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: '"Is \\"',
-      startOffset: 287,
-      endOffset: 292,
-      startLine: 6,
-      endLine: 6,
-      startColumn: 24,
-      endColumn: 29,
-      tokenTypeIdx: 51,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:30 - Expecting token of type --> DiamondClose <-- but found --> 'Driver' <--
@@ -336,44 +298,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> Identifier <-- but found --> '' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME3 (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:47:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:312:18)
-      at MermaidParser.invokeRuleWithTry [as classStatement] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:27:35)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
-    token: {
-      image: '',
-      startOffset: NaN,
-      endOffset: NaN,
-      startLine: NaN,
-      endLine: NaN,
-      startColumn: NaN,
-      endColumn: NaN,
-      tokenTypeIdx: 1,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: 'A',
-      startOffset: 35,
-      endOffset: 35,
-      startLine: 3,
-      endLine: 3,
-      startColumn: 11,
-      endColumn: 11,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-class.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/invalid-class.mmd:NaN:NaN - Expecting token of type --> Identifier <-- but found --> '' <--
@@ -430,44 +354,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> DoubleRoundClose <-- but found --> '-->' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:122:30)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
-    token: {
-      image: '-->',
-      startOffset: 21,
-      endOffset: 23,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 9,
-      endColumn: 11,
-      tokenTypeIdx: 26,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: '((',
-      startOffset: 18,
-      endOffset: 19,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 6,
-      endColumn: 7,
-      tokenTypeIdx: 35,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9 - Expecting token of type --> DoubleRoundClose <-- but found --> '-->' <--
@@ -522,48 +408,6 @@ FlowDB.addSubGraph (node_modules/mermaid/dist/mermaid.js:45974:26)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  NoViableAltException: Expecting: one of these possible Token sequences:
-    1. [Identifier]
-    2. [SquareOpen]
-  but found: '
-  '
-      at MermaidParser.raiseNoAltException (file://node_modules/chevrotain/lib/src/parse/parser/traits/error_handler.js:71:31)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:394:14)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:255:18)
-      at MermaidParser.invokeRuleWithTry [as subgraph] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:26:35)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
-    token: {
-      image: '\n',
-      startOffset: 25,
-      endOffset: 25,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 13,
-      endColumn: 13,
-      tokenTypeIdx: 57,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: 'subgraph',
-      startOffset: 17,
-      endOffset: 24,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 5,
-      endColumn: 12,
-      tokenTypeIdx: 8,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/invalid-subgraph.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13 - Expecting: one of these possible Token sequences:
@@ -624,47 +468,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  NoViableAltException: Expecting: one of these possible Token sequences:
-    1. [Newline]
-    2. [EOF]
-  but found: 'B'
-      at MermaidParser.raiseNoAltException (file://node_modules/chevrotain/lib/src/parse/parser/traits/error_handler.js:71:31)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:394:14)
-      at MermaidParser.OR2 (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:134:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:48:18)
-      at MermaidParser.invokeRuleWithTry [as nodeStatement] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:25:35)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21) {
-    token: {
-      image: 'B',
-      startOffset: 19,
-      endOffset: 19,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 7,
-      endColumn: 7,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: 'A',
-      startOffset: 17,
-      endOffset: 17,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 5,
-      endColumn: 5,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/missing-arrow.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7 - Expecting: one of these possible Token sequences:
@@ -723,44 +526,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> RoundClose <-- but found --> ']' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:114:30)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
-    token: {
-      image: ']',
-      startOffset: 35,
-      endOffset: 35,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 23,
-      endColumn: 23,
-      tokenTypeIdx: 44,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: 'Text',
-      startOffset: 31,
-      endOffset: 34,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 19,
-      endColumn: 22,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/mixed-brackets.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23 - Expecting token of type --> RoundClose <-- but found --> ']' <--
@@ -929,44 +694,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> SquareClose <-- but found --> 'quoted' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:98:30)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
-    token: {
-      image: 'quoted',
-      startOffset: 56,
-      endOffset: 61,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 44,
-      endColumn: 49,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: '"Another \\"',
-      startOffset: 45,
-      endOffset: 55,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 33,
-      endColumn: 43,
-      tokenTypeIdx: 51,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/special-chars.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/special-chars.mmd:2:44 - Expecting token of type --> SquareClose <-- but found --> 'quoted' <--
@@ -1026,44 +753,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> SquareClose <-- but found --> '-->' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.ALT (file://out/diagrams/flowchart/parser.js:98:30)
-      at MermaidParser.orInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:392:42)
-      at MermaidParser.OR (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:128:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:92:18)
-      at MermaidParser.invokeRuleWithTry [as nodeShape] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at MermaidParser.subruleInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:415:37)
-      at MermaidParser.SUBRULE (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:68:21) {
-    token: {
-      image: '-->',
-      startOffset: 25,
-      endOffset: 27,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 13,
-      endColumn: 15,
-      tokenTypeIdx: 26,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: 'Start',
-      startOffset: 19,
-      endOffset: 23,
-      startLine: 2,
-      endLine: 2,
-      startColumn: 7,
-      endColumn: 11,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/unclosed-bracket.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13 - Expecting token of type --> SquareClose <-- but found --> '-->' <--
@@ -1120,33 +809,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  NotAllInputParsedException: Redundant input, expecting EOF but found: end
-      at MermaidParser.ruleFinallyStateUpdate (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:407:29)
-      at MermaidParser.invokeRuleWithTry [as diagram] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:119:26)
-      at parse (file://out/diagrams/flowchart/parser.js:395:32)
-      at validateFlowchart (file://out/diagrams/flowchart/validate.js:36:23)
-      at validate (file://out/core/router.js:29:36)
-      at main (file://out/cli.js:26:24)
-      at file://out/cli.js:68:1
-      at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
-    token: {
-      image: 'end',
-      startOffset: 29,
-      endOffset: 31,
-      startLine: 3,
-      endLine: 3,
-      startColumn: 5,
-      endColumn: 7,
-      tokenTypeIdx: 9,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    context: { ruleStack: [], ruleOccurrenceStack: [] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/unmatched-end.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5 - Redundant input, expecting EOF but found: end
@@ -1201,44 +863,6 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-Parser errors: [
-  MismatchedTokenException: Expecting token of type --> Direction <-- but found --> 'XY' <--
-      at MermaidParser.consumeInternalError (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:468:31)
-      at MermaidParser.consumeInternal (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:443:22)
-      at MermaidParser.CONSUME (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_api.js:38:21)
-      at MermaidParser.<anonymous> (file://out/diagrams/flowchart/parser.js:12:18)
-      at MermaidParser.invokeRuleWithTry [as diagram] (file://node_modules/chevrotain/lib/src/parse/parser/traits/recognizer_engine.js:110:26)
-      at parse (file://out/diagrams/flowchart/parser.js:395:32)
-      at validateFlowchart (file://out/diagrams/flowchart/validate.js:36:23)
-      at validate (file://out/core/router.js:29:36)
-      at main (file://out/cli.js:26:24)
-      at file://out/cli.js:68:1 {
-    token: {
-      image: 'XY',
-      startOffset: 10,
-      endOffset: 11,
-      startLine: 1,
-      endLine: 1,
-      startColumn: 11,
-      endColumn: 12,
-      tokenTypeIdx: 3,
-      tokenType: [Object]
-    },
-    resyncedTokens: [],
-    previousToken: {
-      image: 'flowchart',
-      startOffset: 0,
-      endOffset: 8,
-      startLine: 1,
-      endLine: 1,
-      startColumn: 1,
-      endColumn: 9,
-      tokenTypeIdx: 5,
-      tokenType: [Object]
-    },
-    context: { ruleStack: [Array], ruleOccurrenceStack: [Array] }
-  }
-]
 Found 1 error(s) in test-fixtures/flowchart/invalid/wrong-direction.mmd:
 
 [31merror[0m: test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11 - Expecting token of type --> Direction <-- but found --> 'XY' <--

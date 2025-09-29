@@ -434,11 +434,7 @@ export const parserInstance = new MermaidParser();
 export function parse(tokensArr: IToken[]) {
     parserInstance.input = tokensArr;
     const cst = parserInstance.diagram();
-    
-    if (parserInstance.errors.length > 0) {
-        console.error('Parser errors:', parserInstance.errors);
-    }
-    
+    // Do not log internal parser errors here; callers handle user-facing diagnostics.
     return {
         cst,
         errors: parserInstance.errors
