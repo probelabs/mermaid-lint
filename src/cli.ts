@@ -3,6 +3,7 @@
 import * as fs from 'node:fs';
 import { validate } from './core/router.js';
 import type { ValidationError } from './core/types.js';
+import { toJsonResult, rustReport } from './core/format.js';
 
 // Main CLI execution
 function printUsage() {
@@ -28,47 +29,40 @@ function main() {
         process.exit(args.length === 0 ? 1 : 0);
     }
 
-    const { content, filename } = readInput(args[0]);
-    const { errors } = validate(content);
+    // simple arg parsing: --format json|human (consume flag + value) and --strict
+    let format: 'human' | 'json' = 'human';
+    let strict = false;
+    const positionals: string[] = [];
+    for (let i = 0; i < args.length; i++) {
+        const a = args[i];
+        if (a === '--format' || a === '-f') {
+            const v = (args[i + 1] || '').toLowerCase();
+            if (v === 'json' || v === 'human' || v === 'rust') {
+                format = (v === 'rust' ? 'human' : v) as any; // 'rust' is an alias for human
+                i++; // skip value
+                continue;
+            }
+        }
+        if (a === '--strict' || a === '-s') { strict = true; continue; }
+        if (!a.startsWith('-')) positionals.push(a);
+    }
+    const target = positionals[0] || args[0];
+    const { content, filename } = readInput(target);
+    const { errors } = validate(content, { strict });
 
     const errorCount = errors.filter(e => e.severity === 'error').length;
     const warningCount = errors.filter(e => e.severity === 'warning').length;
 
-    if (errorCount === 0 && warningCount === 0) {
-        console.log('Valid');
-        process.exit(0);
-    } else if (errorCount === 0) {
-        // Only warnings - still valid
-        if (warningCount > 0) {
-            console.error(`Found ${warningCount} warning(s) in ${filename}:\n`);
-            errors.filter(e => e.severity === 'warning').forEach(warning => {
-                const code = warning.code ? ` [${warning.code}]` : '';
-                console.error(`\x1b[33mwarning\x1b[0m: ${filename}:${warning.line}:${warning.column}${code} - ${warning.message}`);
-                if (warning.hint) console.error(`        hint: ${warning.hint}`);
-            });
-        }
-        console.log('Valid'); // File is still valid despite warnings
-        process.exit(0);
+    if (format === 'json') {
+        const json = toJsonResult(filename, errors);
+        console.log(JSON.stringify(json, null, 2));
+        process.exit(json.valid ? 0 : 1);
     } else {
-        // Has errors
-        console.error(`Found ${errorCount} error(s) in ${filename}:\n`);
-
-        errors.filter(e => e.severity === 'error').forEach(error => {
-            const code = error.code ? ` [${error.code}]` : '';
-            console.error(`\x1b[31merror\x1b[0m: ${filename}:${error.line}:${error.column}${code} - ${error.message}`);
-            if (error.hint) console.error(`        hint: ${error.hint}`);
-        });
-
-        if (warningCount > 0) {
-            console.error(`\nFound ${warningCount} warning(s) in ${filename}:\n`);
-            errors.filter(e => e.severity === 'warning').forEach(warning => {
-                const code = warning.code ? ` [${warning.code}]` : '';
-                console.error(`\x1b[33mwarning\x1b[0m: ${filename}:${warning.line}:${warning.column}${code} - ${warning.message}`);
-                if (warning.hint) console.error(`        hint: ${warning.hint}`);
-            });
-        }
-
-        process.exit(1);
+        // Human output uses caret-underlined snippet style (Rust-like)
+        const report = rustReport(filename, content, errors);
+        const outTo = errorCount > 0 ? 'stderr' : 'stdout';
+        if (outTo === 'stderr') console.error(report); else console.log(report);
+        process.exit(errorCount > 0 ? 1 : 0);
     }
 }
 

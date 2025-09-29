@@ -2,7 +2,7 @@ import type { IToken, CstNode } from 'chevrotain';
 import { parserInstance } from './parser.js';
 import type { ValidationError } from '../../core/types.js';
 
-type Ctx = { errors: ValidationError[] };
+type Ctx = { errors: ValidationError[]; strict?: boolean };
 
 // Build a CST visitor base from the parser instance
 const BaseVisitor: any = (parserInstance as any).getBaseCstVisitorConstructorWithDefaults();
@@ -31,6 +31,36 @@ class FlowSemanticsVisitor extends BaseVisitor {
           if (n && typeof (n as any).name === 'string') this.visit(n);
         });
       }
+    }
+  }
+
+  subgraph(ctx: any) {
+    if (ctx.subgraphStatement) ctx.subgraphStatement.forEach((s: CstNode) => this.visit(s));
+  }
+
+  subgraphStatement(ctx: any) {
+    // visit nested rules inside subgraph body
+    for (const k of Object.keys(ctx)) {
+      const arr = (ctx as any)[k];
+      if (Array.isArray(arr)) {
+        arr.forEach((n) => {
+          if (n && typeof (n as any).name === 'string') this.visit(n);
+        });
+      }
+    }
+  }
+
+  directionStatement(ctx: any) {
+    const kwTok = ctx.dirKw?.[0] as IToken | undefined;
+    if (kwTok && kwTok.image !== 'direction') {
+      this.ctx.errors.push({
+        line: kwTok.startLine ?? 1,
+        column: kwTok.startColumn ?? 1,
+        severity: 'error',
+        code: 'FL-DIR-KW-INVALID',
+        message: `Unknown keyword '${kwTok.image}' before direction. Use 'direction TB' / 'LR' / etc.`,
+        hint: "Example inside subgraph: 'direction TB'"
+      });
     }
   }
 
@@ -101,9 +131,9 @@ class FlowSemanticsVisitor extends BaseVisitor {
             line: t.startLine ?? 1,
             column: t.startColumn ?? 1,
             severity: 'error',
-            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; or switch to single quotes.',
+            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
             code: 'FL-LABEL-ESCAPED-QUOTE',
-            hint: 'Prefer "He said &quot;Hi&quot;" or use single quotes around the label.'
+            hint: 'Prefer "He said &quot;Hi&quot;".'
           });
         }
       }
@@ -122,11 +152,34 @@ class FlowSemanticsVisitor extends BaseVisitor {
             line: q.startLine ?? 1,
             column: q.startColumn ?? 1,
             severity: 'error',
-            message: 'Double quotes inside a single-quoted label are not supported by Mermaid. Use double-quoted label or replace " with &quot;.',
+            message: 'Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.',
             code: 'FL-LABEL-DOUBLE-IN-SINGLE',
-            hint: 'Change to "She said \"Hello\"" or replace inner " with &quot;.'
+            hint: 'Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.'
           });
         }
+      }
+    }
+  }
+
+  private warnParensInUnquoted(contentNodes: CstNode[] | undefined) {
+    if (!contentNodes) return;
+    for (const cn of contentNodes) {
+      const ch: any = (cn as any).children || {};
+      const hasQuoted: boolean = Array.isArray(ch.QuotedString) && ch.QuotedString.length > 0;
+      if (hasQuoted) continue; // wrapped, fine
+      const opens: IToken[] = ch.RoundOpen || [];
+      const closes: IToken[] = ch.RoundClose || [];
+      const offenders = [...opens, ...closes];
+      if (offenders.length > 0) {
+        const t = offenders[0];
+        this.ctx.errors.push({
+          line: t.startLine ?? 1,
+          column: t.startColumn ?? 1,
+          severity: 'warning',
+          code: 'FL-LABEL-PARENS-UNQUOTED',
+          message: 'Parentheses inside an unquoted label may be ambiguous. Wrap the label in quotes.',
+          hint: 'Example: A["Calls func(arg)"]'
+        });
       }
     }
   }
@@ -156,12 +209,48 @@ class FlowSemanticsVisitor extends BaseVisitor {
       this.checkEmptyContent(openTok, contentNodes.length ? contentNodes : undefined);
       this.checkEscapedQuotes(contentNodes);
       this.checkDoubleInSingleQuoted(contentNodes);
+      this.warnParensInUnquoted(contentNodes);
+
+      // Strict mode: require quoted labels inside shapes
+      if (this.ctx.strict) {
+        let quoted = false;
+        let firstContentTok: IToken | undefined;
+        for (const cn of contentNodes) {
+          const ch: any = (cn as any).children || {};
+          if ((ch.QuotedString && ch.QuotedString.length) || (ch.MultilineText && ch.MultilineText.length)) {
+            quoted = true;
+            break;
+          }
+          // track first token as pointer
+          const candidates: IToken[] = ([] as IToken[])
+            .concat(ch.Identifier || [])
+            .concat(ch.Text || [])
+            .concat(ch.NumberLiteral || [])
+            .concat(ch.RoundOpen || [])
+            .concat(ch.RoundClose || [])
+            .concat(ch.Comma || [])
+            .concat(ch.Colon || [])
+            .concat(ch.Pipe || []);
+          if (!firstContentTok && candidates.length) firstContentTok = candidates[0];
+        }
+        if (contentNodes.length > 0 && !quoted) {
+          const p = firstContentTok ?? openTok;
+          this.ctx.errors.push({
+            line: p.startLine ?? 1,
+            column: p.startColumn ?? 1,
+            severity: 'error',
+            code: 'FL-STRICT-LABEL-QUOTES-REQUIRED',
+            message: 'Strict mode: Node label must be quoted (use double quotes and &quot; inside).',
+            hint: 'Example: A["Label with &quot;quotes&quot; and (parens)"]'
+          });
+        }
+      }
     }
   }
 }
 
-export function analyzeFlowchart(cst: CstNode, _tokens: IToken[]): ValidationError[] {
-  const ctx: Ctx = { errors: [] };
+export function analyzeFlowchart(cst: CstNode, _tokens: IToken[], opts?: { strict?: boolean }): ValidationError[] {
+  const ctx: Ctx = { errors: [], strict: opts?.strict };
   const v = new FlowSemanticsVisitor(ctx);
   v.visit(cst);
   return ctx.errors;

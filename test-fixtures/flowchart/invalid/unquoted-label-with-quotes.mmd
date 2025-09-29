@@ -1,0 +1,17 @@
+flowchart TD
+    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
+    B -- Yes --> C[Configure Logger: Level = DEBUG];
+    B -- No --> D[Configure Logger: Level = INFO];
+    
+    subgraph "Runtime Execution"
+        E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
+        F --> G{Logger: Is current level DEBUG?};
+        G -- Yes --> H[Format and write message to stderr];
+        G -- No --> I[Discard message];
+    end
+
+    C --> E;
+    D --> E;
+    H --> J[End];
+    I --> J[End];
+

@@ -5,6 +5,11 @@ export interface ValidationError {
   severity: 'error' | 'warning';
   code?: string;
   hint?: string;
+  length?: number;
 }
 
 export type DiagramType = 'flowchart' | 'pie' | 'unknown';
+
+export interface ValidateOptions {
+  strict?: boolean;
+}

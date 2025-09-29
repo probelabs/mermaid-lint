@@ -58,6 +58,8 @@ export class MermaidParser extends CstParser {
             });
         });
         
+        // Optional semicolon terminator
+        this.OPTION2(() => this.CONSUME(tokens.Semicolon));
         // Statement must end at newline or EOF (prevents multiple nodes on one line without arrows)
         this.OR2([
             { ALT: () => this.CONSUME(tokens.Newline) },
@@ -193,7 +195,12 @@ export class MermaidParser extends CstParser {
                             { ALT: () => this.CONSUME(tokens.RoundOpen) },
                             { ALT: () => this.CONSUME(tokens.RoundClose) },
                             { ALT: () => this.CONSUME(tokens.Comma) },
-                            { ALT: () => this.CONSUME(tokens.Colon) }
+                            { ALT: () => this.CONSUME(tokens.Colon) },
+                            // Allow hyphens/lines inside labels without forcing them to be links
+                            { ALT: () => this.CONSUME(tokens.TwoDashes) },
+                            { ALT: () => this.CONSUME(tokens.Line) },
+                            { ALT: () => this.CONSUME(tokens.ThickLine) },
+                            { ALT: () => this.CONSUME(tokens.DottedLine) }
                         ]);
                     });
                 }

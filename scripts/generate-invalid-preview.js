@@ -166,7 +166,8 @@ This file contains invalid ${diagramType} test fixtures with:
       'special-chars': '❌ **Error**: Escaped quotes with backslash not supported in node labels.',
       'unclosed-bracket': '❌ **Error**: All brackets must be properly closed.',
       'unmatched-end': '❌ **Error**: `end` keyword without matching `subgraph`.',
-      'wrong-direction': '❌ **Error**: Invalid direction. Must be one of: TD, TB, BT, RL, LR.'
+      'wrong-direction': '❌ **Error**: Invalid direction. Must be one of: TD, TB, BT, RL, LR.',
+      'unquoted-label-with-quotes': '❌ **Error**: Label contains double quotes without quoting the whole label. Wrap the entire label in quotes or use &quot; for inner quotes.'
     };
     
     const key = file.replace('.mmd', '');
