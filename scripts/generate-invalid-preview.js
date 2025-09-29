@@ -20,7 +20,8 @@ function runMermaidCli(filepath) {
       timeout: 12000,
     });
   } catch (error) {
-    const msg = (error.stderr || error.stdout || error.message || '').toString();
+    const raw = (error.stderr || error.stdout || error.message || '').toString();
+    const msg = sanitizeMermaidMessage(raw);
     try { fs.unlinkSync(outSvg); } catch {}
     return { valid: false, message: msg.trim() || 'INVALID (no message)' };
   }
@@ -44,6 +45,18 @@ function runMermaidCli(filepath) {
     try { fs.unlinkSync(outSvg); } catch {}
     return { valid: false, message: 'INVALID (could not read output SVG)' };
   }
+}
+
+function sanitizeMermaidMessage(input) {
+  if (!input) return input;
+  let out = input;
+  // Collapse file:///.../node_modules/... -> node_modules/...
+  out = out.replace(/file:\/\/[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  // Collapse /.../node_modules/... -> node_modules/...
+  out = out.replace(/\/(?:[A-Za-z]:)?[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  // Normalize Windows paths with backslashes if any
+  out = out.replace(/file:\/\/[A-Za-z]:\\[^\s)]+node_modules\\(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  return out;
 }
 
 function runOurLinter(filepath) {

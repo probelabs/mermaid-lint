@@ -28,9 +28,10 @@ function runMermaidCli(filepath) {
       timeout: 12000
     });
   } catch (error) {
+    const raw = (error.stderr || error.stdout || error.message || '').toString();
     return {
       valid: false,
-      error: (error.stderr || error.stdout || error.message || '').toString()
+      error: sanitizeMermaidMessage(raw)
     };
   }
   try {
@@ -46,6 +47,15 @@ function runMermaidCli(filepath) {
   } finally {
     try { fs.unlinkSync(outSvg); } catch {}
   }
+}
+
+function sanitizeMermaidMessage(input) {
+  if (!input) return input;
+  let out = input;
+  out = out.replace(/file:\/\/[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  out = out.replace(/\/(?:[A-Za-z]:)?[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  out = out.replace(/file:\/\/[A-Za-z]:\\[^\s)]+node_modules\\(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  return out;
 }
 
 function runOurLinter(filepath) {
