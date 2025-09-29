@@ -12,7 +12,7 @@ export default {
       
       // Remove /maid from the path and proxy to the Pages site
       const newPath = url.pathname.replace('/maid', '') || '/';
-      const pagesUrl = `https://probelabs-site.pages.dev${newPath}${url.search}`;
+      const pagesUrl = `https://maid-site.pages.dev${newPath}${url.search}`;
       
       // Fetch from the Pages deployment
       const response = await fetch(pagesUrl, {
