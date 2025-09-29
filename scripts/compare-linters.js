@@ -48,11 +48,10 @@ function runOurLinter(filepath) {
     });
     return { valid: true, error: null };
   } catch (error) {
-    const output = error.stdout || '';
-    const hasErrors = output.includes('error');
+    const output = (error.stdout || '') + (error.stderr || '');
     return { 
-      valid: !hasErrors,
-      error: hasErrors ? output : null
+      valid: false,
+      error: output || error.message
     };
   }
 }

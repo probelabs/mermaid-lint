@@ -73,20 +73,8 @@ function validateWithChevrotain(text: string): ValidationError[] {
         }
     }
     
-    // Additional semantic validation
-    const nonCommentLines = lines.filter(line => {
-        const trimmed = line.trim();
-        return trimmed && !trimmed.startsWith('%%');
-    });
-    
-    if (nonCommentLines.length === 1) {
-        errors.push({
-            line: 1,
-            column: 1,
-            message: 'Empty diagram - no nodes or connections defined',
-            severity: 'error'
-        });
-    }
+    // Additional semantic validation (keep compatibility with mermaid-cli)
+    // Note: header-only diagrams (no statements) are considered valid by mermaid-cli
     
     // Check for specific patterns
     lines.forEach((line, lineNum) => {
