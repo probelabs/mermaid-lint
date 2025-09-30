@@ -50,42 +50,6 @@ Exit codes
 - 0: no errors (including when no Mermaid diagrams are found)
 - 1: at least one error (warnings do not fail)
 
-## Why Maid Exists
-
-Mermaid has become an essential part of modern engineering culture. It's in our documentation, our AI workflows, and our development processes. Every major LLM knows Mermaid syntax because they've been trained on millions of diagrams. But there's a problem.
-
-### The AI Challenge
-
-When AI generates complex Mermaid diagrams, the success rate is surprisingly low. The syntax is too free-form, making it easy for AI to generate invalid diagrams that look correct but won't render. You can see this yourself in Mermaid's own live editor—even simple mistakes lead to cryptic errors.
-
-### The Validation Gap
-
-**You can't know if a Mermaid diagram will render without actually rendering it.** This architectural constraint exists because:
-
-1. **Tightly Coupled Architecture**: Mermaid's parser (based on Jison, a JavaScript port of the 1990s Bison parser) tightly couples parsing with rendering. They literally can't validate at scale without launching a browser.
-
-2. **mermaid-cli's Approach**: The official CLI tool "solves" this by bundling Puppeteer and Chrome—a 1.7GB dependency just to check syntax. It has to actually render your diagram to know if it's valid.
-
-3. **Cryptic Error Messages**: When validation fails, you get messages like:
-   ```
-   Expecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'MINUS'
-   ```
-   Good luck teaching an AI agent what that means.
-
-4. **No Progress on Core Issue**: There's been an open issue for over 3 years about separating validation from rendering. It hasn't moved, partly because enterprise validation is sold as a paid service.
-
-### The Maid Solution
-
-Maid exists because Mermaid is too important to have validation locked behind technical debt or paywalls. We built a modern parser from scratch that:
-
-- **Decouples validation from rendering** - No browser needed
-- **Provides semantic error messages** - AI and humans can understand and fix issues
-- **Guarantees rendering** - When Maid says it's valid, it will render
-- **Auto-fixes common mistakes** - Especially those AI agents frequently make
-- **Stays lightweight** - 5MB, not 1.7GB
-
-This isn't about competing with Mermaid—it's about making Mermaid more accessible and reliable for everyone, especially in the AI age.
-
 ## MCP Server for AI Assistants
 
 Maid includes a Model Context Protocol (MCP) server that allows AI assistants like Claude Code to validate and fix Mermaid diagrams directly in conversations.
@@ -185,6 +149,40 @@ npx -y @probelabs/maid docs/ --no-gitignore
 # JSON report for CI
 npx -y @probelabs/maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
 ```
+
+## Why Maid Exists
+
+Mermaid has become an essential part of modern engineering culture. It's in our documentation, our AI workflows, and our development processes. Every major LLM knows Mermaid syntax because they've been trained on millions of diagrams. But there's a challenge.
+
+### The AI Challenge
+
+When AI generates complex Mermaid diagrams, the success rate is surprisingly low. The syntax is too free-form, making it easy for AI to generate invalid diagrams that look correct but won't render. You can see this yourself in Mermaid's own live editor—even simple mistakes lead to cryptic errors.
+
+### The Validation Gap
+
+**You can't know if a Mermaid diagram will render without actually rendering it.** This architectural constraint exists because:
+
+1. **Tightly Coupled Architecture**: Mermaid's parser (based on Jison, a JavaScript port of the 1990s Bison parser) tightly couples parsing with rendering. Validation requires rendering.
+
+2. **mermaid-cli's Approach**: The official CLI tool bundles Puppeteer and Chrome—a 1.7GB dependency—to validate by actually rendering your diagram.
+
+3. **Cryptic Error Messages**: When validation fails, you get messages like:
+   ```
+   Expecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'MINUS'
+   ```
+   These token-based errors are difficult for both humans and AI to understand.
+
+### The Maid Solution
+
+Maid fills this gap with a modern, lightweight validator. We built a parser from scratch that:
+
+- **Decouples validation from rendering** - No browser needed
+- **Provides semantic error messages** - AI and humans can understand and fix issues
+- **Guarantees rendering** - When Maid says it's valid, it will render
+- **Auto-fixes common mistakes** - Especially those AI agents frequently make
+- **Stays lightweight** - 5MB, not 1.7GB
+
+This isn't about competing with Mermaid—it's about making Mermaid more accessible and reliable for everyone, especially in the AI age.
 
 ## Supported Diagrams (today)
 
