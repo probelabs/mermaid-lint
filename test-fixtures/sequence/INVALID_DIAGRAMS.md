@@ -88,14 +88,6 @@ at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
     ^^^
     A->B: hi
 hint: Example: par … and … end (parallel branches).
-
-warning[SE-HINT-PAR-BLOCK-SUGGEST]: Found 'and' but no 'par' block in the file.
-at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
-    participant A
-    and Also not allowed
-    ^^^
-    A->B: hi
-hint: Start a parallel section with: par … and … end
 ```
 
 <details>
@@ -491,14 +483,6 @@ at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
     ^^^^
     A->B: hi
 hint: Start with: alt Condition ... else ... end
-
-warning[SE-HINT-ALT-BLOCK-SUGGEST]: Found 'else' but no 'alt' block in the file.
-at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
-    participant A
-    else Not allowed here
-    ^^^^
-    A->B: hi
-hint: Use: alt Condition … else … end
 ```
 
 <details>
