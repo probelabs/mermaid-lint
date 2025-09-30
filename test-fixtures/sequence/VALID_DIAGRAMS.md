@@ -9,15 +9,17 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 1. [Activation Suffix](#1-activation-suffix)
 2. [Actors And Aliases](#2-actors-and-aliases)
-3. [Autonumber Variants](#3-autonumber-variants)
-4. [Basic](#4-basic)
-5. [Bidir And Async Arrows](#5-bidir-and-async-arrows)
-6. [Blocks Alt Opt Loop](#6-blocks-alt-opt-loop)
-7. [Box Groups](#7-box-groups)
-8. [Critical Break Rect](#8-critical-break-rect)
-9. [Links And Menus](#9-links-and-menus)
-10. [Notes](#10-notes)
-11. [Par And](#11-par-and)
+3. [Alt Minimal](#3-alt-minimal)
+4. [Autonumber Variants](#4-autonumber-variants)
+5. [Basic](#5-basic)
+6. [Bidir And Async Arrows](#6-bidir-and-async-arrows)
+7. [Blocks Alt Opt Loop](#7-blocks-alt-opt-loop)
+8. [Box Groups](#8-box-groups)
+9. [Critical Break Rect](#9-critical-break-rect)
+10. [Links And Menus](#10-links-and-menus)
+11. [Notes](#11-notes)
+12. [Par And](#12-par-and)
+13. [Par Minimal](#13-par-minimal)
 
 ---
 
@@ -85,7 +87,39 @@ sequenceDiagram
 
 ---
 
-## 3. Autonumber Variants
+## 3. Alt Minimal
+
+📄 **Source**: [`alt-minimal.mmd`](./valid/alt-minimal.mmd)
+
+```mermaid
+sequenceDiagram
+  alt
+    A->>B: Branch 1
+  else
+    A->>C: Branch 2
+  end
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  alt
+    A->>B: Branch 1
+  else
+    A->>C: Branch 2
+  end
+
+
+```
+</details>
+
+---
+
+## 4. Autonumber Variants
 
 📄 **Source**: [`autonumber-variants.mmd`](./valid/autonumber-variants.mmd)
 
@@ -123,7 +157,7 @@ sequenceDiagram
 
 ---
 
-## 4. Basic
+## 5. Basic
 
 📄 **Source**: [`basic.mmd`](./valid/basic.mmd)
 
@@ -151,7 +185,7 @@ sequenceDiagram
 
 ---
 
-## 5. Bidir And Async Arrows
+## 6. Bidir And Async Arrows
 
 📄 **Source**: [`bidir-and-async-arrows.mmd`](./valid/bidir-and-async-arrows.mmd)
 
@@ -197,7 +231,7 @@ sequenceDiagram
 
 ---
 
-## 6. Blocks Alt Opt Loop
+## 7. Blocks Alt Opt Loop
 
 📄 **Source**: [`blocks-alt-opt-loop.mmd`](./valid/blocks-alt-opt-loop.mmd)
 
@@ -249,7 +283,7 @@ sequenceDiagram
 
 ---
 
-## 7. Box Groups
+## 8. Box Groups
 
 📄 **Source**: [`box-groups.mmd`](./valid/box-groups.mmd)
 
@@ -291,7 +325,7 @@ sequenceDiagram
 
 ---
 
-## 8. Critical Break Rect
+## 9. Critical Break Rect
 
 📄 **Source**: [`critical-break-rect.mmd`](./valid/critical-break-rect.mmd)
 
@@ -337,7 +371,7 @@ sequenceDiagram
 
 ---
 
-## 9. Links And Menus
+## 10. Links And Menus
 
 📄 **Source**: [`links-and-menus.mmd`](./valid/links-and-menus.mmd)
 
@@ -369,7 +403,7 @@ sequenceDiagram
 
 ---
 
-## 10. Notes
+## 11. Notes
 
 📄 **Source**: [`notes.mmd`](./valid/notes.mmd)
 
@@ -401,7 +435,7 @@ sequenceDiagram
 
 ---
 
-## 11. Par And
+## 12. Par And
 
 📄 **Source**: [`par-and.mmd`](./valid/par-and.mmd)
 
@@ -429,6 +463,38 @@ sequenceDiagram
     FE->>BE: Get /user
   and
     FE->>BE: Get /settings
+  end
+
+
+```
+</details>
+
+---
+
+## 13. Par Minimal
+
+📄 **Source**: [`par-minimal.mmd`](./valid/par-minimal.mmd)
+
+```mermaid
+sequenceDiagram
+  par
+    A->>B: First
+  and
+    A->>C: Second
+  end
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  par
+    A->>B: First
+  and
+    A->>C: Second
   end
 
 

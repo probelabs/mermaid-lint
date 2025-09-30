@@ -65,7 +65,7 @@ npm run generate:previews
 ### Test Coverage
 - Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [16 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
 - Pie: [4 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
-- Sequence: [11 valid](./test-fixtures/sequence/VALID_DIAGRAMS.md) • [11 invalid](./test-fixtures/sequence/INVALID_DIAGRAMS.md)
+- Sequence: [13 valid](./test-fixtures/sequence/VALID_DIAGRAMS.md) • [11 invalid](./test-fixtures/sequence/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
 ## Diagram Type Coverage (Mermaid vs mermaid-lint)

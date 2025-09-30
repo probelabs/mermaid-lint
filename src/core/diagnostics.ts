@@ -299,8 +299,8 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'AndKeyword') {
     return { line, column, severity: 'error', code: 'SE-AND-OUTSIDE-PAR', message: "'and' is only allowed inside 'par' blocks.", hint: 'Example: par … and … end (parallel branches).', length: len };
   }
-  if (err.name === 'NoViableAltException' && tokType === 'EndKeyword') {
-    return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Remove this end or start a block above.', length: len };
+  if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'EndKeyword') {
+    return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Add a block above (e.g., par … end | alt … end) or remove this end.', length: len };
   }
 
   // Autonumber malformed

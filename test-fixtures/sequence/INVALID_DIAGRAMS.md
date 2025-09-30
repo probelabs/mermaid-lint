@@ -686,12 +686,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Redundant input, expecting EOF but found: end
+error[SE-END-WITHOUT-BLOCK]: 'end' without an open block (alt/opt/loop/par/rect/critical/break/box).
 at test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
     participant A
     end
     ^^^
     A->B: hi
+hint: Add a block above (e.g., par … end | alt … end) or remove this end.
 ```
 
 <details>
