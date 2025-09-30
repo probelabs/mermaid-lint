@@ -95,7 +95,12 @@ function runOurAutofixPreview(filepath, level = 'safe') {
     });
     return { ok: true, fixed: out.toString() };
   } catch (error) {
-    const msg = ((error.stdout || '') + (error.stderr || '')).toString();
+    // Even if exit code is non-zero (remaining errors), stdout contains the fixed content we want.
+    const stdout = (error.stdout || '').toString();
+    if (stdout && stdout.trim()) {
+      return { ok: true, fixed: stdout };
+    }
+    const msg = ((error.stderr || '')).toString();
     return { ok: false, fixed: '', error: stripAnsi(msg) };
   }
 }

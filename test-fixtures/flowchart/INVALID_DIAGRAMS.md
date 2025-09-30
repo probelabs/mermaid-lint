@@ -36,16 +36,16 @@ This file contains invalid flowchart test fixtures with:
 |---:|---|:---:|:---:|:---:|
 | 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID | — |
 | 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID | ✅ safe |
-| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | — |
+| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
 | 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID | — |
-| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | — |
+| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | ✅ all |
 | 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
 | 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
 | 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | ✅ safe |
 | 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
 | 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | — |
+| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | ✅ safe |
 | 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ all |
 | 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
 | 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
@@ -234,11 +234,31 @@ hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configure
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
+    end
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
+    end
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -455,7 +475,11 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+    A(( ))--> B
+    B --> C
+```
 
 <details>
 <summary>View source code</summary>
@@ -874,11 +898,25 @@ hint: Prefer "He said &quot;Hi&quot;".
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart LR
+    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
+    B --> C[Node with #35; special &amp; chars]
+    C --> D["Multi
+    line
+    text"]
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart LR
+    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
+    B --> C[Node with #35; special &amp; chars]
+    C --> D["Multi
+    line
+    text"]
+```
 
 <details>
 <summary>View source code</summary>
