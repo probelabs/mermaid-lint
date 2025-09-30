@@ -1,5 +1,6 @@
 import type { ILexingError, IRecognitionException, IToken } from 'chevrotain';
 import type { ValidationError } from './types.js';
+import { detectUnclosedQuotesInText } from './quoteHygiene.js';
 
 export function coercePos(line?: number | null, column?: number | null, fallbackLine = 1, fallbackColumn = 1) {
   const ln = Number.isFinite(line as number) && (line as number)! > 0 ? (line as number) : fallbackLine;
@@ -398,10 +399,15 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
 
   // Unclosed quotes in actor references (participant/actor names or aliases)
   if (inActorRefContext && (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException' || err.name === 'EarlyExitException')) {
-    const img = (tok as any)?.image as string | undefined;
-    if (img && (img.startsWith('"') || img.startsWith("'"))) {
-      return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: Math.max(1, img.length) };
-    }
+    const unc = detectUnclosedQuotesInText(text, {
+      code: 'SE-QUOTE-UNCLOSED',
+      message: 'Unclosed quote in participant/actor name.',
+      hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"',
+      limitPerFile: Number.MAX_SAFE_INTEGER
+    });
+    const onLine = unc.find(u => u.line === line);
+    if (onLine) return onLine;
+
     const dblEsc = (ltxt.match(/\"/g) || []).length;
     const dq = (ltxt.match(/"/g) || []).length - dblEsc;
     const sq = (ltxt.match(/'/g) || []).length;
@@ -410,9 +416,6 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
       const col3 = (qPos[2] ?? (column - 1)) + 1;
       return { line, column: col3, severity: 'error', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
-    }
-    if (dq % 2 === 1 || sq % 2 === 1) {
-      return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: 1 };
     }
   }
 
@@ -486,17 +489,7 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Add a block above (e.g., par … end | alt … end) or remove this end.', length: len };
   }
 
-  // Fallback: unclosed quotes on participant/actor lines
-  if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException') && (isInRule(err, 'participantDecl') || isInRule(err, 'actorRef'))) {
-    const lines = text.split(/\r?\n/);
-    const ltxt = lines[Math.max(0, line - 1)] || '';
-    const dbl = (ltxt.match(/\"/g) || []).length;
-    const dq = (ltxt.match(/"/g) || []).length - dbl;
-    const sq = (ltxt.match(/'/g) || []).length;
-    if (dq % 2 === 1 || sq % 2 === 1) {
-      return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: 1 };
-    }
-  }
+  // Fallback handled by shared detectors in validators; keep parser mapping focused.
 
   // Autonumber malformed / specific cases
   if (inRule('autonumberStmt')) {

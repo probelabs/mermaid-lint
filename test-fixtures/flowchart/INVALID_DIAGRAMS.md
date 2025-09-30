@@ -22,10 +22,11 @@ This file contains invalid flowchart test fixtures with:
 11. [Quotes Double Inside Single](#11-quotes-double-inside-single)
 12. [Special Chars](#12-special-chars)
 13. [Unclosed Bracket](#13-unclosed-bracket)
-14. [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision)
-15. [Unmatched End](#15-unmatched-end)
-16. [Unquoted Label With Quotes](#16-unquoted-label-with-quotes)
-17. [Wrong Direction](#17-wrong-direction)
+14. [Unclosed Quote In Label](#14-unclosed-quote-in-label)
+15. [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision)
+16. [Unmatched End](#16-unmatched-end)
+17. [Unquoted Label With Quotes](#17-unquoted-label-with-quotes)
+18. [Wrong Direction](#18-wrong-direction)
 
 ---
 
@@ -46,10 +47,11 @@ This file contains invalid flowchart test fixtures with:
 | 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID |
 | 12 | [Special Chars](#12-special-chars) | INVALID | INVALID |
 | 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID |
-| 14 | [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision) | INVALID | INVALID |
-| 15 | [Unmatched End](#15-unmatched-end) | INVALID | INVALID |
-| 16 | [Unquoted Label With Quotes](#16-unquoted-label-with-quotes) | INVALID | INVALID |
-| 17 | [Wrong Direction](#17-wrong-direction) | INVALID | INVALID |
+| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID |
+| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID |
+| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID |
+| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID |
+| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID |
 
 ---
 
@@ -828,7 +830,69 @@ flowchart LR
 
 ---
 
-## 14. Unescaped Quotes In Decision
+## 14. Unclosed Quote In Label
+
+📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+  A["Unclosed label]
+  A --> B
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 6:
+... label]  A --> B
+-------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got '1'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[FL-QUOTE-UNCLOSED]: Unclosed quote in node label.
+at test-fixtures/flowchart/invalid/unclosed-quote-in-label.mmd:2:5
+  1 | flowchart TD
+  2 |   A["Unclosed label]
+    |     ^
+  3 |   A --> B
+hint: Close the quote: A["Label"]
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  A["Unclosed label]
+  A --> B
+
+
+```
+</details>
+
+---
+
+## 15. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -890,7 +954,7 @@ flowchart TD
 
 ---
 
-## 15. Unmatched End
+## 16. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -949,7 +1013,7 @@ flowchart TD
 
 ---
 
-## 16. Unquoted Label With Quotes
+## 17. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -1039,7 +1103,7 @@ flowchart TD
 
 ---
 
-## 17. Wrong Direction
+## 18. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 

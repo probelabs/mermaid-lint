@@ -43,6 +43,9 @@
   "unquoted-label-with-quotes.mmd": [
     "FL-SUBGRAPH-MISSING-HEADER"
   ],
+  "unclosed-quote-in-label.mmd": [
+    "FL-QUOTE-UNCLOSED"
+  ],
   "unescaped-quotes-in-decision.mmd": [
     "FL-LABEL-DOUBLE-IN-DOUBLE"
   ],
