@@ -1,5 +1,5 @@
 {
-  "name": "maid",
+  "name": "@probelabs/maid",
   "version": "1.0.0",
   "description": "Fast, accurate Mermaid diagram validator (CLI) with clear diagnostics.",
   "type": "module",
