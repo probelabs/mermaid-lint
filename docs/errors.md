@@ -163,17 +163,27 @@ Tip: quoting inside labels
 - SE-ELSE-OUTSIDE-ALT
   - When: `else` appears outside an `alt` block.
   - Message: "'else' is only allowed inside 'alt' blocks."
-  - Hint: "Wrap with: alt ... else ... end"
+  - Hint: "Use: alt Condition … else … end"
 
 - SE-AND-OUTSIDE-PAR
   - When: `and` appears outside a `par` block.
   - Message: "'and' is only allowed inside 'par' blocks."
-  - Hint: "Wrap with: par ... and ... end"
+  - Hint: "Example: par … and … end (parallel branches)."
 
 - SE-END-WITHOUT-BLOCK
   - When: `end` appears with no open block.
   - Message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box)."
   - Hint: "Remove this end or start a block above."
+
+- SE-HINT-PAR-BLOCK-SUGGEST (warning)
+  - When: The file contains `and` but no `par`.
+  - Message: "Found 'and' but no 'par' block in the file."
+  - Hint: "Start a parallel section with: par … and … end"
+
+- SE-HINT-ALT-BLOCK-SUGGEST (warning)
+  - When: The file contains `else` but no `alt`.
+  - Message: "Found 'else' but no 'alt' block in the file."
+  - Hint: "Use: alt Condition … else … end"
 
 - SE-AUTONUMBER-MALFORMED
   - When: `autonumber` has an invalid form.

@@ -18,11 +18,15 @@ export function textReport(filename: string, content: string, errors: Validation
     lines.push(`at ${filename}:${e.line}:${e.column}`);
     const allLines = content.split(/\r?\n/);
     const idx = Math.max(0, Math.min(allLines.length - 1, e.line - 1));
+    const prev = idx > 0 ? allLines[idx - 1] : undefined;
     const text = allLines[idx] ?? '';
+    const next = idx + 1 < allLines.length ? allLines[idx + 1] : undefined;
+    if (typeof prev === 'string') lines.push(`  ${prev}`);
     lines.push(`  ${text}`);
     const caretPad = ' '.repeat(Math.max(0, e.column - 1));
     const caretLen = Math.max(1, e.length ?? 1);
     lines.push(`  ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m`);
+    if (typeof next === 'string') lines.push(`  ${next}`);
     if (e.hint) lines.push(`hint: ${e.hint}`);
     lines.push('');
   };

@@ -57,8 +57,10 @@ Syntax error in text
 ```
 error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
 at test-fixtures/pie/invalid/colon-only.mmd:2:3
+  pie
     :
     ^
+  
 hint: Example: "Dogs" : 10
 ```
 
@@ -103,6 +105,7 @@ error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", 
 at test-fixtures/pie/invalid/invalid-header.mmd:1:1
   piee
   ^
+    "Dogs" : 10
 hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
@@ -145,8 +148,10 @@ Syntax error in text
 ```
 error[PI-MISSING-COLON]: Missing colon between slice label and value.
 at test-fixtures/pie/invalid/missing-colon.mmd:3:10
+    title "Pets"
     "Dogs" 10
            ^^
+  
 hint: Use: "Label" : 10
 ```
 
@@ -189,8 +194,10 @@ Syntax error in text
 ```
 error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
 at test-fixtures/pie/invalid/missing-label.mmd:2:3
+  pie
     : 10
     ^
+  
 hint: Example: "Dogs" : 10
 ```
 
@@ -233,8 +240,10 @@ Syntax error in text
 ```
 error[PI-MISSING-NUMBER]: Missing numeric value after colon.
 at test-fixtures/pie/invalid/missing-number.mmd:2:11
+  pie
     "Dogs" :
             ^
+    "Cats" : 
 hint: Use a number like 10 or 42.5
 ```
 
@@ -276,8 +285,10 @@ Syntax error in text
 ```
 error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
 at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
+  pie
     "Dogs : 10
     ^^^^^^
+  
 hint: Close the quote: "Dogs" : 10
 ```
 

@@ -118,18 +118,23 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-NODE-EMPTY]: Empty node content is not allowed. Label cannot be just empty quotes.
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7
+  flowchart TD
       A[""] --> B[" "]
         ^
+      B --> C[]
 hint: Use non-empty quoted text, e.g. "Start" or remove the quotes.
 
 error[FL-NODE-EMPTY]: Empty node content is not allowed. Label cannot be just empty quotes.
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17
+  flowchart TD
       A[""] --> B[" "]
                   ^
+      B --> C[]
 hint: Use non-empty quoted text, e.g. "Start" or remove the quotes.
 
 error[FL-NODE-EMPTY]: Empty node content is not allowed. Add a label inside the shape.
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
+      A[""] --> B[" "]
       B --> C[]
              ^
 hint: Put some text inside [], (), {}, etc. For example: A[Start]
@@ -192,8 +197,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '{'. Add a matching '}'.
 at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:30
+          B -- No --> C[Continue with other auth methods]
           B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
                                ^
+      end
 hint: Example: C{Decision}
 ```
 
@@ -256,8 +263,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-ARROW-INVALID]: Invalid arrow syntax: -> (use --> instead)
 at test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7
+  flowchart TD
       A -> B
         ^^
+      B --> C
 hint: Replace -> with -->, or use -- text --> for inline labels.
 ```
 
@@ -314,6 +323,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-CLASS-MALFORMED]: Invalid class statement. Provide node id(s) then a class name.
 at test-fixtures/flowchart/invalid/invalid-class.mmd:3:12
+      A --> B
       class A
              ^
 hint: Example: class A,B important
@@ -372,8 +382,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '(( '. Add a matching '))'.
 at test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9
+  flowchart TD
       A(( --> B
           ^^
+      B --> C
 hint: Example: A((Circle))
 ```
 
@@ -428,8 +440,10 @@ FlowDB.addSubGraph (node_modules/mermaid/dist/mermaid.js:45974:26)
 ```
 error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
 at test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13
+  flowchart TD
       subgraph
               ^
+          A --> B
 hint: Example: subgraph API [API Layer]
 ```
 
@@ -486,6 +500,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-LINK-MISSING]: Two nodes on one line must be connected with an arrow before 'B'.
 at test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7
+  flowchart TD
       A B
         ^
 hint: Insert --> between nodes, e.g., A --> B.
@@ -543,8 +558,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-NODE-MIXED-BRACKETS]: Mismatched brackets: opened '(' but closed with ']'.
 at test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23
+  flowchart LR
       A[Text] --> B(Text]
                         ^
+      B --> C
 hint: Close with ')' or change the opening bracket to '['.
 ```
 
@@ -600,6 +617,7 @@ error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", 
 at test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1
   A --> B
   ^
+  B --> C
 hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
@@ -654,8 +672,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
 at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5
+  flowchart LR
     A['She said "Hello"'] --> B
       ^
+  
 hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
 ```
 
@@ -716,8 +736,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
 at test-fixtures/flowchart/invalid/special-chars.mmd:2:44
+  flowchart LR
       A["Node with quotes"] --> B["Another \"quoted\" node"]
                                              ^
+      B --> C[Node with #35; special &amp; chars]
 hint: Example: A[Label] --> B
 ```
 
@@ -777,8 +799,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
 at test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13
+  flowchart LR
       A[Start --> B
               ^
+      B --> C
 hint: Example: A[Label] --> B
 ```
 
@@ -835,6 +859,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-END-WITHOUT-SUBGRAPH]: 'end' without a matching 'subgraph'.
 at test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5
+      A --> B
       end
       ^^^
 hint: Remove this end or add a subgraph above.
@@ -908,8 +933,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ```
 error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
 at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14
+      
       subgraph "Runtime Execution"
                ^^^^^^^^^^^^^^^^^^^
+          E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
 hint: Example: subgraph API [API Layer]
 ```
 
@@ -981,6 +1008,7 @@ error[FL-DIR-INVALID]: Invalid direction 'XY'. Use one of: TD, TB, BT, RL, LR.
 at test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11
   flowchart XY
             ^^
+      A --> B
 hint: Try 'TD' (top-down) or 'LR' (left-to-right).
 ```
 

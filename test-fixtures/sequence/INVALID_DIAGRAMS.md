@@ -81,10 +81,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Redundant input, expecting EOF but found: and
+error[SE-AND-OUTSIDE-PAR]: 'and' is only allowed inside 'par' blocks.
 at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
+    participant A
     and Also not allowed
     ^^^
+    A->B: hi
+hint: Example: par … and … end (parallel branches).
+
+warning[SE-HINT-PAR-BLOCK-SUGGEST]: Found 'and' but no 'par' block in the file.
+at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
+    participant A
+    and Also not allowed
+    ^^^
+    A->B: hi
+hint: Start a parallel section with: par … and … end
 ```
 
 <details>
@@ -147,8 +158,10 @@ error: Expecting: expecting at least one iteration which starts with one of thes
   <[Newline]>
 but found: 'ten'
 at test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
+  sequenceDiagram
     autonumber 10 ten
                   ^^^
+    participant A
 ```
 
 <details>
@@ -210,6 +223,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error: Expecting token of type --> EndKeyword <-- but found --> '' <--
 at test-fixtures/sequence/invalid/box-unclosed.mmd:7:1
+  
   
   ^
 ```
@@ -275,8 +289,10 @@ error: Expecting: one of these possible Token sequences:
   2. [ActorKeyword]
 but found: 'B'
 at test-fixtures/sequence/invalid/create-malformed.mmd:2:10
+  sequenceDiagram
     create B
            ^
+    participant A
 ```
 
 <details>
@@ -338,8 +354,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error: Expecting token of type --> EndKeyword <-- but found --> 'else' <--
 at test-fixtures/sequence/invalid/critical-else.mmd:4:3
+      A->B: try
     else Should not use else in critical
     ^^^^
+      A->B: nope
 ```
 
 <details>
@@ -404,8 +422,10 @@ error: Expecting: one of these possible Token sequences:
 but found: '
 '
 at test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
+  sequenceDiagram
     destroy participant
                        ^
+    participant A
 ```
 
 <details>
@@ -464,10 +484,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Redundant input, expecting EOF but found: else
+error[SE-ELSE-OUTSIDE-ALT]: 'else' is only allowed inside 'alt' blocks.
 at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
+    participant A
     else Not allowed here
     ^^^^
+    A->B: hi
+hint: Start with: alt Condition ... else ... end
+
+warning[SE-HINT-ALT-BLOCK-SUGGEST]: Found 'else' but no 'alt' block in the file.
+at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
+    participant A
+    else Not allowed here
+    ^^^^
+    A->B: hi
+hint: Use: alt Condition … else … end
 ```
 
 <details>
@@ -527,8 +558,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
 at test-fixtures/sequence/invalid/missing-colon.mmd:4:9
+    participant B
     A->>B Message text without colon
           ^^^^^^^
+  
 hint: Use: A->>B: Message text
 ```
 
@@ -589,8 +622,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
 at test-fixtures/sequence/invalid/note-malformed.mmd:3:19
+    participant A
     Note right of A Missing colon
                     ^^^^^^^
+    A->B: ok
 hint: Example: Note right of Alice: Hello
 ```
 
@@ -653,8 +688,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error: Redundant input, expecting EOF but found: end
 at test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
+    participant A
     end
     ^^^
+    A->B: hi
 ```
 
 <details>
@@ -714,8 +751,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.
 at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4
+    participant B
     A==>>B: Unknown arrow
      ^^^^^^^^^^^^^^^^^^^^
+  
 hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ```
 

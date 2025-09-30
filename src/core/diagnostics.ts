@@ -293,11 +293,11 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   }
 
   // Block control keywords outside blocks
-  if (err.name === 'NoViableAltException' && tokType === 'ElseKeyword') {
+  if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'ElseKeyword') {
     return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Start with: alt Condition ... else ... end', length: len };
   }
-  if (err.name === 'NoViableAltException' && tokType === 'AndKeyword') {
-    return { line, column, severity: 'error', code: 'SE-AND-OUTSIDE-PAR', message: "'and' is only allowed inside 'par' blocks.", hint: 'Start with: par Branch A ... and Branch B ... end', length: len };
+  if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'AndKeyword') {
+    return { line, column, severity: 'error', code: 'SE-AND-OUTSIDE-PAR', message: "'and' is only allowed inside 'par' blocks.", hint: 'Example: par … and … end (parallel branches).', length: len };
   }
   if (err.name === 'NoViableAltException' && tokType === 'EndKeyword') {
     return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Remove this end or start a block above.', length: len };
