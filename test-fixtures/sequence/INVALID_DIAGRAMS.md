@@ -14,13 +14,14 @@ This file contains invalid sequence test fixtures with:
 3. [Autonumber Malformed](#3-autonumber-malformed)
 4. [Box Unclosed](#4-box-unclosed)
 5. [Create Malformed](#5-create-malformed)
-6. [Critical Else](#6-critical-else)
-7. [Destroy Malformed](#7-destroy-malformed)
-8. [Else Outside Alt](#8-else-outside-alt)
-9. [Missing Colon](#9-missing-colon)
-10. [Note Malformed](#10-note-malformed)
-11. [Unmatched End](#11-unmatched-end)
-12. [Wrong Arrow](#12-wrong-arrow)
+6. [Create Missing Name](#6-create-missing-name)
+7. [Critical Else](#7-critical-else)
+8. [Destroy Malformed](#8-destroy-malformed)
+9. [Else Outside Alt](#9-else-outside-alt)
+10. [Missing Colon](#10-missing-colon)
+11. [Note Malformed](#11-note-malformed)
+12. [Unmatched End](#12-unmatched-end)
+13. [Wrong Arrow](#13-wrong-arrow)
 
 ---
 
@@ -33,13 +34,14 @@ This file contains invalid sequence test fixtures with:
 | 3 | [Autonumber Malformed](#3-autonumber-malformed) | INVALID | INVALID |
 | 4 | [Box Unclosed](#4-box-unclosed) | INVALID | INVALID |
 | 5 | [Create Malformed](#5-create-malformed) | INVALID | INVALID |
-| 6 | [Critical Else](#6-critical-else) | INVALID | INVALID |
-| 7 | [Destroy Malformed](#7-destroy-malformed) | INVALID | INVALID |
-| 8 | [Else Outside Alt](#8-else-outside-alt) | INVALID | INVALID |
-| 9 | [Missing Colon](#9-missing-colon) | INVALID | INVALID |
-| 10 | [Note Malformed](#10-note-malformed) | INVALID | INVALID |
-| 11 | [Unmatched End](#11-unmatched-end) | INVALID | INVALID |
-| 12 | [Wrong Arrow](#12-wrong-arrow) | INVALID | INVALID |
+| 6 | [Create Missing Name](#6-create-missing-name) | INVALID | INVALID |
+| 7 | [Critical Else](#7-critical-else) | INVALID | INVALID |
+| 8 | [Destroy Malformed](#8-destroy-malformed) | INVALID | INVALID |
+| 9 | [Else Outside Alt](#9-else-outside-alt) | INVALID | INVALID |
+| 10 | [Missing Colon](#10-missing-colon) | INVALID | INVALID |
+| 11 | [Note Malformed](#11-note-malformed) | INVALID | INVALID |
+| 12 | [Unmatched End](#12-unmatched-end) | INVALID | INVALID |
+| 13 | [Wrong Arrow](#13-wrong-arrow) | INVALID | INVALID |
 
 ---
 
@@ -369,7 +371,70 @@ sequenceDiagram
 
 ---
 
-## 6. Critical Else
+## 6. Create Missing Name
+
+📄 **Source**: [`create-missing-name.mmd`](./invalid/create-missing-name.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  create participant
+  A->B: hi
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Lexical error on line 2. Unrecognized text.
+...  create participant  A->B: hi
+-----------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-CREATE-MALFORMED]: After 'create', specify 'participant' or 'actor' before the name.
+at test-fixtures/sequence/invalid/create-missing-name.mmd:2:21
+  1 | sequenceDiagram
+  2 |   create participant
+    |                     ^
+  3 |   A->B: hi
+hint: Examples:
+  create participant B
+  create actor D as Donald
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  create participant
+  A->B: hi
+
+
+```
+</details>
+
+---
+
+## 7. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -439,7 +504,7 @@ sequenceDiagram
 
 ---
 
-## 7. Destroy Malformed
+## 8. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -503,7 +568,7 @@ sequenceDiagram
 
 ---
 
-## 8. Else Outside Alt
+## 9. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -567,7 +632,7 @@ sequenceDiagram
 
 ---
 
-## 9. Missing Colon
+## 10. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -631,7 +696,7 @@ sequenceDiagram
 
 ---
 
-## 10. Note Malformed
+## 11. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -695,7 +760,7 @@ sequenceDiagram
 
 ---
 
-## 11. Unmatched End
+## 12. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -761,7 +826,7 @@ sequenceDiagram
 
 ---
 
-## 12. Wrong Arrow
+## 13. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
