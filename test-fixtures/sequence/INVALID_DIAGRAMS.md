@@ -919,7 +919,7 @@ hint: Use: A->>B: Message text
 sequenceDiagram
   participant A
   participant B
-  A->>B Message text without colon: 
+  A->>B : Message text without colon
 
 
 ```
@@ -930,7 +930,7 @@ sequenceDiagram
 sequenceDiagram
   participant A
   participant B
-  A->>B Message text without colon: 
+  A->>B : Message text without colon
 
 
 ```
@@ -1004,7 +1004,7 @@ hint: Example: Note right of Alice: Hello
 ```mermaid
 sequenceDiagram
   participant A
-  Note right of A Missing colon: 
+  Note right of A : Missing colon
   A->B: ok
 
 
@@ -1015,7 +1015,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
   participant A
-  Note right of A Missing colon: 
+  Note right of A : Missing colon
   A->B: ok
 
 
