@@ -281,9 +281,9 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
 at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
   2 |   box Aqua Group  ← start of 'box'
-    | … (lines 3–4)
+    | …
   5 |   A->B: hi
-    |           ^ add 'end' here
+    |           ^ insert 'end' on a new line after line 5
 hint: Add 'end' on a new line after the block contents.
 ```
 
@@ -343,15 +343,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting: one of these possible Token sequences:
-  1. [ParticipantKeyword]
-  2. [ActorKeyword]
-but found: 'B'
+error[SE-CREATE-MALFORMED]: After 'create', specify 'participant' or 'actor' before the name.
 at test-fixtures/sequence/invalid/create-malformed.mmd:2:10
   1 | sequenceDiagram
   2 |   create B
     |          ^
   3 |   participant A
+hint: Examples:
+  create participant B
+  create actor D as Donald
 ```
 
 <details>
@@ -414,9 +414,9 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'critical' block.
 at test-fixtures/sequence/invalid/critical-else.mmd:4:39
   2 |   critical Do critical  ← start of 'critical'
-    | … (lines 3–3)
+    | …
   4 |   else Should not use else in critical
-    |                                       ^ add 'end' here
+    |                                       ^ insert 'end' before line 5
 hint: Add 'end' on a new line after the block contents.
 ```
 
