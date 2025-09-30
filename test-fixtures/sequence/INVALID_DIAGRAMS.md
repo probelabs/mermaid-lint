@@ -85,10 +85,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-AND-OUTSIDE-PAR]: 'and' is only allowed inside 'par' blocks.
 at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
-    participant A
-    and Also not allowed
-    ^^^
-    A->B: hi
+  2 |   participant A
+  3 |   and Also not allowed
+    |   ^^^
+  4 |   A->B: hi
 hint: Example: par … and … end (parallel branches).
 ```
 
@@ -148,10 +148,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-AUTONUMBER-EXTRANEOUS]: Unexpected token after 'autonumber'. Put 'autonumber' on its own line.
 at test-fixtures/sequence/invalid/autonumber-extraneous.mmd:2:20
-  sequenceDiagram
-    autonumber 10 10 participant A
-                     ^^^^^^^^^^^
-    A->B: ok
+  1 | sequenceDiagram
+  2 |   autonumber 10 10 participant A
+    |                    ^^^^^^^^^^^
+  3 |   A->B: ok
 hint: Example:
   autonumber 10 10
   participant A
@@ -214,10 +214,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-AUTONUMBER-NON-NUMERIC]: Autonumber values must be numbers. Found 'ten'.
 at test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
-  sequenceDiagram
-    autonumber 10 ten
-                  ^^^
-    participant A
+  1 | sequenceDiagram
+  2 |   autonumber 10 ten
+    |                 ^^^
+  3 |   participant A
 hint: Use numbers: autonumber 10 or autonumber 10 10 (start and step).
 ```
 
@@ -280,10 +280,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
 at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
-    box Aqua Group  ← start of 'box'
-  …
-    A->B: hi
-            ^ add 'end' here
+  2 |   box Aqua Group  ← start of 'box'
+    | … (lines 3–4)
+  5 |   A->B: hi
+    |           ^ add 'end' here
 hint: Add 'end' on a new line after the block contents.
 ```
 
@@ -348,10 +348,10 @@ error: Expecting: one of these possible Token sequences:
   2. [ActorKeyword]
 but found: 'B'
 at test-fixtures/sequence/invalid/create-malformed.mmd:2:10
-  sequenceDiagram
-    create B
-           ^
-    participant A
+  1 | sequenceDiagram
+  2 |   create B
+    |          ^
+  3 |   participant A
 ```
 
 <details>
@@ -413,10 +413,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'critical' block.
 at test-fixtures/sequence/invalid/critical-else.mmd:4:39
-    critical Do critical  ← start of 'critical'
-  …
-    else Should not use else in critical
-                                        ^ add 'end' here
+  2 |   critical Do critical  ← start of 'critical'
+    | … (lines 3–3)
+  4 |   else Should not use else in critical
+    |                                       ^ add 'end' here
 hint: Add 'end' on a new line after the block contents.
 ```
 
@@ -482,10 +482,10 @@ error: Expecting: one of these possible Token sequences:
 but found: '
 '
 at test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
-  sequenceDiagram
-    destroy participant
-                       ^
-    participant A
+  1 | sequenceDiagram
+  2 |   destroy participant
+    |                      ^
+  3 |   participant A
 ```
 
 <details>
@@ -546,10 +546,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-ELSE-OUTSIDE-ALT]: 'else' is only allowed inside 'alt' blocks.
 at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
-    participant A
-    else Not allowed here
-    ^^^^
-    A->B: hi
+  2 |   participant A
+  3 |   else Not allowed here
+    |   ^^^^
+  4 |   A->B: hi
 hint: Start with: alt Condition ... else ... end
 ```
 
@@ -610,10 +610,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
 at test-fixtures/sequence/invalid/missing-colon.mmd:4:9
-    participant B
-    A->>B Message text without colon
-          ^^^^^^^
-  
+  3 |   participant B
+  4 |   A->>B Message text without colon
+    |         ^^^^^^^
+  5 | 
 hint: Use: A->>B: Message text
 ```
 
@@ -674,10 +674,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
 at test-fixtures/sequence/invalid/note-malformed.mmd:3:19
-    participant A
-    Note right of A Missing colon
-                    ^^^^^^^
-    A->B: ok
+  2 |   participant A
+  3 |   Note right of A Missing colon
+    |                   ^^^^^^^
+  4 |   A->B: ok
 hint: Example: Note right of Alice: Hello
 ```
 
@@ -740,10 +740,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-END-WITHOUT-BLOCK]: 'end' without an open block (alt/opt/loop/par/rect/critical/break/box).
 at test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
-    participant A
-    end
-    ^^^
-    A->B: hi
+  2 |   participant A
+  3 |   end
+    |   ^^^
+  4 |   A->B: hi
 hint: Add a block above (e.g., par … end | alt … end) or remove this end.
 ```
 
@@ -804,10 +804,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.
 at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4
-    participant B
-    A==>>B: Unknown arrow
-     ^^^^^^^^^^^^^^^^^^^^
-  
+  3 |   participant B
+  4 |   A==>>B: Unknown arrow
+    |    ^^^^^^^^^^^^^^^^^^^^
+  5 | 
 hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ```
 
