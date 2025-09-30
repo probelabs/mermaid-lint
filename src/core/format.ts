@@ -39,13 +39,7 @@ export function textReport(filename: string, content: string, errors: Validation
         const headerNo = headerIdx + 1;
         lines.push(`  ${fmtNum(headerNo)} | ${allLines[headerIdx]}  \x1b[2m\u2190 start of '${blockName}'\x1b[0m`);
         if (headerIdx < idx - 1) {
-          const from = headerNo + 1;
-          const to = (idx); // line before caret line
-          if (to >= from) {
-            lines.push(`  ${' '.repeat(numWidth)} | \u2026 (lines ${from}\u2013${to})`);
-          } else {
-            lines.push(`  ${' '.repeat(numWidth)} | \u2026`);
-          }
+          lines.push(`  ${' '.repeat(numWidth)} | \u2026`);
         }
       } else if (typeof prev === 'string') {
         const prevNo = idx; // previous line number
@@ -55,7 +49,18 @@ export function textReport(filename: string, content: string, errors: Validation
       lines.push(`  ${fmtNum(lineNo)} | ${text}`);
       const caretPad = ' '.repeat(Math.max(0, e.column - 1));
       const caretLen = Math.max(1, e.length ?? 1);
-      lines.push(`  ${' '.repeat(numWidth)} | ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m \x1b[2madd 'end' here\x1b[0m`);
+      // Decide insertion guidance relative to following content
+      let nextContentIdx = -1;
+      for (let i = idx + 1; i < allLines.length; i++) {
+        if ((allLines[i] ?? '').trim() !== '') { nextContentIdx = i; break; }
+      }
+      let insertionMsg = '';
+      if (nextContentIdx >= 0) {
+        insertionMsg = `insert 'end' before line ${nextContentIdx + 1}`;
+      } else {
+        insertionMsg = `insert 'end' on a new line after line ${lineNo}`;
+      }
+      lines.push(`  ${' '.repeat(numWidth)} | ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m \x1b[2m${insertionMsg}\x1b[0m`);
       // Skip printing next to keep the snippet tight and focused
     } else {
       if (typeof prev === 'string') lines.push(`  ${fmtNum(e.line - 1)} | ${prev}`);

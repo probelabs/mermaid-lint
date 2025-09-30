@@ -411,13 +411,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'critical' block.
-at test-fixtures/sequence/invalid/critical-else.mmd:4:39
-  2 |   critical Do critical  ← start of 'critical'
-    | …
+error[SE-ELSE-IN-CRITICAL]: 'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.
+at test-fixtures/sequence/invalid/critical-else.mmd:4:3
+  3 |     A->B: try
   4 |   else Should not use else in critical
-    |                                       ^ insert 'end' before line 5
-hint: Add 'end' on a new line after the block contents.
+    |   ^^^^
+  5 |     A->B: nope
+hint: Replace with: option <label>
+  Example:
+  option Retry
 ```
 
 <details>

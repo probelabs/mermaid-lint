@@ -180,6 +180,11 @@ Tip: quoting inside labels
   - Message: "Missing 'end' to close a '<block>' block."
   - Hint: "Add 'end' on a new line after the block contents."
 
+- SE-ELSE-IN-CRITICAL
+  - When: `else` appears inside a `critical` block (invalid; use `option`).
+  - Message: "'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'."
+  - Hint: "Replace with: option <label>  Example: option Retry"
+
 - SE-HINT-PAR-BLOCK-SUGGEST (warning)
   - When: The file contains `and` but no `par`.
   - Message: "Found 'and' but no 'par' block in the file."

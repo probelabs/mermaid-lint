@@ -292,6 +292,16 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     }
   }
 
+  // 'else' inside a 'critical' block is invalid (should use 'option')
+  if (tokType === 'ElseKeyword' && isInRule(err, 'criticalBlock')) {
+    return {
+      line, column, severity: 'error', code: 'SE-ELSE-IN-CRITICAL',
+      message: "'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.",
+      hint: "Replace with: option <label>\nExample:\noption Retry",
+      length: len
+    };
+  }
+
   // Missing 'end' inside a block (alt/opt/loop/par/rect/critical/break/box)
   const blockRules: Array<{ rule: string; label: string }> = [
     { rule: 'altBlock', label: 'alt' },
