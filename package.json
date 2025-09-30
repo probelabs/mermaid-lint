@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/probelabs/maid/issues"
   },
-  "license": "MIT",
+  "license": "ISC",
   "engines": {
     "node": ">=18"
   },
