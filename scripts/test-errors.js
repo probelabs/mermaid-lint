@@ -17,21 +17,17 @@ function runLinterJSON(relPath) {
   }
 }
 
-function main() {
-  const type = process.argv[2] || 'sequence';
-  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+function runType(type, root) {
   const fixturesDir = path.join(root, 'test-fixtures', type);
   const expectedPath = path.join(fixturesDir, 'expected-errors.json');
   if (!fs.existsSync(expectedPath)) {
     console.error(`No expected-errors.json for type: ${type}`);
-    process.exit(1);
+    return { passed: 0, failed: 1 };
   }
-
   const expected = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
-  const invalidDir = path.join(fixturesDir, 'invalid');
   const files = Object.keys(expected).sort();
   let passed = 0, failed = 0;
-
+  console.log(`\n== ${type.toUpperCase()} ==`);
   for (const file of files) {
     const rel = path.join('test-fixtures', type, 'invalid', file);
     const json = runLinterJSON(rel);
@@ -46,10 +42,20 @@ function main() {
       failed++;
     }
   }
+  return { passed, failed };
+}
 
-  console.log(`\nSummary: ${passed} passed, ${failed} failed`);
-  process.exit(failed === 0 ? 0 : 1);
+function main() {
+  const arg = process.argv[2] || 'all';
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+  const types = arg === 'all' ? ['flowchart', 'pie', 'sequence'] : [arg];
+  let totalP = 0, totalF = 0;
+  for (const t of types) {
+    const { passed, failed } = runType(t, root);
+    totalP += passed; totalF += failed;
+  }
+  console.log(`\nSummary: ${totalP} passed, ${totalF} failed`);
+  process.exit(totalF === 0 ? 0 : 1);
 }
 
 main();
-

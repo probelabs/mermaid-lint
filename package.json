@@ -10,6 +10,10 @@
     "build": "tsc",
     "test": "node scripts/test-chevrotain.js",
     "test:errors:sequence": "npm run build && node scripts/test-errors.js sequence",
+    "test:errors:flowchart": "npm run build && node scripts/test-errors.js flowchart",
+    "test:errors:pie": "npm run build && node scripts/test-errors.js pie",
+    "test:errors:all": "npm run build && node scripts/test-errors.js all",
+    "ci:test": "npm run build && node scripts/test-errors.js all && node scripts/compare-linters.js flowchart && node scripts/compare-linters.js pie && node scripts/compare-linters.js sequence"
     "test:compare": "node scripts/compare-linters.js flowchart",
     "test:compare:pie": "node scripts/compare-linters.js pie",
     "test:compare:sequence": "node scripts/compare-linters.js sequence",
