@@ -96,7 +96,7 @@ async function startServer() {
             },
             autofix: {
               type: 'boolean',
-              description: 'Set to true to automatically fix syntax errors and return corrected diagram (recommended: always use true)',
+              description: 'Set to true to automatically fix syntax errors and return corrected diagram (default: true)',
             },
           },
           required: ['text'],
@@ -112,7 +112,7 @@ async function startServer() {
       if (name === 'validate_mermaid') {
         const parsed = ValidateMermaidSchema.parse(args);
         const text = parsed.text;
-        const autofix = parsed.autofix ?? false;
+        const autofix = parsed.autofix ?? true;
 
         // Check if input contains markdown blocks
         const blocks = extractMermaidBlocks(text);
