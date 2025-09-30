@@ -15,6 +15,38 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
+      // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      const opens = [
+        { tok: '[[', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },
+        { tok: '{',  idx: lineText.lastIndexOf('{',  caret0), delta: 1 },
+        { tok: '[',  idx: lineText.lastIndexOf('[',  caret0), delta: 1 },
+        { tok: '((', idx: lineText.lastIndexOf('((', caret0), delta: 2 },
+      ].filter(o => o.idx !== -1).sort((a,b)=> a.idx - b.idx);
+      const open = opens.pop();
+      if (open) {
+        const closeIdxCandidates = [
+          lineText.indexOf(']]', caret0),
+          lineText.indexOf('}',  caret0),
+          lineText.indexOf(']',  caret0),
+          lineText.indexOf('))', caret0),
+        ].filter(i => i !== -1).sort((a,b)=> a-b);
+        const closeIdx = closeIdxCandidates.length ? closeIdxCandidates[0] : -1;
+        if (closeIdx !== -1) {
+          const q1 = lineText.indexOf('"', open.idx + open.delta);
+          const q2 = lineText.lastIndexOf('"', closeIdx - 1);
+          if (q1 !== -1 && q2 !== -1 && q2 > q1) {
+            const inner = lineText.slice(q1 + 1, q2);
+            if (inner.includes('\\"')) {
+              const replaced = inner.split('\\\"').join('&quot;');
+              edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
+              continue;
+            }
+          }
+        }
+      }
+      // Fallback: replace only the current occurrence
       edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
       continue;
     }

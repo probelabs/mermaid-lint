@@ -100,6 +100,11 @@ const cases = [
   { name: 'PI-LABEL-REQUIRES-QUOTES', before: 'pie\nDogs : 10\n', after: 'pie\n"Dogs" : 10\n' },
   { name: 'PI-MISSING-COLON', before: 'pie\n"Dogs" 10\n', after: 'pie\n"Dogs"  : 10\n' },
   { name: 'PI-LABEL-ESCAPED-QUOTE', before: 'pie\n"He \\"said\\"" : 1\n' },
+  {
+    name: 'FL-LABEL-ESCAPED-QUOTE (full-span)',
+    before: 'flowchart LR\n  A["Node with quotes"] --> B["Another \\"quoted\\" node"]\n',
+    after:  'flowchart LR\n  A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]\n'
+  },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },
   // Sequence
