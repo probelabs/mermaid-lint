@@ -283,7 +283,7 @@ at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
   2 |   box Aqua Group  ← start of 'box'
     | …
   5 |   A->B: hi
-    |           ^ insert 'end' on a new line after line 5
+  6 |   end  ← insert 'end' here
 hint: Add 'end' on a new line after the block contents.
 ```
 
