@@ -113,7 +113,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
 
   // 1) Direction after header
   if (atHeader(err) && expecting(err, 'Direction')) {
-    if (tokType === 'EOF') {
+    if (tokType === 'EOF' || tokType === 'Newline') {
       return {
         line, column, severity: 'error', code: 'FL-DIR-MISSING',
         message: 'Missing direction after diagram header. Use TD, TB, BT, RL, or LR.',
@@ -320,6 +320,26 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
       hint: 'Example: "Dogs" : 10',
       length: len
     };
+  }
+
+  // Heuristic: unquoted label before a colon (token may point anywhere on the line)
+  if (err.name === 'NotAllInputParsedException') {
+    const colonIdx = ltxt.indexOf(':');
+    if (colonIdx > 0) {
+      const left = ltxt.slice(0, colonIdx);
+      const startsWithQuote = left.trimStart().startsWith('"') || left.trimStart().startsWith("'");
+      if (!startsWithQuote) {
+        return {
+          line,
+          column: Math.max(1, colonIdx),
+          severity: 'error',
+          code: 'PI-LABEL-REQUIRES-QUOTES',
+          message: 'Slice labels must be quoted (single or double quotes).',
+          hint: 'Example: "Dogs" : 10',
+          length: 1
+        };
+      }
+    }
   }
 
   // Unclosed quote: token looks like it starts with a quote but never closed

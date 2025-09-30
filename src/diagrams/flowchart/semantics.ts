@@ -59,7 +59,8 @@ class FlowSemanticsVisitor extends BaseVisitor {
         severity: 'error',
         code: 'FL-DIR-KW-INVALID',
         message: `Unknown keyword '${kwTok.image}' before direction. Use 'direction TB' / 'LR' / etc.`,
-        hint: "Example inside subgraph: 'direction TB'"
+        hint: "Example inside subgraph: 'direction TB'",
+        length: (kwTok.image?.length ?? 0)
       });
     }
   }
@@ -150,13 +151,16 @@ class FlowSemanticsVisitor extends BaseVisitor {
       for (const q of qs) {
         const s = q.image || '';
         if (s.startsWith("'") && s.endsWith("'") && s.includes('"')) {
+          const innerIdx = s.indexOf('"');
+          const col = (q.startColumn ?? 1) + Math.max(0, innerIdx);
           this.ctx.errors.push({
             line: q.startLine ?? 1,
-            column: q.startColumn ?? 1,
+            column: col,
             severity: 'error',
             message: 'Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.',
             code: 'FL-LABEL-DOUBLE-IN-SINGLE',
-            hint: 'Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.'
+            hint: 'Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.',
+            length: 1
           });
         }
       }

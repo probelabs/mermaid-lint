@@ -82,6 +82,7 @@ npx -y @probelabs/maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
 Commands
 - Run baseline tests: `npm test`
 - Error‑code assertions (all types): `npm run test:errors:all`
+- Autofix smoke tests: `node scripts/test-fixes.js`
 - Markdown extraction and offsets: `npm run test:markdown`
 - Directory scan behavior: `npm run test:dir`
 - Compare with mermaid‑cli (non‑blocking): `node scripts/compare-linters.js flowchart|pie|sequence`
@@ -165,6 +166,11 @@ These layers give confidence in correctness (baseline), diagnostic quality (erro
 
 Diagnostics include stable error codes and hints for quick fixes. See the full list in docs/errors.md.
 
+### Autofix Support
+
+- Use `--fix` for safe, mechanical fixes and `--fix=all` to include conservative heuristics.
+- A complete matrix of error codes and autofix behavior is in docs/errors.md (section “Autofix Support Matrix”).
+
 ### CLI Output Formats
 
 - Text (default): caret-underlined snippet style with codes, hints, and precise spans.
@@ -207,6 +213,11 @@ Behavior
   - json: machine-readable output for CI/editors
 - `--strict`, `-s`
   - Require quoted labels inside shapes; emits `FL-STRICT-LABEL-QUOTES-REQUIRED` when violated.
+- Autofix flags:
+  - `--fix` Apply safe auto-fixes (e.g., replace `->` with `-->`, normalize inner quotes to `&quot;`, add missing `: ` in sequence message and notes, replace `else` with `option` in `critical`, insert missing `end` for blocks, fix `direction` keyword in subgraphs).
+  - `--fix=all` Apply safe + heuristic fixes (e.g., wrap unquoted labels with quotes where it’s unambiguous, close unclosed quotes/brackets in limited contexts). Heuristics are conservative but may be opinionated.
+  - `--dry-run`, `-n` Don’t write files; useful with single files.
+  - `--print-fixed` When combined with `--fix*` on a single file or `-`, print the fixed content to stdout instead of a diagnostic report.
 - Directory scan flags:
   - `--include`, `-I` Glob(s) to include (repeatable or comma‑separated)
   - `--exclude`, `-E` Glob(s) to exclude (repeatable or comma‑separated)

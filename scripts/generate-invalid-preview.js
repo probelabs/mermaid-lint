@@ -84,6 +84,22 @@ function runOurLinter(filepath) {
   }
 }
 
+function runOurAutofixPreview(filepath, level = 'safe') {
+  try {
+    const flag = level === 'all' ? '--fix=all' : '--fix';
+    const out = execSync(`node ./out/cli.js ${flag} --dry-run --print-fixed "${filepath}"`, {
+      stdio: 'pipe',
+      encoding: 'utf8',
+      cwd: path.resolve(__dirname, '..'),
+      timeout: 8000,
+    });
+    return { ok: true, fixed: out.toString() };
+  } catch (error) {
+    const msg = ((error.stdout || '') + (error.stderr || '')).toString();
+    return { ok: false, fixed: '', error: stripAnsi(msg) };
+  }
+}
+
 function generateInvalidMarkdown(diagramType = 'flowchart') {
   const fixturesDir = path.resolve(__dirname, '..', 'test-fixtures', diagramType);
   const invalidDir = path.join(fixturesDir, 'invalid');
@@ -117,7 +133,8 @@ This file contains invalid ${diagramType} test fixtures with:
     const relPath = path.relative(repoRoot, filePath);
     const mermaidRes = runMermaidCli(relPath);
     const ourRes = runOurLinter(relPath);
-    return { file, index, filePath: relPath, mermaidRes, ourRes };
+    const fixPreview = runOurAutofixPreview(relPath, 'safe');
+    return { file, index, filePath: relPath, mermaidRes, ourRes, fixPreview };
   });
 
   // Generate table of contents
@@ -144,7 +161,7 @@ This file contains invalid ${diagramType} test fixtures with:
   markdown += `\n---\n\n`;
   
   // Generate diagram sections
-  results.forEach(({ file, index, filePath, mermaidRes, ourRes }) => {
+  results.forEach(({ file, index, filePath, mermaidRes, ourRes, fixPreview }) => {
     const content = fs.readFileSync(filePath, 'utf-8');
     const name = file.replace('.mmd', '').replace(/-/g, ' ');
     const title = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -188,6 +205,14 @@ This file contains invalid ${diagramType} test fixtures with:
     markdown += `### maid Result: ${ourRes.valid ? 'VALID' : 'INVALID'}\n\n`;
     if (!ourRes.valid) {
       markdown += `\`\`\`\n${ourRes.message}\n\`\`\`\n\n`;
+    }
+
+    // Auto-fix preview (safe)
+    markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
+    if (fixPreview.ok && fixPreview.fixed.trim() && fixPreview.fixed.trim() !== fs.readFileSync(filePath, 'utf-8').trim()) {
+      markdown += `\`\`\`mermaid\n${fixPreview.fixed}\n\`\`\`\n\n`;
+    } else {
+      markdown += `No auto-fix changes (safe level).\n\n`;
     }
 
     // Add collapsible source code section

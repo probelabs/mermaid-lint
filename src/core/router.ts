@@ -18,7 +18,7 @@ export function detectDiagramType(text: string): DiagramType {
   const header = firstNonCommentLine(text);
   if (!header) return 'unknown';
 
-  if (/^(flowchart|graph)\s/i.test(header)) return 'flowchart';
+  if (/^(flowchart|graph)\b/i.test(header)) return 'flowchart';
   if (/^pie\b/i.test(header)) return 'pie';
   if (/^sequenceDiagram\b/i.test(header)) return 'sequence';
   return 'unknown';

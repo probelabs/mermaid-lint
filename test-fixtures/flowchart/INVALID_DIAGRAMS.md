@@ -73,6 +73,10 @@ flowchart TD
 
 ### maid Result: VALID
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -144,6 +148,10 @@ at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
 hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -207,6 +215,10 @@ at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
   7 |         B -- Yes --> E{"Is "Driver" configured?"}
 hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -274,6 +286,14 @@ at test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7
 hint: Replace -> with -->, or use -- text --> for inline labels.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -332,6 +352,10 @@ at test-fixtures/flowchart/invalid/invalid-class.mmd:3:12
     |            ^
 hint: Example: class A,B important
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -393,6 +417,10 @@ at test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9
 hint: Example: A((Circle))
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -450,6 +478,10 @@ at test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13
   3 |         A --> B
 hint: Example: subgraph API [API Layer]
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -510,6 +542,10 @@ at test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7
 hint: Insert --> between nodes, e.g., A --> B.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -569,6 +605,10 @@ at test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23
 hint: Close with ')' or change the opening bracket to '['.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -625,6 +665,10 @@ at test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1
 hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -675,13 +719,17 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ```
 error[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
-at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5
+at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:15
   1 | flowchart LR
   2 |   A['She said "Hello"'] --> B
-    |     ^
+    |               ^
   3 | 
 hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -747,6 +795,10 @@ at test-fixtures/flowchart/invalid/special-chars.mmd:2:42
 hint: Prefer "He said &quot;Hi&quot;".
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -810,6 +862,10 @@ at test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13
 hint: Example: A[Label] --> B
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -869,6 +925,10 @@ at test-fixtures/flowchart/invalid/unclosed-quote-in-label.mmd:2:5
   3 |   A --> B
 hint: Close the quote: A["Label"]
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -932,6 +992,10 @@ at test-fixtures/flowchart/invalid/unescaped-quotes-in-decision.mmd:3:31
 hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -992,6 +1056,10 @@ at test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5
     |     ^^^
 hint: Remove this end or add a subgraph above.
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -1068,6 +1136,10 @@ at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14
 hint: Example: subgraph API [API Layer]
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1139,6 +1211,10 @@ at test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11
   2 |     A --> B
 hint: Try 'TD' (top-down) or 'LR' (left-to-right).
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>

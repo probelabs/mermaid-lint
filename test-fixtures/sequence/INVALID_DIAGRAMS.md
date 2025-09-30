@@ -89,6 +89,10 @@ at test-fixtures/sequence/invalid/alias-unclosed-quote.mmd:2:24
 hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -160,6 +164,10 @@ hint: Use the proper branch for 'alt' or close it with 'end'.
   end
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -226,6 +234,10 @@ at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
 hint: Example: par … and … end (parallel branches).
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -289,6 +301,17 @@ at test-fixtures/sequence/invalid/autonumber-extraneous.mmd:2:20
 hint: Example:
   autonumber 10 10
   participant A
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  autonumber 10 10 
+                   participant A
+  A->B: ok
+
+
 ```
 
 <details>
@@ -355,6 +378,10 @@ at test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
 hint: Use numbers: autonumber 10 or autonumber 10 10 (start and step).
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -419,6 +446,19 @@ at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
   5 |   A->B: hi
   6 |   end  ← insert 'end' here
 hint: Add 'end' on a new line after the block contents.
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  box Aqua Group
+    participant A
+    participant B
+  A->B: hi
+  end
+
+
 ```
 
 <details>
@@ -488,6 +528,10 @@ hint: Examples:
   create actor D as Donald
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -549,6 +593,10 @@ at test-fixtures/sequence/invalid/create-missing-name.mmd:2:21
   3 |   A->B: hi
 hint: Use: create participant A  or  create actor B
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -617,6 +665,19 @@ hint: Replace with: option <label>
   option Retry
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  critical Do critical
+    A->B: try
+  option Should not use else in critical
+    A->B: nope
+  end
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -681,6 +742,10 @@ at test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
   3 |   participant A
 hint: Use: destroy participant A  or  destroy actor B
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -747,6 +812,10 @@ at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
 hint: Use: alt Condition … else … end
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -811,6 +880,17 @@ at test-fixtures/sequence/invalid/missing-colon.mmd:4:9
 hint: Use: A->>B: Message text
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  participant A
+  participant B
+  A->>B : Message text without colon
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -873,6 +953,17 @@ at test-fixtures/sequence/invalid/note-malformed.mmd:3:19
     |                   ^^^^^^^
   4 |   A->B: ok
 hint: Example: Note right of Alice: Hello
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  participant A
+  Note right of A : Missing colon
+  A->B: ok
+
+
 ```
 
 <details>
@@ -946,6 +1037,10 @@ hint: Use the proper branch for 'par' or close it with 'end'.
   end
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1015,6 +1110,10 @@ hint: Start a critical section:
   end
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1058,6 +1157,10 @@ at test-fixtures/sequence/invalid/participant-double-in-double.mmd:2:29
   3 |   L->>L: hi
 hint: Example: participant "Logger &quot;debug&quot;" as L
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -1119,6 +1222,16 @@ at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:31
 hint: Example: participant "Logger &quot;debug&quot;" as L
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  participant "Logger &quot;debug&quot;quot;" as L
+  L->>L: hi
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -1162,6 +1275,10 @@ at test-fixtures/sequence/invalid/participant-unclosed-quote.mmd:2:15
   3 |   A->B: hi
 hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -1228,6 +1345,10 @@ at test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
 hint: Add a block above (e.g., par … end | alt … end) or remove this end.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1291,6 +1412,10 @@ at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4
   5 | 
 hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>

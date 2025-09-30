@@ -68,6 +68,10 @@ at test-fixtures/pie/invalid/colon-only.mmd:2:3
 hint: Example: "Dogs" : 10
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -113,6 +117,10 @@ at test-fixtures/pie/invalid/double-in-double.mmd:2:15
   3 | 
 hint: Example: "He said &quot;Hi&quot;" : 1
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
@@ -172,6 +180,15 @@ at test-fixtures/pie/invalid/escaped-quotes.mmd:2:17
 hint: Example: "He said &quot;Hi&quot;" : 1
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+pie
+  "He said &quot;Hi&quot;quot;" : 1
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -217,6 +234,10 @@ at test-fixtures/pie/invalid/invalid-header.mmd:1:1
 hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -261,6 +282,15 @@ at test-fixtures/pie/invalid/missing-colon.mmd:3:10
     |          ^^
   4 | 
 hint: Use: "Label" : 10
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+pie
+  title "Pets"
+  "Dogs"  : 10
+
 ```
 
 <details>
@@ -309,6 +339,10 @@ at test-fixtures/pie/invalid/missing-label.mmd:2:3
 hint: Example: "Dogs" : 10
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -355,6 +389,10 @@ at test-fixtures/pie/invalid/missing-number.mmd:2:11
 hint: Use a number like 10 or 42.5
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
 <details>
 <summary>View source code</summary>
 
@@ -399,6 +437,10 @@ at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
   3 | 
 hint: Close the quote: "Dogs" : 10
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
 
 <details>
 <summary>View source code</summary>
