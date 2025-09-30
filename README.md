@@ -174,6 +174,85 @@ npx maid --strict diagram.mmd
 
 In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRED`. Use double quotes and `&quot;` for inner quotes.
 
+## Scanning Markdown and Directories
+
+Maid validates:
+- Standalone Mermaid files (`.mmd`, `.mermaid`).
+- Markdown files with one or more Mermaid code fences (```mermaid, ```mmd, or ~~~mermaid).
+- Entire directories (recursively), finding Markdown/Mermaid files and validating all embedded diagrams.
+
+Behavior
+- Keeps precise line/column positions relative to the original Markdown file by offsetting diagnostics from each fenced block.
+- “No Mermaid diagrams found” is considered success (exit code 0). Text mode prints a short note; JSON includes `diagramCount: 0`.
+- Exit code is 1 only when errors are present. Warnings do not fail.
+
+### CLI Options
+
+- `--format`, `-f` text|json
+  - text: human-readable snippets with carets (default)
+  - json: machine-readable output for CI/editors
+- `--strict`, `-s`
+  - Require quoted labels inside shapes; emits `FL-STRICT-LABEL-QUOTES-REQUIRED` when violated.
+- Directory scan flags:
+  - `--include`, `-I` Glob(s) to include (repeatable or comma‑separated)
+  - `--exclude`, `-E` Glob(s) to exclude (repeatable or comma‑separated)
+  - `--no-gitignore` Do not respect `.gitignore` (default is to respect it)
+
+Examples
+
+```bash
+# Validate Markdown containing multiple diagrams
+npx maid README.md
+
+# Lint all docs, respecting .gitignore
+npx maid docs/
+
+# Only Markdown/Mermaid under docs/content
+npx maid docs/ -I "docs/content/**/*.md,docs/content/**/*.mmd"
+
+# Exclude legacy docs and any *.draft.md files
+npx maid docs/ -E "docs/legacy/**" -E "**/*.draft.md"
+
+# Disable .gitignore filtering
+npx maid docs/ --no-gitignore
+
+# JSON report for CI
+npx maid --format json docs/
+```
+
+### JSON Output
+
+Single file (diagram or Markdown):
+
+```json
+{
+  "file": "README.md",
+  "valid": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "diagramCount": 1,
+  "errors": [
+    { "line": 12, "column": 3, "severity": "error", "code": "SE-AND-OUTSIDE-PAR", "message": "…" }
+  ],
+  "warnings": []
+}
+```
+
+Directory scan:
+
+```json
+{
+  "valid": false,
+  "errorCount": 2,
+  "warningCount": 1,
+  "diagramCount": 5,
+  "files": [
+    { "file": "docs/good.md", "valid": true,  "errorCount": 0, "warningCount": 0, "errors": [], "warnings": [] },
+    { "file": "docs/bad.md",  "valid": false, "errorCount": 2, "warningCount": 1, "errors": [ … ], "warnings": [ … ] }
+  ]
+}
+```
+
 ## CI/CD Integration
 
 ### GitHub Actions
