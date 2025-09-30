@@ -28,9 +28,30 @@ npx -y @probelabs/maid README.md
 npx -y @probelabs/maid docs/
 ```
 
+### SDK Quick Example
+
+Use Maid programmatically (ESM). See docs/SDK.md for more.
+
+```js
+import { validate, fixText } from '@probelabs/maid';
+
+const src = 'flowchart TD\nA->B';
+const { errors } = validate(src);
+if (errors.length) {
+  const { fixed } = fixText(src, { level: 'safe' });
+  console.log(fixed);
+}
+```
+
 Exit codes
 - 0: no errors (including when no Mermaid diagrams are found)
 - 1: at least one error (warnings do not fail)
+
+## Using as an SDK
+
+Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public API lives at the package root export. See docs/SDK.md for complete examples.
+
+For detailed examples (ESM, CommonJS, TypeScript) and API surface, see docs/SDK.md.
 
 ### Autofix in a nutshell
 
@@ -81,6 +102,8 @@ npx -y @probelabs/maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
 - Flowchart (`flowchart`, `graph`)
 - Sequence (`sequenceDiagram`)
 - Pie (`pie`)
+
+Note: Other Mermaid diagram types (e.g., `classDiagram`, `stateDiagram-v2`, `gantt`, etc.) are treated as valid (pass‑through) by Maid. They won’t fail your CI. We’ll add native validation over time.
 
 ## What It Catches
 
@@ -394,6 +417,10 @@ Directory scan:
 ```
 
 ## CI/CD Integration
+
+### SDK Details
+
+Looking for programmatic usage? The full SDK guide (examples, exports, and tips) is in docs/SDK.md. The top of this README includes a short SDK Quick Example for convenience.
 
 ### GitHub Actions
 
