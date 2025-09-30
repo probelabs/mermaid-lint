@@ -167,6 +167,26 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
+  private checkDoubleInDoubleQuoted(contentNodes: CstNode[] | undefined) {
+    if (!contentNodes) return;
+    for (const cn of contentNodes) {
+      const ch: any = (cn as any).children || {};
+      const qs: IToken[] = ch.QuotedString || [];
+      if (qs.length >= 2) {
+        const q2 = qs[1];
+        this.ctx.errors.push({
+          line: q2.startLine ?? 1,
+          column: q2.startColumn ?? 1,
+          severity: 'error',
+          code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
+          message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
+          hint: 'Example: A["He said &quot;Hi&quot;"]',
+          length: 1
+        });
+      }
+    }
+  }
+
   private warnParensInUnquoted(contentNodes: CstNode[] | undefined) {
     if (!contentNodes) return;
     for (const cn of contentNodes) {

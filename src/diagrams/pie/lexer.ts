@@ -7,8 +7,8 @@ export const ShowDataKeyword = createToken({ name: 'ShowDataKeyword', pattern: /
 
 export const Colon = createToken({ name: 'Colon', pattern: /:/ });
 export const NumberLiteral = createToken({ name: 'NumberLiteral', pattern: /-?[0-9]+(\.[0-9]+)?/ });
-export const QuotedString = createToken({ name: 'QuotedString', pattern: /"[^"]*"|'[^']*'/ });
-
+// Allow escaped characters within quotes (e.g., \" inside "...")
+export const QuotedString = createToken({ name: 'QuotedString', pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/ });
 // Less greedy text for labels and titles (no colon, pipe, angle, brackets)
 // Text: fallback for labels/titles; avoid greed by placing AFTER WhiteSpace and keywords
 export const Text = createToken({ name: 'Text', pattern: /[^:\n\r]+/ });

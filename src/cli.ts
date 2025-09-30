@@ -11,6 +11,20 @@ import { computeFixes } from './core/fixes.js';
 import { applyEdits } from './core/edits.js';
 import type { FixLevel } from './core/types.js';
 
+function autoFixMultipass(text: string, strict: boolean, level: FixLevel): { fixed: string; errors: ValidationError[] } {
+    let current = text;
+    for (let i = 0; i < 5; i++) {
+        const res = validate(current, { strict });
+        const edits = computeFixes(current, res.errors, level);
+        if (edits.length === 0) return { fixed: current, errors: res.errors };
+        const next = applyEdits(current, edits);
+        if (next === current) return { fixed: current, errors: res.errors };
+        current = next;
+    }
+    const finalRes = validate(current, { strict });
+    return { fixed: current, errors: finalRes.errors };
+}
+
 // Main CLI execution
 function printUsage() {
     console.log('Usage: maid <file>');
@@ -134,7 +148,7 @@ async function main() {
         }
         if (a === '--no-gitignore') { useGitignore = false; continue; }
         if (a === '--gitignore') { useGitignore = true; continue; }
-        if (!a.startsWith('-')) positionals.push(a);
+        if (a === '-' || !a.startsWith('-')) positionals.push(a);
     }
     const target = positionals[0] || args[0];
     // Directory mode
@@ -156,27 +170,20 @@ async function main() {
                 // Optionally fix each block and reassemble file
                 if (fixLevel) {
                     const lines = content.split(/\r?\n/);
-                    // We’ll rebuild the file by replacing block contents
+                    // Rebuild by replacing each block with its multipass-fixed content
                     let accLines = [...lines];
-                    let delta = 0; // line offset adjustments when content length changes
                     for (const b of blocks) {
-                        const { errors: blockErrors } = validate(b.content, { strict });
-                        const edits = computeFixes(b.content, blockErrors, fixLevel);
-                        if (edits.length > 0) {
-                            const fixedBlock = applyEdits(b.content, edits);
-                            // Replace lines [startLine-1, endLine-2] inclusive with fixed lines
-                            const startIdx = (b.startLine - 1) - 1 + 1; // convert 1-based line to zero-based index of content line
-                            const endIdx = (b.endLine - 1) - 1; // last content line index
-                            // The above math: startLine is first content line, so index = startLine-1; endLine is closing fence line number; content ends at endLine-2; we used endIdx accordingly.
+                        const { fixed: fixedBlock } = autoFixMultipass(b.content, strict, fixLevel);
+                        if (fixedBlock !== b.content) {
                             const realStart = b.startLine - 1;
                             const realEnd = b.endLine - 2;
                             const before = accLines.slice(0, realStart);
                             const after = accLines.slice(realEnd + 1);
                             const fixedLines = fixedBlock.split('\n');
                             accLines = before.concat(fixedLines, after);
-                            newContent = accLines.join('\n');
                         }
                     }
+                    newContent = accLines.join('\n');
                     if (newContent !== null && !dryRun) {
                         fs.writeFileSync(file, newContent, 'utf8');
                         modifiedCount++;
@@ -199,16 +206,9 @@ async function main() {
                 if (kind !== 'unknown') {
                     diagramCount++;
                     if (fixLevel) {
-                        const res = validate(content, { strict });
-                        const edits = computeFixes(content, res.errors, fixLevel);
-                        if (edits.length > 0) {
-                            const fixed = applyEdits(content, edits);
-                            if (!dryRun) { fs.writeFileSync(file, fixed, 'utf8'); modifiedCount++; }
-                            const res2 = validate(fixed, { strict });
-                            errs = res2.errors;
-                        } else {
-                            errs = res.errors;
-                        }
+                        const { fixed, errors: afterErrs } = autoFixMultipass(content, strict, fixLevel);
+                        if (fixed !== content && !dryRun) { fs.writeFileSync(file, fixed, 'utf8'); modifiedCount++; }
+                        errs = afterErrs;
                     } else {
                         const res = validate(content, { strict });
                         errs = res.errors;
@@ -265,14 +265,12 @@ async function main() {
     if (blocks.length > 0) {
         diagramsFound = true;
         if (fixLevel) {
-            // Fix each block and reconstruct
+            // Fix each block (multipass) and reconstruct
             const lines = content.split(/\r?\n/);
             let accLines = [...lines];
             for (const b of blocks) {
-                const { errors: blockErrors } = validate(b.content, { strict });
-                const edits = computeFixes(b.content, blockErrors, fixLevel);
-                if (edits.length > 0) {
-                    const fixedBlock = applyEdits(b.content, edits);
+                const { fixed: fixedBlock } = autoFixMultipass(b.content, strict, fixLevel);
+                if (fixedBlock !== b.content) {
                     const realStart = b.startLine - 1;
                     const realEnd = b.endLine - 2;
                     const before = accLines.slice(0, realStart);
@@ -308,17 +306,10 @@ async function main() {
         if (kind !== 'unknown') {
             diagramsFound = true;
             if (fixLevel) {
-                const res = validate(content, { strict });
-                const edits = computeFixes(content, res.errors, fixLevel);
-                if (edits.length > 0) {
-                    const fixed = applyEdits(content, edits);
-                    if (!dryRun && filename !== '<stdin>') fs.writeFileSync(filename, fixed, 'utf8');
-                    if (printFixed || filename === '<stdin>') process.stdout.write(fixed);
-                    const res2 = validate(fixed, { strict });
-                    errors = res2.errors;
-                } else {
-                    errors = res.errors;
-                }
+                const { fixed, errors: afterErrs } = autoFixMultipass(content, strict, fixLevel);
+                if (!dryRun && filename !== '<stdin>') fs.writeFileSync(filename, fixed, 'utf8');
+                if (printFixed || filename === '<stdin>') process.stdout.write(fixed);
+                errors = afterErrs;
             } else {
                 const res = validate(content, { strict });
                 errors = res.errors;

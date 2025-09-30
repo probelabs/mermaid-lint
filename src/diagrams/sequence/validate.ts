@@ -29,14 +29,14 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
         if (!byLine.has(ln)) byLine.set(ln, []);
         byLine.get(ln)!.push(tk);
       }
-      errs.push(
-        ...detectDoubleInDouble(tokList, {
+      const escapedLines = new Set(errs.map(e => e.line));
+      const dbl = detectDoubleInDouble(tokList, {
           code: 'SE-LABEL-DOUBLE-IN-DOUBLE',
           message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.',
           hint: 'Example: participant "Logger &quot;debug&quot;" as L',
           scopeEndTokenNames: ['Newline']
-        })
-      );
+        }).filter(e => !escapedLines.has(e.line));
+      errs.push(...dbl);
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {

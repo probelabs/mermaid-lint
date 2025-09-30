@@ -9,7 +9,12 @@ function is(code: string, e: ValidationError) { return e.code === code; }
 export function computeFixes(text: string, errors: ValidationError[], level: FixLevel = 'safe'): TextEditLC[] {
   const edits: TextEditLC[] = [];
   const patchedLines = new Set<number>();
+  const seen = new Set<string>();
+  const piQuoteClosedLines = new Set<number>();
   for (const e of errors) {
+    const key = `${e.code}@${e.line}:${e.column}:${e.length ?? 1}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
     // Flowchart fixes
     if (is('FL-ARROW-INVALID', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
@@ -335,10 +340,13 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     }
     if (is('PI-QUOTE-UNCLOSED', e)) {
       if (level === 'all') {
+        if (piQuoteClosedLines.has(e.line)) continue;
         const lineText = lineTextAt(text, e.line);
         const colon = lineText.indexOf(':');
-        const insertCol = colon > 0 ? colon + 1 : (lineText.length + 1);
+        // Insert the closing quote immediately before the first colon, or at EOL if no colon.
+        const insertCol = colon > 0 ? (colon + 1) : (lineText.length + 1);
         edits.push(insertAt(text, { line: e.line, column: insertCol }, '"'));
+        piQuoteClosedLines.add(e.line);
       }
       continue;
     }
