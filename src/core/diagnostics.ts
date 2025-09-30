@@ -292,6 +292,40 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     }
   }
 
+  // Missing 'end' inside a block (alt/opt/loop/par/rect/critical/break/box)
+  const blockRules: Array<{ rule: string; label: string }> = [
+    { rule: 'altBlock', label: 'alt' },
+    { rule: 'optBlock', label: 'opt' },
+    { rule: 'loopBlock', label: 'loop' },
+    { rule: 'parBlock', label: 'par' },
+    { rule: 'rectBlock', label: 'rect' },
+    { rule: 'criticalBlock', label: 'critical' },
+    { rule: 'breakBlock', label: 'break' },
+    { rule: 'boxBlock', label: 'box' },
+  ];
+  if (err.name === 'MismatchedTokenException' && exp('EndKeyword')) {
+    const blk = blockRules.find(b => isInRule(err, b.rule));
+    if (blk) {
+      // Place caret at end of previous non-empty line if current is blank
+      const lines = text.split(/\r?\n/);
+      let caretLine = line;
+      // Walk up to the nearest non-empty line to anchor the caret meaningfully
+      while (caretLine > 1 && (lines[caretLine - 1] ?? '').trim() === '') {
+        caretLine--;
+      }
+      const caretCol = Math.max(1, ((lines[caretLine - 1] ?? '').length + 1));
+      return {
+        line: caretLine,
+        column: caretCol,
+        severity: 'error',
+        code: 'SE-BLOCK-MISSING-END',
+        message: `Missing 'end' to close a '${blk.label}' block.`,
+        hint: "Add 'end' on a new line after the block contents.",
+        length: 1
+      };
+    }
+  }
+
   // Block control keywords outside blocks
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'ElseKeyword') {
     return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Start with: alt Condition ... else ... end', length: len };
@@ -311,7 +345,7 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     }
     // Participant/actor where a number or newline is expected
     if (tokType === 'ParticipantKeyword' || tokType === 'ActorKeyword') {
-      return { line, column, severity: 'error', code: 'SE-AUTONUMBER-EXTRANEOUS', message: "Unexpected token after 'autonumber'. Put 'autonumber' on its own line.", hint: 'Example: autonumber 10 10\nparticipant A', length: len };
+      return { line, column, severity: 'error', code: 'SE-AUTONUMBER-EXTRANEOUS', message: "Unexpected token after 'autonumber'. Put 'autonumber' on its own line.", hint: 'Example:\nautonumber 10 10\nparticipant A', length: len };
     }
     if (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException' || err.name === 'NotAllInputParsedException') {
       return { line, column, severity: 'error', code: 'SE-AUTONUMBER-MALFORMED', message: 'Malformed autonumber statement.', hint: 'Use: autonumber | autonumber off | autonumber 10 10', length: len };
@@ -319,8 +353,13 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   }
 
   // Create/destroy malformed
-  if (inRule('createStmt') && err.name === 'MismatchedTokenException') {
-    return { line, column, severity: 'error', code: 'SE-CREATE-MALFORMED', message: 'Malformed create statement. Use: create [participant|actor] ID', hint: 'Example: create participant B', length: len };
+  if (inRule('createStmt') && (err.name === 'MismatchedTokenException' || err.name === 'NoViableAltException')) {
+    return {
+      line, column, severity: 'error', code: 'SE-CREATE-MALFORMED',
+      message: "After 'create', specify 'participant' or 'actor' before the name.",
+      hint: "Examples:\ncreate participant B\ncreate actor D as Donald",
+      length: len
+    };
   }
   if (inRule('destroyStmt') && err.name === 'MismatchedTokenException') {
     return { line, column, severity: 'error', code: 'SE-DESTROY-MALFORMED', message: 'Malformed destroy statement. Use: destroy [participant|actor] ID', hint: 'Example: destroy actor A', length: len };

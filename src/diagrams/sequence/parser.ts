@@ -121,6 +121,10 @@ export class SequenceParser extends CstParser {
       { ALT: () => this.CONSUME(t.ActorKeyword) },
     ]);
     this.SUBRULE(this.actorRef);
+    this.OPTION(() => {
+      this.CONSUME(t.AsKeyword);
+      this.OPTION2(() => this.SUBRULE(this.lineRemainder));
+    });
     this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
   });
 

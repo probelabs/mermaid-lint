@@ -17,17 +17,66 @@ export function textReport(filename: string, content: string, errors: Validation
     lines.push(`${kindColor}${code ? code : ''}: ${e.message}`);
     lines.push(`at ${filename}:${e.line}:${e.column}`);
     const allLines = content.split(/\r?\n/);
+    const total = allLines.length;
+    const numWidth = String(total).length;
+    const fmtNum = (n: number) => String(n).padStart(numWidth, ' ');
     const idx = Math.max(0, Math.min(allLines.length - 1, e.line - 1));
     const prev = idx > 0 ? allLines[idx - 1] : undefined;
     const text = allLines[idx] ?? '';
     const next = idx + 1 < allLines.length ? allLines[idx + 1] : undefined;
-    if (typeof prev === 'string') lines.push(`  ${prev}`);
-    lines.push(`  ${text}`);
-    const caretPad = ' '.repeat(Math.max(0, e.column - 1));
-    const caretLen = Math.max(1, e.length ?? 1);
-    lines.push(`  ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m`);
-    if (typeof next === 'string') lines.push(`  ${next}`);
-    if (e.hint) lines.push(`hint: ${e.hint}`);
+
+    // Special snippet for missing 'end' in blocks: include the block header line
+    if (e.code === 'SE-BLOCK-MISSING-END') {
+      // Find nearest block header upwards
+      const headerRe = /^(?:\s*)(alt|opt|loop|par|rect|critical|break|box)\b/i;
+      let headerIdx = -1;
+      for (let i = idx; i >= 0 && i >= idx - 100; i--) {
+        if (headerRe.test(allLines[i] ?? '')) { headerIdx = i; break; }
+      }
+      const blockMatch = /Missing 'end' to close a '([^']+)' block\./.exec(e.message || '');
+      const blockName = (blockMatch && blockMatch[1]) ? blockMatch[1] : 'block';
+      if (headerIdx >= 0) {
+        const headerNo = headerIdx + 1;
+        lines.push(`  ${fmtNum(headerNo)} | ${allLines[headerIdx]}  \x1b[2m\u2190 start of '${blockName}'\x1b[0m`);
+        if (headerIdx < idx - 1) {
+          const from = headerNo + 1;
+          const to = (idx); // line before caret line
+          if (to >= from) {
+            lines.push(`  ${' '.repeat(numWidth)} | \u2026 (lines ${from}\u2013${to})`);
+          } else {
+            lines.push(`  ${' '.repeat(numWidth)} | \u2026`);
+          }
+        }
+      } else if (typeof prev === 'string') {
+        const prevNo = idx; // previous line number
+        lines.push(`  ${fmtNum(prevNo)} | ${prev}`);
+      }
+      const lineNo = idx + 1;
+      lines.push(`  ${fmtNum(lineNo)} | ${text}`);
+      const caretPad = ' '.repeat(Math.max(0, e.column - 1));
+      const caretLen = Math.max(1, e.length ?? 1);
+      lines.push(`  ${' '.repeat(numWidth)} | ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m \x1b[2madd 'end' here\x1b[0m`);
+      // Skip printing next to keep the snippet tight and focused
+    } else {
+      if (typeof prev === 'string') lines.push(`  ${fmtNum(e.line - 1)} | ${prev}`);
+      lines.push(`  ${fmtNum(e.line)} | ${text}`);
+      const caretPad = ' '.repeat(Math.max(0, e.column - 1));
+      const caretLen = Math.max(1, e.length ?? 1);
+      lines.push(`  ${' '.repeat(numWidth)} | ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m`);
+      if (typeof next === 'string') lines.push(`  ${fmtNum(e.line + 1)} | ${next}`);
+    }
+    if (e.hint) {
+      const hintLines = String(e.hint).split(/\r?\n/);
+      if (hintLines.length === 1) {
+        lines.push(`hint: ${hintLines[0]}`);
+      } else {
+        // Print first line after 'hint:', then indent subsequent lines
+        lines.push(`hint: ${hintLines[0]}`);
+        for (let i = 1; i < hintLines.length; i++) {
+          lines.push(`  ${hintLines[i]}`);
+        }
+      }
+    }
     lines.push('');
   };
 

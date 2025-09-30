@@ -175,6 +175,11 @@ Tip: quoting inside labels
   - Message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box)."
   - Hint: "Remove this end or start a block above."
 
+- SE-BLOCK-MISSING-END
+  - When: A block (`alt`, `opt`, `loop`, `par`, `rect`, `critical`, `break`, or `box`) is not closed with `end`.
+  - Message: "Missing 'end' to close a '<block>' block."
+  - Hint: "Add 'end' on a new line after the block contents."
+
 - SE-HINT-PAR-BLOCK-SUGGEST (warning)
   - When: The file contains `and` but no `par`.
   - Message: "Found 'and' but no 'par' block in the file."
