@@ -271,10 +271,81 @@ Directory scan:
 
 ### GitHub Actions
 
+Validate entire docs directory on every push/PR (Node 22.x):
+
 ```yaml
-- name: Validate Mermaid Diagrams
-  run: |
-    npx -y @probelabs/maid docs/
+name: Lint Mermaid Diagrams
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+      - name: Lint docs/
+        run: npx -y @probelabs/maid docs/
+```
+
+Only lint files changed in a pull request:
+
+```yaml
+name: Lint Changed Mermaid Files
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-changed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+      - name: Get changed Mermaid/Markdown files
+        id: changed
+        run: |
+          set -e
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.sha }}"
+          files=$(git diff --name-only --diff-filter=ACMR "$base"..."$head" -- \
+            "**/*.md" "**/*.markdown" "**/*.mdx" "**/*.mmd" "**/*.mermaid")
+          if [ -z "$files" ]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+          else
+            # Space-separated list suitable for shell for-loop
+            echo "files=$files" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Lint changed files
+        if: steps.changed.outputs.files != ''
+        run: |
+          # Install locally for faster repeated invocations
+          npm i -D @probelabs/maid
+          failed=0
+          for f in ${{ steps.changed.outputs.files }}; do
+            echo "Linting $f"
+            npx maid "$f" || failed=1
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "Linting failed for one or more files" >&2
+            exit 1
+          fi
+      - name: No Mermaid files changed
+        if: steps.changed.outputs.files == ''
+        run: echo "No changed Mermaid/Markdown files. Skipping."
 ```
 
 ### Pre-commit Hook
