@@ -182,6 +182,32 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       continue;
     }
+    if (is('SE-LABEL-DOUBLE-IN-DOUBLE', e)) {
+      // Safer targeted fix for participant/actor lines: replace inner quotes within the outer name quotes
+      const lineText = lineTextAt(text, e.line);
+      const ts = lineText.trimStart();
+      if (/^(participant|actor)\b/.test(ts)) {
+        const kwIdx = lineText.indexOf('participant');
+        const kwIdx2 = kwIdx === -1 ? lineText.indexOf('actor') : kwIdx;
+        const startSearch = kwIdx2 >= 0 ? kwIdx2 : 0;
+        const q1 = lineText.indexOf('"', startSearch);
+        if (q1 !== -1) {
+          // If ' as ' exists after q1, close at the last quote before ' as '; else use last quote in line
+          const asIdx = lineText.indexOf(' as ', q1 + 1);
+          const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+          if (q2 > q1) {
+            const inner = lineText.slice(q1 + 1, q2);
+            const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+            if (replaced !== inner) {
+              const start = { line: e.line, column: q1 + 2 };
+              const end = { line: e.line, column: q2 + 1 };
+              edits.push({ start, end, newText: replaced });
+            }
+          }
+        }
+      }
+      continue;
+    }
     if (is('SE-QUOTE-UNCLOSED', e)) {
       if (level === 'all') {
         const lineText = lineTextAt(text, e.line);

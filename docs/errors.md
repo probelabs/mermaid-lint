@@ -50,7 +50,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | SE-CREATE-MISSING-NAME | None | No change. |
 | SE-DESTROY-MISSING-NAME | None | No change. |
 | SE-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` in names/labels. |
-| SE-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
+| SE-LABEL-DOUBLE-IN-DOUBLE | Safe | Replace inner `"` with `&quot;` inside participant/actor names (keeps outer quotes). |
 | SE-QUOTE-UNCLOSED | All | Close the quote at end of the line. |
 
 ## Flowchart (FL-*)

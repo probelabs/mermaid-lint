@@ -85,6 +85,7 @@ const cases = [
   { name: 'SE-NOTE-MALFORMED', before: 'sequenceDiagram\nNote right of A Hello\n', after: 'sequenceDiagram\nNote right of A : Hello\n' },
   { name: 'SE-ELSE-IN-CRITICAL', before: 'sequenceDiagram\ncritical Do\n  else Not allowed\nend\n', after: 'sequenceDiagram\ncritical Do\n  option Not allowed\nend\n' },
   { name: 'SE-BLOCK-MISSING-END', before: 'sequenceDiagram\npar Do work\n  A->B: hi\n', afterLevel: 'safe' },
+  { name: 'SE-LABEL-DOUBLE-IN-DOUBLE', before: 'sequenceDiagram\n  participant "Logger "debug"" as L\n  L->>L: hi\n', after: 'sequenceDiagram\n  participant "Logger &quot;debug&quot;" as L\n  L->>L: hi\n' },
   {
     name: 'SE-BLOCK-MISSING-END (box/insert before outdented)',
     before: 'sequenceDiagram\n  box Aqua Group\n    participant A\n    participant B\n  A->B: hi\n',
