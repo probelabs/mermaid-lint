@@ -124,6 +124,16 @@ const cases = [
     before: 'flowchart LR\n  A(["quoted\\" text"])\n',
     after:  'flowchart LR\n  A(["quoted&quot; text"])\n'
   },
+  {
+    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (parallelogram)',
+    before: 'flowchart LR\n  P[/Calls logger.debug("msg")/]\n',
+    after:  'flowchart LR\n  P[/Calls logger.debug(&quot;msg&quot;)/]\n'
+  },
+  {
+    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (trapezoid)',
+    before: 'flowchart LR\n  T[\\Calls logger.debug("msg")/]\n',
+    after:  'flowchart LR\n  T[\\Calls logger.debug(&quot;msg&quot;)/]\n'
+  },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },
   // Sequence

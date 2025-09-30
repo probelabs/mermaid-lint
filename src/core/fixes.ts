@@ -8,6 +8,7 @@ function is(code: string, e: ValidationError) { return e.code === code; }
 
 export function computeFixes(text: string, errors: ValidationError[], level: FixLevel = 'safe'): TextEditLC[] {
   const edits: TextEditLC[] = [];
+  const patchedLines = new Set<number>();
   for (const e of errors) {
     // Flowchart fixes
     if (is('FL-ARROW-INVALID', e)) {
@@ -175,13 +176,30 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         if (sqOpen !== -1 && sqClose !== -1 && sqClose > sqOpen) {
           const innerSeg = lineText.slice(sqOpen + 1, sqClose);
           if (innerSeg.includes('"')) {
-            const replaced = innerSeg.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
-            const newInner = '"' + replaced + '"';
+            const ltrim = innerSeg.match(/^\s*/)?.[0] ?? '';
+            const rtrim = innerSeg.match(/\s*$/)?.[0] ?? '';
+            const core = innerSeg.slice(ltrim.length, innerSeg.length - rtrim.length);
+            const left = core.slice(0, 1);
+            const right = core.slice(-1);
+            const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
+            let newInner: string;
+            if (core.length >= 2 && isSlashPair(left, right)) {
+              const mid = core.slice(1, -1);
+              const replacedMid = mid.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+              newInner = ltrim + left + replacedMid + right + rtrim;
+            } else {
+              const replaced = innerSeg.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+              newInner = '"' + replaced + '"';
+            }
             edits.push({ start: { line: e.line, column: sqOpen + 2 }, end: { line: e.line, column: sqClose + 1 }, newText: newInner });
+            patchedLines.add(e.line);
             continue;
           }
         }
         // Fallback: determine opener shape before caret and replace current closer token with the right closer
+        if (patchedLines.has(e.line)) {
+          continue;
+        }
         const opens = [
           { open: '{{', close: '}}', idx: lineText.lastIndexOf('{{', caret0), len: 2 },
           { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), len: 2 },
@@ -264,9 +282,23 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           const closeIdx = lineText.indexOf(opened.close, Math.max(caret0, contentStart));
           if (closeIdx !== -1) {
             const inner = lineText.slice(contentStart, closeIdx);
-            // Avoid double-encoding existing &quot;
-            const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
-            const newInner = '"' + replaced + '"';
+            // Preserve [/.../], [\...\], [/...\], [\.../] by wrapping the middle portion only
+            const ltrim = inner.match(/^\s*/)?.[0] ?? '';
+            const rtrim = inner.match(/\s*$/)?.[0] ?? '';
+            const core = inner.slice(ltrim.length, inner.length - rtrim.length);
+            const left = core.slice(0, 1);
+            const right = core.slice(-1);
+            const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
+            let newInner: string;
+            if (core.length >= 2 && isSlashPair(left, right)) {
+              const mid = core.slice(1, -1);
+              const replacedMid = mid.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+              newInner = ltrim + left + '"' + replacedMid + '"' + right + rtrim;
+            } else {
+              // Regular case: wrap whole label content
+              const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+              newInner = '"' + replaced + '"';
+            }
             edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
           }
         }

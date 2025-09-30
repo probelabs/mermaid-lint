@@ -36,6 +36,11 @@ jobs:
         echo "Running error-code assertions for flowchart, pie, sequence..."
         npm run test:errors:all
 
+    - name: Autofix tests (safe and all)
+      run: |
+        echo "Running autofix suite (safe + heuristic checks)..."
+        node scripts/test-fixes.js
+
     - name: Markdown multi-diagram test
       run: |
         echo "Verifying Markdown extraction and line offsets..."

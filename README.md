@@ -102,6 +102,7 @@ Commands
 - Run baseline tests: `npm test`
 - Error‑code assertions (all types): `npm run test:errors:all`
 - Autofix smoke tests: `node scripts/test-fixes.js`
+  - CI runs these automatically on every PR/commit.
 - Markdown extraction and offsets: `npm run test:markdown`
 - Directory scan behavior: `npm run test:dir`
 - Compare with mermaid‑cli (non‑blocking): `node scripts/compare-linters.js flowchart|pie|sequence`
