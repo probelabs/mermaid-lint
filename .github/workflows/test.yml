@@ -31,10 +31,15 @@ jobs:
     - name: Build TypeScript
       run: npm run build
     
-    - name: Run linter tests
+    - name: Run linter tests (flowchart baseline)
       run: |
         echo "Running linter tests on flowchart diagrams..."
         npm test
+
+    - name: Error code tests (all types)
+      run: |
+        echo "Running error-code assertions for flowchart, pie, sequence..."
+        npm run test:errors:all
     
     - name: Test individual valid diagrams
       run: |
@@ -68,19 +73,35 @@ jobs:
           fi
         done
     
-    - name: Compare with mermaid-cli (optional)
+    - name: Compare with mermaid-cli (flowchart)
       continue-on-error: true
       run: |
-        echo "Comparing with official mermaid-cli..."
+        echo "Comparing with official mermaid-cli (flowchart)..."
         node scripts/compare-linters.js flowchart || echo "Comparison completed with differences"
+
+    - name: Compare with mermaid-cli (pie)
+      continue-on-error: true
+      run: |
+        echo "Comparing with official mermaid-cli (pie)..."
+        node scripts/compare-linters.js pie || echo "Comparison completed with differences"
+
+    - name: Compare with mermaid-cli (sequence)
+      continue-on-error: true
+      run: |
+        echo "Comparing with official mermaid-cli (sequence)..."
+        node scripts/compare-linters.js sequence || echo "Comparison completed with differences"
     
     - name: Summary
       if: always()
       run: |
         echo "## Test Summary"
         echo "- Node version: ${{ matrix.node-version }}"
-        echo "- Valid fixtures: $(ls -1 test-fixtures/flowchart/valid/*.mmd | wc -l)"
-        echo "- Invalid fixtures: $(ls -1 test-fixtures/flowchart/invalid/*.mmd | wc -l)"
+        echo "- Flowchart valid:  $(ls -1 test-fixtures/flowchart/valid/*.mmd | wc -l)"
+        echo "- Flowchart invalid:$(ls -1 test-fixtures/flowchart/invalid/*.mmd | wc -l)"
+        echo "- Pie valid:        $(ls -1 test-fixtures/pie/valid/*.mmd | wc -l)"
+        echo "- Pie invalid:      $(ls -1 test-fixtures/pie/invalid/*.mmd | wc -l)"
+        echo "- Sequence valid:   $(ls -1 test-fixtures/sequence/valid/*.mmd | wc -l)"
+        echo "- Sequence invalid: $(ls -1 test-fixtures/sequence/invalid/*.mmd | wc -l)"
 
   lint:
     runs-on: ubuntu-latest

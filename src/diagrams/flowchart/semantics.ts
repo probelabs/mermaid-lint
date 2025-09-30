@@ -85,9 +85,10 @@ class FlowSemanticsVisitor extends BaseVisitor {
         line: openTok.startLine ?? 1,
         column: openTok.startColumn ?? 1,
         severity: 'error',
-        message: 'Empty node content is not allowed. Add a label inside the shape.',
+        message: 'Empty label inside a shape.',
         code: 'FL-NODE-EMPTY',
-        hint: 'Put some text inside [], (), {}, etc. For example: A[Start]'
+        hint:
+          'Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.'
       });
       return;
     }
@@ -107,9 +108,10 @@ class FlowSemanticsVisitor extends BaseVisitor {
             line: q.startLine ?? 1,
             column: q.startColumn ?? 1,
             severity: 'error',
-            message: 'Empty node content is not allowed. Label cannot be just empty quotes.',
+            message: 'Empty label inside a shape (only empty quotes/whitespace).',
             code: 'FL-NODE-EMPTY',
-            hint: 'Use non-empty quoted text, e.g. "Start" or remove the quotes.'
+            hint:
+              'Provide non-empty text, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.'
           });
         }
       }

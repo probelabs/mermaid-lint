@@ -22,15 +22,17 @@ This file contains invalid flowchart test fixtures with:
 11. [Quotes Double Inside Single](#11-quotes-double-inside-single)
 12. [Special Chars](#12-special-chars)
 13. [Unclosed Bracket](#13-unclosed-bracket)
-14. [Unmatched End](#14-unmatched-end)
-15. [Unquoted Label With Quotes](#15-unquoted-label-with-quotes)
-16. [Wrong Direction](#16-wrong-direction)
+14. [Unclosed Quote In Label](#14-unclosed-quote-in-label)
+15. [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision)
+16. [Unmatched End](#16-unmatched-end)
+17. [Unquoted Label With Quotes](#17-unquoted-label-with-quotes)
+18. [Wrong Direction](#18-wrong-direction)
 
 ---
 
 ## Summary
 
-| # | Diagram | mermaid-cli | mermaid-lint |
+| # | Diagram | mermaid-cli | maid |
 |---:|---|:---:|:---:|
 | 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID |
 | 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID |
@@ -45,9 +47,11 @@ This file contains invalid flowchart test fixtures with:
 | 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID |
 | 12 | [Special Chars](#12-special-chars) | INVALID | INVALID |
 | 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID |
-| 14 | [Unmatched End](#14-unmatched-end) | INVALID | INVALID |
-| 15 | [Unquoted Label With Quotes](#15-unquoted-label-with-quotes) | INVALID | INVALID |
-| 16 | [Wrong Direction](#16-wrong-direction) | INVALID | INVALID |
+| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID |
+| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID |
+| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID |
+| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID |
+| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID |
 
 ---
 
@@ -67,7 +71,7 @@ flowchart TD
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: VALID
+### maid Result: VALID
 
 <details>
 <summary>View source code</summary>
@@ -113,32 +117,31 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-EMPTY]: Empty node content is not allowed. Label cannot be just empty quotes.
-  [2m┌─ test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7[0m
-  [2m│[0m
-  2 │     A[""] --> B[" "]
-  [2m│[0m       [31m^[0m
-  [2m│[0m
-  help: Use non-empty quoted text, e.g. "Start" or remove the quotes.
+error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
+at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7
+  1 | flowchart TD
+  2 |     A[""] --> B[" "]
+    |       ^
+  3 |     B --> C[]
+hint: Provide non-empty text, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 
-[31merror[0m[FL-NODE-EMPTY]: Empty node content is not allowed. Label cannot be just empty quotes.
-  [2m┌─ test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17[0m
-  [2m│[0m
-  2 │     A[""] --> B[" "]
-  [2m│[0m                 [31m^[0m
-  [2m│[0m
-  help: Use non-empty quoted text, e.g. "Start" or remove the quotes.
+error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
+at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17
+  1 | flowchart TD
+  2 |     A[""] --> B[" "]
+    |                 ^
+  3 |     B --> C[]
+hint: Provide non-empty text, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 
-[31merror[0m[FL-NODE-EMPTY]: Empty node content is not allowed. Add a label inside the shape.
-  [2m┌─ test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12[0m
-  [2m│[0m
-  3 │     B --> C[]
-  [2m│[0m            [31m^[0m
-  [2m│[0m
-  help: Put some text inside [], (), {}, etc. For example: A[Start]
+error[FL-NODE-EMPTY]: Empty label inside a shape.
+at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
+  2 |     A[""] --> B[" "]
+  3 |     B --> C[]
+    |            ^
+hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 ```
 
 <details>
@@ -168,8 +171,8 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
     end
-
 
 ```
 
@@ -193,16 +196,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-UNCLOSED-BRACKET]: Unclosed '{'. Add a matching '}'.
-  [2m┌─ test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:30[0m
-  [2m│[0m
-  6 │         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
-  [2m│[0m                              [31m^[0m
-  [2m│[0m
-  help: Example: C{Decision}
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
+  5 |         B -- No --> C[Continue with other auth methods]
+  6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+    |                            ^^
+  7 |         B -- Yes --> E{"Is "Driver" configured?"}
+hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
 ```
 
 <details>
@@ -215,8 +218,8 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
     end
-
 
 ```
 </details>
@@ -259,16 +262,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-ARROW-INVALID]: Invalid arrow syntax: -> (use --> instead)
-  [2m┌─ test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7[0m
-  [2m│[0m
-  2 │     A -> B
-  [2m│[0m       [31m^^[0m
-  [2m│[0m
-  help: Replace -> with -->, or use -- text --> for inline labels.
+error[FL-ARROW-INVALID]: Invalid arrow syntax: -> (use --> instead)
+at test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7
+  1 | flowchart TD
+  2 |     A -> B
+    |       ^^
+  3 |     B --> C
+hint: Replace -> with -->, or use -- text --> for inline labels.
 ```
 
 <details>
@@ -319,16 +322,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-CLASS-MALFORMED]: Invalid class statement. Provide node id(s) then a class name.
-  [2m┌─ test-fixtures/flowchart/invalid/invalid-class.mmd:3:12[0m
-  [2m│[0m
-  3 │     class A
-  [2m│[0m            [31m^[0m
-  [2m│[0m
-  help: Example: class A,B important
+error[FL-CLASS-MALFORMED]: Invalid class statement. Provide node id(s) then a class name.
+at test-fixtures/flowchart/invalid/invalid-class.mmd:3:12
+  2 |     A --> B
+  3 |     class A
+    |            ^
+hint: Example: class A,B important
 ```
 
 <details>
@@ -379,16 +381,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-UNCLOSED-BRACKET]: Unclosed '(( '. Add a matching '))'.
-  [2m┌─ test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9[0m
-  [2m│[0m
-  2 │     A(( --> B
-  [2m│[0m         [31m^^[0m
-  [2m│[0m
-  help: Example: A((Circle))
+error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '(( '. Add a matching '))'.
+at test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9
+  1 | flowchart TD
+  2 |     A(( --> B
+    |         ^^
+  3 |     B --> C
+hint: Example: A((Circle))
 ```
 
 <details>
@@ -437,16 +439,16 @@ FlowDB.addSubGraph (node_modules/mermaid/dist/mermaid.js:45974:26)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
-  [2m┌─ test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13[0m
-  [2m│[0m
-  2 │     subgraph
-  [2m│[0m             [31m^[0m
-  [2m│[0m
-  help: Example: subgraph API [API Layer]
+error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
+at test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13
+  1 | flowchart TD
+  2 |     subgraph
+    |             ^
+  3 |         A --> B
+hint: Example: subgraph API [API Layer]
 ```
 
 <details>
@@ -497,16 +499,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-LINK-MISSING]: Two nodes on one line must be connected with an arrow before 'B'.
-  [2m┌─ test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7[0m
-  [2m│[0m
-  2 │     A B
-  [2m│[0m       [31m^[0m
-  [2m│[0m
-  help: Insert --> between nodes, e.g., A --> B.
+error[FL-LINK-MISSING]: Two nodes on one line must be connected with an arrow before 'B'.
+at test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7
+  1 | flowchart TD
+  2 |     A B
+    |       ^
+hint: Insert --> between nodes, e.g., A --> B.
 ```
 
 <details>
@@ -556,16 +557,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-MIXED-BRACKETS]: Mismatched brackets: opened '(' but closed with ']'.
-  [2m┌─ test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23[0m
-  [2m│[0m
-  2 │     A[Text] --> B(Text]
-  [2m│[0m                       [31m^[0m
-  [2m│[0m
-  help: Close with ')' or change the opening bracket to '['.
+error[FL-NODE-MIXED-BRACKETS]: Mismatched brackets: opened '(' but closed with ']'.
+at test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23
+  1 | flowchart LR
+  2 |     A[Text] --> B(Text]
+    |                       ^
+  3 |     B --> C
+hint: Close with ')' or change the opening bracket to '['.
 ```
 
 <details>
@@ -613,16 +614,15 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
     at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", or "pie"
-  [2m┌─ test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1[0m
-  [2m│[0m
-  1 │ A --> B
-  [2m│[0m [31m^[0m
-  [2m│[0m
-  help: Start your diagram with e.g. "flowchart TD" or "pie".
+error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
+at test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1
+  1 | A --> B
+    | ^
+  2 | B --> C
+hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
 <details>
@@ -671,16 +671,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
-  [2m┌─ test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5[0m
-  [2m│[0m
-  2 │   A['She said "Hello"'] --> B
-  [2m│[0m     [31m^[0m
-  [2m│[0m
-  help: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
+error[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
+at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5
+  1 | flowchart LR
+  2 |   A['She said "Hello"'] --> B
+    |     ^
+  3 | 
+hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
 ```
 
 <details>
@@ -735,16 +735,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
-  [2m┌─ test-fixtures/flowchart/invalid/special-chars.mmd:2:44[0m
-  [2m│[0m
-  2 │     A["Node with quotes"] --> B["Another \"quoted\" node"]
-  [2m│[0m                                            [31m^[0m
-  [2m│[0m
-  help: Example: A[Label] --> B
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/flowchart/invalid/special-chars.mmd:2:42
+  1 | flowchart LR
+  2 |     A["Node with quotes"] --> B["Another \"quoted\" node"]
+    |                                          ^^
+  3 |     B --> C[Node with #35; special &amp; chars]
+hint: Prefer "He said &quot;Hi&quot;".
 ```
 
 <details>
@@ -798,16 +798,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
-  [2m┌─ test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13[0m
-  [2m│[0m
-  2 │     A[Start --> B
-  [2m│[0m             [31m^[0m
-  [2m│[0m
-  help: Example: A[Label] --> B
+error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
+at test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13
+  1 | flowchart LR
+  2 |     A[Start --> B
+    |             ^
+  3 |     B --> C
+hint: Example: A[Label] --> B
 ```
 
 <details>
@@ -822,7 +822,131 @@ flowchart LR
 
 ---
 
-## 14. Unmatched End
+## 14. Unclosed Quote In Label
+
+📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+  A["Unclosed label]
+  A --> B
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 6:
+... label]  A --> B
+-------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got '1'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[FL-QUOTE-UNCLOSED]: Unclosed quote in node label.
+at test-fixtures/flowchart/invalid/unclosed-quote-in-label.mmd:2:5
+  1 | flowchart TD
+  2 |   A["Unclosed label]
+    |     ^
+  3 |   A --> B
+hint: Close the quote: A["Label"]
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  A["Unclosed label]
+  A --> B
+
+
+```
+</details>
+
+---
+
+## 15. Unescaped Quotes In Decision
+
+📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is "Driver" configured?"}
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 3:
+...s --> C{"Is "Driver" configured?"}
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.
+at test-fixtures/flowchart/invalid/unescaped-quotes-in-decision.mmd:3:31
+  2 |     A[Start] --> B{Custom Auth Enabled?}
+  3 |     B -- Yes --> C{"Is "Driver" configured?"}
+    |                               ^
+  4 | 
+hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is "Driver" configured?"}
+
+
+```
+</details>
+
+---
+
+## 16. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -858,16 +982,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-END-WITHOUT-SUBGRAPH]: 'end' without a matching 'subgraph'.
-  [2m┌─ test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5[0m
-  [2m│[0m
-  3 │     end
-  [2m│[0m     [31m^^^[0m
-  [2m│[0m
-  help: Remove this end or add a subgraph above.
+error[FL-END-WITHOUT-SUBGRAPH]: 'end' without a matching 'subgraph'.
+at test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5
+  2 |     A --> B
+  3 |     end
+    |     ^^^
+hint: Remove this end or add a subgraph above.
 ```
 
 <details>
@@ -882,7 +1005,7 @@ flowchart TD
 
 ---
 
-## 15. Unquoted Label With Quotes
+## 17. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -933,16 +1056,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
-  [2m┌─ test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14[0m
-  [2m│[0m
-   6 │     subgraph "Runtime Execution"
-  [2m│[0m              [31m^^^^^^^^^^^^^^^^^^^[0m
-  [2m│[0m
-  help: Example: subgraph API [API Layer]
+error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
+at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14
+   5 |     
+   6 |     subgraph "Runtime Execution"
+     |              ^^^^^^^^^^^^^^^^^^^
+   7 |         E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
+hint: Example: subgraph API [API Layer]
 ```
 
 <details>
@@ -972,7 +1095,7 @@ flowchart TD
 
 ---
 
-## 16. Wrong Direction
+## 18. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
@@ -1006,16 +1129,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[FL-DIR-INVALID]: Invalid direction 'XY'. Use one of: TD, TB, BT, RL, LR.
-  [2m┌─ test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11[0m
-  [2m│[0m
-  1 │ flowchart XY
-  [2m│[0m           [31m^^[0m
-  [2m│[0m
-  help: Try 'TD' (top-down) or 'LR' (left-to-right).
+error[FL-DIR-INVALID]: Invalid direction 'XY'. Use one of: TD, TB, BT, RL, LR.
+at test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11
+  1 | flowchart XY
+    |           ^^
+  2 |     A --> B
+hint: Try 'TD' (top-down) or 'LR' (left-to-right).
 ```
 
 <details>

@@ -1,4 +1,4 @@
-# mermaid-lint Error Codes
+# Maid Error Codes
 
 Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error includes a stable code and an optional hint.
 
@@ -15,9 +15,9 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
     ```
 
 - FL-NODE-EMPTY
-  - When: Node shape has empty content, e.g. `[]`, `('')`, `(" ")`.
-  - Message: "Empty node content is not allowed. Add a label inside the shape."
-  - Hint: "Put some text inside [], (), {}, etc. For example: A[Start]"
+  - When: Node shape has empty content, e.g., `[]`, `('')`, `(" ")`.
+  - Message: "Empty label inside a shape."
+  - Hint: "Write non-empty text inside the brackets, e.g., A[\"Start\"] or A[Start]. If you want no label, omit the brackets and just use A."
   - Example:
     ```mermaid
     flowchart LR
@@ -42,6 +42,16 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
     ```mermaid
     flowchart LR
       A["She said &quot;Hello&quot;"] --> B
+    ```
+
+- FL-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted label contains another double quote.
+  - Message: "Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes."
+  - Hint: "Example: D{\"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?\"}"
+  - Example (fixed):
+    ```mermaid
+    flowchart TD
+      D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
     ```
 
 - FL-LABEL-QUOTE-IN-UNQUOTED
@@ -84,6 +94,11 @@ Tip: quoting inside labels
   - Message: "Mismatched brackets: opened '(' but closed with ']'."
   - Hint: "Close with ')' or change the opening bracket to '['."
 
+- FL-QUOTE-UNCLOSED
+  - When: A node label starts a quote but does not close it.
+  - Message: "Unclosed quote in node label."
+  - Hint: "Close the quote: A[\"Label\"]"
+
 - FL-CLASS-MALFORMED
   - When: `class` statement is missing node ids or the class name.
   - Message: "Invalid class statement. Provide node id(s) then a class name."
@@ -121,6 +136,16 @@ Tip: quoting inside labels
   - Message: "Unclosed quote in slice label."
   - Hint: "Close the quote: \"Dogs\" : 10"
 
+- PI-LABEL-ESCAPED-QUOTE
+  - When: A slice label contains backslash-escaped double quotes (\"). Mermaid does not support `\"`.
+  - Message: "Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead."
+  - Hint: "Example: \"He said &quot;Hi&quot;\" : 1"
+
+- PI-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted slice label contains another double quote.
+  - Message: "Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes."
+  - Hint: "Example: \"He said &quot;Hi&quot;\" : 1"
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID
@@ -137,3 +162,115 @@ Tip: quoting inside labels
   - When: Strict mode is enabled and a node label is not quoted.
   - Message: "Strict mode: Node label must be quoted (use double quotes and &quot; inside)."
   - Hint: "Example: A[\"Label with &quot;quotes&quot; and (parens)\"]"
+
+## Sequence (SE-*)
+
+- SE-HEADER-MISSING
+  - When: File does not start with `sequenceDiagram`.
+  - Message: "Missing 'sequenceDiagram' header."
+  - Hint: "Start with: sequenceDiagram"
+
+- SE-MSG-COLON-MISSING
+  - When: A message line lacks a `:` before the message text.
+  - Message: "Missing colon after target actor in message."
+  - Hint: "Use: A->>B: Message text"
+
+- SE-ARROW-INVALID
+  - When: Unknown or malformed arrow token in a message.
+  - Message: "Invalid sequence arrow near 'X'."
+  - Hint: "Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>"
+
+- SE-NOTE-MALFORMED
+  - When: A note statement is incomplete or missing the colon.
+  - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
+
+- SE-QUOTE-UNCLOSED
+  - When: A participant/actor name or alias starts a quote but does not close it.
+  - Message: "Unclosed quote in participant/actor name."
+  - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
+
+- SE-LABEL-ESCAPED-QUOTE
+  - When: Participant/actor names, aliases, or block labels contain backslash-escaped quotes (\"). Mermaid does not support `\"`.
+  - Message: "Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead."
+  - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
+
+- SE-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted participant/actor name or label contains another double quote.
+  - Message: "Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes."
+  - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
+  - Hint: "Examples: Note right of Alice: Hi | Note over A,B: Hello"
+
+- SE-QUOTE-UNCLOSED
+  - When: A participant/actor name or alias starts a quote but does not close it.
+  - Message: "Unclosed quote in participant/actor name."
+  - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
+
+- SE-ELSE-OUTSIDE-ALT
+  - When: `else` appears outside an `alt` block.
+  - Message: "'else' is only allowed inside 'alt' blocks."
+  - Hint: "Use: alt Condition … else … end"
+
+- SE-AND-OUTSIDE-PAR
+  - When: `and` appears outside a `par` block.
+  - Message: "'and' is only allowed inside 'par' blocks."
+  - Hint: "Example: par … and … end (parallel branches)."
+
+- SE-END-WITHOUT-BLOCK
+  - When: `end` appears with no open block.
+  - Message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box)."
+  - Hint: "Remove this end or start a block above."
+
+- SE-BLOCK-MISSING-END
+  - When: A block (`alt`, `opt`, `loop`, `par`, `rect`, `critical`, `break`, or `box`) is not closed with `end`.
+  - Message: "Missing 'end' to close a '<block>' block."
+  - Hint: "Add 'end' on a new line after the block contents."
+
+- SE-ELSE-IN-CRITICAL
+  - When: `else` appears inside a `critical` block (invalid; use `option`).
+  - Message: "'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'."
+  - Hint: "Replace with: option <label>  Example: option Retry"
+
+- SE-HINT-PAR-BLOCK-SUGGEST (warning)
+  - When: The file contains `and` but no `par`.
+  - Message: "Found 'and' but no 'par' block in the file."
+  - Hint: "Start a parallel section with: par … and … end"
+
+- SE-HINT-ALT-BLOCK-SUGGEST (warning)
+  - When: The file contains `else` but no `alt`.
+  - Message: "Found 'else' but no 'alt' block in the file."
+  - Hint: "Use: alt Condition … else … end"
+
+- SE-AUTONUMBER-MALFORMED
+  - When: `autonumber` has an invalid form.
+  - Message: "Malformed autonumber statement."
+  - Hint: "Use: autonumber | autonumber off | autonumber 10 10"
+
+- SE-AUTONUMBER-NON-NUMERIC
+  - When: A non-numeric value is used for start/step (e.g., `autonumber 10 ten`).
+  - Message: "Autonumber values must be numbers. Found 'X'."
+  - Hint: "Use numbers: autonumber 10 or autonumber 10 10 (start and step)."
+
+- SE-AUTONUMBER-EXTRANEOUS
+  - When: Extra tokens appear after `autonumber` on the same line (e.g., a participant declaration).
+  - Message: "Unexpected token after 'autonumber'. Put 'autonumber' on its own line."
+  - Hint: "Example: autonumber 10 10\nparticipant A"
+
+- SE-CREATE-MALFORMED
+  - When: `create` is missing the target or has invalid syntax.
+  - Message: "Malformed create statement. Use: create [participant|actor] ID"
+  - Hint: "Example: create participant B"
+
+- SE-DESTROY-MALFORMED
+  - When: `destroy` is missing the target or has invalid syntax.
+  - Message: "After 'destroy', specify 'participant' or 'actor' and a name."
+  - Hint: "Examples: destroy participant A  |  destroy actor B"
+
+- SE-DESTROY-MISSING-NAME
+  - When: `destroy` ends without a participant/actor name.
+  - Message: "Missing name after 'destroy'."
+  - Hint: "Use: destroy participant A  or  destroy actor B"
+
+- SE-CREATE-MISSING-NAME
+  - When: `create` ends without a participant/actor name.
+  - Message: "Missing name after 'create'."
+  - Hint: "Use: create participant A  or  create actor B"

@@ -10,24 +10,28 @@ This file contains invalid pie test fixtures with:
 ## Table of Contents
 
 1. [Colon Only](#1-colon-only)
-2. [Invalid Header](#2-invalid-header)
-3. [Missing Colon](#3-missing-colon)
-4. [Missing Label](#4-missing-label)
-5. [Missing Number](#5-missing-number)
-6. [Unclosed Quote](#6-unclosed-quote)
+2. [Double In Double](#2-double-in-double)
+3. [Escaped Quotes](#3-escaped-quotes)
+4. [Invalid Header](#4-invalid-header)
+5. [Missing Colon](#5-missing-colon)
+6. [Missing Label](#6-missing-label)
+7. [Missing Number](#7-missing-number)
+8. [Unclosed Quote](#8-unclosed-quote)
 
 ---
 
 ## Summary
 
-| # | Diagram | mermaid-cli | mermaid-lint |
+| # | Diagram | mermaid-cli | maid |
 |---:|---|:---:|:---:|
 | 1 | [Colon Only](#1-colon-only) | INVALID | INVALID |
-| 2 | [Invalid Header](#2-invalid-header) | INVALID | INVALID |
-| 3 | [Missing Colon](#3-missing-colon) | INVALID | INVALID |
-| 4 | [Missing Label](#4-missing-label) | INVALID | INVALID |
-| 5 | [Missing Number](#5-missing-number) | INVALID | INVALID |
-| 6 | [Unclosed Quote](#6-unclosed-quote) | INVALID | INVALID |
+| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID |
+| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | INVALID |
+| 4 | [Invalid Header](#4-invalid-header) | INVALID | INVALID |
+| 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID |
+| 6 | [Missing Label](#6-missing-label) | INVALID | INVALID |
+| 7 | [Missing Number](#7-missing-number) | INVALID | INVALID |
+| 8 | [Unclosed Quote](#8-unclosed-quote) | INVALID | INVALID |
 
 ---
 
@@ -52,16 +56,16 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
-  [2m┌─ test-fixtures/pie/invalid/colon-only.mmd:2:3[0m
-  [2m│[0m
-  2 │   :
-  [2m│[0m   [31m^[0m
-  [2m│[0m
-  help: Example: "Dogs" : 10
+error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
+at test-fixtures/pie/invalid/colon-only.mmd:2:3
+  1 | pie
+  2 |   :
+    |   ^
+  3 | 
+hint: Example: "Dogs" : 10
 ```
 
 <details>
@@ -77,7 +81,111 @@ pie
 
 ---
 
-## 2. Invalid Header
+## 2. Double In Double
+
+📄 **Source**: [`double-in-double.mmd`](./invalid/double-in-double.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+pie
+  "He said "Hi"" : 1
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Syntax error in text
+```
+
+### maid Result: INVALID
+
+```
+error[PI-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.
+at test-fixtures/pie/invalid/double-in-double.mmd:2:15
+  1 | pie
+  2 |   "He said "Hi"" : 1
+    |               ^
+  3 | 
+hint: Example: "He said &quot;Hi&quot;" : 1
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie
+  "He said "Hi"" : 1
+
+
+```
+</details>
+
+---
+
+## 3. Escaped Quotes
+
+📄 **Source**: [`escaped-quotes.mmd`](./invalid/escaped-quotes.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+pie
+  "He said \"Hi\"" : 1
+
+
+```
+
+### mermaid-cli Result: VALID
+
+### maid Result: INVALID
+
+```
+error[PI-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/pie/invalid/escaped-quotes.mmd:2:12
+  1 | pie
+  2 |   "He said \"Hi\"" : 1
+    |            ^^
+  3 | 
+hint: Example: "He said &quot;Hi&quot;" : 1
+
+error[PI-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/pie/invalid/escaped-quotes.mmd:2:16
+  1 | pie
+  2 |   "He said \"Hi\"" : 1
+    |                ^^
+  3 | 
+hint: Example: "He said &quot;Hi&quot;" : 1
+
+error[PI-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.
+at test-fixtures/pie/invalid/escaped-quotes.mmd:2:17
+  1 | pie
+  2 |   "He said \"Hi\"" : 1
+    |                 ^
+  3 | 
+hint: Example: "He said &quot;Hi&quot;" : 1
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+pie
+  "He said \"Hi\"" : 1
+
+
+```
+</details>
+
+---
+
+## 4. Invalid Header
 
 📄 **Source**: [`invalid-header.mmd`](./invalid/invalid-header.mmd)
 
@@ -98,16 +206,15 @@ piee
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", or "pie"
-  [2m┌─ test-fixtures/pie/invalid/invalid-header.mmd:1:1[0m
-  [2m│[0m
-  1 │ piee
-  [2m│[0m [31m^[0m
-  [2m│[0m
-  help: Start your diagram with e.g. "flowchart TD" or "pie".
+error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
+at test-fixtures/pie/invalid/invalid-header.mmd:1:1
+  1 | piee
+    | ^
+  2 |   "Dogs" : 10
+hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
 <details>
@@ -123,7 +230,7 @@ piee
 
 ---
 
-## 3. Missing Colon
+## 5. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -144,16 +251,16 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[PI-MISSING-COLON]: Missing colon between slice label and value.
-  [2m┌─ test-fixtures/pie/invalid/missing-colon.mmd:3:10[0m
-  [2m│[0m
-  3 │   "Dogs" 10
-  [2m│[0m          [31m^^[0m
-  [2m│[0m
-  help: Use: "Label" : 10
+error[PI-MISSING-COLON]: Missing colon between slice label and value.
+at test-fixtures/pie/invalid/missing-colon.mmd:3:10
+  2 |   title "Pets"
+  3 |   "Dogs" 10
+    |          ^^
+  4 | 
+hint: Use: "Label" : 10
 ```
 
 <details>
@@ -169,7 +276,7 @@ pie
 
 ---
 
-## 4. Missing Label
+## 6. Missing Label
 
 📄 **Source**: [`missing-label.mmd`](./invalid/missing-label.mmd)
 
@@ -190,16 +297,16 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
-  [2m┌─ test-fixtures/pie/invalid/missing-label.mmd:2:3[0m
-  [2m│[0m
-  2 │   : 10
-  [2m│[0m   [31m^[0m
-  [2m│[0m
-  help: Example: "Dogs" : 10
+error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
+at test-fixtures/pie/invalid/missing-label.mmd:2:3
+  1 | pie
+  2 |   : 10
+    |   ^
+  3 | 
+hint: Example: "Dogs" : 10
 ```
 
 <details>
@@ -215,7 +322,7 @@ pie
 
 ---
 
-## 5. Missing Number
+## 7. Missing Number
 
 📄 **Source**: [`missing-number.mmd`](./invalid/missing-number.mmd)
 
@@ -236,16 +343,16 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[PI-MISSING-NUMBER]: Missing numeric value after colon.
-  [2m┌─ test-fixtures/pie/invalid/missing-number.mmd:2:11[0m
-  [2m│[0m
-  2 │   "Dogs" :
-  [2m│[0m           [31m^[0m
-  [2m│[0m
-  help: Use a number like 10 or 42.5
+error[PI-MISSING-NUMBER]: Missing numeric value after colon.
+at test-fixtures/pie/invalid/missing-number.mmd:2:11
+  1 | pie
+  2 |   "Dogs" :
+    |           ^
+  3 |   "Cats" : 
+hint: Use a number like 10 or 42.5
 ```
 
 <details>
@@ -261,7 +368,7 @@ pie
 
 ---
 
-## 6. Unclosed Quote
+## 8. Unclosed Quote
 
 📄 **Source**: [`unclosed-quote.mmd`](./invalid/unclosed-quote.mmd)
 
@@ -281,16 +388,16 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
-[31merror[0m[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
-  [2m┌─ test-fixtures/pie/invalid/unclosed-quote.mmd:2:3[0m
-  [2m│[0m
-  2 │   "Dogs : 10
-  [2m│[0m   [31m^^^^^^[0m
-  [2m│[0m
-  help: Close the quote: "Dogs" : 10
+error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
+at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
+  1 | pie
+  2 |   "Dogs : 10
+    |   ^
+  3 | 
+hint: Close the quote: "Dogs" : 10
 ```
 
 <details>

@@ -1,0 +1,55 @@
+{
+  "empty-nodes.mmd": [
+    "FL-NODE-EMPTY",
+    "FL-NODE-EMPTY",
+    "FL-NODE-EMPTY"
+  ],
+  "escaped-quotes-in-decision.mmd": [
+    "FL-LABEL-ESCAPED-QUOTE"
+  ],
+  "invalid-arrow.mmd": [
+    "FL-ARROW-INVALID"
+  ],
+  "invalid-class.mmd": [
+    "FL-CLASS-MALFORMED"
+  ],
+  "invalid-node-syntax.mmd": [
+    "FL-NODE-UNCLOSED-BRACKET"
+  ],
+  "invalid-subgraph.mmd": [
+    "FL-SUBGRAPH-MISSING-HEADER"
+  ],
+  "missing-arrow.mmd": [
+    "FL-LINK-MISSING"
+  ],
+  "mixed-brackets.mmd": [
+    "FL-NODE-MIXED-BRACKETS"
+  ],
+  "no-diagram-type.mmd": [
+    "GEN-HEADER-INVALID"
+  ],
+  "quotes-double-inside-single.mmd": [
+    "FL-LABEL-DOUBLE-IN-SINGLE"
+  ],
+  "special-chars.mmd": [
+    "FL-LABEL-ESCAPED-QUOTE"
+  ],
+  "unclosed-bracket.mmd": [
+    "FL-NODE-UNCLOSED-BRACKET"
+  ],
+  "unmatched-end.mmd": [
+    "FL-END-WITHOUT-SUBGRAPH"
+  ],
+  "unquoted-label-with-quotes.mmd": [
+    "FL-SUBGRAPH-MISSING-HEADER"
+  ],
+  "unclosed-quote-in-label.mmd": [
+    "FL-QUOTE-UNCLOSED"
+  ],
+  "unescaped-quotes-in-decision.mmd": [
+    "FL-LABEL-DOUBLE-IN-DOUBLE"
+  ],
+  "wrong-direction.mmd": [
+    "FL-DIR-INVALID"
+  ]
+}

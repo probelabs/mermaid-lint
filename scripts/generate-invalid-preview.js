@@ -72,11 +72,11 @@ function runOurLinter(filepath) {
       cwd: path.resolve(__dirname, '..'),
       timeout: 8000,
     });
-    return { valid: true, message: out.trim() || 'VALID' };
+    return { valid: true, message: stripAnsi(out.trim() || 'VALID') };
   } catch (error) {
     const raw = ((error.stdout || '') + (error.stderr || '')).toString();
     const repoRoot = path.resolve(__dirname, '..');
-    const msg = raw
+    const msg = stripAnsi(raw)
       .replaceAll(repoRoot + '/', '')
       .replaceAll(repoRoot + '\\', '')
       .trim();
@@ -131,7 +131,7 @@ This file contains invalid ${diagramType} test fixtures with:
 
   // Summary matrix
   markdown += `## Summary\n\n`;
-  markdown += `| # | Diagram | mermaid-cli | mermaid-lint |\n|---:|---|:---:|:---:|\n`;
+  markdown += `| # | Diagram | mermaid-cli | maid |\n|---:|---|:---:|:---:|\n`;
   results.forEach(({ file, index, mermaidRes, ourRes }) => {
     const base = file.replace('.mmd', '');
     const name = base.replace(/-/g, ' ');
@@ -185,7 +185,7 @@ This file contains invalid ${diagramType} test fixtures with:
       markdown += `\`\`\`\n${mermaidRes.message}\n\`\`\`\n\n`;
     }
 
-    markdown += `### mermaid-lint Result: ${ourRes.valid ? 'VALID' : 'INVALID'}\n\n`;
+    markdown += `### maid Result: ${ourRes.valid ? 'VALID' : 'INVALID'}\n\n`;
     if (!ourRes.valid) {
       markdown += `\`\`\`\n${ourRes.message}\n\`\`\`\n\n`;
     }
@@ -214,6 +214,13 @@ node scripts/generate-invalid-preview.js ${diagramType}
 `;
   
   return markdown;
+}
+
+// Remove ANSI color codes from strings for clean Markdown output
+function stripAnsi(input) {
+  if (!input) return input;
+  // eslint-disable-next-line no-control-regex
+  return input.replace(/\u001b\[[0-?]*[ -\/]*[@-~]/g, '');
 }
 
 function main() {

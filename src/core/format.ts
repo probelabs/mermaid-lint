@@ -1,7 +1,6 @@
 import type { ValidationError } from './types.js';
-import { codeFrame } from './diagnostics.js';
 
-export type OutputFormat = 'human' | 'json' | 'rust';
+export type OutputFormat = 'text' | 'json';
 
 export function groupErrors(errors: ValidationError[]) {
   const errs = errors.filter(e => e.severity === 'error');
@@ -9,36 +8,83 @@ export function groupErrors(errors: ValidationError[]) {
   return { errs, warns };
 }
 
-export function humanReport(filename: string, content: string, errors: ValidationError[]): string {
+export function textReport(filename: string, content: string, errors: ValidationError[]): string {
   const { errs, warns } = groupErrors(errors);
   const lines: string[] = [];
-  if (errs.length > 0) {
-    lines.push(`Found ${errs.length} error(s) in ${filename}:\n`);
-    for (const error of errs) {
-      const code = error.code ? ` [${error.code}]` : '';
-      lines.push(`\x1b[31merror\x1b[0m: ${filename}:${error.line}:${error.column}${code} - ${error.message}`);
-      if (error.hint) lines.push(`        hint: ${error.hint}`);
-      try {
-        const frame = codeFrame(content, error.line, error.column, Math.max(1, error.length ?? 1));
-        lines.push(frame.split('\n').map(l => '        ' + l).join('\n'));
-      } catch {}
+  const printBlock = (kind: 'error' | 'warning', e: ValidationError) => {
+    const kindColor = kind === 'error' ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarning\x1b[0m';
+    const code = e.code ? `[${e.code}]` : '';
+    lines.push(`${kindColor}${code ? code : ''}: ${e.message}`);
+    lines.push(`at ${filename}:${e.line}:${e.column}`);
+    const allLines = content.split(/\r?\n/);
+    const total = allLines.length;
+    const numWidth = String(total).length;
+    const fmtNum = (n: number) => String(n).padStart(numWidth, ' ');
+    const idx = Math.max(0, Math.min(allLines.length - 1, e.line - 1));
+    const prev = idx > 0 ? allLines[idx - 1] : undefined;
+    const text = allLines[idx] ?? '';
+    const next = idx + 1 < allLines.length ? allLines[idx + 1] : undefined;
+
+    // Special snippet for missing 'end' in blocks: include the block header line
+    if (e.code === 'SE-BLOCK-MISSING-END' || e.code === 'SE-ELSE-IN-CRITICAL') {
+      // Find nearest block header upwards
+      const headerRe = /^(?:\s*)(alt|opt|loop|par|rect|critical|break|box)\b/i;
+      let headerIdx = -1;
+      for (let i = idx; i >= 0 && i >= idx - 100; i--) {
+        if (headerRe.test(allLines[i] ?? '')) { headerIdx = i; break; }
+      }
+      let blockName = 'block';
+      const m1 = /Missing 'end' to close a '([^']+)' block\./.exec(e.message || '');
+      if (m1 && m1[1]) blockName = m1[1];
+      const m2 = /inside a '([^']+)' block/.exec(e.message || '');
+      if (m2 && m2[1]) blockName = m2[1];
+      if (headerIdx >= 0) {
+        const headerNo = headerIdx + 1;
+        lines.push(`  ${fmtNum(headerNo)} | ${allLines[headerIdx]}  \x1b[2m\u2190 start of '${blockName}'\x1b[0m`);
+        if (headerIdx < idx - 1) {
+          lines.push(`  ${' '.repeat(numWidth)} | \u2026`);
+        }
+      } else if (typeof prev === 'string') {
+        const prevNo = idx; // previous line number
+        lines.push(`  ${fmtNum(prevNo)} | ${prev}`);
+      }
+      const lineNo = idx + 1;
+      lines.push(`  ${fmtNum(lineNo)} | ${text}`);
+      // For both cases, show explicit suggested 'end' insertion line.
+      let nextContentIdx = -1;
+      for (let i = idx + 1; i < allLines.length; i++) {
+        if ((allLines[i] ?? '').trim() !== '') { nextContentIdx = i; break; }
+      }
+      const insertionLine = (nextContentIdx >= 0) ? (nextContentIdx + 1) : (lineNo + 1);
+      const indent = (text.match(/^\s*/)?.[0] ?? '');
+      lines.push(`  ${fmtNum(insertionLine)} | ${indent}end  \x1b[2m\u2190 insert 'end' here\x1b[0m`);
+      // Skip printing next to keep the snippet tight and focused
+    } else {
+      if (typeof prev === 'string') lines.push(`  ${fmtNum(e.line - 1)} | ${prev}`);
+      lines.push(`  ${fmtNum(e.line)} | ${text}`);
+      const caretPad = ' '.repeat(Math.max(0, e.column - 1));
+      const caretLen = Math.max(1, e.length ?? 1);
+      lines.push(`  ${' '.repeat(numWidth)} | ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m`);
+      if (typeof next === 'string') lines.push(`  ${fmtNum(e.line + 1)} | ${next}`);
     }
-  }
-  if (warns.length > 0) {
-    lines.push(`\nFound ${warns.length} warning(s) in ${filename}:\n`);
-    for (const w of warns) {
-      const code = w.code ? ` [${w.code}]` : '';
-      lines.push(`\x1b[33mwarning\x1b[0m: ${filename}:${w.line}:${w.column}${code} - ${w.message}`);
-      if (w.hint) lines.push(`        hint: ${w.hint}`);
-      try {
-        const frame = codeFrame(content, w.line, w.column, Math.max(1, w.length ?? 1));
-        lines.push(frame.split('\n').map(l => '        ' + l).join('\n'));
-      } catch {}
+    if (e.hint) {
+      const hintLines = String(e.hint).split(/\r?\n/);
+      if (hintLines.length === 1) {
+        lines.push(`hint: ${hintLines[0]}`);
+      } else {
+        // Print first line after 'hint:', then indent subsequent lines
+        lines.push(`hint: ${hintLines[0]}`);
+        for (let i = 1; i < hintLines.length; i++) {
+          lines.push(`  ${hintLines[i]}`);
+        }
+      }
     }
-  }
-  if (errs.length === 0 && warns.length === 0) {
-    lines.push('Valid');
-  }
+    lines.push('');
+  };
+
+  for (const e of errs) printBlock('error', e);
+  for (const w of warns) printBlock('warning', w);
+  if (errs.length === 0 && warns.length === 0) return 'Valid';
   return lines.join('\n');
 }
 
@@ -54,32 +100,4 @@ export function toJsonResult(filename: string, errors: ValidationError[]) {
   };
 }
 
-export function rustReport(filename: string, content: string, errors: ValidationError[]): string {
-  const { errs, warns } = groupErrors(errors);
-  const lines: string[] = [];
-  const makeBlock = (kind: 'error' | 'warning', e: ValidationError) => {
-    const code = e.code ? `[${e.code}]` : '';
-    const kindColor = kind === 'error' ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarning\x1b[0m';
-    lines.push(`${kindColor}${code ? code : ''}: ${e.message}`);
-    lines.push(`  \x1b[2m┌─ ${filename}:${e.line}:${e.column}\x1b[0m`);
-    const fileLines = content.split(/\r?\n/);
-    const idx = Math.max(0, Math.min(fileLines.length - 1, e.line - 1));
-    const lnNum = String(e.line).padStart(String(fileLines.length).length, ' ');
-    const text = fileLines[idx] ?? '';
-    lines.push(`  \x1b[2m│\x1b[0m`);
-    lines.push(`  ${lnNum} │ ${text}`);
-    const caretPad = ' '.repeat(Math.max(0, e.column - 1));
-    const caretLen = Math.max(1, e.length ?? 1);
-    const carets = '^'.repeat(caretLen);
-    lines.push(`  \x1b[2m│\x1b[0m ${caretPad}\x1b[31m${carets}\x1b[0m`);
-    lines.push(`  \x1b[2m│\x1b[0m`);
-    if (e.hint) lines.push(`  help: ${e.hint}`);
-    lines.push('');
-  };
-
-  for (const e of errs) makeBlock('error', e);
-  for (const w of warns) makeBlock('warning', w);
-
-  if (errs.length === 0 && warns.length === 0) return 'Valid';
-  return lines.join('\n');
-}
+// Single text format for humans; JSON is intended for tooling.

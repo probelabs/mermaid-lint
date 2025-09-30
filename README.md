@@ -1,8 +1,8 @@
-# mermaid-lint
+# Maid
 
 Fast, accurate Mermaid diagram validator with 100% compatibility with mermaid-cli.
 
-## Why mermaid-lint?
+## Why Maid?
 
 Stop pushing broken diagrams to production. This linter catches syntax errors before they break your documentation.
 
@@ -15,13 +15,13 @@ Stop pushing broken diagrams to production. This linter catches syntax errors be
 
 ```bash
 # Install
-npm install -D mermaid-lint
+npm install -D maid
 
 # Validate a diagram
-npx mermaid-lint diagram.mmd
+npx maid diagram.mmd
 
 # Validate from stdin
-cat diagram.mmd | npx mermaid-lint -
+cat diagram.mmd | npx maid -
 
 # Run tests
 npm test
@@ -31,6 +31,7 @@ npm test
 
 - Flowchart (`flowchart`, `graph`)
 - Pie (`pie`)
+- Sequence (`sequenceDiagram`)
 
 ## What It Catches
 
@@ -62,16 +63,17 @@ npm run generate:previews
 ```
 
 ### Test Coverage
-- Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [15 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
+- Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [16 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
 - Pie: [4 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
+- Sequence: [13 valid](./test-fixtures/sequence/VALID_DIAGRAMS.md) • [12 invalid](./test-fixtures/sequence/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
-## Diagram Type Coverage (Mermaid vs mermaid-lint)
+## Diagram Type Coverage (Mermaid vs Maid)
 
 As of 2025-09-29, Mermaid 11.x documents support for the following diagram types. Items marked experimental/beta indicate syntax may change. References: Mermaid docs pages for each diagram type.
 
 - Flowchart — stable. We support now. [Docs]
-- Sequence diagram — stable. Planned. [Docs]
+- Sequence diagram — stable. We support now. [Docs]
 - Class diagram — stable. Planned. [Docs]
 - State diagram — stable. Planned. [Docs]
 - Entity Relationship (ER) — experimental. Planned. [Docs]
@@ -95,24 +97,34 @@ Notes
 
 [Docs]: https://mermaid.js.org/
 
+## Testing / CI
+
+- Baseline tests (flowchart): a fast harness that runs Maid over curated valid/invalid fixtures and expects 100% pass/fail parity with our intended behavior. In CI this step is labeled “Run linter tests (flowchart baseline)”.
+  - Command: `npm test` (runs `scripts/test-chevrotain.js`).
+
+- Error-code assertions (all types): verifies that each invalid fixture surfaces the expected stable error codes across flowchart, pie, and sequence.
+  - Command: `npm run test:errors:all`.
+
+- Compare with mermaid-cli: runs mermaid-cli on all fixtures and checks overall VALID/INVALID parity with Maid. This intentionally prints differences but does not fail the job.
+  - Commands: `node scripts/compare-linters.js flowchart|pie|sequence`.
+
+These layers give confidence in correctness (baseline), diagnostic quality (error codes), and compatibility with the reference renderer (mermaid-cli comparison).
+
 ## Error Codes
 
 Diagnostics include stable error codes and hints for quick fixes. See the full list in [docs/errors.md](./docs/errors.md).
 
 ### CLI Output Formats
 
-- Human (default): caret-underlined snippet style with codes, hints, and precise spans.
+- Text (default): caret-underlined snippet style with codes, hints, and precise spans.
 - JSON: machine-readable report for editors/CI.
 
 ```bash
-# Human (default)
-npx mermaid-lint diagram.mmd
+# Text (default)
+npx maid diagram.mmd
 
 # JSON
-npx mermaid-lint --format json diagram.mmd
-
-# Alias (still works):
-npx mermaid-lint --format rust diagram.mmd   # treated as human
+npx maid --format json diagram.mmd
 ```
 
 ### Strict Mode
@@ -120,7 +132,7 @@ npx mermaid-lint --format rust diagram.mmd   # treated as human
 Enable strict mode to require quoted labels inside shapes (e.g., `[ ... ]`, `{ ... }`, `( ... )`).
 
 ```bash
-npx mermaid-lint --strict diagram.mmd
+npx maid --strict diagram.mmd
 ```
 
 In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRED`. Use double quotes and `&quot;` for inner quotes.
@@ -132,8 +144,8 @@ In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRE
 ```yaml
 - name: Validate Mermaid Diagrams
   run: |
-    npm install -D mermaid-lint
-    find . -name "*.mmd" -exec npx mermaid-lint {} \;
+    npm install -D maid
+    find . -name "*.mmd" -exec npx maid {} \;
 ```
 
 ### Pre-commit Hook
@@ -144,7 +156,7 @@ In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRE
 files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.mmd$')
 if [ -n "$files" ]; then
   for file in $files; do
-    npx mermaid-lint "$file" || exit 1
+    npx maid "$file" || exit 1
   done
 fi
 ```
@@ -185,8 +197,8 @@ Built with modern tooling for reliability and performance:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/mermaid-lint.git
-cd mermaid-lint
+git clone https://github.com/yourusername/maid.git
+cd maid
 
 # Install dependencies
 npm install

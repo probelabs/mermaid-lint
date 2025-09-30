@@ -1,0 +1,12 @@
+sequenceDiagram
+  box LightBlue System A
+    participant A1
+    participant A2
+  end
+  box LightGreen System B
+    participant B1
+    participant B2
+  end
+  A1->>B1: Sync
+  A2-->>B2: Async
+

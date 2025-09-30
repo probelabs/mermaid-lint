@@ -5,6 +5,8 @@ import { analyzeFlowchart } from './semantics.js';
 import type { IToken } from 'chevrotain';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import { coercePos, mapFlowchartParserError } from '../../core/diagnostics.js';
+import { detectDoubleInDouble, detectUnclosedQuotesInText } from '../../core/quoteHygiene.js';
+import { detectEscapedQuotes } from '../../core/quoteHygiene.js';
 
 export function validateFlowchart(text: string, options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
@@ -29,23 +31,36 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       }
       return errs;
     },
-    postParse: (_text, tokens, _cst, prevErrors) => {
-      // Token-level fallback: detect backslash-escaped quotes if not already reported
+    postParse: (text, tokens, _cst, prevErrors) => {
       if (prevErrors.some(e => e.code === 'FL-LABEL-ESCAPED-QUOTE')) return [];
-      for (const tok of tokens as IToken[]) {
-        if (typeof tok.image === 'string' && tok.image.includes('\\"')) {
-          const idx = tok.image.indexOf('\\"');
-          const col = (tok.startColumn ?? 1) + Math.max(0, idx);
-          const { line, column } = coercePos(tok.startLine ?? null, col, 1, 1);
-          return [{
-            line, column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE',
-            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
-            hint: 'Prefer "He said &quot;Hi&quot;".',
-            length: 2
-          }];
-        }
+      const errs = detectEscapedQuotes(tokens as IToken[], {
+        code: 'FL-LABEL-ESCAPED-QUOTE',
+        message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
+        hint: 'Prefer "He said &quot;Hi&quot;".'
+      }).concat(
+        prevErrors.some(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE') ? [] : detectDoubleInDouble(tokens as IToken[], {
+          code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
+          message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
+          hint: 'Example: A["He said &quot;Hi&quot;"]',
+          scopeEndTokenNames: [
+            'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
+          ]
+        })
+      );
+      // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
+      // per-line mismatches as OK as long as the file balances quotes overall).
+      const dblEsc = (text.match(/\\\"/g) || []).length;
+      const dq = (text.match(/\"/g) || []).length - dblEsc;
+      const sq = (text.match(/'/g) || []).length;
+      if ((dq % 2 === 1) || (sq % 2 === 1)) {
+        errs.push(...detectUnclosedQuotesInText(text, {
+          code: 'FL-QUOTE-UNCLOSED',
+          message: 'Unclosed quote in node label.',
+          hint: 'Close the quote: A["Label"]',
+          limitPerFile: 1
+        }));
       }
-      return [];
+      return errs;
     }
   });
 }

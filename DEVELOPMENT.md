@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers all development workflows for the mermaid-lint project.
+This guide covers all development workflows for the Maid project.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ This guide covers all development workflows for the mermaid-lint project.
 ## Architecture Overview
 
 ```
-mermaid-lint/
+maid/
 ├── src/
 │   ├── core/
 │   │   ├── router.ts          # Detects diagram type and routes
@@ -47,8 +47,8 @@ mermaid-lint/
 
 ```bash
 # Clone the repository
-git clone https://github.com/probelabs/mermaid-lint.git
-cd mermaid-lint
+git clone https://github.com/probelabs/maid.git
+cd maid
 
 # Install dependencies
 npm install

@@ -4,5 +4,5 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
     end
-

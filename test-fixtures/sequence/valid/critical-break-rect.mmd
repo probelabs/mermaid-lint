@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant DB
+  participant API
+  rect rgba(200, 200, 255, 0.3)
+    critical Transaction
+      API->>DB: BEGIN
+      option Retry
+        API-->>DB: COMMIT
+    end
+  end
+  break On failure
+    API-x DB: ROLLBACK
+  end
+
