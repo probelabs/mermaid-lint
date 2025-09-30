@@ -82,10 +82,11 @@ async function startServer() {
       {
         name: 'validate_mermaid',
         description:
-          'Validate or fix Mermaid diagram syntax. Accepts raw Mermaid diagram text (e.g., "flowchart TD\\nA-->B") or ' +
-          'Markdown with ```mermaid code blocks. Returns validation results with errors/warnings. ' +
-          'If autofix=true, returns corrected diagram. Supports flowchart, sequence, and pie diagrams. ' +
-          'Use this when users ask to check, validate, lint, or fix Mermaid diagrams.',
+          'Validate and auto-fix Mermaid diagrams before showing them to the user. Always use autofix=true to provide ' +
+          'corrected diagrams proactively. Accepts raw Mermaid diagram text (e.g., "flowchart TD\\nA-->B") or ' +
+          'Markdown with ```mermaid code blocks. Returns validation results with errors/warnings and the fixed diagram. ' +
+          'Supports flowchart, sequence, and pie diagrams. Use this whenever users create, edit, or ask about Mermaid diagrams ' +
+          'to ensure they see error-free, properly formatted diagrams.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -95,7 +96,7 @@ async function startServer() {
             },
             autofix: {
               type: 'boolean',
-              description: 'Set to true to automatically fix syntax errors and return corrected diagram',
+              description: 'Set to true to automatically fix syntax errors and return corrected diagram (recommended: always use true)',
             },
           },
           required: ['text'],
