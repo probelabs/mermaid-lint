@@ -50,7 +50,7 @@ This file contains invalid flowchart test fixtures with:
 | 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
 | 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID | — |
-| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | — |
+| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | ✅ all |
 | 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID | — |
 
 ---
@@ -1238,13 +1238,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
-at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14
-   5 |     
+error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
+at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:7:74
    6 |     subgraph "Runtime Execution"
-     |              ^^^^^^^^^^^^^^^^^^^
    7 |         E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
-hint: Example: subgraph API [API Layer]
+     |                                                                          ^
+   8 |         F --> G{Logger: Is current level DEBUG?};
+hint: Example: A[Label] --> B
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1253,7 +1253,26 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
+    B -- Yes --> C[Configure Logger: Level = DEBUG];
+    B -- No --> D[Configure Logger: Level = INFO];
+    
+    subgraph "Runtime Execution"
+        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
+        F --> G{Logger: Is current level DEBUG?};
+        G -- Yes --> H[Format and write message to stderr];
+        G -- No --> I[Discard message];
+    end
+
+    C --> E;
+    D --> E;
+    H --> J[End];
+    I --> J[End];
+
+
+```
 
 <details>
 <summary>View source code</summary>

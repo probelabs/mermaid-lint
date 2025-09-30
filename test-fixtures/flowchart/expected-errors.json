@@ -41,7 +41,7 @@
     "FL-END-WITHOUT-SUBGRAPH"
   ],
   "unquoted-label-with-quotes.mmd": [
-    "FL-SUBGRAPH-MISSING-HEADER"
+    "FL-NODE-UNCLOSED-BRACKET"
   ],
   "unclosed-quote-in-label.mmd": [
     "FL-QUOTE-UNCLOSED"
