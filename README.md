@@ -151,6 +151,24 @@ Notes
 - Directory scan: validates recursive scanning, include/exclude, .gitignore handling, and exit codes.
   - Command: `npm run test:dir`.
 
+## Releasing
+
+We publish to npm when a Git tag is pushed that matches the package version.
+
+Rules
+- Tags must be in the form `vX.Y.Z`.
+- The tag must match `package.json`'s `version`. CI will fail if they differ.
+
+Steps
+1. Bump the version in `package.json` and commit.
+   - Or use npm to bump and create a tag in one step: `npm version patch|minor|major`.
+2. Push the tag: `git push --follow-tags`.
+3. GitHub Actions (Release workflow) will build, run quick tests, and publish to npm.
+
+Notes
+- The package includes only the compiled `out/` folder, README, and LICENSE.
+- Node.js >= 18 is required (see `engines`).
+
 These layers give confidence in correctness (baseline), diagnostic quality (error codes), and compatibility with the reference renderer (mermaid-cli comparison).
 
 ## Error Codes
