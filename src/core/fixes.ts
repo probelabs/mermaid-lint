@@ -118,6 +118,22 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     }
     if (is('FL-NODE-UNCLOSED-BRACKET', e)) {
       if (level === 'all') {
+        const lineText = lineTextAt(text, e.line);
+        const caret0 = Math.max(0, e.column - 1);
+        // Try a smarter recovery: if there's a '[' before caret and a ']' later, and we see inner quotes,
+        // treat this as unquoted-label-with-quotes and wrap+encode instead of inserting a stray bracket.
+        const openIdx = lineText.lastIndexOf('[', caret0);
+        const closeIdx = lineText.indexOf(']', caret0);
+        if (openIdx !== -1 && closeIdx !== -1 && closeIdx > openIdx) {
+          const innerSeg = lineText.slice(openIdx + 1, closeIdx);
+          if (innerSeg.includes('"')) {
+            const replaced = innerSeg.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+            const newInner = '"' + replaced + '"';
+            edits.push({ start: { line: e.line, column: openIdx + 2 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
+            continue;
+          }
+        }
+        // Fallback: plain closer insertion
         const m = e.message || '';
         let closer = ']';
         if (m.includes("'('")) closer = ')';
@@ -154,7 +170,33 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-        // No flowchart quote-wrapping autofixes (strict/unquoted)
+    // Flowchart: quotes inside unquoted label → wrap whole label content and encode inner quotes (heuristic, --fix=all)
+    if (is('FL-LABEL-QUOTE-IN-UNQUOTED', e)) {
+      if (level === 'all') {
+        const lineText = lineTextAt(text, e.line);
+        const caret0 = Math.max(0, e.column - 1);
+        // Find nearest opener before caret
+        const openPairs: Array<{open:string, close:string, idx:number, delta:number}> = [
+          { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },
+          { open: '((', close: '))', idx: lineText.lastIndexOf('((', caret0), delta: 2 },
+          { open: '{',  close: '}',  idx: lineText.lastIndexOf('{',  caret0), delta: 1 },
+          { open: '[',  close: ']',  idx: lineText.lastIndexOf('[',  caret0), delta: 1 },
+        ];
+        const opened = openPairs.filter(o => o.idx !== -1).sort((a,b)=> a.idx - b.idx).pop();
+        if (opened) {
+          const contentStart = opened.idx + opened.delta;
+          const closeIdx = lineText.indexOf(opened.close, Math.max(caret0, contentStart));
+          if (closeIdx !== -1) {
+            const inner = lineText.slice(contentStart, closeIdx);
+            // Avoid double-encoding existing &quot;
+            const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+            const newInner = '"' + replaced + '"';
+            edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
+          }
+        }
+      }
+      continue;
+    }
 
 
     // Pie fixes

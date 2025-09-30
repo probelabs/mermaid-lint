@@ -68,6 +68,12 @@ const cases = [
     after:  'flowchart TD\n  A[Start] --> B{Custom Auth Enabled?}\n  B -- Yes --> C{"Is &quot;Driver&quot; configured?"}\n'
   },
   {
+    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (all, wrap + encode)',
+    before: 'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];\n',
+    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];\n',
+    afterLevel: 'all'
+  },
+  {
     name: 'FL-QUOTE-UNCLOSED (all)',
     before: 'flowchart TD\n  A["Unclosed label]\n  A --> B\n',
     after:  'flowchart TD\n  A["Unclosed label"]\n  A --> B\n',
