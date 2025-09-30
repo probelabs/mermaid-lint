@@ -85,7 +85,7 @@ const cases = [
   { name: 'SE-NOTE-MALFORMED', before: 'sequenceDiagram\nNote right of A Hello\n', after: 'sequenceDiagram\nNote right of A : Hello\n' },
   { name: 'SE-ELSE-IN-CRITICAL', before: 'sequenceDiagram\ncritical Do\n  else Not allowed\nend\n', after: 'sequenceDiagram\ncritical Do\n  option Not allowed\nend\n' },
   { name: 'SE-BLOCK-MISSING-END', before: 'sequenceDiagram\npar Do work\n  A->B: hi\n', afterLevel: 'safe' },
-  { name: 'SE-AUTONUMBER-EXTRANEOUS', before: 'sequenceDiagram\nautonumber 10 10 participant A\n', afterLevel: 'safe' },
+  { name: 'SE-AUTONUMBER-EXTRANEOUS', before: 'sequenceDiagram\nautonumber 10 10 participant A\n', after: 'sequenceDiagram\nautonumber 10 10\nparticipant A\n' },
   { name: 'SE-AUTONUMBER-MALFORMED (all)', before: 'sequenceDiagram\nautonumber foo bar baz\nA->B: ok\n', afterLevel: 'all' },
   { name: 'SE-QUOTE-UNCLOSED (all)', before: 'sequenceDiagram\nparticipant "Bob\n', afterLevel: 'all' },
   { name: 'SE-LABEL-ESCAPED-QUOTE', before: 'sequenceDiagram\nparticipant "Logger \\"debug\\"" as L\n' },

@@ -130,9 +130,17 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('SE-AUTONUMBER-EXTRANEOUS', e)) {
-      // Place the extraneous token on the next line with same indentation
-      const indent = ' '.repeat(Math.max(0, (e.column - 1)));
-      edits.push(insertAt(text, at(e), `\n${indent}`));
+      // Move the rest of the line (starting at the extraneous token) to the next line.
+      const lineText = lineTextAt(text, e.line);
+      const lineLen = lineText.length;
+      const indent = inferIndentFromLine(lineText); // preserve original line indentation only
+      const startCol = e.column; // 1-based column of the extraneous token
+      // Trim any spaces immediately before the extraneous token to avoid trailing spaces at EOL
+      const left = lineText.slice(0, Math.max(0, startCol - 1));
+      const leftTrimmed = left.replace(/\s+$/, '');
+      const startCol2 = leftTrimmed.length + 1;
+      const tail = lineText.slice(Math.max(0, startCol - 1)).replace(/^\s+/, '');
+      edits.push({ start: { line: e.line, column: startCol2 }, end: { line: e.line, column: lineLen + 1 }, newText: `\n${indent}${tail}` });
       continue;
     }
     if (is('SE-AUTONUMBER-MALFORMED', e) || is('SE-AUTONUMBER-NON-NUMERIC', e)) {
