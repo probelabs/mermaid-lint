@@ -55,12 +55,12 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
-  [2m┌─ test-fixtures/pie/invalid/colon-only.mmd:2:3[0m
-  [2m│[0m
+error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
+  ┌─ test-fixtures/pie/invalid/colon-only.mmd:2:3
+  │
   2 │   :
-  [2m│[0m   [31m^[0m
-  [2m│[0m
+  │   ^
+  │
   help: Example: "Dogs" : 10
 ```
 
@@ -101,12 +101,12 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
-  [2m┌─ test-fixtures/pie/invalid/invalid-header.mmd:1:1[0m
-  [2m│[0m
+error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
+  ┌─ test-fixtures/pie/invalid/invalid-header.mmd:1:1
+  │
   1 │ piee
-  [2m│[0m [31m^[0m
-  [2m│[0m
+  │ ^
+  │
   help: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
 
@@ -147,12 +147,12 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[PI-MISSING-COLON]: Missing colon between slice label and value.
-  [2m┌─ test-fixtures/pie/invalid/missing-colon.mmd:3:10[0m
-  [2m│[0m
+error[PI-MISSING-COLON]: Missing colon between slice label and value.
+  ┌─ test-fixtures/pie/invalid/missing-colon.mmd:3:10
+  │
   3 │   "Dogs" 10
-  [2m│[0m          [31m^^[0m
-  [2m│[0m
+  │          ^^
+  │
   help: Use: "Label" : 10
 ```
 
@@ -193,12 +193,12 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
-  [2m┌─ test-fixtures/pie/invalid/missing-label.mmd:2:3[0m
-  [2m│[0m
+error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
+  ┌─ test-fixtures/pie/invalid/missing-label.mmd:2:3
+  │
   2 │   : 10
-  [2m│[0m   [31m^[0m
-  [2m│[0m
+  │   ^
+  │
   help: Example: "Dogs" : 10
 ```
 
@@ -239,12 +239,12 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[PI-MISSING-NUMBER]: Missing numeric value after colon.
-  [2m┌─ test-fixtures/pie/invalid/missing-number.mmd:2:11[0m
-  [2m│[0m
+error[PI-MISSING-NUMBER]: Missing numeric value after colon.
+  ┌─ test-fixtures/pie/invalid/missing-number.mmd:2:11
+  │
   2 │   "Dogs" :
-  [2m│[0m           [31m^[0m
-  [2m│[0m
+  │           ^
+  │
   help: Use a number like 10 or 42.5
 ```
 
@@ -284,12 +284,12 @@ Syntax error in text
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
-  [2m┌─ test-fixtures/pie/invalid/unclosed-quote.mmd:2:3[0m
-  [2m│[0m
+error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
+  ┌─ test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
+  │
   2 │   "Dogs : 10
-  [2m│[0m   [31m^^^^^^[0m
-  [2m│[0m
+  │   ^^^^^^
+  │
   help: Close the quote: "Dogs" : 10
 ```
 

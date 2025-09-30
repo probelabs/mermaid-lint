@@ -81,12 +81,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Redundant input, expecting EOF but found: and
-  [2m┌─ test-fixtures/sequence/invalid/and-outside-par.mmd:3:3[0m
-  [2m│[0m
+error: Redundant input, expecting EOF but found: and
+  ┌─ test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
+  │
   3 │   and Also not allowed
-  [2m│[0m   [31m^^^[0m
-  [2m│[0m
+  │   ^^^
+  │
 ```
 
 <details>
@@ -145,14 +145,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
+error: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
   <[Newline]>
 but found: 'ten'
-  [2m┌─ test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17[0m
-  [2m│[0m
+  ┌─ test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
+  │
   2 │   autonumber 10 ten
-  [2m│[0m                 [31m^^^[0m
-  [2m│[0m
+  │                 ^^^
+  │
 ```
 
 <details>
@@ -212,12 +212,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Expecting token of type --> EndKeyword <-- but found --> '' <--
-  [2m┌─ test-fixtures/sequence/invalid/box-unclosed.mmd:7:1[0m
-  [2m│[0m
+error: Expecting token of type --> EndKeyword <-- but found --> '' <--
+  ┌─ test-fixtures/sequence/invalid/box-unclosed.mmd:7:1
+  │
   7 │ 
-  [2m│[0m [31m^[0m
-  [2m│[0m
+  │ ^
+  │
 ```
 
 <details>
@@ -276,15 +276,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Expecting: one of these possible Token sequences:
+error: Expecting: one of these possible Token sequences:
   1. [ParticipantKeyword]
   2. [ActorKeyword]
 but found: 'B'
-  [2m┌─ test-fixtures/sequence/invalid/create-malformed.mmd:2:10[0m
-  [2m│[0m
+  ┌─ test-fixtures/sequence/invalid/create-malformed.mmd:2:10
+  │
   2 │   create B
-  [2m│[0m          [31m^[0m
-  [2m│[0m
+  │          ^
+  │
 ```
 
 <details>
@@ -344,12 +344,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Expecting token of type --> EndKeyword <-- but found --> 'else' <--
-  [2m┌─ test-fixtures/sequence/invalid/critical-else.mmd:4:3[0m
-  [2m│[0m
+error: Expecting token of type --> EndKeyword <-- but found --> 'else' <--
+  ┌─ test-fixtures/sequence/invalid/critical-else.mmd:4:3
+  │
   4 │   else Should not use else in critical
-  [2m│[0m   [31m^^^^[0m
-  [2m│[0m
+  │   ^^^^
+  │
 ```
 
 <details>
@@ -408,16 +408,16 @@ node_modules/mermaid/dist/mermaid.js:125016:20
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Expecting: one of these possible Token sequences:
+error: Expecting: one of these possible Token sequences:
   1. [Identifier]
   2. [QuotedString]
 but found: '
 '
-  [2m┌─ test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22[0m
-  [2m│[0m
+  ┌─ test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
+  │
   2 │   destroy participant
-  [2m│[0m                      [31m^[0m
-  [2m│[0m
+  │                      ^
+  │
 ```
 
 <details>
@@ -476,12 +476,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Redundant input, expecting EOF but found: else
-  [2m┌─ test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3[0m
-  [2m│[0m
+error: Redundant input, expecting EOF but found: else
+  ┌─ test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
+  │
   3 │   else Not allowed here
-  [2m│[0m   [31m^^^^[0m
-  [2m│[0m
+  │   ^^^^
+  │
 ```
 
 <details>
@@ -539,12 +539,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
-  [2m┌─ test-fixtures/sequence/invalid/missing-colon.mmd:4:9[0m
-  [2m│[0m
+error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
+  ┌─ test-fixtures/sequence/invalid/missing-colon.mmd:4:9
+  │
   4 │   A->>B Message text without colon
-  [2m│[0m         [31m^^^^^^^[0m
-  [2m│[0m
+  │         ^^^^^^^
+  │
   help: Use: A->>B: Message text
 ```
 
@@ -603,12 +603,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
-  [2m┌─ test-fixtures/sequence/invalid/note-malformed.mmd:3:19[0m
-  [2m│[0m
+error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
+  ┌─ test-fixtures/sequence/invalid/note-malformed.mmd:3:19
+  │
   3 │   Note right of A Missing colon
-  [2m│[0m                   [31m^^^^^^^[0m
-  [2m│[0m
+  │                   ^^^^^^^
+  │
   help: Example: Note right of Alice: Hello
 ```
 
@@ -669,12 +669,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m: Redundant input, expecting EOF but found: end
-  [2m┌─ test-fixtures/sequence/invalid/unmatched-end.mmd:3:3[0m
-  [2m│[0m
+error: Redundant input, expecting EOF but found: end
+  ┌─ test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
+  │
   3 │   end
-  [2m│[0m   [31m^^^[0m
-  [2m│[0m
+  │   ^^^
+  │
 ```
 
 <details>
@@ -732,12 +732,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-[31merror[0m[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.
-  [2m┌─ test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4[0m
-  [2m│[0m
+error[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.
+  ┌─ test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4
+  │
   4 │   A==>>B: Unknown arrow
-  [2m│[0m    [31m^^^^^^^^^^^^^^^^^^^^[0m
-  [2m│[0m
+  │    ^^^^^^^^^^^^^^^^^^^^
+  │
   help: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ```
 
