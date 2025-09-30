@@ -1,5 +1,6 @@
 node_modules/
 out/
+out-cjs/
 *.log
 .DS_Store
 syntaxes/
