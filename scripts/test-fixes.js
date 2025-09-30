@@ -101,6 +101,11 @@ const cases = [
   { name: 'PI-MISSING-COLON', before: 'pie\n"Dogs" 10\n', after: 'pie\n"Dogs"  : 10\n' },
   { name: 'PI-LABEL-ESCAPED-QUOTE', before: 'pie\n"He \\"said\\"" : 1\n' },
   {
+    name: 'FL-NODE-MIXED-BRACKETS (safe)',
+    before: 'flowchart LR\n  A[Text] --> B(Text]\n  B --> C\n',
+    after:  'flowchart LR\n  A[Text] --> B[Text]\n  B --> C\n'
+  },
+  {
     name: 'FL-LABEL-ESCAPED-QUOTE (full-span)',
     before: 'flowchart LR\n  A["Node with quotes"] --> B["Another \\"quoted\\" node"]\n',
     after:  'flowchart LR\n  A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]\n'

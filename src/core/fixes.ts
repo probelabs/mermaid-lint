@@ -113,8 +113,25 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('FL-NODE-MIXED-BRACKETS', e)) {
-      // replace ']' with ')'
-      edits.push(replaceRange(text, at(e), e.length ?? 1, ')'));
+      // Prefer fixing the opener for the common case: opened '(' but closed with ']'
+      const msg = e.message || '';
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      if (msg.includes("opened '('") && msg.includes("closed with ']'")) {
+        const openIdx = lineText.lastIndexOf('(', caret0);
+        if (openIdx !== -1) {
+          edits.push({ start: { line: e.line, column: openIdx + 1 }, end: { line: e.line, column: openIdx + 2 }, newText: '[' });
+          continue;
+        }
+      }
+      // Otherwise, replace the wrong closer with the correct one inferred from the message
+      let closer = ')';
+      if (msg.includes("opened '['")) closer = ']';
+      else if (msg.includes("opened '('")) closer = ')';
+      else if (msg.includes("opened '{'")) closer = '}';
+      else if (msg.includes("opened '[[ '")) closer = ']]';
+      else if (msg.includes("opened '(( '")) closer = '))';
+      edits.push(replaceRange(text, at(e), e.length ?? 1, closer));
       continue;
     }
     if (is('FL-NODE-EMPTY', e)) {
