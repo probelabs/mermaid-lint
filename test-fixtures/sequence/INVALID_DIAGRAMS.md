@@ -478,16 +478,13 @@ node_modules/mermaid/dist/mermaid.js:125016:20
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting: one of these possible Token sequences:
-  1. [Identifier]
-  2. [QuotedString]
-but found: '
-'
+error[SE-DESTROY-MISSING-NAME]: Missing name after 'destroy'.
 at test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
   1 | sequenceDiagram
   2 |   destroy participant
     |                      ^
   3 |   participant A
+hint: Use: destroy participant A  or  destroy actor B
 ```
 
 <details>

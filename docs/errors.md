@@ -217,5 +217,15 @@ Tip: quoting inside labels
 
 - SE-DESTROY-MALFORMED
   - When: `destroy` is missing the target or has invalid syntax.
-  - Message: "Malformed destroy statement. Use: destroy [participant|actor] ID"
-  - Hint: "Example: destroy actor A"
+  - Message: "After 'destroy', specify 'participant' or 'actor' and a name."
+  - Hint: "Examples: destroy participant A  |  destroy actor B"
+
+- SE-DESTROY-MISSING-NAME
+  - When: `destroy` ends without a participant/actor name.
+  - Message: "Missing name after 'destroy'."
+  - Hint: "Use: destroy participant A  or  destroy actor B"
+
+- SE-CREATE-MISSING-NAME
+  - When: `create` ends without a participant/actor name.
+  - Message: "Missing name after 'create'."
+  - Hint: "Use: create participant A  or  create actor B"

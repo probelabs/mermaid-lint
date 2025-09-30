@@ -371,8 +371,24 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       length: len
     };
   }
+  if (inRule('createStmt') && (tokType === 'Newline' || tokType === 'EOF')) {
+    return {
+      line, column, severity: 'error', code: 'SE-CREATE-MISSING-NAME',
+      message: "Missing name after 'create'.",
+      hint: "Use: create participant A  or  create actor B",
+      length: len
+    };
+  }
   if (inRule('destroyStmt') && err.name === 'MismatchedTokenException') {
-    return { line, column, severity: 'error', code: 'SE-DESTROY-MALFORMED', message: 'Malformed destroy statement. Use: destroy [participant|actor] ID', hint: 'Example: destroy actor A', length: len };
+    return { line, column, severity: 'error', code: 'SE-DESTROY-MALFORMED', message: "After 'destroy', specify 'participant' or 'actor' and a name.", hint: 'Examples:\ndestroy participant A\ndestroy actor B', length: len };
+  }
+  if (inRule('destroyStmt') && (tokType === 'Newline' || tokType === 'EOF')) {
+    return {
+      line, column, severity: 'error', code: 'SE-DESTROY-MISSING-NAME',
+      message: "Missing name after 'destroy'.",
+      hint: "Use: destroy participant A  or  destroy actor B",
+      length: len
+    };
   }
 
   return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
