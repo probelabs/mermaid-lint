@@ -203,7 +203,7 @@ What gets fixed (highlights)
   - Inner quotes → `&quot;` inside quoted labels
   - `direction` keyword inside subgraphs (replace unknown kw)
   - Mismatched closer for shapes (e.g., `A(text]` → `A(text)`)
-- Flowchart (All):
+- Flowchart (Safe):
   - Wrap unquoted labels when a `"` appears inside (and normalize inner quotes)
   - Insert a best‑guess missing closing bracket
   - Add default direction ` TD` after `flowchart`/`graph` header

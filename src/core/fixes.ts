@@ -166,7 +166,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('FL-NODE-UNCLOSED-BRACKET', e)) {
-      if (level === 'all') {
+      if (level === 'safe' || level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
         // Try a smarter recovery: if there's a '[' before caret and a ']' later, and we see inner quotes,
@@ -219,9 +219,9 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-    // Flowchart: quotes inside unquoted label → wrap whole label content and encode inner quotes (heuristic, --fix=all)
+    // Flowchart: quotes inside unquoted label → wrap whole label content and encode inner quotes (Safe)
     if (is('FL-LABEL-QUOTE-IN-UNQUOTED', e)) {
-      if (level === 'all') {
+      if (level === 'safe' || level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
         // Find nearest opener before caret

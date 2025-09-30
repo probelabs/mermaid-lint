@@ -73,10 +73,9 @@ const cases = [
     after:  'flowchart TD\n  B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}\n'
   },
   {
-    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (all, wrap + encode)',
+    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (wrap + encode)',
     before: 'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];\n',
-    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];\n',
-    afterLevel: 'all'
+    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];\n'
   },
   {
     name: 'FL-QUOTE-UNCLOSED (all)',
@@ -114,6 +113,11 @@ const cases = [
     name: 'FL-LABEL-ESCAPED-QUOTE (full-span)',
     before: 'flowchart LR\n  A["Node with quotes"] --> B["Another \\"quoted\\" node"]\n',
     after:  'flowchart LR\n  A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]\n'
+  },
+  {
+    name: 'FL-LABEL-ESCAPED-QUOTE (stadium)',
+    before: 'flowchart LR\n  A(["quoted\\" text"])\n',
+    after:  'flowchart LR\n  A(["quoted&quot; text"])\n'
   },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },

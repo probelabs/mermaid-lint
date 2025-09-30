@@ -39,18 +39,18 @@ This file contains invalid flowchart test fixtures with:
 | 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
 | 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID | — |
-| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | ✅ all |
+| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
 | 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
 | 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
 | 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | ✅ safe |
 | 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
 | 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | ✅ safe |
-| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ all |
+| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ safe |
 | 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
 | 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID | — |
-| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | ✅ all |
+| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
 | 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID | — |
 
 ---
@@ -471,7 +471,11 @@ hint: Example: A((Circle))
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart TD
+    A(( ))--> B
+    B --> C
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
@@ -999,7 +1003,11 @@ hint: Example: A[Label] --> B
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart LR
+    A[Start ]--> B
+    B --> C
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
@@ -1311,7 +1319,26 @@ hint: Example: A[Label] --> B
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart TD
+    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
+    B -- Yes --> C[Configure Logger: Level = DEBUG];
+    B -- No --> D[Configure Logger: Level = INFO];
+    
+    subgraph "Runtime Execution"
+        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
+        F --> G{Logger: Is current level DEBUG?};
+        G -- Yes --> H[Format and write message to stderr];
+        G -- No --> I[Discard message];
+    end
+
+    C --> E;
+    D --> E;
+    H --> J[End];
+    I --> J[End];
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
