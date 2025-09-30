@@ -3,7 +3,7 @@
 import * as fs from 'node:fs';
 import { validate } from './core/router.js';
 import type { ValidationError } from './core/types.js';
-import { toJsonResult, rustReport } from './core/format.js';
+import { toJsonResult, humanReport } from './core/format.js';
 
 // Main CLI execution
 function printUsage() {
@@ -58,8 +58,8 @@ function main() {
         console.log(JSON.stringify(json, null, 2));
         process.exit(json.valid ? 0 : 1);
     } else {
-        // Human output uses caret-underlined snippet style (Rust-like)
-        const report = rustReport(filename, content, errors);
+        // Human output uses simple caret-underlined snippets without border lines
+        const report = humanReport(filename, content, errors);
         const outTo = errorCount > 0 ? 'stderr' : 'stdout';
         if (outTo === 'stderr') console.error(report); else console.log(report);
         process.exit(errorCount > 0 ? 1 : 0);

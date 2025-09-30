@@ -113,8 +113,7 @@ npx mermaid-lint diagram.mmd
 # JSON
 npx mermaid-lint --format json diagram.mmd
 
-# Alias (still works):
-npx mermaid-lint --format rust diagram.mmd   # treated as human
+## Note: There is one human format. `--format rust` is deprecated and behaves the same as human.
 ```
 
 ### Strict Mode
