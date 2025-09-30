@@ -5,6 +5,7 @@ import { analyzeFlowchart } from './semantics.js';
 import type { IToken } from 'chevrotain';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import { coercePos, mapFlowchartParserError } from '../../core/diagnostics.js';
+import { detectDoubleInDouble } from '../../core/quoteHygiene.js';
 import { detectEscapedQuotes } from '../../core/quoteHygiene.js';
 
 export function validateFlowchart(text: string, options: ValidateOptions = {}): ValidationError[] {
@@ -36,7 +37,13 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
         code: 'FL-LABEL-ESCAPED-QUOTE',
         message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
         hint: 'Prefer "He said &quot;Hi&quot;".'
-      });
+      }).concat(
+        prevErrors.some(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE') ? [] : detectDoubleInDouble(tokens as IToken[], {
+          code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
+          message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
+          hint: 'Example: A["He said &quot;Hi&quot;"]'
+        })
+      );
     }
   });
 }

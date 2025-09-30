@@ -6,7 +6,7 @@ import { mapSequenceParserError } from '../../core/diagnostics.js';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import type { IToken } from 'chevrotain';
 import * as t from './lexer.js';
-import { detectEscapedQuotes } from '../../core/quoteHygiene.js';
+import { detectEscapedQuotes, detectDoubleInDouble } from '../../core/quoteHygiene.js';
 
 export function validateSequence(text: string, _options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
@@ -29,35 +29,13 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
         if (!byLine.has(ln)) byLine.set(ln, []);
         byLine.get(ln)!.push(tk);
       }
-      for (const [ln, arr] of byLine) {
-        const quoted = arr.filter(t => (t as IToken).tokenType?.name === 'QuotedString') as IToken[];
-        const nextQuote = arr.find(t => (t as IToken).tokenType?.name === 'Text' && typeof t.image === 'string' && t.image.includes('"')) as IToken | undefined;
-        if (quoted.length >= 2) {
-          const second = quoted[1];
-          errs.push({
-            line: ln,
-            column: second.startColumn ?? 1,
-            severity: 'error',
-            code: 'SE-LABEL-DOUBLE-IN-DOUBLE',
-            message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.',
-            hint: 'Example: participant "Logger &quot;debug&quot;" as L',
-            length: 1
-          });
-          break;
-        }
-        if (quoted.length >= 1 && nextQuote) {
-          errs.push({
-            line: ln,
-            column: (nextQuote.startColumn ?? 1) + (nextQuote.image?.indexOf('"') ?? 0),
-            severity: 'error',
-            code: 'SE-LABEL-DOUBLE-IN-DOUBLE',
-            message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.',
-            hint: 'Example: participant "Logger &quot;debug&quot;" as L',
-            length: 1
-          });
-          break;
-        }
-      }
+      errs.push(
+        ...detectDoubleInDouble(tokList, {
+          code: 'SE-LABEL-DOUBLE-IN-DOUBLE',
+          message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.',
+          hint: 'Example: participant "Logger &quot;debug&quot;" as L'
+        })
+      );
       return errs;
     },
     postParse: (_text, tokens, _cst, prevErrors) => {
