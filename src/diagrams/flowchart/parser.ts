@@ -196,6 +196,9 @@ export class MermaidParser extends CstParser {
                             { ALT: () => this.CONSUME(tokens.RoundClose) },
                             { ALT: () => this.CONSUME(tokens.Comma) },
                             { ALT: () => this.CONSUME(tokens.Colon) },
+                            // HTML entities and ampersands inside labels
+                            { ALT: () => this.CONSUME(tokens.Ampersand) },
+                            { ALT: () => this.CONSUME(tokens.Semicolon) },
                             // Allow hyphens/lines inside labels without forcing them to be links
                             { ALT: () => this.CONSUME(tokens.TwoDashes) },
                             { ALT: () => this.CONSUME(tokens.Line) },

@@ -293,13 +293,15 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
             if (core.length >= 2 && isSlashPair(left, right)) {
               const mid = core.slice(1, -1);
               const replacedMid = mid.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
-              newInner = ltrim + left + '"' + replacedMid + '"' + right + rtrim;
+              // Encode-only for slash/backslash shapes; do not add wrapper quotes
+              newInner = ltrim + left + replacedMid + right + rtrim;
             } else {
               // Regular case: wrap whole label content
               const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
               newInner = '"' + replaced + '"';
             }
             edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
+            patchedLines.add(e.line);
           }
         }
       }
