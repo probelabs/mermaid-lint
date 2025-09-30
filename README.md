@@ -350,15 +350,46 @@ jobs:
 
 ### Pre-commit Hook
 
+Lint only staged files, including Markdown files that contain Mermaid fences (```mermaid or ~~~mermaid):
+
 ```bash
 #!/bin/sh
 # .git/hooks/pre-commit
-files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.mmd$')
-if [ -n "$files" ]; then
-  for file in $files; do
-    npx -y @probelabs/maid "$file" || exit 1
-  done
-fi
+set -e
+
+# Collect staged files (added/copied/modified/renamed)
+STAGED=$(git diff --cached --name-only -z --diff-filter=ACMR)
+[ -z "$STAGED" ] && exit 0
+
+# Build lint list: .mmd/.mermaid, and Markdown files that contain Mermaid fences
+LINT_LIST=""
+while IFS= read -r -d '' f; do
+  case "$f" in
+    *.mmd|*.mermaid)
+      LINT_LIST="$LINT_LIST\n$f" ;;
+    *.md|*.markdown|*.mdx)
+      if grep -Eq '^( {0,3})(```|~~~)[[:space:]]*(mermaid|mmd)([[:space:]]|$)' "$f"; then
+        LINT_LIST="$LINT_LIST\n$f"
+      fi
+      ;;
+  esac
+done <<EOF
+$STAGED
+EOF
+
+TMP=$(mktemp)
+printf "%s\n" "$LINT_LIST" | sed '/^$/d' > "$TMP"
+[ ! -s "$TMP" ] && { rm -f "$TMP"; exit 0; }
+
+FAILED=0
+while IFS= read -r FILE; do
+  [ -z "$FILE" ] && continue
+  echo "maid: $FILE"
+  npx -y @probelabs/maid "$FILE" || FAILED=1
+done < "$TMP"
+rm -f "$TMP"
+
+exit $FAILED
 ```
 
 ## Architecture
