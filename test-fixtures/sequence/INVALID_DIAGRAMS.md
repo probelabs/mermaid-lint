@@ -152,8 +152,9 @@ at test-fixtures/sequence/invalid/autonumber-extraneous.mmd:2:20
     autonumber 10 10 participant A
                      ^^^^^^^^^^^
     A->B: ok
-hint: Example: autonumber 10 10
-participant A
+hint: Example:
+  autonumber 10 10
+  participant A
 ```
 
 <details>
