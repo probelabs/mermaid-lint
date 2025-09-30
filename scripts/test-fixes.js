@@ -68,6 +68,11 @@ const cases = [
     before: 'flowchart TD\nA[Label\n',
     afterLevel: 'all', // we treat as insertion; still valid
   },
+  {
+    name: 'FL-NODE-EMPTY (strip brackets)',
+    before: 'flowchart TD\n    A["\"] --> B[" "]\n    B --> C[]\n',
+    after:  'flowchart TD\n    A --> B\n    B --> C\n'
+  },
   // Note: Flowchart quote-wrapping heuristics are intentionally not auto-fixed.
   // Pie
   { name: 'PI-LABEL-REQUIRES-QUOTES', before: 'pie\nDogs : 10\n', after: 'pie\n"Dogs" : 10\n' },

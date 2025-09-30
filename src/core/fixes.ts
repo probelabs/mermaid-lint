@@ -29,6 +29,22 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 1, ')'));
       continue;
     }
+    if (is('FL-NODE-EMPTY', e)) {
+      // Remove empty square-bracket shape like A[""], A[" "], or A[] → keep just the node id (A)
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      // Find nearest '[' before caret if caret is at '"'
+      let openIdx = lineText[caret0] === '[' ? caret0 : lineText.lastIndexOf('[', caret0);
+      if (openIdx >= 0) {
+        const closeIdx = lineText.indexOf(']', Math.max(openIdx + 1, caret0));
+        if (closeIdx !== -1) {
+          const start = { line: e.line, column: openIdx + 1 };
+          const len = closeIdx - openIdx + 1;
+          edits.push(replaceRange(text, start, len, ''));
+        }
+      }
+      continue;
+    }
     if (is('FL-DIR-KW-INVALID', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 0, 'direction'));
       continue;
