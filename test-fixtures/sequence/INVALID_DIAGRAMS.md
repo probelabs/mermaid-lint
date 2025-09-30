@@ -34,28 +34,28 @@ This file contains invalid sequence test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | maid |
-|---:|---|:---:|:---:|
-| 1 | [Alias Unclosed Quote](#1-alias-unclosed-quote) | VALID | INVALID |
-| 2 | [And In Alt](#2-and-in-alt) | INVALID | INVALID |
-| 3 | [And Outside Par](#3-and-outside-par) | INVALID | INVALID |
-| 4 | [Autonumber Extraneous](#4-autonumber-extraneous) | INVALID | INVALID |
-| 5 | [Autonumber Malformed](#5-autonumber-malformed) | INVALID | INVALID |
-| 6 | [Box Unclosed](#6-box-unclosed) | INVALID | INVALID |
-| 7 | [Create Malformed](#7-create-malformed) | INVALID | INVALID |
-| 8 | [Create Missing Name](#8-create-missing-name) | INVALID | INVALID |
-| 9 | [Critical Else](#9-critical-else) | INVALID | INVALID |
-| 10 | [Destroy Malformed](#10-destroy-malformed) | INVALID | INVALID |
-| 11 | [Else Outside Alt](#11-else-outside-alt) | INVALID | INVALID |
-| 12 | [Missing Colon](#12-missing-colon) | INVALID | INVALID |
-| 13 | [Note Malformed](#13-note-malformed) | INVALID | INVALID |
-| 14 | [Option In Par](#14-option-in-par) | INVALID | INVALID |
-| 15 | [Option Outside Critical](#15-option-outside-critical) | INVALID | INVALID |
-| 16 | [Participant Double In Double](#16-participant-double-in-double) | VALID | INVALID |
-| 17 | [Participant Escaped Quotes](#17-participant-escaped-quotes) | VALID | INVALID |
-| 18 | [Participant Unclosed Quote](#18-participant-unclosed-quote) | VALID | INVALID |
-| 19 | [Unmatched End](#19-unmatched-end) | INVALID | INVALID |
-| 20 | [Wrong Arrow](#20-wrong-arrow) | INVALID | INVALID |
+| # | Diagram | mermaid-cli | maid | Auto-fix? |
+|---:|---|:---:|:---:|:---:|
+| 1 | [Alias Unclosed Quote](#1-alias-unclosed-quote) | VALID | INVALID | ✅ all |
+| 2 | [And In Alt](#2-and-in-alt) | INVALID | INVALID | — |
+| 3 | [And Outside Par](#3-and-outside-par) | INVALID | INVALID | — |
+| 4 | [Autonumber Extraneous](#4-autonumber-extraneous) | INVALID | INVALID | ✅ safe |
+| 5 | [Autonumber Malformed](#5-autonumber-malformed) | INVALID | INVALID | ✅ all |
+| 6 | [Box Unclosed](#6-box-unclosed) | INVALID | INVALID | ✅ safe |
+| 7 | [Create Malformed](#7-create-malformed) | INVALID | INVALID | — |
+| 8 | [Create Missing Name](#8-create-missing-name) | INVALID | INVALID | — |
+| 9 | [Critical Else](#9-critical-else) | INVALID | INVALID | ✅ safe |
+| 10 | [Destroy Malformed](#10-destroy-malformed) | INVALID | INVALID | — |
+| 11 | [Else Outside Alt](#11-else-outside-alt) | INVALID | INVALID | — |
+| 12 | [Missing Colon](#12-missing-colon) | INVALID | INVALID | ✅ safe |
+| 13 | [Note Malformed](#13-note-malformed) | INVALID | INVALID | ✅ safe |
+| 14 | [Option In Par](#14-option-in-par) | INVALID | INVALID | — |
+| 15 | [Option Outside Critical](#15-option-outside-critical) | INVALID | INVALID | — |
+| 16 | [Participant Double In Double](#16-participant-double-in-double) | VALID | INVALID | ✅ safe |
+| 17 | [Participant Escaped Quotes](#17-participant-escaped-quotes) | VALID | INVALID | ✅ safe |
+| 18 | [Participant Unclosed Quote](#18-participant-unclosed-quote) | VALID | INVALID | ✅ all |
+| 19 | [Unmatched End](#19-unmatched-end) | INVALID | INVALID | — |
+| 20 | [Wrong Arrow](#20-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
@@ -1273,11 +1273,23 @@ hint: Example: participant "Logger &quot;debug&quot;" as L
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+sequenceDiagram
+  participant "Logger &quot;debug&quot;" as L
+  L->>L: hi
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+sequenceDiagram
+  participant "Logger &quot;debug&quot;" as L
+  L->>L: hi
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -1343,7 +1355,7 @@ hint: Example: participant "Logger &quot;debug&quot;" as L
 
 ```mermaid
 sequenceDiagram
-  participant "Logger &quot;debug&quot;" as L
+  participant "Logger \&quot;debug\&quot;ug&quot;" as L
   L->>L: hi
 
 
@@ -1353,7 +1365,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant "Logger &quot;debug&quot;" as L
+  participant "Logger \&quot;debug\&quot;ug&quot;" as L
   L->>L: hi
 
 

@@ -32,26 +32,26 @@ This file contains invalid flowchart test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | maid |
-|---:|---|:---:|:---:|
-| 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID |
-| 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID |
-| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID |
-| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID |
-| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID |
-| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID |
-| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID |
-| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID |
-| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID |
-| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID |
-| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID |
-| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID |
-| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID |
-| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID |
-| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID |
-| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID |
-| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID |
-| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID |
+| # | Diagram | mermaid-cli | maid | Auto-fix? |
+|---:|---|:---:|:---:|:---:|
+| 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID | — |
+| 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID | ✅ safe |
+| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | — |
+| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID | — |
+| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | — |
+| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
+| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
+| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | — |
+| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
+| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | — |
+| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | — |
+| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ all |
+| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | — |
+| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | — |
+| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID | — |
+| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | — |
+| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -154,11 +154,19 @@ hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
 
 <details>
 <summary>View source code</summary>

@@ -22,16 +22,16 @@ This file contains invalid pie test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | maid |
-|---:|---|:---:|:---:|
-| 1 | [Colon Only](#1-colon-only) | INVALID | INVALID |
-| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID |
-| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | INVALID |
-| 4 | [Invalid Header](#4-invalid-header) | INVALID | INVALID |
-| 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID |
-| 6 | [Missing Label](#6-missing-label) | INVALID | INVALID |
-| 7 | [Missing Number](#7-missing-number) | INVALID | INVALID |
-| 8 | [Unclosed Quote](#8-unclosed-quote) | INVALID | INVALID |
+| # | Diagram | mermaid-cli | maid | Auto-fix? |
+|---:|---|:---:|:---:|:---:|
+| 1 | [Colon Only](#1-colon-only) | INVALID | INVALID | — |
+| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | — |
+| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | INVALID | ✅ safe |
+| 4 | [Invalid Header](#4-invalid-header) | INVALID | INVALID | — |
+| 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID | ✅ safe |
+| 6 | [Missing Label](#6-missing-label) | INVALID | INVALID | — |
+| 7 | [Missing Number](#7-missing-number) | INVALID | INVALID | — |
+| 8 | [Unclosed Quote](#8-unclosed-quote) | INVALID | INVALID | ✅ all |
 
 ---
 
@@ -192,7 +192,7 @@ hint: Example: "He said &quot;Hi&quot;" : 1
 
 ```mermaid
 pie
-  "He said &quot;Hi&quot;quot;" : 1
+  "He said &quot;Hi&quot;" : 1
 
 
 ```
@@ -201,7 +201,7 @@ pie
 
 ```mermaid
 pie
-  "He said &quot;Hi&quot;quot;" : 1
+  "He said &quot;Hi&quot;" : 1
 
 
 ```

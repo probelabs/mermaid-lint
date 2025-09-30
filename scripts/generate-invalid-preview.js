@@ -147,17 +147,21 @@ This file contains invalid ${diagramType} test fixtures with:
   
   markdown += `\n---\n\n`;
 
-  // Summary matrix
+  // Summary matrix (add Auto-fix column: shows if safe/all would change the file)
   markdown += `## Summary\n\n`;
-  markdown += `| # | Diagram | mermaid-cli | maid |\n|---:|---|:---:|:---:|\n`;
-  results.forEach(({ file, index, mermaidRes, ourRes }) => {
+  markdown += `| # | Diagram | mermaid-cli | maid | Auto-fix? |\n|---:|---|:---:|:---:|:---:|\n`;
+  results.forEach(({ file, index, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
     const base = file.replace('.mmd', '');
     const name = base.replace(/-/g, ' ');
     const title = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     const anchor = `#${index + 1}-${base.toLowerCase()}`;
     const mm = mermaidRes.valid ? 'VALID' : 'INVALID';
     const us = ourRes.valid ? 'VALID' : 'INVALID';
-    markdown += `| ${index + 1} | [${title}](${anchor}) | ${mm} | ${us} |\n`;
+    const orig = fs.readFileSync(path.join(invalidDir, file), 'utf8').trim();
+    const safeChanged = fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig;
+    const allChanged = fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig;
+    const fixCol = safeChanged ? '✅ safe' : (allChanged ? '✅ all' : '—');
+    markdown += `| ${index + 1} | [${title}](${anchor}) | ${mm} | ${us} | ${fixCol} |\n`;
   });
   markdown += `\n---\n\n`;
   
