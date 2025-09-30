@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Fix and Lint Mermaid Diagrams - Maid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f9fafb;
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 60px 20px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 968px) {
+            .demo-container {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                gap: 20px;
+            }
+
+            .input-panel {
+                grid-column: 1;
+                grid-row: 1;
+            }
+
+            .render-panel {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+            .without-maid {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            .with-maid {
+                grid-column: 2;
+                grid-row: 2;
+            }
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            color: white;
+            padding: 16px 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .panel-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            width: 100%;
+            flex: 1;
+            min-height: 400px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #ff6b9d;
+        }
+
+        .output-area {
+            flex: 1;
+            min-height: 400px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding: 16px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 157, 0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #ff6b9d;
+            border: 2px solid #ff6b9d;
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f8;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .checkbox-group label {
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .examples {
+            margin-top: 20px;
+            margin-bottom: 32px;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-example {
+            padding: 8px 16px;
+            background: white;
+            color: #666;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-example:hover {
+            border-color: #ff6b9d;
+            color: #ff6b9d;
+        }
+
+        .success {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .warning {
+            color: #ea580c;
+            font-weight: 600;
+        }
+
+        .info {
+            color: #0284c7;
+        }
+
+        .render-area {
+            flex: 1;
+            min-height: 400px;
+            padding: 20px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .render-error {
+            color: #dc2626;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            padding: 20px;
+            background: #fef2f2;
+            border-radius: 8px;
+        }
+
+        .panel.with-maid .panel-header {
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+        }
+
+        .panel.without-maid .panel-header {
+            background: #6b7280;
+        }
+
+        @media (max-width: 1200px) {
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .toggle-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Auto-Fix and Lint Mermaid Diagrams</h1>
+            <p class="subtitle">Try Mermaid validation and auto-fixing right in your browser!</p>
+            <p style="margin-top: 12px;">
+                <a href="https://probelabs.com/maid/" style="color: #ff6b9d; text-decoration: none; font-weight: 600; font-size: 1rem; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                    ← Back to Maid Homepage
+                </a>
+            </p>
+        </div>
+
+        <div class="examples">
+            <h3 style="font-family: 'Poppins', sans-serif; margin-bottom: 12px;">Example Diagrams with Common Errors:</h3>
+            <div class="example-buttons">
+                <button class="btn-example" data-example="flowchart-invalid-arrow">Flowchart: Invalid Arrow (->)</button>
+                <button class="btn-example" data-example="flowchart-mismatched-brackets">Flowchart: Mismatched Brackets</button>
+                <button class="btn-example" data-example="flowchart-unclosed-bracket">Flowchart: Unclosed Bracket</button>
+                <button class="btn-example" data-example="flowchart-quotes">Flowchart: Unquoted Labels with Quotes</button>
+                <button class="btn-example" data-example="sequence-missing-colon">Sequence: Missing Colon</button>
+                <button class="btn-example" data-example="pie-missing-colon">Pie: Missing Colon</button>
+                <button class="btn-example" data-example="pie-unclosed-quote">Pie: Unclosed Quote</button>
+            </div>
+        </div>
+
+        <div class="demo-container" id="demoContainer">
+            <div class="panel input-panel">
+                <div class="panel-header">Input - Your Mermaid Diagram</div>
+                <div class="panel-content">
+                    <textarea id="input" placeholder="Enter your Mermaid diagram here...">flowchart TD
+    A[Start] -> B{Decision}
+    B --> C[Process]
+    C --> D[End]</textarea>
+                </div>
+            </div>
+
+            <div class="panel render-panel">
+                <div class="panel-header">
+                    Rendered Diagram (with Maid fixes applied)
+                    <button id="copyFixedBtn" style="display: none; margin-left: auto; padding: 6px 12px; background: white; color: #ff6b9d; border: 1px solid white; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">Copy Fixed Diagram</button>
+                </div>
+                <div class="panel-content">
+                    <div id="renderPreview" class="render-area">Diagram will render here...</div>
+                </div>
+            </div>
+
+            <div class="panel without-maid">
+                <div class="panel-header">Standard Mermaid.js</div>
+                <div class="panel-content">
+                    <div id="outputWithout" class="output-area">Standard Mermaid.js output will appear here...</div>
+                </div>
+            </div>
+
+            <div class="panel with-maid">
+                <div class="panel-header">Maid ✨</div>
+                <div class="panel-content">
+                    <div id="output" class="output-area">Maid validation and auto-fix results will appear here...</div>
+                </div>
+            </div>
+        </div>
+
+        <footer style="margin-top: 60px; padding: 40px 20px; text-align: center; border-top: 1px solid #e5e7eb;">
+            <p style="color: #666; margin-bottom: 16px; font-size: 1rem;">
+                Learn more about Maid and get started with the CLI
+            </p>
+            <a href="https://probelabs.com/maid/" class="btn btn-primary" style="display: inline-block; text-decoration: none;">
+                Visit Maid Homepage
+            </a>
+            <p style="color: #999; margin-top: 24px; font-size: 0.9rem;">
+                Built with ❤️ by <a href="https://probelabs.com" style="color: #ff6b9d; text-decoration: none;">Probe Labs</a>
+            </p>
+        </footer>
+    </div>
+
+    <script type="module">
+        import { validate, fixText } from './maid.bundle.js';
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+        mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+        const inputEl = document.getElementById('input');
+        const outputEl = document.getElementById('output');
+        const outputWithoutEl = document.getElementById('outputWithout');
+        const renderPreviewEl = document.getElementById('renderPreview');
+        const copyFixedBtn = document.getElementById('copyFixedBtn');
+
+        let debounceTimer = null;
+        let currentFixedText = '';
+
+        const examples = {
+            'flowchart-invalid-arrow': `flowchart TD
+    A[Start] -> B{Decision}
+    B --> C[Process]
+    C --> D[End]`,
+            'flowchart-mismatched-brackets': `flowchart LR
+    A[Text] --> B(Text]
+    B --> C
+    X{{Hexagon]
+    S([Stadium})`,
+            'flowchart-unclosed-bracket': `flowchart LR
+    A[Start --> B{Decision}
+    B --> C[End]`,
+            'flowchart-quotes': `flowchart TD
+    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
+    B -- Yes --> C[Configure Logger: Level = DEBUG];
+    B -- No --> D[Configure Logger: Level = INFO];`,
+            'sequence-missing-colon': `sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>Bob Message without colon
+    Bob->>Alice: Response with colon`,
+            'sequence-unmatched-end': `sequenceDiagram
+    participant A
+    end
+    A->B: Message`,
+            'pie-missing-colon': `pie
+    title "Pets"
+    "Dogs" 10
+    "Cats" : 5`,
+            'pie-unclosed-quote': `pie
+    "Dogs : 10
+    "Cats" : 5`
+        };
+
+
+        function formatOutput(result, inputText) {
+            const errorCount = result.errors.filter(e => e.severity === 'error').length;
+            const warningCount = result.errors.filter(e => e.severity === 'warning').length;
+
+            if (result.errors.length === 0) {
+                return '✅ Success! Your diagram is valid.\n\n' +
+                       `Diagram Type: ${result.type}\n` +
+                       `Errors: ${errorCount}\n` +
+                       `Warnings: ${warningCount}`;
+            }
+
+            let output = `❌ Found ${errorCount} error(s) and ${warningCount} warning(s)\n\n`;
+            output += `Diagram Type: ${result.type}\n\n`;
+
+            const allLines = inputText.split(/\r?\n/);
+            const numWidth = String(allLines.length).length;
+            const fmtNum = (n) => String(n).padStart(numWidth, ' ');
+
+            result.errors.forEach((err, i) => {
+                const kindLabel = err.severity === 'error' ? 'error' : 'warning';
+                const code = err.code ? `[${err.code}]` : '';
+                output += `${kindLabel}${code}: ${err.message}\n`;
+                output += `at line ${err.line}:${err.column}\n`;
+
+                // Show context lines
+                const idx = Math.max(0, Math.min(allLines.length - 1, err.line - 1));
+                const prev = idx > 0 ? allLines[idx - 1] : undefined;
+                const text = allLines[idx] ?? '';
+                const next = idx + 1 < allLines.length ? allLines[idx + 1] : undefined;
+
+                if (typeof prev === 'string') {
+                    output += `  ${fmtNum(err.line - 1)} | ${prev}\n`;
+                }
+                output += `  ${fmtNum(err.line)} | ${text}\n`;
+
+                // Add caret line pointing to error
+                const caretPad = ' '.repeat(Math.max(0, err.column - 1));
+                const caretLen = Math.max(1, err.length ?? 1);
+                output += `  ${' '.repeat(numWidth)} | ${caretPad}${'^'.repeat(caretLen)}\n`;
+
+                if (typeof next === 'string') {
+                    output += `  ${fmtNum(err.line + 1)} | ${next}\n`;
+                }
+
+                if (err.hint) {
+                    output += `hint: ${err.hint}\n`;
+                }
+                output += '\n';
+            });
+
+            return output;
+        }
+
+        async function validateAndFix() {
+            try {
+                const input = inputEl.value;
+
+                // LEFT PANEL: Standard Mermaid.js - Try to render with original input
+                try {
+                    const uniqueId = 'standard-mermaid-' + Date.now();
+                    const { svg } = await mermaid.render(uniqueId, input);
+
+                    outputWithoutEl.innerHTML = `
+                        <div style="color: #16a34a; font-weight: 600; margin-bottom: 16px;">✅ Mermaid.js rendered successfully</div>
+                        <div style="color: #666; margin-bottom: 16px; line-height: 1.6;">
+                            Standard Mermaid.js:<br>
+                            • No syntax validation<br>
+                            • Only knows if it can render or not<br>
+                            • You won't know what's wrong until you try
+                        </div>
+                        <div style="padding: 20px; background: white; border: 2px solid #16a34a; border-radius: 8px;">
+                            ${svg}
+                        </div>
+                    `;
+                } catch (error) {
+                    // Clean up any DOM elements that Mermaid.js may have created
+                    const uniqueId = 'standard-mermaid-' + Date.now();
+                    const existingElement = document.getElementById(uniqueId);
+                    if (existingElement) {
+                        existingElement.remove();
+                    }
+                    // Also check for d-prefixed elements that Mermaid creates
+                    document.querySelectorAll('[id^="d"]').forEach(el => {
+                        if (el.id.includes('standard-mermaid')) {
+                            el.remove();
+                        }
+                    });
+
+                    outputWithoutEl.innerHTML = `
+                        <div style="color: #dc2626; font-weight: 600; margin-bottom: 16px;">❌ Mermaid.js rendering failed</div>
+                        <div style="padding: 16px; background: #fef2f2; border: 2px solid #dc2626; border-radius: 8px;">
+                            <div class="error-message" style="font-family: 'JetBrains Mono', monospace; color: #dc2626; font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap;"></div>
+                        </div>
+                    `;
+                    outputWithoutEl.querySelector('.error-message').textContent = error.message;
+                }
+
+                // BOTTOM RIGHT PANEL: Maid - Validate, auto-fix, and show validation results
+                const validationResult = validate(input, { strict: false });
+                let fixedText = input;
+                let hasErrors = false;
+
+                if (validationResult.errors.length > 0) {
+                    // Auto-fix the errors
+                    const fixResult = fixText(input, { strict: false, level: 'all' });
+                    fixedText = fixResult.fixed;
+
+                    // Update the textarea with fixed code
+                    inputEl.value = fixedText;
+
+                    // Validate the fixed text
+                    const finalValidation = validate(fixedText, { strict: false });
+
+                    if (finalValidation.errors.length === 0) {
+                        outputEl.innerHTML = `
+                            <div style="color: #16a34a; font-weight: 600; margin-bottom: 16px;">✨ Maid auto-fixed all issues!</div>
+                            <div style="white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #666;">
+Original errors:
+${formatOutput(validationResult, input)}
+                            </div>
+                        `;
+                        hasErrors = false;
+                    } else {
+                        outputEl.innerHTML = `
+                            <div style="color: #ea580c; font-weight: 600; margin-bottom: 16px;">⚠️ Auto-fixed some issues, but some remain:</div>
+                            <div style="white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+${formatOutput(finalValidation, fixedText)}
+                            </div>
+                        `;
+                        hasErrors = true;
+                    }
+                } else {
+                    outputEl.innerHTML = `
+                        <div style="white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+${formatOutput(validationResult, input)}
+                        </div>
+                    `;
+                    hasErrors = false;
+                }
+
+                // Store fixed text and show/hide copy button
+                currentFixedText = fixedText;
+                if (hasErrors) {
+                    copyFixedBtn.style.display = 'none';
+                } else {
+                    copyFixedBtn.style.display = 'block';
+                }
+
+                // TOP RIGHT PANEL: Render the fixed diagram
+                try {
+                    const uniqueId = 'render-preview-' + Date.now();
+                    const { svg } = await mermaid.render(uniqueId, fixedText);
+                    renderPreviewEl.innerHTML = svg;
+                } catch (e) {
+                    renderPreviewEl.innerHTML = `<div class="render-error">⚠️ Cannot render diagram<br><br>${e.message}</div>`;
+                }
+            } catch (error) {
+                outputEl.innerHTML = `<div style="color: #dc2626; font-weight: 600;">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Copy fixed diagram to clipboard
+        copyFixedBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(currentFixedText);
+                const originalText = copyFixedBtn.textContent;
+                copyFixedBtn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyFixedBtn.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                copyFixedBtn.textContent = '✗ Failed';
+                setTimeout(() => {
+                    copyFixedBtn.textContent = 'Copy Fixed Diagram';
+                }, 2000);
+            }
+        });
+
+        // Auto-validate as user types (debounced)
+        inputEl.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                validateAndFix();
+            }, 1000); // Wait 1 second after user stops typing
+        });
+
+        document.querySelectorAll('.btn-example').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const example = btn.dataset.example;
+                inputEl.value = examples[example];
+                validateAndFix();
+            });
+        });
+
+        // Auto-validate on load
+        validateAndFix();
+    </script>
+</body>
+</html>
