@@ -278,11 +278,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting token of type --> EndKeyword <-- but found --> '' <--
-at test-fixtures/sequence/invalid/box-unclosed.mmd:7:1
-  
+error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
+at test-fixtures/sequence/invalid/box-unclosed.mmd:6:1
+    A->B: hi
   
   ^
+  
+hint: Add 'end' on a new line after the block contents.
 ```
 
 <details>
@@ -409,12 +411,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting token of type --> EndKeyword <-- but found --> 'else' <--
-at test-fixtures/sequence/invalid/critical-else.mmd:4:3
+error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'critical' block.
+at test-fixtures/sequence/invalid/critical-else.mmd:4:39
       A->B: try
     else Should not use else in critical
-    ^^^^
+                                        ^
       A->B: nope
+hint: Add 'end' on a new line after the block contents.
 ```
 
 <details>
