@@ -160,6 +160,11 @@ Tip: quoting inside labels
   - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
   - Hint: "Examples: Note right of Alice: Hi | Note over A,B: Hello"
 
+- SE-QUOTE-UNCLOSED
+  - When: A participant/actor name or alias starts a quote but does not close it.
+  - Message: "Unclosed quote in participant/actor name."
+  - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
+
 - SE-ELSE-OUTSIDE-ALT
   - When: `else` appears outside an `alt` block.
   - Message: "'else' is only allowed inside 'alt' blocks."

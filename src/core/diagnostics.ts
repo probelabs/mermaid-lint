@@ -264,8 +264,52 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
 
   const inRule = (name: string) => isInRule(err, name);
+  // Debug fallback: if in participantDecl when actorRef fails, treat as actorRef for quote heuristics
+  const inActorRefContext = inRule('actorRef') || inRule('participantDecl');
   const exp = (name: string) => expecting(err, name);
   const atHeader = (err as any)?.context?.ruleStack?.[0] === 'diagram' && ((err as any)?.context?.ruleStack?.length === 1);
+
+  // Generic handling for branch keywords (else/and/option)
+  const branchRules: Array<{
+    tok: string; key: string; allowedRule: string; allowedLabel: string; example: string
+  }> = [
+    { tok: 'ElseKeyword',   key: 'else',   allowedRule: 'altBlock',      allowedLabel: 'alt',      example: 'alt Condition\n  …\nelse\n  …\nend' },
+    { tok: 'AndKeyword',    key: 'and',    allowedRule: 'parBlock',      allowedLabel: 'par',      example: 'par\n  …\nand\n  …\nend' },
+    { tok: 'OptionKeyword', key: 'option', allowedRule: 'criticalBlock', allowedLabel: 'critical', example: 'critical\n  …\noption Label\n  …\nend' },
+  ];
+  const stack: string[] = ((err as any)?.context?.ruleStack) || [];
+  const currentBlock = stack.slice().reverse().find((s: string) => /Block$/.test(s));
+  const br = branchRules.find(r => r.tok === tokType);
+  if (br) {
+    if (!currentBlock) {
+      // Keep specific legacy codes for else/and outside
+      if (br.key === 'else') {
+        return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Use: alt Condition … else … end', length: len };
+      }
+      if (br.key === 'and') {
+        return { line, column, severity: 'error', code: 'SE-AND-OUTSIDE-PAR', message: "'and' is only allowed inside 'par' blocks.", hint: 'Example: par … and … end (parallel branches).', length: len };
+      }
+      return {
+        line, column, severity: 'error', code: 'SE-BRANCH-OUTSIDE-BLOCK',
+        message: `'${br.key}' is only allowed inside a '${br.allowedLabel}' block.`,
+        hint: `Start a ${br.allowedLabel} section:\n${br.example}`,
+        length: len
+      };
+    }
+    if (currentBlock !== br.allowedRule) {
+      // Keep specific code for else-in-critical
+      if (br.key === 'else' && currentBlock === 'criticalBlock') {
+        return { line, column, severity: 'error', code: 'SE-ELSE-IN-CRITICAL', message: "'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.", hint: "Replace with: option <label>\nExample:\noption Retry", length: len };
+      }
+      const actual = (currentBlock || '').replace(/Block$/, '') || 'block';
+      return {
+        line, column, severity: 'error', code: 'SE-BRANCH-IN-WRONG-BLOCK',
+        message: `'${br.key}' is only valid in '${br.allowedLabel}' blocks (not inside '${actual}').`,
+        hint: `Use the proper branch for '${actual}' or close it with 'end'.\nFor '${br.allowedLabel}', use:\n${br.example}`,
+        length: len
+      };
+    }
+  }
 
   // Header must be 'sequenceDiagram'
   if (atHeader && exp('SequenceKeyword')) {
@@ -275,6 +319,21 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   // Message syntax requires colon before message text
   if (inRule('messageStmt') && err.name === 'MismatchedTokenException' && exp('Colon')) {
     return { line, column, severity: 'error', code: 'SE-MSG-COLON-MISSING', message: 'Missing colon after target actor in message.', hint: 'Use: A->>B: Message text', length: len };
+  }
+
+  // Unclosed quotes in actor references (participant/actor names or aliases)
+  if (inActorRefContext && (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException')) {
+    const img = (tok as any)?.image as string | undefined;
+    if (img && (img.startsWith('"') || img.startsWith("'"))) {
+      return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: Math.max(1, img.length) };
+    }
+    const lines = text.split(/\r?\n/);
+    const ltxt = lines[Math.max(0, line - 1)] || '';
+    const dq = (ltxt.match(/"/g) || []).length;
+    const sq = (ltxt.match(/'/g) || []).length;
+    if (dq % 2 === 1 || sq % 2 === 1) {
+      return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: 1 };
+    }
   }
 
   // Unknown/invalid arrow token
@@ -338,13 +397,25 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
 
   // Block control keywords outside blocks
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'ElseKeyword') {
-    return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Start with: alt Condition ... else ... end', length: len };
+    return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Use: alt Condition … else … end', length: len };
   }
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'AndKeyword') {
     return { line, column, severity: 'error', code: 'SE-AND-OUTSIDE-PAR', message: "'and' is only allowed inside 'par' blocks.", hint: 'Example: par … and … end (parallel branches).', length: len };
   }
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'EndKeyword') {
     return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Add a block above (e.g., par … end | alt … end) or remove this end.', length: len };
+  }
+
+  // Fallback: unclosed quotes on participant/actor lines
+  if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException') && (isInRule(err, 'participantDecl') || isInRule(err, 'actorRef'))) {
+    const lines = text.split(/\r?\n/);
+    const ltxt = lines[Math.max(0, line - 1)] || '';
+    const dbl = (ltxt.match(/\"/g) || []).length;
+    const dq = (ltxt.match(/"/g) || []).length - dbl;
+    const sq = (ltxt.match(/'/g) || []).length;
+    if (dq % 2 === 1 || sq % 2 === 1) {
+      return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: 1 };
+    }
   }
 
   // Autonumber malformed / specific cases
@@ -363,19 +434,19 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   }
 
   // Create/destroy malformed
-  if (inRule('createStmt') && (err.name === 'MismatchedTokenException' || err.name === 'NoViableAltException')) {
-    return {
-      line, column, severity: 'error', code: 'SE-CREATE-MALFORMED',
-      message: "After 'create', specify 'participant' or 'actor' before the name.",
-      hint: "Examples:\ncreate participant B\ncreate actor D as Donald",
-      length: len
-    };
-  }
   if (inRule('createStmt') && (tokType === 'Newline' || tokType === 'EOF')) {
     return {
       line, column, severity: 'error', code: 'SE-CREATE-MISSING-NAME',
       message: "Missing name after 'create'.",
       hint: "Use: create participant A  or  create actor B",
+      length: len
+    };
+  }
+  if (inRule('createStmt') && (err.name === 'MismatchedTokenException' || err.name === 'NoViableAltException')) {
+    return {
+      line, column, severity: 'error', code: 'SE-CREATE-MALFORMED',
+      message: "After 'create', specify 'participant' or 'actor' before the name.",
+      hint: "Examples:\ncreate participant B\ncreate actor D as Donald",
       length: len
     };
   }

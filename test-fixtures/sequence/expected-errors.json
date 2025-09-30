@@ -1,0 +1,20 @@
+{
+  "and-outside-par.mmd": ["SE-AND-OUTSIDE-PAR"],
+  "autonumber-extraneous.mmd": ["SE-AUTONUMBER-EXTRANEOUS"],
+  "autonumber-malformed.mmd": ["SE-AUTONUMBER-NON-NUMERIC"],
+  "box-unclosed.mmd": ["SE-BLOCK-MISSING-END"],
+  "create-malformed.mmd": ["SE-CREATE-MALFORMED"],
+  "create-missing-name.mmd": ["SE-CREATE-MISSING-NAME"],
+  "critical-else.mmd": ["SE-ELSE-IN-CRITICAL"],
+  "and-in-alt.mmd": ["SE-BRANCH-IN-WRONG-BLOCK"],
+  "option-outside-critical.mmd": ["SE-BRANCH-OUTSIDE-BLOCK"],
+  "option-in-par.mmd": ["SE-BRANCH-IN-WRONG-BLOCK"],
+  "participant-unclosed-quote.mmd": ["SE-QUOTE-UNCLOSED"],
+  "alias-unclosed-quote.mmd": ["SE-QUOTE-UNCLOSED"],
+  "destroy-malformed.mmd": ["SE-DESTROY-MISSING-NAME"],
+  "else-outside-alt.mmd": ["SE-ELSE-OUTSIDE-ALT"],
+  "missing-colon.mmd": ["SE-MSG-COLON-MISSING"],
+  "note-malformed.mmd": ["SE-NOTE-MALFORMED"],
+  "unmatched-end.mmd": ["SE-END-WITHOUT-BLOCK"],
+  "wrong-arrow.mmd": ["SE-ARROW-INVALID"]
+}

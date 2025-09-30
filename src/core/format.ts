@@ -26,15 +26,18 @@ export function textReport(filename: string, content: string, errors: Validation
     const next = idx + 1 < allLines.length ? allLines[idx + 1] : undefined;
 
     // Special snippet for missing 'end' in blocks: include the block header line
-    if (e.code === 'SE-BLOCK-MISSING-END') {
+    if (e.code === 'SE-BLOCK-MISSING-END' || e.code === 'SE-ELSE-IN-CRITICAL') {
       // Find nearest block header upwards
       const headerRe = /^(?:\s*)(alt|opt|loop|par|rect|critical|break|box)\b/i;
       let headerIdx = -1;
       for (let i = idx; i >= 0 && i >= idx - 100; i--) {
         if (headerRe.test(allLines[i] ?? '')) { headerIdx = i; break; }
       }
-      const blockMatch = /Missing 'end' to close a '([^']+)' block\./.exec(e.message || '');
-      const blockName = (blockMatch && blockMatch[1]) ? blockMatch[1] : 'block';
+      let blockName = 'block';
+      const m1 = /Missing 'end' to close a '([^']+)' block\./.exec(e.message || '');
+      if (m1 && m1[1]) blockName = m1[1];
+      const m2 = /inside a '([^']+)' block/.exec(e.message || '');
+      if (m2 && m2[1]) blockName = m2[1];
       if (headerIdx >= 0) {
         const headerNo = headerIdx + 1;
         lines.push(`  ${fmtNum(headerNo)} | ${allLines[headerIdx]}  \x1b[2m\u2190 start of '${blockName}'\x1b[0m`);
@@ -47,20 +50,14 @@ export function textReport(filename: string, content: string, errors: Validation
       }
       const lineNo = idx + 1;
       lines.push(`  ${fmtNum(lineNo)} | ${text}`);
-      const caretPad = ' '.repeat(Math.max(0, e.column - 1));
-      const caretLen = Math.max(1, e.length ?? 1);
-      // Decide insertion guidance relative to following content
+      // For both cases, show explicit suggested 'end' insertion line.
       let nextContentIdx = -1;
       for (let i = idx + 1; i < allLines.length; i++) {
         if ((allLines[i] ?? '').trim() !== '') { nextContentIdx = i; break; }
       }
-      let insertionMsg = '';
-      if (nextContentIdx >= 0) {
-        insertionMsg = `insert 'end' before line ${nextContentIdx + 1}`;
-      } else {
-        insertionMsg = `insert 'end' on a new line after line ${lineNo}`;
-      }
-      lines.push(`  ${' '.repeat(numWidth)} | ${caretPad}\x1b[31m${'^'.repeat(caretLen)}\x1b[0m \x1b[2m${insertionMsg}\x1b[0m`);
+      const insertionLine = (nextContentIdx >= 0) ? (nextContentIdx + 1) : (lineNo + 1);
+      const indent = (text.match(/^\s*/)?.[0] ?? '');
+      lines.push(`  ${fmtNum(insertionLine)} | ${indent}end  \x1b[2m\u2190 insert 'end' here\x1b[0m`);
       // Skip printing next to keep the snippet tight and focused
     } else {
       if (typeof prev === 'string') lines.push(`  ${fmtNum(e.line - 1)} | ${prev}`);

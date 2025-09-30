@@ -9,19 +9,24 @@ This file contains invalid sequence test fixtures with:
 
 ## Table of Contents
 
-1. [And Outside Par](#1-and-outside-par)
-2. [Autonumber Extraneous](#2-autonumber-extraneous)
-3. [Autonumber Malformed](#3-autonumber-malformed)
-4. [Box Unclosed](#4-box-unclosed)
-5. [Create Malformed](#5-create-malformed)
-6. [Create Missing Name](#6-create-missing-name)
-7. [Critical Else](#7-critical-else)
-8. [Destroy Malformed](#8-destroy-malformed)
-9. [Else Outside Alt](#9-else-outside-alt)
-10. [Missing Colon](#10-missing-colon)
-11. [Note Malformed](#11-note-malformed)
-12. [Unmatched End](#12-unmatched-end)
-13. [Wrong Arrow](#13-wrong-arrow)
+1. [Alias Unclosed Quote](#1-alias-unclosed-quote)
+2. [And In Alt](#2-and-in-alt)
+3. [And Outside Par](#3-and-outside-par)
+4. [Autonumber Extraneous](#4-autonumber-extraneous)
+5. [Autonumber Malformed](#5-autonumber-malformed)
+6. [Box Unclosed](#6-box-unclosed)
+7. [Create Malformed](#7-create-malformed)
+8. [Create Missing Name](#8-create-missing-name)
+9. [Critical Else](#9-critical-else)
+10. [Destroy Malformed](#10-destroy-malformed)
+11. [Else Outside Alt](#11-else-outside-alt)
+12. [Missing Colon](#12-missing-colon)
+13. [Note Malformed](#13-note-malformed)
+14. [Option In Par](#14-option-in-par)
+15. [Option Outside Critical](#15-option-outside-critical)
+16. [Participant Unclosed Quote](#16-participant-unclosed-quote)
+17. [Unmatched End](#17-unmatched-end)
+18. [Wrong Arrow](#18-wrong-arrow)
 
 ---
 
@@ -29,23 +34,146 @@ This file contains invalid sequence test fixtures with:
 
 | # | Diagram | mermaid-cli | mermaid-lint |
 |---:|---|:---:|:---:|
-| 1 | [And Outside Par](#1-and-outside-par) | INVALID | INVALID |
-| 2 | [Autonumber Extraneous](#2-autonumber-extraneous) | INVALID | INVALID |
-| 3 | [Autonumber Malformed](#3-autonumber-malformed) | INVALID | INVALID |
-| 4 | [Box Unclosed](#4-box-unclosed) | INVALID | INVALID |
-| 5 | [Create Malformed](#5-create-malformed) | INVALID | INVALID |
-| 6 | [Create Missing Name](#6-create-missing-name) | INVALID | INVALID |
-| 7 | [Critical Else](#7-critical-else) | INVALID | INVALID |
-| 8 | [Destroy Malformed](#8-destroy-malformed) | INVALID | INVALID |
-| 9 | [Else Outside Alt](#9-else-outside-alt) | INVALID | INVALID |
-| 10 | [Missing Colon](#10-missing-colon) | INVALID | INVALID |
-| 11 | [Note Malformed](#11-note-malformed) | INVALID | INVALID |
-| 12 | [Unmatched End](#12-unmatched-end) | INVALID | INVALID |
-| 13 | [Wrong Arrow](#13-wrong-arrow) | INVALID | INVALID |
+| 1 | [Alias Unclosed Quote](#1-alias-unclosed-quote) | VALID | INVALID |
+| 2 | [And In Alt](#2-and-in-alt) | INVALID | INVALID |
+| 3 | [And Outside Par](#3-and-outside-par) | INVALID | INVALID |
+| 4 | [Autonumber Extraneous](#4-autonumber-extraneous) | INVALID | INVALID |
+| 5 | [Autonumber Malformed](#5-autonumber-malformed) | INVALID | INVALID |
+| 6 | [Box Unclosed](#6-box-unclosed) | INVALID | INVALID |
+| 7 | [Create Malformed](#7-create-malformed) | INVALID | INVALID |
+| 8 | [Create Missing Name](#8-create-missing-name) | INVALID | INVALID |
+| 9 | [Critical Else](#9-critical-else) | INVALID | INVALID |
+| 10 | [Destroy Malformed](#10-destroy-malformed) | INVALID | INVALID |
+| 11 | [Else Outside Alt](#11-else-outside-alt) | INVALID | INVALID |
+| 12 | [Missing Colon](#12-missing-colon) | INVALID | INVALID |
+| 13 | [Note Malformed](#13-note-malformed) | INVALID | INVALID |
+| 14 | [Option In Par](#14-option-in-par) | INVALID | INVALID |
+| 15 | [Option Outside Critical](#15-option-outside-critical) | INVALID | INVALID |
+| 16 | [Participant Unclosed Quote](#16-participant-unclosed-quote) | VALID | INVALID |
+| 17 | [Unmatched End](#17-unmatched-end) | INVALID | INVALID |
+| 18 | [Wrong Arrow](#18-wrong-arrow) | INVALID | INVALID |
 
 ---
 
-## 1. And Outside Par
+## 1. Alias Unclosed Quote
+
+📄 **Source**: [`alias-unclosed-quote.mmd`](./invalid/alias-unclosed-quote.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant Alice as "Eve
+  Alice->B: hi
+
+
+```
+
+### mermaid-cli Result: VALID
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-QUOTE-UNCLOSED]: Unclosed quote in participant/actor name.
+at test-fixtures/sequence/invalid/alias-unclosed-quote.mmd:2:24
+  1 | sequenceDiagram
+  2 |   participant Alice as "Eve
+    |                        ^^^^
+  3 |   Alice->B: hi
+hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant Alice as "Eve
+  Alice->B: hi
+
+
+```
+</details>
+
+---
+
+## 2. And In Alt
+
+📄 **Source**: [`and-in-alt.mmd`](./invalid/and-in-alt.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  alt Something
+    A->B: one
+  and
+    A->C: two
+  end
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 4:
+...ing    A->B: one  and    A->C: two  
+---------------------^
+Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'end', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'else', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'and'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-BRANCH-IN-WRONG-BLOCK]: 'and' is only valid in 'par' blocks (not inside 'alt').
+at test-fixtures/sequence/invalid/and-in-alt.mmd:4:3
+  3 |     A->B: one
+  4 |   and
+    |   ^^^
+  5 |     A->C: two
+hint: Use the proper branch for 'alt' or close it with 'end'.
+  For 'par', use:
+  par
+    …
+  and
+    …
+  end
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  alt Something
+    A->B: one
+  and
+    A->C: two
+  end
+
+
+```
+</details>
+
+---
+
+## 3. And Outside Par
 
 📄 **Source**: [`and-outside-par.mmd`](./invalid/and-outside-par.mmd)
 
@@ -109,7 +237,7 @@ sequenceDiagram
 
 ---
 
-## 2. Autonumber Extraneous
+## 4. Autonumber Extraneous
 
 📄 **Source**: [`autonumber-extraneous.mmd`](./invalid/autonumber-extraneous.mmd)
 
@@ -173,7 +301,7 @@ sequenceDiagram
 
 ---
 
-## 3. Autonumber Malformed
+## 5. Autonumber Malformed
 
 📄 **Source**: [`autonumber-malformed.mmd`](./invalid/autonumber-malformed.mmd)
 
@@ -239,7 +367,7 @@ sequenceDiagram
 
 ---
 
-## 4. Box Unclosed
+## 6. Box Unclosed
 
 📄 **Source**: [`box-unclosed.mmd`](./invalid/box-unclosed.mmd)
 
@@ -305,7 +433,7 @@ sequenceDiagram
 
 ---
 
-## 5. Create Malformed
+## 7. Create Malformed
 
 📄 **Source**: [`create-malformed.mmd`](./invalid/create-malformed.mmd)
 
@@ -371,7 +499,7 @@ sequenceDiagram
 
 ---
 
-## 6. Create Missing Name
+## 8. Create Missing Name
 
 📄 **Source**: [`create-missing-name.mmd`](./invalid/create-missing-name.mmd)
 
@@ -409,15 +537,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[SE-CREATE-MALFORMED]: After 'create', specify 'participant' or 'actor' before the name.
+error[SE-CREATE-MISSING-NAME]: Missing name after 'create'.
 at test-fixtures/sequence/invalid/create-missing-name.mmd:2:21
   1 | sequenceDiagram
   2 |   create participant
     |                     ^
   3 |   A->B: hi
-hint: Examples:
-  create participant B
-  create actor D as Donald
+hint: Use: create participant A  or  create actor B
 ```
 
 <details>
@@ -434,7 +560,7 @@ sequenceDiagram
 
 ---
 
-## 7. Critical Else
+## 9. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -504,7 +630,7 @@ sequenceDiagram
 
 ---
 
-## 8. Destroy Malformed
+## 10. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -568,7 +694,7 @@ sequenceDiagram
 
 ---
 
-## 9. Else Outside Alt
+## 11. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -614,7 +740,7 @@ at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
   3 |   else Not allowed here
     |   ^^^^
   4 |   A->B: hi
-hint: Start with: alt Condition ... else ... end
+hint: Use: alt Condition … else … end
 ```
 
 <details>
@@ -632,7 +758,7 @@ sequenceDiagram
 
 ---
 
-## 10. Missing Colon
+## 12. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -696,7 +822,7 @@ sequenceDiagram
 
 ---
 
-## 11. Note Malformed
+## 13. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -760,7 +886,190 @@ sequenceDiagram
 
 ---
 
-## 12. Unmatched End
+## 14. Option In Par
+
+📄 **Source**: [`option-in-par.mmd`](./invalid/option-in-par.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  par
+    option Retry
+    A->B: nope
+  end
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 3:
+...ceDiagram  par    option Retry    A->
+---------------------^
+Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'end', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'and', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'option'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-BRANCH-IN-WRONG-BLOCK]: 'option' is only valid in 'critical' blocks (not inside 'par').
+at test-fixtures/sequence/invalid/option-in-par.mmd:3:5
+  2 |   par
+  3 |     option Retry
+    |     ^^^^^^
+  4 |     A->B: nope
+hint: Use the proper branch for 'par' or close it with 'end'.
+  For 'critical', use:
+  critical
+    …
+  option Label
+    …
+  end
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  par
+    option Retry
+    A->B: nope
+  end
+
+
+```
+</details>
+
+---
+
+## 15. Option Outside Critical
+
+📄 **Source**: [`option-outside-critical.mmd`](./invalid/option-outside-critical.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  option Retry
+  A->B: Should be inside critical
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+sequenceDiagram  option Retry  A->B:
+-----------------^
+Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'option'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-BRANCH-OUTSIDE-BLOCK]: 'option' is only allowed inside a 'critical' block.
+at test-fixtures/sequence/invalid/option-outside-critical.mmd:2:3
+  1 | sequenceDiagram
+  2 |   option Retry
+    |   ^^^^^^
+  3 |   A->B: Should be inside critical
+hint: Start a critical section:
+  critical
+    …
+  option Label
+    …
+  end
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  option Retry
+  A->B: Should be inside critical
+
+
+```
+</details>
+
+---
+
+## 16. Participant Unclosed Quote
+
+📄 **Source**: [`participant-unclosed-quote.mmd`](./invalid/participant-unclosed-quote.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant "Bob
+  A->B: hi
+
+
+```
+
+### mermaid-cli Result: VALID
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-QUOTE-UNCLOSED]: Unclosed quote in participant/actor name.
+at test-fixtures/sequence/invalid/participant-unclosed-quote.mmd:2:15
+  1 | sequenceDiagram
+  2 |   participant "Bob
+    |               ^^^^
+  3 |   A->B: hi
+hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant "Bob
+  A->B: hi
+
+
+```
+</details>
+
+---
+
+## 17. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -826,7 +1135,7 @@ sequenceDiagram
 
 ---
 
-## 13. Wrong Arrow
+## 18. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
