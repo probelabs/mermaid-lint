@@ -534,21 +534,34 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   if (err.name === 'MismatchedTokenException' && exp('EndKeyword')) {
     const blk = blockRules.find(b => isInRule(err, b.rule));
     if (blk) {
-      // Place caret at end of previous non-empty line if current is blank
       const lines = text.split(/\r?\n/);
-      let caretLine = line;
-      // Walk up to the nearest non-empty line to anchor the caret meaningfully
-      while (caretLine > 1 && (lines[caretLine - 1] ?? '').trim() === '') {
-        caretLine--;
+      // Find opener and its indent
+      const openerRe = /^(\s*)(alt\b|opt\b|loop\b|par\b|rect\b|critical\b|break\b|box\b)/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = Math.max(0, line - 1); i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
       }
-      const caretCol = Math.max(1, ((lines[caretLine - 1] ?? '').length + 1));
+      // Default caret line is current if opener not found
+      let caretLine = line;
+      if (openIdx !== -1) {
+        // Find first non-empty line whose indent <= opener indent → insert before it
+        caretLine = lines.length; // default to EOF
+        for (let i = openIdx + 1; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          if (raw.trim() === '') continue;
+          const ind = (raw.match(/^(\s*)/)?.[1] || '');
+          if (ind.length <= openIndent.length) { caretLine = i + 1; break; }
+        }
+        if (caretLine > lines.length) caretLine = lines.length + 1; // at EOF
+      }
       return {
         line: caretLine,
-        column: caretCol,
+        column: 1,
         severity: 'error',
         code: 'SE-BLOCK-MISSING-END',
         message: `Missing 'end' to close a '${blk.label}' block.`,
-        hint: "Add 'end' on a new line after the block contents.",
+        hint: "Add 'end' on its own line aligned with the block's start.",
         length: 1
       };
     }

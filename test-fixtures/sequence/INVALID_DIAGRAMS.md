@@ -325,8 +325,8 @@ hint: Example:
 
 ```mermaid
 sequenceDiagram
-  autonumber 10 10 
-                   participant A
+  autonumber 10 10
+  participant A
   A->B: ok
 
 
@@ -336,8 +336,8 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  autonumber 10 10 
-                   participant A
+  autonumber 10 10
+  participant A
   A->B: ok
 
 
@@ -413,7 +413,15 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+sequenceDiagram
+  autonumber
+  participant A
+  participant B
+  A->B: hi
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -473,12 +481,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
-at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
+at test-fixtures/sequence/invalid/box-unclosed.mmd:5:1
   2 |   box Aqua Group  ← start of 'box'
     | …
   5 |   A->B: hi
   6 |   end  ← insert 'end' here
-hint: Add 'end' on a new line after the block contents.
+hint: Add 'end' on its own line aligned with the block's start.
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -488,8 +496,8 @@ sequenceDiagram
   box Aqua Group
     participant A
     participant B
-  A->B: hi
   end
+  A->B: hi
 
 
 ```
@@ -501,8 +509,8 @@ sequenceDiagram
   box Aqua Group
     participant A
     participant B
-  A->B: hi
   end
+  A->B: hi
 
 
 ```
@@ -1335,7 +1343,7 @@ hint: Example: participant "Logger &quot;debug&quot;" as L
 
 ```mermaid
 sequenceDiagram
-  participant "Logger &quot;debug&quot;quot;" as L
+  participant "Logger &quot;debug&quot;" as L
   L->>L: hi
 
 
@@ -1345,7 +1353,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant "Logger &quot;debug&quot;quot;" as L
+  participant "Logger &quot;debug&quot;" as L
   L->>L: hi
 
 
