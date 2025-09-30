@@ -7,8 +7,8 @@ import { toJsonResult, textReport } from './core/format.js';
 
 // Main CLI execution
 function printUsage() {
-    console.log('Usage: mermaid-lint <file.mmd>');
-    console.log('       cat diagram.mmd | mermaid-lint -');
+    console.log('Usage: maid <file.mmd>');
+    console.log('       cat diagram.mmd | maid -');
 }
 
 function readInput(arg: string): { content: string; filename: string } {

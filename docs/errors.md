@@ -1,4 +1,4 @@
-# mermaid-lint Error Codes
+# Maid Error Codes
 
 Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error includes a stable code and an optional hint.
 

@@ -22,7 +22,7 @@ This file contains invalid pie test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | mermaid-lint |
+| # | Diagram | mermaid-cli | maid |
 |---:|---|:---:|:---:|
 | 1 | [Colon Only](#1-colon-only) | INVALID | INVALID |
 | 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID |
@@ -56,7 +56,7 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
@@ -102,7 +102,7 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.
@@ -144,7 +144,7 @@ pie
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead.
@@ -206,7 +206,7 @@ piee
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
@@ -251,7 +251,7 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-MISSING-COLON]: Missing colon between slice label and value.
@@ -297,7 +297,7 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
@@ -343,7 +343,7 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-MISSING-NUMBER]: Missing numeric value after colon.
@@ -388,7 +388,7 @@ pie
 Syntax error in text
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.

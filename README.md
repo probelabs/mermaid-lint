@@ -1,8 +1,8 @@
-# mermaid-lint
+# Maid
 
 Fast, accurate Mermaid diagram validator with 100% compatibility with mermaid-cli.
 
-## Why mermaid-lint?
+## Why Maid?
 
 Stop pushing broken diagrams to production. This linter catches syntax errors before they break your documentation.
 
@@ -15,13 +15,13 @@ Stop pushing broken diagrams to production. This linter catches syntax errors be
 
 ```bash
 # Install
-npm install -D mermaid-lint
+npm install -D maid
 
 # Validate a diagram
-npx mermaid-lint diagram.mmd
+npx maid diagram.mmd
 
 # Validate from stdin
-cat diagram.mmd | npx mermaid-lint -
+cat diagram.mmd | npx maid -
 
 # Run tests
 npm test
@@ -68,7 +68,7 @@ npm run generate:previews
 - Sequence: [13 valid](./test-fixtures/sequence/VALID_DIAGRAMS.md) • [12 invalid](./test-fixtures/sequence/INVALID_DIAGRAMS.md)
 - 100% accuracy against mermaid-cli on fixtures
 
-## Diagram Type Coverage (Mermaid vs mermaid-lint)
+## Diagram Type Coverage (Mermaid vs Maid)
 
 As of 2025-09-29, Mermaid 11.x documents support for the following diagram types. Items marked experimental/beta indicate syntax may change. References: Mermaid docs pages for each diagram type.
 
@@ -108,10 +108,10 @@ Diagnostics include stable error codes and hints for quick fixes. See the full l
 
 ```bash
 # Text (default)
-npx mermaid-lint diagram.mmd
+npx maid diagram.mmd
 
 # JSON
-npx mermaid-lint --format json diagram.mmd
+npx maid --format json diagram.mmd
 ```
 
 ### Strict Mode
@@ -119,7 +119,7 @@ npx mermaid-lint --format json diagram.mmd
 Enable strict mode to require quoted labels inside shapes (e.g., `[ ... ]`, `{ ... }`, `( ... )`).
 
 ```bash
-npx mermaid-lint --strict diagram.mmd
+npx maid --strict diagram.mmd
 ```
 
 In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRED`. Use double quotes and `&quot;` for inner quotes.
@@ -131,8 +131,8 @@ In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRE
 ```yaml
 - name: Validate Mermaid Diagrams
   run: |
-    npm install -D mermaid-lint
-    find . -name "*.mmd" -exec npx mermaid-lint {} \;
+    npm install -D maid
+    find . -name "*.mmd" -exec npx maid {} \;
 ```
 
 ### Pre-commit Hook
@@ -143,7 +143,7 @@ In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRE
 files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.mmd$')
 if [ -n "$files" ]; then
   for file in $files; do
-    npx mermaid-lint "$file" || exit 1
+    npx maid "$file" || exit 1
   done
 fi
 ```
@@ -184,8 +184,8 @@ Built with modern tooling for reliability and performance:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/mermaid-lint.git
-cd mermaid-lint
+git clone https://github.com/yourusername/maid.git
+cd maid
 
 # Install dependencies
 npm install

@@ -32,7 +32,7 @@ This file contains invalid flowchart test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | mermaid-lint |
+| # | Diagram | mermaid-cli | maid |
 |---:|---|:---:|:---:|
 | 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID |
 | 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID |
@@ -71,7 +71,7 @@ flowchart TD
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: VALID
+### maid Result: VALID
 
 <details>
 <summary>View source code</summary>
@@ -117,7 +117,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
@@ -196,7 +196,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
@@ -262,7 +262,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-ARROW-INVALID]: Invalid arrow syntax: -> (use --> instead)
@@ -322,7 +322,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-CLASS-MALFORMED]: Invalid class statement. Provide node id(s) then a class name.
@@ -381,7 +381,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '(( '. Add a matching '))'.
@@ -439,7 +439,7 @@ FlowDB.addSubGraph (node_modules/mermaid/dist/mermaid.js:45974:26)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
@@ -499,7 +499,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-LINK-MISSING]: Two nodes on one line must be connected with an arrow before 'B'.
@@ -557,7 +557,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-NODE-MIXED-BRACKETS]: Mismatched brackets: opened '(' but closed with ']'.
@@ -614,7 +614,7 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
     at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
@@ -671,7 +671,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
@@ -735,7 +735,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
@@ -798,7 +798,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
@@ -858,7 +858,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-QUOTE-UNCLOSED]: Unclosed quote in node label.
@@ -920,7 +920,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.
@@ -982,7 +982,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-END-WITHOUT-SUBGRAPH]: 'end' without a matching 'subgraph'.
@@ -1056,7 +1056,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
@@ -1129,7 +1129,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[FL-DIR-INVALID]: Invalid direction 'XY'. Use one of: TD, TB, BT, RL, LR.

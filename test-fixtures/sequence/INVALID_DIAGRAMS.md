@@ -34,7 +34,7 @@ This file contains invalid sequence test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | mermaid-lint |
+| # | Diagram | mermaid-cli | maid |
 |---:|---|:---:|:---:|
 | 1 | [Alias Unclosed Quote](#1-alias-unclosed-quote) | VALID | INVALID |
 | 2 | [And In Alt](#2-and-in-alt) | INVALID | INVALID |
@@ -77,14 +77,14 @@ sequenceDiagram
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-QUOTE-UNCLOSED]: Unclosed quote in participant/actor name.
 at test-fixtures/sequence/invalid/alias-unclosed-quote.mmd:2:24
   1 | sequenceDiagram
   2 |   participant Alice as "Eve
-    |                        ^^^^
+    |                        ^
   3 |   Alice->B: hi
 hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
 ```
@@ -142,7 +142,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-BRANCH-IN-WRONG-BLOCK]: 'and' is only valid in 'par' blocks (not inside 'alt').
@@ -214,7 +214,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-AND-OUTSIDE-PAR]: 'and' is only allowed inside 'par' blocks.
@@ -277,7 +277,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-AUTONUMBER-EXTRANEOUS]: Unexpected token after 'autonumber'. Put 'autonumber' on its own line.
@@ -343,7 +343,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-AUTONUMBER-NON-NUMERIC]: Autonumber values must be numbers. Found 'ten'.
@@ -409,7 +409,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
@@ -474,7 +474,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-CREATE-MALFORMED]: After 'create', specify 'participant' or 'actor' before the name.
@@ -538,7 +538,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-CREATE-MISSING-NAME]: Missing name after 'create'.
@@ -603,7 +603,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-ELSE-IN-CRITICAL]: 'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.
@@ -670,7 +670,7 @@ node_modules/mermaid/dist/mermaid.js:125016:20
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-DESTROY-MISSING-NAME]: Missing name after 'destroy'.
@@ -735,7 +735,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-ELSE-OUTSIDE-ALT]: 'else' is only allowed inside 'alt' blocks.
@@ -799,7 +799,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
@@ -863,7 +863,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
@@ -928,7 +928,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-BRANCH-IN-WRONG-BLOCK]: 'option' is only valid in 'critical' blocks (not inside 'par').
@@ -998,7 +998,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-BRANCH-OUTSIDE-BLOCK]: 'option' is only allowed inside a 'critical' block.
@@ -1047,7 +1047,7 @@ sequenceDiagram
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
@@ -1091,7 +1091,7 @@ sequenceDiagram
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead.
@@ -1151,14 +1151,14 @@ sequenceDiagram
 
 ### mermaid-cli Result: VALID
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-QUOTE-UNCLOSED]: Unclosed quote in participant/actor name.
 at test-fixtures/sequence/invalid/participant-unclosed-quote.mmd:2:15
   1 | sequenceDiagram
   2 |   participant "Bob
-    |               ^^^^
+    |               ^
   3 |   A->B: hi
 hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
 ```
@@ -1216,7 +1216,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-END-WITHOUT-BLOCK]: 'end' without an open block (alt/opt/loop/par/rect/critical/break/box).
@@ -1280,7 +1280,7 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### mermaid-lint Result: INVALID
+### maid Result: INVALID
 
 ```
 error[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.

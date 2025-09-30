@@ -131,7 +131,7 @@ This file contains invalid ${diagramType} test fixtures with:
 
   // Summary matrix
   markdown += `## Summary\n\n`;
-  markdown += `| # | Diagram | mermaid-cli | mermaid-lint |\n|---:|---|:---:|:---:|\n`;
+  markdown += `| # | Diagram | mermaid-cli | maid |\n|---:|---|:---:|:---:|\n`;
   results.forEach(({ file, index, mermaidRes, ourRes }) => {
     const base = file.replace('.mmd', '');
     const name = base.replace(/-/g, ' ');
@@ -185,7 +185,7 @@ This file contains invalid ${diagramType} test fixtures with:
       markdown += `\`\`\`\n${mermaidRes.message}\n\`\`\`\n\n`;
     }
 
-    markdown += `### mermaid-lint Result: ${ourRes.valid ? 'VALID' : 'INVALID'}\n\n`;
+    markdown += `### maid Result: ${ourRes.valid ? 'VALID' : 'INVALID'}\n\n`;
     if (!ourRes.valid) {
       markdown += `\`\`\`\n${ourRes.message}\n\`\`\`\n\n`;
     }

@@ -1,10 +1,10 @@
 {
-  "name": "mermaid-lint",
+  "name": "maid",
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "mermaid-lint": "./out/cli.js"
+    "maid": "./out/cli.js"
   },
   "scripts": {
     "build": "tsc",
