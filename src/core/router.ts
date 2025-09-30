@@ -24,6 +24,30 @@ export function detectDiagramType(text: string): DiagramType {
   return 'unknown';
 }
 
+function isOtherMermaidDiagram(headerLine: string | undefined): boolean {
+  if (!headerLine) return false;
+  const firstWord = /^(\w[\w-]*)/.exec(headerLine)?.[1] || '';
+  const t = firstWord; // case-sensitive as many Mermaid headers are camelCase
+  const OTHER = new Set([
+    'classDiagram',
+    'stateDiagram', 'stateDiagram-v2',
+    'erDiagram',
+    'journey', 'userJourney',
+    'gantt',
+    'gitGraph',
+    'mindmap',
+    'timeline',
+    'quadrantChart',
+    'xychart', 'xychart-beta', 'xyChart',
+    'sankey', 'sankey-beta',
+    'requirementDiagram',
+    'C4Context', 'C4Container', 'C4Component', 'C4Deployment', 'C4Dynamic',
+    'block', 'block-beta', 'blockDiagram',
+    'treemap', 'treemap-beta',
+  ]);
+  return OTHER.has(t);
+}
+
 export function validate(text: string, options: ValidateOptions = {}): { type: DiagramType; errors: ValidationError[] } {
   const type = detectDiagramType(text);
   switch (type) {
@@ -34,6 +58,12 @@ export function validate(text: string, options: ValidateOptions = {}): { type: D
     case 'sequence':
       return { type, errors: validateSequence(text, options) };
     default:
+      // Treat other (unsupported) Mermaid diagram types as valid (pass-through).
+      const header = firstNonCommentLine(text);
+      if (isOtherMermaidDiagram(header)) {
+        return { type, errors: [] };
+      }
+      // Otherwise, surface a header error.
       return {
         type,
         errors: [

@@ -129,6 +129,8 @@ npx -y @probelabs/maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
 - Sequence (`sequenceDiagram`)
 - Pie (`pie`)
 
+Note: Other Mermaid diagram types (e.g., `classDiagram`, `stateDiagram-v2`, `gantt`, etc.) are treated as valid (pass‑through) by Maid. They won’t fail your CI. We’ll add native validation over time.
+
 ## What It Catches
 
 ### ❌ Common Errors
