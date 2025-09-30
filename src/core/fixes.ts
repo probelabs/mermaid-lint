@@ -124,9 +124,33 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('SE-BLOCK-MISSING-END', e)) {
-      const lineText = lineTextAt(text, e.line);
-      const indent = inferIndentFromLine(lineText);
-      edits.push(insertAt(text, at(e), `\n${indent}end`));
+      // Insert 'end' aligned with the opening block's indentation, before the next outdented line.
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      // Find the opening block line upwards
+      const openerRe = /^(\s*)(alt\b|opt\b|loop\b|par\b|rect\b|critical\b|break\b|box\b)/;
+      let openIdx = -1;
+      let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        // Fallback: align with current line's indent and insert at start of current line
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}end\n`));
+        continue;
+      }
+      // Walk forward to find first non-empty line whose indent <= openIndent → insert before it
+      let insIdx = lines.length; // default append at EOF
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      const insertLine = insIdx; // insert before this line (0-based)
+      edits.push(insertAt(text, { line: insertLine + 1, column: 1 }, `${openIndent}end\n`));
       continue;
     }
     if (is('SE-AUTONUMBER-EXTRANEOUS', e)) {
