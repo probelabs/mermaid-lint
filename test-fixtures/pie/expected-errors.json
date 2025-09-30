@@ -1,0 +1,20 @@
+{
+  "colon-only.mmd": [
+    "PI-LABEL-REQUIRES-QUOTES"
+  ],
+  "invalid-header.mmd": [
+    "GEN-HEADER-INVALID"
+  ],
+  "missing-colon.mmd": [
+    "PI-MISSING-COLON"
+  ],
+  "missing-label.mmd": [
+    "PI-LABEL-REQUIRES-QUOTES"
+  ],
+  "missing-number.mmd": [
+    "PI-MISSING-NUMBER"
+  ],
+  "unclosed-quote.mmd": [
+    "PI-QUOTE-UNCLOSED"
+  ]
+}
