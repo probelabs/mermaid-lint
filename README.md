@@ -97,6 +97,19 @@ Notes
 
 [Docs]: https://mermaid.js.org/
 
+## Testing / CI
+
+- Baseline tests (flowchart): a fast harness that runs Maid over curated valid/invalid fixtures and expects 100% pass/fail parity with our intended behavior. In CI this step is labeled “Run linter tests (flowchart baseline)”.
+  - Command: `npm test` (runs `scripts/test-chevrotain.js`).
+
+- Error-code assertions (all types): verifies that each invalid fixture surfaces the expected stable error codes across flowchart, pie, and sequence.
+  - Command: `npm run test:errors:all`.
+
+- Compare with mermaid-cli: runs mermaid-cli on all fixtures and checks overall VALID/INVALID parity with Maid. This intentionally prints differences but does not fail the job.
+  - Commands: `node scripts/compare-linters.js flowchart|pie|sequence`.
+
+These layers give confidence in correctness (baseline), diagnostic quality (error codes), and compatibility with the reference renderer (mermaid-cli comparison).
+
 ## Error Codes
 
 Diagnostics include stable error codes and hints for quick fixes. See the full list in [docs/errors.md](./docs/errors.md).

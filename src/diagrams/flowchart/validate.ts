@@ -47,7 +47,12 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           ]
         })
       );
-      if (!prevErrors.some(e => e.code === 'FL-QUOTE-UNCLOSED')) {
+      // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
+      // per-line mismatches as OK as long as the file balances quotes overall).
+      const dblEsc = (text.match(/\\\"/g) || []).length;
+      const dq = (text.match(/\"/g) || []).length - dblEsc;
+      const sq = (text.match(/'/g) || []).length;
+      if ((dq % 2 === 1) || (sq % 2 === 1)) {
         errs.push(...detectUnclosedQuotesInText(text, {
           code: 'FL-QUOTE-UNCLOSED',
           message: 'Unclosed quote in node label.',

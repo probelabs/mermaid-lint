@@ -20,7 +20,10 @@ function runValidator(file) {
     }
 }
 
-console.log('=== TESTING CHEVROTAIN MERMAID VALIDATOR ===\n');
+// Baseline harness for flowchart fixtures.
+// Purpose: fast signal on our intended VALID/INVALID behavior independent of mermaid-cli.
+// Use scripts/compare-linters.js for parity checks with the reference renderer.
+console.log('=== TESTING MAID FLOWCHART BASELINE ===\n');
 
 let totalPassed = 0;
 let totalFailed = 0;

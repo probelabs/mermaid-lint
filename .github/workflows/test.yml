@@ -31,7 +31,7 @@ jobs:
     - name: Build TypeScript
       run: npm run build
     
-    - name: Run linter tests (flowchart legacy)
+    - name: Run linter tests (flowchart baseline)
       run: |
         echo "Running linter tests on flowchart diagrams..."
         npm test
