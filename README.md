@@ -51,48 +51,7 @@ Exit codes
 
 Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public API lives at the package root export. See docs/SDK.md for complete examples.
 
-ESM
-```js
-import { validate, fixText, extractMermaidBlocks } from '@probelabs/maid';
-
-const src = `flowchart TD\n  A[Start] --> B[\"End\"?]\n`;
-const { type, errors } = validate(src);
-if (errors.length) {
-  const { fixed } = fixText(src, { level: 'safe' });
-  console.log(fixed);
-}
-
-// Markdown helpers
-const md = '```mermaid\nflowchart TD\nA-->B\n```\n';
-const blocks = extractMermaidBlocks(md);
-```
-
-CommonJS
-```js
-// Use dynamic import from CommonJS
-(async () => {
-  const { validate, fixText } = await import('@probelabs/maid');
-  const res = validate('flowchart TD\nA-->B');
-  if (!res.errors.length) console.log('ok');
-})();
-```
-
-TypeScript (types included)
-```ts
-import type { ValidationError, FixLevel } from '@probelabs/maid';
-import { validate, fixText } from '@probelabs/maid';
-
-const out = fixText('flowchart TD\nA->B', { level: 'all', strict: true });
-out.errors.forEach((e: ValidationError) => console.log(e.code));
-```
-
-Exports
-- `validate(text, { strict? })` → `{ type, errors }`
-- `detectDiagramType(text)` → `'flowchart' | 'pie' | 'sequence' | 'unknown'`
-- `validateFlowchart|validatePie|validateSequence(text, opts)`
-- `fixText(text, { level?: 'safe'|'all', strict?: boolean })` → `{ fixed, errors }`
-- `computeFixes(text, errors, level?)` + `applyEdits(text, edits)`
-- Markdown: `extractMermaidBlocks(text)` and `offsetErrors(errors, startLine)`
+For detailed examples (ESM, CommonJS, TypeScript) and API surface, see docs/SDK.md.
 
 ### Autofix in a nutshell
 
@@ -458,6 +417,10 @@ Directory scan:
 ```
 
 ## CI/CD Integration
+
+### SDK Details
+
+Looking for programmatic usage? The full SDK guide (examples, exports, and tips) is in docs/SDK.md. The top of this README includes a short SDK Quick Example for convenience.
 
 ### GitHub Actions
 
