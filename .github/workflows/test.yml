@@ -40,6 +40,16 @@ jobs:
       run: |
         echo "Running error-code assertions for flowchart, pie, sequence..."
         npm run test:errors:all
+
+    - name: Markdown multi-diagram test
+      run: |
+        echo "Verifying Markdown extraction and line offsets..."
+        npm run test:markdown
+
+    - name: Directory scan test
+      run: |
+        echo "Verifying directory scanning, include/exclude, and .gitignore..."
+        npm run test:dir
     
     - name: Test individual valid diagrams
       run: |

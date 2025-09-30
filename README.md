@@ -145,6 +145,12 @@ Notes
 - Compare with mermaid-cli: runs mermaid-cli on all fixtures and checks overall VALID/INVALID parity with Maid. This intentionally prints differences but does not fail the job.
   - Commands: `node scripts/compare-linters.js flowchart|pie|sequence`.
 
+- Markdown extraction and offsets: validates multi-diagram Markdown parsing and line-number accuracy.
+  - Command: `npm run test:markdown`.
+
+- Directory scan: validates recursive scanning, include/exclude, .gitignore handling, and exit codes.
+  - Command: `npm run test:dir`.
+
 These layers give confidence in correctness (baseline), diagnostic quality (error codes), and compatibility with the reference renderer (mermaid-cli comparison).
 
 ## Error Codes
