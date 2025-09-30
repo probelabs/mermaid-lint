@@ -279,10 +279,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
-at test-fixtures/sequence/invalid/box-unclosed.mmd:6:1
+at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
+      participant B
     A->B: hi
-  
-  ^
+            ^
   
 hint: Add 'end' on a new line after the block contents.
 ```
