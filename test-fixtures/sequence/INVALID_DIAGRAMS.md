@@ -81,12 +81,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Redundant input, expecting EOF but found: and
-  ┌─ test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
-  │
-  3 │   and Also not allowed
-  │   ^^^
-  │
+Found 1 error(s) in test-fixtures/sequence/invalid/and-outside-par.mmd:
+
+error: test-fixtures/sequence/invalid/and-outside-par.mmd:3:3 - Redundant input, expecting EOF but found: and
+        2 |   participant A
+        3 |   and Also not allowed
+          |   ^^^
+        4 |   A->B: hi
 ```
 
 <details>
@@ -145,14 +146,15 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
+Found 1 error(s) in test-fixtures/sequence/invalid/autonumber-malformed.mmd:
+
+error: test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17 - Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
   <[Newline]>
 but found: 'ten'
-  ┌─ test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
-  │
-  2 │   autonumber 10 ten
-  │                 ^^^
-  │
+        1 | sequenceDiagram
+        2 |   autonumber 10 ten
+          |                 ^^^
+        3 |   participant A
 ```
 
 <details>
@@ -212,12 +214,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting token of type --> EndKeyword <-- but found --> '' <--
-  ┌─ test-fixtures/sequence/invalid/box-unclosed.mmd:7:1
-  │
-  7 │ 
-  │ ^
-  │
+Found 1 error(s) in test-fixtures/sequence/invalid/box-unclosed.mmd:
+
+error: test-fixtures/sequence/invalid/box-unclosed.mmd:7:1 - Expecting token of type --> EndKeyword <-- but found --> '' <--
+        6 | 
+        7 | 
+          | ^
 ```
 
 <details>
@@ -276,15 +278,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting: one of these possible Token sequences:
+Found 1 error(s) in test-fixtures/sequence/invalid/create-malformed.mmd:
+
+error: test-fixtures/sequence/invalid/create-malformed.mmd:2:10 - Expecting: one of these possible Token sequences:
   1. [ParticipantKeyword]
   2. [ActorKeyword]
 but found: 'B'
-  ┌─ test-fixtures/sequence/invalid/create-malformed.mmd:2:10
-  │
-  2 │   create B
-  │          ^
-  │
+        1 | sequenceDiagram
+        2 |   create B
+          |          ^
+        3 |   participant A
 ```
 
 <details>
@@ -344,12 +347,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting token of type --> EndKeyword <-- but found --> 'else' <--
-  ┌─ test-fixtures/sequence/invalid/critical-else.mmd:4:3
-  │
-  4 │   else Should not use else in critical
-  │   ^^^^
-  │
+Found 1 error(s) in test-fixtures/sequence/invalid/critical-else.mmd:
+
+error: test-fixtures/sequence/invalid/critical-else.mmd:4:3 - Expecting token of type --> EndKeyword <-- but found --> 'else' <--
+        3 |     A->B: try
+        4 |   else Should not use else in critical
+          |   ^^^^
+        5 |     A->B: nope
 ```
 
 <details>
@@ -408,16 +412,17 @@ node_modules/mermaid/dist/mermaid.js:125016:20
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting: one of these possible Token sequences:
+Found 1 error(s) in test-fixtures/sequence/invalid/destroy-malformed.mmd:
+
+error: test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22 - Expecting: one of these possible Token sequences:
   1. [Identifier]
   2. [QuotedString]
 but found: '
 '
-  ┌─ test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
-  │
-  2 │   destroy participant
-  │                      ^
-  │
+        1 | sequenceDiagram
+        2 |   destroy participant
+          |                      ^
+        3 |   participant A
 ```
 
 <details>
@@ -476,12 +481,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Redundant input, expecting EOF but found: else
-  ┌─ test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
-  │
-  3 │   else Not allowed here
-  │   ^^^^
-  │
+Found 1 error(s) in test-fixtures/sequence/invalid/else-outside-alt.mmd:
+
+error: test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3 - Redundant input, expecting EOF but found: else
+        2 |   participant A
+        3 |   else Not allowed here
+          |   ^^^^
+        4 |   A->B: hi
 ```
 
 <details>
@@ -539,13 +545,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
-  ┌─ test-fixtures/sequence/invalid/missing-colon.mmd:4:9
-  │
-  4 │   A->>B Message text without colon
-  │         ^^^^^^^
-  │
-  help: Use: A->>B: Message text
+Found 1 error(s) in test-fixtures/sequence/invalid/missing-colon.mmd:
+
+error: test-fixtures/sequence/invalid/missing-colon.mmd:4:9 [SE-MSG-COLON-MISSING] - Missing colon after target actor in message.
+        hint: Use: A->>B: Message text
+        3 |   participant B
+        4 |   A->>B Message text without colon
+          |         ^^^^^^^
+        5 |
 ```
 
 <details>
@@ -603,13 +610,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
-  ┌─ test-fixtures/sequence/invalid/note-malformed.mmd:3:19
-  │
-  3 │   Note right of A Missing colon
-  │                   ^^^^^^^
-  │
-  help: Example: Note right of Alice: Hello
+Found 1 error(s) in test-fixtures/sequence/invalid/note-malformed.mmd:
+
+error: test-fixtures/sequence/invalid/note-malformed.mmd:3:19 [SE-NOTE-MALFORMED] - Malformed note: missing colon before the note text.
+        hint: Example: Note right of Alice: Hello
+        2 |   participant A
+        3 |   Note right of A Missing colon
+          |                   ^^^^^^^
+        4 |   A->B: ok
 ```
 
 <details>
@@ -669,12 +677,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Redundant input, expecting EOF but found: end
-  ┌─ test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
-  │
-  3 │   end
-  │   ^^^
-  │
+Found 1 error(s) in test-fixtures/sequence/invalid/unmatched-end.mmd:
+
+error: test-fixtures/sequence/invalid/unmatched-end.mmd:3:3 - Redundant input, expecting EOF but found: end
+        2 |   participant A
+        3 |   end
+          |   ^^^
+        4 |   A->B: hi
 ```
 
 <details>
@@ -732,13 +741,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.
-  ┌─ test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4
-  │
-  4 │   A==>>B: Unknown arrow
-  │    ^^^^^^^^^^^^^^^^^^^^
-  │
-  help: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
+Found 1 error(s) in test-fixtures/sequence/invalid/wrong-arrow.mmd:
+
+error: test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4 [SE-ARROW-INVALID] - Invalid sequence arrow near '==>>B: Unknown arrow'.
+        hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
+        3 |   participant B
+        4 |   A==>>B: Unknown arrow
+          |    ^^^^^^^^^^^^^^^^^^^^
+        5 |
 ```
 
 <details>
