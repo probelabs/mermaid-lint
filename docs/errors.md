@@ -94,6 +94,11 @@ Tip: quoting inside labels
   - Message: "Mismatched brackets: opened '(' but closed with ']'."
   - Hint: "Close with ')' or change the opening bracket to '['."
 
+- FL-QUOTE-UNCLOSED
+  - When: A node label starts a quote but does not close it.
+  - Message: "Unclosed quote in node label."
+  - Hint: "Close the quote: A[\"Label\"]"
+
 - FL-CLASS-MALFORMED
   - When: `class` statement is missing node ids or the class name.
   - Message: "Invalid class statement. Provide node id(s) then a class name."
@@ -178,6 +183,11 @@ Tip: quoting inside labels
 - SE-NOTE-MALFORMED
   - When: A note statement is incomplete or missing the colon.
   - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
+
+- SE-QUOTE-UNCLOSED
+  - When: A participant/actor name or alias starts a quote but does not close it.
+  - Message: "Unclosed quote in participant/actor name."
+  - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
 
 - SE-LABEL-ESCAPED-QUOTE
   - When: Participant/actor names, aliases, or block labels contain backslash-escaped quotes (\"). Mermaid does not support `\"`.

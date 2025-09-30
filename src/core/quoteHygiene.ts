@@ -47,3 +47,45 @@ export function detectDoubleInDouble(tokens: IToken[], opts: { code: string; mes
   }
   return out;
 }
+
+export function detectUnclosedQuotesInText(text: string, opts: {
+  code: string;
+  message?: string;
+  hint?: string;
+  limitPerFile?: number;
+}): ValidationError[] {
+  const out: ValidationError[] = [];
+  const lines = text.split(/\r?\n/);
+  const msg = opts.message || 'Unclosed quote in label or name.';
+  const hint = opts.hint || 'Close the quote, e.g., "Text"';
+  const limit = opts.limitPerFile ?? 1;
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i] ?? '';
+    if (!raw) continue;
+    // Ignore HTML entities &quot; and remove escaped quotes (we report those separately)
+    let s = raw.split('&quot;').join('').split('\\"').join('');
+    const dqIdxs: number[] = [];
+    const sqIdxs: number[] = [];
+    for (let j = 0; j < s.length; j++) {
+      const ch = s[j];
+      if (ch === '"') dqIdxs.push(j);
+      else if (ch === "'") sqIdxs.push(j);
+    }
+    const oddDq = dqIdxs.length % 2 === 1;
+    const oddSq = sqIdxs.length % 2 === 1;
+    if (oddDq || oddSq) {
+      const firstIdx = oddDq ? (dqIdxs[0] ?? 0) : (sqIdxs[0] ?? 0);
+      out.push({
+        line: i + 1,
+        column: firstIdx + 1,
+        severity: 'error',
+        code: opts.code,
+        message: msg,
+        hint,
+        length: 1
+      });
+      if (out.length >= limit) break;
+    }
+  }
+  return out;
+}

@@ -395,7 +395,7 @@ error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
 at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
   1 | pie
   2 |   "Dogs : 10
-    |   ^^^^^^
+    |   ^
   3 | 
 hint: Close the quote: "Dogs" : 10
 ```

@@ -5,7 +5,7 @@ import { analyzeFlowchart } from './semantics.js';
 import type { IToken } from 'chevrotain';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import { coercePos, mapFlowchartParserError } from '../../core/diagnostics.js';
-import { detectDoubleInDouble } from '../../core/quoteHygiene.js';
+import { detectDoubleInDouble, detectUnclosedQuotesInText } from '../../core/quoteHygiene.js';
 import { detectEscapedQuotes } from '../../core/quoteHygiene.js';
 
 export function validateFlowchart(text: string, options: ValidateOptions = {}): ValidationError[] {
@@ -31,9 +31,9 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       }
       return errs;
     },
-    postParse: (_text, tokens, _cst, prevErrors) => {
+    postParse: (text, tokens, _cst, prevErrors) => {
       if (prevErrors.some(e => e.code === 'FL-LABEL-ESCAPED-QUOTE')) return [];
-      return detectEscapedQuotes(tokens as IToken[], {
+      const errs = detectEscapedQuotes(tokens as IToken[], {
         code: 'FL-LABEL-ESCAPED-QUOTE',
         message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
         hint: 'Prefer "He said &quot;Hi&quot;".'
@@ -44,6 +44,15 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           hint: 'Example: A["He said &quot;Hi&quot;"]'
         })
       );
+      if (!prevErrors.some(e => e.code === 'FL-QUOTE-UNCLOSED')) {
+        errs.push(...detectUnclosedQuotesInText(text, {
+          code: 'FL-QUOTE-UNCLOSED',
+          message: 'Unclosed quote in node label.',
+          hint: 'Close the quote: A["Label"]',
+          limitPerFile: 1
+        }));
+      }
+      return errs;
     }
   });
 }

@@ -6,7 +6,7 @@ import { mapSequenceParserError } from '../../core/diagnostics.js';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import type { IToken } from 'chevrotain';
 import * as t from './lexer.js';
-import { detectEscapedQuotes, detectDoubleInDouble } from '../../core/quoteHygiene.js';
+import { detectEscapedQuotes, detectDoubleInDouble, detectUnclosedQuotesInText } from '../../core/quoteHygiene.js';
 
 export function validateSequence(text: string, _options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
@@ -38,7 +38,7 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
       );
       return errs;
     },
-    postParse: (_text, tokens, _cst, prevErrors) => {
+    postParse: (text, tokens, _cst, prevErrors) => {
       const warnings: ValidationError[] = [];
       const tokenList = tokens as IToken[];
       const hasPar = tokenList.some(x => x.tokenType === t.ParKeyword);
@@ -49,6 +49,16 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
       // Only add these hints if there were parse errors (to avoid noisy hints on valid files)
       const hadErrors = prevErrors.some(e => e.severity === 'error');
       if (hadErrors) {
+        // Shared: unclosed quotes detection (fallback)
+        if (!prevErrors.some(e => e.code === 'SE-QUOTE-UNCLOSED')) {
+          const unc = detectUnclosedQuotesInText(text, {
+            code: 'SE-QUOTE-UNCLOSED',
+            message: 'Unclosed quote in participant/actor name.',
+            hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"',
+            limitPerFile: 1
+          });
+          if (unc.length) warnings.push(...unc);
+        }
         const hasAndOutsideParErr = prevErrors.some(e => e.code === 'SE-AND-OUTSIDE-PAR');
         const hasElseOutsideAltErr = prevErrors.some(e => e.code === 'SE-ELSE-OUTSIDE-ALT');
 
