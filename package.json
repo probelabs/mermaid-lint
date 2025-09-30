@@ -6,7 +6,17 @@
   "bin": {
     "maid": "./out/cli.js"
   },
-  "main": "./out/cli.js",
+  "main": "./out/index.js",
+  "types": "./out/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./out/index.d.ts",
+      "import": "./out/index.js"
+    },
+    "./cli": {
+      "import": "./out/cli.js"
+    }
+  },
   "files": [
     "out",
     "README.md",
@@ -48,7 +58,8 @@
     "generate:valid": "node scripts/generate-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-preview.js sequence",
     "generate:invalid": "node scripts/generate-invalid-preview.js flowchart && node scripts/generate-invalid-preview.js pie && node scripts/generate-invalid-preview.js sequence"
   ,
-    "ci:previews": "npm run build && npm run generate:previews && git update-index -q --refresh && git diff --exit-code || (echo '\nPreview files are outdated. Run: npm run generate:previews' && exit 1)"
+    "ci:previews": "npm run build && npm run generate:previews && git update-index -q --refresh && git diff --exit-code || (echo '\nPreview files are outdated. Run: npm run generate:previews' && exit 1)",
+    "test:sdk": "node scripts/test-sdk.js"
   },
   "keywords": ["mermaid", "linter", "cli", "docs", "markdown", "diagram"],
   "author": "Probelabs",

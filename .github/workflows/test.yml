@@ -26,6 +26,9 @@ jobs:
     - name: Build TypeScript
       run: npm run build
     
+    - name: SDK smoke test (ESM)
+      run: npm run test:sdk
+    
     - name: Run linter tests (flowchart baseline)
       run: |
         echo "Running linter tests on flowchart diagrams..."
