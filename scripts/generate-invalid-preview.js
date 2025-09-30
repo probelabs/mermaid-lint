@@ -133,8 +133,9 @@ This file contains invalid ${diagramType} test fixtures with:
     const relPath = path.relative(repoRoot, filePath);
     const mermaidRes = runMermaidCli(relPath);
     const ourRes = runOurLinter(relPath);
-    const fixPreview = runOurAutofixPreview(relPath, 'safe');
-    return { file, index, filePath: relPath, mermaidRes, ourRes, fixPreview };
+    const fixPreviewSafe = runOurAutofixPreview(relPath, 'safe');
+    const fixPreviewAll = runOurAutofixPreview(relPath, 'all');
+    return { file, index, filePath: relPath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll };
   });
 
   // Generate table of contents
@@ -161,7 +162,7 @@ This file contains invalid ${diagramType} test fixtures with:
   markdown += `\n---\n\n`;
   
   // Generate diagram sections
-  results.forEach(({ file, index, filePath, mermaidRes, ourRes, fixPreview }) => {
+  results.forEach(({ file, index, filePath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
     const content = fs.readFileSync(filePath, 'utf-8');
     const name = file.replace('.mmd', '').replace(/-/g, ' ');
     const title = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -209,10 +210,19 @@ This file contains invalid ${diagramType} test fixtures with:
 
     // Auto-fix preview (safe)
     markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
-    if (fixPreview.ok && fixPreview.fixed.trim() && fixPreview.fixed.trim() !== fs.readFileSync(filePath, 'utf-8').trim()) {
-      markdown += `\`\`\`mermaid\n${fixPreview.fixed}\n\`\`\`\n\n`;
+    const orig = fs.readFileSync(filePath, 'utf-8');
+    if (fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig.trim()) {
+      markdown += `\`\`\`mermaid\n${fixPreviewSafe.fixed}\n\`\`\`\n\n`;
     } else {
       markdown += `No auto-fix changes (safe level).\n\n`;
+    }
+
+    // Auto-fix preview (all)
+    markdown += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
+    if (fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig.trim()) {
+      markdown += `\`\`\`mermaid\n${fixPreviewAll.fixed}\n\`\`\`\n\n`;
+    } else {
+      markdown += `No auto-fix changes (all level).\n\n`;
     }
 
     // Add collapsible source code section

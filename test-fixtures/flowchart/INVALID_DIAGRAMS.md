@@ -77,6 +77,10 @@ flowchart TD
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -152,6 +156,10 @@ hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -219,6 +227,10 @@ hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configure
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -294,6 +306,14 @@ flowchart TD
     B --> C
 ```
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -356,6 +376,10 @@ hint: Example: class A,B important
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -421,6 +445,10 @@ hint: Example: A((Circle))
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -482,6 +510,10 @@ hint: Example: subgraph API [API Layer]
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -546,6 +578,13 @@ hint: Insert --> between nodes, e.g., A --> B.
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A  --> B
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -609,6 +648,10 @@ hint: Close with ')' or change the opening bracket to '['.
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -668,6 +711,10 @@ hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -730,6 +777,10 @@ hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -799,6 +850,10 @@ hint: Prefer "He said &quot;Hi&quot;".
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -866,6 +921,14 @@ hint: Example: A[Label] --> B
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart LR
+    A[Start ]--> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -929,6 +992,10 @@ hint: Close the quote: A["Label"]
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -996,6 +1063,10 @@ hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configure
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1060,6 +1131,10 @@ hint: Remove this end or add a subgraph above.
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1140,6 +1215,10 @@ hint: Example: subgraph API [API Layer]
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1215,6 +1294,10 @@ hint: Try 'TD' (top-down) or 'LR' (left-to-right).
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>

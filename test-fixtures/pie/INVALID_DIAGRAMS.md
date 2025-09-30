@@ -72,6 +72,10 @@ hint: Example: "Dogs" : 10
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -121,6 +125,10 @@ hint: Example: "He said &quot;Hi&quot;" : 1
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -189,6 +197,15 @@ pie
 
 ```
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+pie
+  "He said &quot;Hi&quot;quot;" : 1
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -238,6 +255,10 @@ hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -285,6 +306,15 @@ hint: Use: "Label" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+pie
+  title "Pets"
+  "Dogs"  : 10
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
 
 ```mermaid
 pie
@@ -343,6 +373,10 @@ hint: Example: "Dogs" : 10
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -393,6 +427,10 @@ hint: Use a number like 10 or 42.5
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -441,6 +479,14 @@ hint: Close the quote: "Dogs" : 10
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+pie
+  "Dogs ": 10
+
+```
 
 <details>
 <summary>View source code</summary>

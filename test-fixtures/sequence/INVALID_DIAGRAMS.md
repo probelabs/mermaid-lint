@@ -93,6 +93,16 @@ hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+sequenceDiagram
+  participant Alice as "Eve"
+  Alice->B: hi
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -168,6 +178,10 @@ hint: Use the proper branch for 'alt' or close it with 'end'.
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -238,6 +252,10 @@ hint: Example: par … and … end (parallel branches).
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -304,6 +322,17 @@ hint: Example:
 ```
 
 ### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  autonumber 10 10 
+                   participant A
+  A->B: ok
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
 
 ```mermaid
 sequenceDiagram
@@ -382,6 +411,10 @@ hint: Use numbers: autonumber 10 or autonumber 10 10 (start and step).
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -449,6 +482,19 @@ hint: Add 'end' on a new line after the block contents.
 ```
 
 ### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  box Aqua Group
+    participant A
+    participant B
+  A->B: hi
+  end
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
 
 ```mermaid
 sequenceDiagram
@@ -532,6 +578,10 @@ hint: Examples:
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -597,6 +647,10 @@ hint: Use: create participant A  or  create actor B
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -678,6 +732,19 @@ sequenceDiagram
 
 ```
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+sequenceDiagram
+  critical Do critical
+    A->B: try
+  option Should not use else in critical
+    A->B: nope
+  end
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -746,6 +813,10 @@ hint: Use: destroy participant A  or  destroy actor B
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -816,6 +887,10 @@ hint: Use: alt Condition … else … end
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -881,6 +956,17 @@ hint: Use: A->>B: Message text
 ```
 
 ### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  participant A
+  participant B
+  A->>B : Message text without colon
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
 
 ```mermaid
 sequenceDiagram
@@ -966,6 +1052,17 @@ sequenceDiagram
 
 ```
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+sequenceDiagram
+  participant A
+  Note right of A : Missing colon
+  A->B: ok
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -1041,6 +1138,10 @@ hint: Use the proper branch for 'par' or close it with 'end'.
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1114,6 +1215,10 @@ hint: Start a critical section:
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1161,6 +1266,10 @@ hint: Example: participant "Logger &quot;debug&quot;" as L
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1232,6 +1341,16 @@ sequenceDiagram
 
 ```
 
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+sequenceDiagram
+  participant "Logger &quot;debug&quot;quot;" as L
+  L->>L: hi
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -1279,6 +1398,16 @@ hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+sequenceDiagram
+  participant "Bob"
+  A->B: hi
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -1349,6 +1478,10 @@ hint: Add a block above (e.g., par … end | alt … end) or remove this end.
 
 No auto-fix changes (safe level).
 
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
 <details>
 <summary>View source code</summary>
 
@@ -1416,6 +1549,10 @@ hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ### maid Auto-fix (`--fix`) Preview
 
 No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
