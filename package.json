@@ -40,6 +40,7 @@
   "scripts": {
     "clean": "rm -rf out",
     "build": "tsc",
+    "build:browser": "npm run build && esbuild out/index.js --bundle --format=esm --outfile=site/maid/maid.bundle.js --platform=browser --external:fs --external:path --external:url --external:util",
     "prepack": "npm run build",
     "test": "node scripts/test-chevrotain.js",
     "test:errors:sequence": "npm run build && node scripts/test-errors.js sequence",
@@ -72,6 +73,7 @@
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.12.0",
     "@types/node": "^24.5.2",
+    "esbuild": "^0.25.10",
     "typescript": "^5.9.2"
   },
   "dependencies": {
