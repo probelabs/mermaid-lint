@@ -84,6 +84,27 @@ function runOurLinter(filepath) {
   }
 }
 
+function runOurAutofixPreview(filepath, level = 'safe') {
+  try {
+    const flag = level === 'all' ? '--fix=all' : '--fix';
+    const out = execSync(`node ./out/cli.js ${flag} --dry-run --print-fixed "${filepath}"`, {
+      stdio: 'pipe',
+      encoding: 'utf8',
+      cwd: path.resolve(__dirname, '..'),
+      timeout: 8000,
+    });
+    return { ok: true, fixed: out.toString() };
+  } catch (error) {
+    // Even if exit code is non-zero (remaining errors), stdout contains the fixed content we want.
+    const stdout = (error.stdout || '').toString();
+    if (stdout && stdout.trim()) {
+      return { ok: true, fixed: stdout };
+    }
+    const msg = ((error.stderr || '')).toString();
+    return { ok: false, fixed: '', error: stripAnsi(msg) };
+  }
+}
+
 function generateInvalidMarkdown(diagramType = 'flowchart') {
   const fixturesDir = path.resolve(__dirname, '..', 'test-fixtures', diagramType);
   const invalidDir = path.join(fixturesDir, 'invalid');
@@ -117,7 +138,9 @@ This file contains invalid ${diagramType} test fixtures with:
     const relPath = path.relative(repoRoot, filePath);
     const mermaidRes = runMermaidCli(relPath);
     const ourRes = runOurLinter(relPath);
-    return { file, index, filePath: relPath, mermaidRes, ourRes };
+    const fixPreviewSafe = runOurAutofixPreview(relPath, 'safe');
+    const fixPreviewAll = runOurAutofixPreview(relPath, 'all');
+    return { file, index, filePath: relPath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll };
   });
 
   // Generate table of contents
@@ -129,22 +152,26 @@ This file contains invalid ${diagramType} test fixtures with:
   
   markdown += `\n---\n\n`;
 
-  // Summary matrix
+  // Summary matrix (add Auto-fix column: shows if safe/all would change the file)
   markdown += `## Summary\n\n`;
-  markdown += `| # | Diagram | mermaid-cli | maid |\n|---:|---|:---:|:---:|\n`;
-  results.forEach(({ file, index, mermaidRes, ourRes }) => {
+  markdown += `| # | Diagram | mermaid-cli | maid | Auto-fix? |\n|---:|---|:---:|:---:|:---:|\n`;
+  results.forEach(({ file, index, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
     const base = file.replace('.mmd', '');
     const name = base.replace(/-/g, ' ');
     const title = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     const anchor = `#${index + 1}-${base.toLowerCase()}`;
     const mm = mermaidRes.valid ? 'VALID' : 'INVALID';
     const us = ourRes.valid ? 'VALID' : 'INVALID';
-    markdown += `| ${index + 1} | [${title}](${anchor}) | ${mm} | ${us} |\n`;
+    const orig = fs.readFileSync(path.join(invalidDir, file), 'utf8').trim();
+    const safeChanged = fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig;
+    const allChanged = fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig;
+    const fixCol = safeChanged ? '✅ safe' : (allChanged ? '✅ all' : '—');
+    markdown += `| ${index + 1} | [${title}](${anchor}) | ${mm} | ${us} | ${fixCol} |\n`;
   });
   markdown += `\n---\n\n`;
   
   // Generate diagram sections
-  results.forEach(({ file, index, filePath, mermaidRes, ourRes }) => {
+  results.forEach(({ file, index, filePath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
     const content = fs.readFileSync(filePath, 'utf-8');
     const name = file.replace('.mmd', '').replace(/-/g, ' ');
     const title = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -188,6 +215,23 @@ This file contains invalid ${diagramType} test fixtures with:
     markdown += `### maid Result: ${ourRes.valid ? 'VALID' : 'INVALID'}\n\n`;
     if (!ourRes.valid) {
       markdown += `\`\`\`\n${ourRes.message}\n\`\`\`\n\n`;
+    }
+
+    // Auto-fix preview (safe)
+    markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
+    const orig = fs.readFileSync(filePath, 'utf-8');
+    if (fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig.trim()) {
+      markdown += `\`\`\`mermaid\n${fixPreviewSafe.fixed}\n\`\`\`\n\n`;
+    } else {
+      markdown += `No auto-fix changes (safe level).\n\n`;
+    }
+
+    // Auto-fix preview (all)
+    markdown += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
+    if (fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig.trim()) {
+      markdown += `\`\`\`mermaid\n${fixPreviewAll.fixed}\n\`\`\`\n\n`;
+    } else {
+      markdown += `No auto-fix changes (all level).\n\n`;
     }
 
     // Add collapsible source code section

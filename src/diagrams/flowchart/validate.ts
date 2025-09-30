@@ -32,21 +32,31 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {
-      if (prevErrors.some(e => e.code === 'FL-LABEL-ESCAPED-QUOTE')) return [];
-      const errs = detectEscapedQuotes(tokens as IToken[], {
+      // Run quote hygiene regardless of other errors, but avoid duplicates when semantics already reported the same line.
+      const seenEscapedLines = new Set(
+        prevErrors.filter(e => e.code === 'FL-LABEL-ESCAPED-QUOTE').map(e => e.line)
+      );
+      const esc = detectEscapedQuotes(tokens as IToken[], {
         code: 'FL-LABEL-ESCAPED-QUOTE',
         message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
         hint: 'Prefer "He said &quot;Hi&quot;".'
-      }).concat(
-        prevErrors.some(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE') ? [] : detectDoubleInDouble(tokens as IToken[], {
-          code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
-          message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
-          hint: 'Example: A["He said &quot;Hi&quot;"]',
-          scopeEndTokenNames: [
-            'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
-          ]
-        })
+      }).filter(e => !seenEscapedLines.has(e.line));
+      // Detect double-in-double for lines not already reported by the parser mapping
+      const seenDoubleLines = new Set(
+        prevErrors.filter(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE').map(e => e.line)
       );
+      const escapedLinesAll = new Set(
+        detectEscapedQuotes(tokens as IToken[], { code: 'x' }).map(e => e.line)
+      );
+      const dbl = detectDoubleInDouble(tokens as IToken[], {
+        code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
+        message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
+        hint: 'Example: A["He said &quot;Hi&quot;"]',
+        scopeEndTokenNames: [
+          'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
+        ]
+      }).filter(e => !seenDoubleLines.has(e.line) && !escapedLinesAll.has(e.line));
+      const errs = esc.concat(dbl);
       // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
       // per-line mismatches as OK as long as the file balances quotes overall).
       const dblEsc = (text.match(/\\\"/g) || []).length;

@@ -59,7 +59,8 @@ class FlowSemanticsVisitor extends BaseVisitor {
         severity: 'error',
         code: 'FL-DIR-KW-INVALID',
         message: `Unknown keyword '${kwTok.image}' before direction. Use 'direction TB' / 'LR' / etc.`,
-        hint: "Example inside subgraph: 'direction TB'"
+        hint: "Example inside subgraph: 'direction TB'",
+        length: (kwTok.image?.length ?? 0)
       });
     }
   }
@@ -150,15 +151,38 @@ class FlowSemanticsVisitor extends BaseVisitor {
       for (const q of qs) {
         const s = q.image || '';
         if (s.startsWith("'") && s.endsWith("'") && s.includes('"')) {
+          const innerIdx = s.indexOf('"');
+          const col = (q.startColumn ?? 1) + Math.max(0, innerIdx);
           this.ctx.errors.push({
             line: q.startLine ?? 1,
-            column: q.startColumn ?? 1,
+            column: col,
             severity: 'error',
             message: 'Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.',
             code: 'FL-LABEL-DOUBLE-IN-SINGLE',
-            hint: 'Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.'
+            hint: 'Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.',
+            length: 1
           });
         }
+      }
+    }
+  }
+
+  private checkDoubleInDoubleQuoted(contentNodes: CstNode[] | undefined) {
+    if (!contentNodes) return;
+    for (const cn of contentNodes) {
+      const ch: any = (cn as any).children || {};
+      const qs: IToken[] = ch.QuotedString || [];
+      if (qs.length >= 2) {
+        const q2 = qs[1];
+        this.ctx.errors.push({
+          line: q2.startLine ?? 1,
+          column: q2.startColumn ?? 1,
+          severity: 'error',
+          code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
+          message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
+          hint: 'Example: A["He said &quot;Hi&quot;"]',
+          length: 1
+        });
       }
     }
   }

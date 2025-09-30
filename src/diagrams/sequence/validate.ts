@@ -8,7 +8,7 @@ import type { IToken } from 'chevrotain';
 import * as t from './lexer.js';
 import { detectEscapedQuotes, detectDoubleInDouble, detectUnclosedQuotesInText } from '../../core/quoteHygiene.js';
 
-export function validateSequence(text: string, _options: ValidateOptions = {}): ValidationError[] {
+export function validateSequence(text: string, options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
     tokenize,
     parse,
@@ -17,11 +17,12 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
     postLex: (_text, tokens) => {
       const tokList = tokens as IToken[];
       // Global: escaped quotes detection (pre-parse so it always triggers even on parse failures)
-      const errs = detectEscapedQuotes(tokList, {
+      const errsRaw = detectEscapedQuotes(tokList, {
         code: 'SE-LABEL-ESCAPED-QUOTE',
         message: 'Escaped quotes (\\") in names or labels are not supported by Mermaid. Use &quot; instead.',
         hint: 'Example: participant "Logger &quot;debug&quot;" as L'
       });
+      const errs: ValidationError[] = errsRaw.map(e => ({ ...e, severity: (options.strict ? 'error' as const : 'warning' as const) }));
       // Heuristic for double quotes inside double-quoted names/labels on a single line
       const byLine = new Map<number, IToken[]>();
       for (const tk of tokList) {
@@ -29,14 +30,14 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
         if (!byLine.has(ln)) byLine.set(ln, []);
         byLine.get(ln)!.push(tk);
       }
-      errs.push(
-        ...detectDoubleInDouble(tokList, {
+      const escapedLines = new Set(errs.map(e => e.line));
+      const dbl = detectDoubleInDouble(tokList, {
           code: 'SE-LABEL-DOUBLE-IN-DOUBLE',
           message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.',
           hint: 'Example: participant "Logger &quot;debug&quot;" as L',
           scopeEndTokenNames: ['Newline']
-        })
-      );
+        }).filter(e => !escapedLines.has(e.line)).map(e => ({ ...e, severity: (options.strict ? 'error' as const : 'warning' as const) }));
+      errs.push(...dbl);
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {
@@ -58,7 +59,7 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
             hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"',
             limitPerFile: 1
           });
-          if (unc.length) warnings.push(...unc);
+          if (unc.length) warnings.push(...unc.map(u => ({ ...u, severity: (options.strict ? 'error' as const : 'warning' as const) })));
         }
         const hasAndOutsideParErr = prevErrors.some(e => e.code === 'SE-AND-OUTSIDE-PAR');
         const hasElseOutsideAltErr = prevErrors.some(e => e.code === 'SE-ELSE-OUTSIDE-ALT');

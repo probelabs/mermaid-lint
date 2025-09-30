@@ -38,12 +38,13 @@ export const ParKeyword = createToken({ name: 'ParKeyword', pattern: /par/i, lon
 export const AndKeyword = createToken({ name: 'AndKeyword', pattern: /and/i, longer_alt: Identifier });
 export const RectKeyword = createToken({ name: 'RectKeyword', pattern: /rect/i, longer_alt: Identifier });
 export const CriticalKeyword = createToken({ name: 'CriticalKeyword', pattern: /critical/i, longer_alt: Identifier });
-export const BreakKeyword = createToken({ name: 'BreakKeyword', pattern: /break/i, longer_alt: Identifier });
 export const BoxKeyword = createToken({ name: 'BoxKeyword', pattern: /box/i, longer_alt: Identifier });
 export const EndKeyword = createToken({ name: 'EndKeyword', pattern: /end/i, longer_alt: Identifier });
 
 export const LinksKeyword = createToken({ name: 'LinksKeyword', pattern: /links/i, longer_alt: Identifier });
 export const LinkKeyword = createToken({ name: 'LinkKeyword', pattern: /link/i, longer_alt: Identifier });
+
+export const BreakKeyword = createToken({ name: 'BreakKeyword', pattern: /break/i, longer_alt: Identifier });
 
 // Arrows (order matters: longest first)
 export const BidirAsyncDotted = createToken({ name: 'BidirAsyncDotted', pattern: /<<-->>/ });
@@ -69,7 +70,8 @@ export const LParen = createToken({ name: 'LParen', pattern: /\(/ });
 export const RParen = createToken({ name: 'RParen', pattern: /\)/ });
 
 // Strings and text
-export const QuotedString = createToken({ name: 'QuotedString', pattern: /"[^"]*"|'[^']*'/ });
+// Allow escaped characters within quotes (e.g., \" inside "...")
+export const QuotedString = createToken({ name: 'QuotedString', pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/ });
 
 // Comments and whitespace
 export const Comment = createToken({ name: 'Comment', pattern: /%%[^\n\r]*/, group: Lexer.SKIPPED });

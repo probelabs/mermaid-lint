@@ -23,10 +23,11 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 14. [Simple Flow](#14-simple-flow)
 15. [Special Arrows](#15-special-arrows)
 16. [Styling Classes](#16-styling-classes)
-17. [Subgraphs](#17-subgraphs)
-18. [Undefined Node](#18-undefined-node)
-19. [Unicode Text](#19-unicode-text)
-20. [With Text](#20-with-text)
+17. [Subgraph Quoted Title](#17-subgraph-quoted-title)
+18. [Subgraphs](#18-subgraphs)
+19. [Undefined Node](#19-undefined-node)
+20. [Unicode Text](#20-unicode-text)
+21. [With Text](#21-with-text)
 
 ---
 
@@ -96,10 +97,12 @@ flowchart TB
     C -->|Link 2| E[[Subroutine]]
     D --> F[(Database)]
     E --> F
+    F --> H{{Hexagon}}
     F --> G[/Parallelogram/]
     G --> H[\Parallelogram Alt\]
     H --> I[/Trapezoid\]
     I --> J[\Trapezoid Alt/]
+
 ```
 
 <details>
@@ -113,10 +116,12 @@ flowchart TB
     C -->|Link 2| E[[Subroutine]]
     D --> F[(Database)]
     E --> F
+    F --> H{{Hexagon}}
     F --> G[/Parallelogram/]
     G --> H[\Parallelogram Alt\]
     H --> I[/Trapezoid\]
     I --> J[\Trapezoid Alt/]
+
 ```
 </details>
 
@@ -498,7 +503,37 @@ flowchart TD
 
 ---
 
-## 17. Subgraphs
+## 17. Subgraph Quoted Title
+
+📄 **Source**: [`subgraph-quoted-title.mmd`](./valid/subgraph-quoted-title.mmd)
+
+```mermaid
+flowchart TD
+  subgraph "Runtime Execution"
+    A[Start] --> B{Decision}
+  end
+  B --> C[Done]
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  subgraph "Runtime Execution"
+    A[Start] --> B{Decision}
+  end
+  B --> C[Done]
+
+
+```
+</details>
+
+---
+
+## 18. Subgraphs
 
 📄 **Source**: [`subgraphs.mmd`](./valid/subgraphs.mmd)
 
@@ -532,7 +567,7 @@ flowchart TD
 
 ---
 
-## 18. Undefined Node
+## 19. Undefined Node
 
 📄 **Source**: [`undefined-node.mmd`](./valid/undefined-node.mmd)
 
@@ -558,7 +593,7 @@ flowchart TD
 
 ---
 
-## 19. Unicode Text
+## 20. Unicode Text
 
 📄 **Source**: [`unicode-text.mmd`](./valid/unicode-text.mmd)
 
@@ -588,7 +623,7 @@ flowchart LR
 
 ---
 
-## 20. With Text
+## 21. With Text
 
 📄 **Source**: [`with-text.mmd`](./valid/with-text.mmd)
 

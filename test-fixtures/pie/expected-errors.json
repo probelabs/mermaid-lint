@@ -18,10 +18,12 @@
     "PI-QUOTE-UNCLOSED"
   ]
   ,
-  "escaped-quotes.mmd": [
-    "PI-LABEL-ESCAPED-QUOTE"
-  ],
   "double-in-double.mmd": [
-    "PI-LABEL-DOUBLE-IN-DOUBLE"
+    "PI-LABEL-DOUBLE-IN-DOUBLE",
+    "PI-MISSING-COLON"
+  ],
+  "unclosed-quote.mmd": [
+    "PI-QUOTE-UNCLOSED",
+    "PI-QUOTE-UNCLOSED"
   ]
 }

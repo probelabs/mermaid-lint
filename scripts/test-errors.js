@@ -17,6 +17,28 @@ function runLinterJSON(relPath) {
   }
 }
 
+function countBy(arr) {
+  const m = new Map();
+  for (const x of arr) m.set(x, (m.get(x) || 0) + 1);
+  return m;
+}
+
+function diffCounts(expectedArr, actualArr) {
+  const exp = countBy(expectedArr);
+  const act = countBy(actualArr);
+  const missing = [];
+  const extra = [];
+  for (const [code, cnt] of exp.entries()) {
+    const have = act.get(code) || 0;
+    if (have < cnt) missing.push(`${code} x${cnt - have}`);
+  }
+  for (const [code, cnt] of act.entries()) {
+    const want = exp.get(code) || 0;
+    if (cnt > want) extra.push(`${code} x${cnt - want}`);
+  }
+  return { missing, extra };
+}
+
 function runType(type, root) {
   const fixturesDir = path.join(root, 'test-fixtures', type);
   const expectedPath = path.join(fixturesDir, 'expected-errors.json');
@@ -31,14 +53,25 @@ function runType(type, root) {
   for (const file of files) {
     const rel = path.join('test-fixtures', type, 'invalid', file);
     const json = runLinterJSON(rel);
-    const codes = [...(json.errors || []), ...(json.warnings || [])].map(e => e.code).filter(Boolean);
+    // Only enforce error codes; warnings are advisory and may change.
+    const codes = [...(json.errors || [])]
+      .map(e => e.code)
+      .filter(Boolean);
     const need = expected[file];
-    const missing = need.filter(code => !codes.includes(code));
-    if (missing.length === 0) {
-      console.log(`✓ ${file} → ${need.join(', ')}`);
+    const { missing, extra } = diffCounts(need, codes);
+    if (missing.length === 0 && extra.length === 0) {
+      console.log(`✓ ${file} → ` + need.map((c, i, arr) => {
+        const n = arr.filter(x => x === c).length;
+        // Print each unique once with count
+        if (arr.indexOf(c) !== i) return null;
+        return n > 1 ? `${c} x${n}` : c;
+      }).filter(Boolean).join(', '));
       passed++;
     } else {
-      console.log(`✗ ${file} → missing codes: ${missing.join(', ')} (got: ${codes.join(', ')})`);
+      const parts = [];
+      if (missing.length) parts.push(`missing: ${missing.join(', ')}`);
+      if (extra.length) parts.push(`extra: ${extra.join(', ')}`);
+      console.log(`✗ ${file} → ${parts.join(' | ')} (got: ${codes.join(', ')})`);
       failed++;
     }
   }

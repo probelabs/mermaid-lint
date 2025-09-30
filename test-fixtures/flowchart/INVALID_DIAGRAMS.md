@@ -32,26 +32,26 @@ This file contains invalid flowchart test fixtures with:
 
 ## Summary
 
-| # | Diagram | mermaid-cli | maid |
-|---:|---|:---:|:---:|
-| 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID |
-| 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID |
-| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID |
-| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID |
-| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID |
-| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID |
-| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID |
-| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID |
-| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID |
-| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID |
-| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID |
-| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID |
-| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID |
-| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID |
-| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID |
-| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID |
-| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID |
-| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID |
+| # | Diagram | mermaid-cli | maid | Auto-fix? |
+|---:|---|:---:|:---:|:---:|
+| 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID | — |
+| 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID | ✅ safe |
+| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID | — |
+| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
+| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
+| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
+| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | ✅ safe |
+| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
+| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
+| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | ✅ safe |
+| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID | — |
+| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -72,6 +72,14 @@ flowchart TD
 ### mermaid-cli Result: VALID
 
 ### maid Result: VALID
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -144,6 +152,22 @@ at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
 hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -206,6 +230,42 @@ at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
     |                            ^^
   7 |         B -- Yes --> E{"Is "Driver" configured?"}
 hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
+
+error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.
+at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:7:35
+  6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+  7 |         B -- Yes --> E{"Is "Driver" configured?"}
+    |                                   ^
+  8 |     end
+hint: Example: A["He said &quot;Hi&quot;"]
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
+        B -- Yes --> E{"Is &quot;Driver&quot; configured?"}
+    end
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
+        direction TB
+        A[Start processing API definition] --> B{Custom Auth Enabled?}
+        B -- No --> C[Continue with other auth methods]
+        B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
+        B -- Yes --> E{"Is &quot;Driver&quot; configured?"}
+    end
+
 ```
 
 <details>
@@ -274,6 +334,22 @@ at test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7
 hint: Replace -> with -->, or use -- text --> for inline labels.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A --> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -332,6 +408,14 @@ at test-fixtures/flowchart/invalid/invalid-class.mmd:3:12
     |            ^
 hint: Example: class A,B important
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -393,6 +477,22 @@ at test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9
 hint: Example: A((Circle))
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A(( ))--> B
+    B --> C
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A(( ))--> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -450,6 +550,14 @@ at test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13
   3 |         A --> B
 hint: Example: subgraph API [API Layer]
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -510,6 +618,17 @@ at test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7
 hint: Insert --> between nodes, e.g., A --> B.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A  --> B
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -535,13 +654,17 @@ flowchart TD
 flowchart LR
     A[Text] --> B(Text]
     B --> C
+    X{{Hexagon]
+    S([Stadium})
+    Y[(Cylinder))
+
 ```
 
 ### mermaid-cli Result: INVALID
 
 ```
 Error: Parse error on line 2:
-...  A[Text] --> B(Text]    B --> C
+...  A[Text] --> B(Text]    B --> C    X{
 -----------------------^
 Expecting 'PE', 'TAGEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'SQE'
 Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
@@ -569,6 +692,30 @@ at test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23
 hint: Close with ')' or change the opening bracket to '['.
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart LR
+    A[Text] --> B[Text]
+    B --> C
+    X{{Hexagon}}
+    S([Stadium])
+    Y[(Cylinder)]
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart LR
+    A[Text] --> B[Text]
+    B --> C
+    X{{Hexagon}}
+    S([Stadium])
+    Y[(Cylinder)]
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -576,6 +723,10 @@ hint: Close with ')' or change the opening bracket to '['.
 flowchart LR
     A[Text] --> B(Text]
     B --> C
+    X{{Hexagon]
+    S([Stadium})
+    Y[(Cylinder))
+
 ```
 </details>
 
@@ -624,6 +775,14 @@ at test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1
   2 | B --> C
 hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -675,12 +834,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ```
 error[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
-at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:5
+at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:15
   1 | flowchart LR
   2 |   A['She said "Hello"'] --> B
-    |     ^
+    |               ^
   3 | 
 hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart LR
+  A['She said &quot;Hello&quot;'] --> B
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart LR
+  A['She said &quot;Hello&quot;'] --> B
+
+
 ```
 
 <details>
@@ -747,6 +924,28 @@ at test-fixtures/flowchart/invalid/special-chars.mmd:2:42
 hint: Prefer "He said &quot;Hi&quot;".
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart LR
+    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
+    B --> C[Node with #35; special &amp; chars]
+    C --> D["Multi
+    line
+    text"]
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart LR
+    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
+    B --> C[Node with #35; special &amp; chars]
+    C --> D["Multi
+    line
+    text"]
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -810,6 +1009,22 @@ at test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13
 hint: Example: A[Label] --> B
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart LR
+    A[Start ]--> B
+    B --> C
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart LR
+    A[Start ]--> B
+    B --> C
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -868,6 +1083,20 @@ at test-fixtures/flowchart/invalid/unclosed-quote-in-label.mmd:2:5
     |     ^
   3 |   A --> B
 hint: Close the quote: A["Label"]
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+  A["Unclosed label"]
+  A --> B
+
+
 ```
 
 <details>
@@ -932,6 +1161,26 @@ at test-fixtures/flowchart/invalid/unescaped-quotes-in-decision.mmd:3:31
 hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
 ```
 
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is &quot;Driver&quot; configured?"}
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is &quot;Driver&quot; configured?"}
+
+
+```
+
 <details>
 <summary>View source code</summary>
 
@@ -992,6 +1241,14 @@ at test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5
     |     ^^^
 hint: Remove this end or add a subgraph above.
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1059,13 +1316,59 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
-at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:6:14
-   5 |     
+error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
+at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:7:74
    6 |     subgraph "Runtime Execution"
-     |              ^^^^^^^^^^^^^^^^^^^
    7 |         E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
-hint: Example: subgraph API [API Layer]
+     |                                                                          ^
+   8 |         F --> G{Logger: Is current level DEBUG?};
+hint: Example: A[Label] --> B
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
+    B -- Yes --> C[Configure Logger: Level = DEBUG];
+    B -- No --> D[Configure Logger: Level = INFO];
+    
+    subgraph "Runtime Execution"
+        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
+        F --> G{Logger: Is current level DEBUG?};
+        G -- Yes --> H[Format and write message to stderr];
+        G -- No --> I[Discard message];
+    end
+
+    C --> E;
+    D --> E;
+    H --> J[End];
+    I --> J[End];
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+flowchart TD
+    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
+    B -- Yes --> C[Configure Logger: Level = DEBUG];
+    B -- No --> D[Configure Logger: Level = INFO];
+    
+    subgraph "Runtime Execution"
+        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
+        F --> G{Logger: Is current level DEBUG?};
+        G -- Yes --> H[Format and write message to stderr];
+        G -- No --> I[Discard message];
+    end
+
+    C --> E;
+    D --> E;
+    H --> J[End];
+    I --> J[End];
+
+
 ```
 
 <details>
@@ -1139,6 +1442,14 @@ at test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11
   2 |     A --> B
 hint: Try 'TD' (top-down) or 'LR' (left-to-right).
 ```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>

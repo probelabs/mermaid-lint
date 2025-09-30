@@ -14,27 +14,29 @@ export function validatePie(text: string, _options: ValidateOptions = {}): Valid
     analyze: (cst, tokens) => analyzePie(cst as any, tokens),
     mapParserError: (e, t) => mapPieParserError(e, t),
     postLex: (text, tokens) => {
-      const out = detectEscapedQuotes(tokens as IToken[], {
-        code: 'PI-LABEL-ESCAPED-QUOTE',
-        message: 'Escaped quotes (\\") in slice labels are not supported by Mermaid. Use &quot; instead.',
-        hint: 'Example: "He said &quot;Hi&quot;" : 1'
-      });
-      // Shared: unclosed quote fallback — helps when parser can’t reach sliceStmt cleanly
+      const out = [] as ValidationError[];
+      // File-level unclosed quote fallback — helps when parser can’t reach sliceStmt cleanly
       out.push(...detectUnclosedQuotesInText(text, {
         code: 'PI-QUOTE-UNCLOSED',
         message: 'Unclosed quote in slice label.',
         hint: 'Close the quote: "Dogs" : 10',
         limitPerFile: 1
       }));
-      // Double quotes inside a double-quoted label
-      out.push(
-        ...detectDoubleInDouble(tokens as IToken[], {
-          code: 'PI-LABEL-DOUBLE-IN-DOUBLE',
-          message: 'Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.',
-          hint: 'Example: "He said &quot;Hi&quot;" : 1',
-          scopeEndTokenNames: ['Colon']
-        })
-      );
+      // Detect double-in-double only on lines that do NOT contain escaped quotes
+      const tokList = tokens as IToken[];
+      const escapedLines = new Set<number>();
+      for (const tk of tokList) {
+        if (typeof tk.image === 'string' && tk.image.includes('\\"')) {
+          escapedLines.add(tk.startLine ?? 1);
+        }
+      }
+      const dbl = detectDoubleInDouble(tokList, {
+        code: 'PI-LABEL-DOUBLE-IN-DOUBLE',
+        message: 'Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.',
+        hint: 'Example: "He said &quot;Hi&quot;" : 1',
+        scopeEndTokenNames: ['Colon']
+      }).filter(e => !escapedLines.has(e.line));
+      out.push(...dbl);
       return out;
     }
   });

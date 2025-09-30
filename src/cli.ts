@@ -7,6 +7,23 @@ import { validate, detectDiagramType } from './core/router.js';
 import type { ValidationError } from './core/types.js';
 import { toJsonResult, textReport } from './core/format.js';
 import { extractMermaidBlocks, offsetErrors } from './core/markdown.js';
+import { computeFixes } from './core/fixes.js';
+import { applyEdits } from './core/edits.js';
+import type { FixLevel } from './core/types.js';
+
+function autoFixMultipass(text: string, strict: boolean, level: FixLevel): { fixed: string; errors: ValidationError[] } {
+    let current = text;
+    for (let i = 0; i < 5; i++) {
+        const res = validate(current, { strict });
+        const edits = computeFixes(current, res.errors, level);
+        if (edits.length === 0) return { fixed: current, errors: res.errors };
+        const next = applyEdits(current, edits);
+        if (next === current) return { fixed: current, errors: res.errors };
+        current = next;
+    }
+    const finalRes = validate(current, { strict });
+    return { fixed: current, errors: finalRes.errors };
+}
 
 // Main CLI execution
 function printUsage() {
@@ -19,6 +36,11 @@ function printUsage() {
     console.log('  --include, -I   Glob(s) to include (repeatable or comma-separated)');
     console.log('  --exclude, -E   Glob(s) to exclude (repeatable or comma-separated)');
     console.log('  --no-gitignore  Do not respect .gitignore when scanning directories');
+    console.log('  --strict, -s    Enable strict mode (require quoted labels inside shapes)');
+    console.log('  --format, -f    Output format: text|json (default: text)');
+    console.log('  --fix[=all]     Apply auto-fixes (safe by default; all for heuristics)');
+    console.log('  --dry-run, -n   Do not write files (useful with --fix)');
+    console.log('  --print-fixed   With --fix, print fixed content for a single file/stdin');
 }
 
 function readInput(arg: string): { content: string; filename: string } {
@@ -82,9 +104,13 @@ async function main() {
     }
 
     // simple arg parsing: --format json|text (consume flag + value), --strict,
+    // --fix[=all], --dry-run/-n (do not write), --print-fixed (stdout fixed content for single file),
     // directory options: --include/-I, --exclude/-E, --no-gitignore
     let format: 'text' | 'json' = 'text';
     let strict = false;
+    let fixLevel: FixLevel | null = null; // null means no fixing
+    let dryRun = false;
+    let printFixed = false;
     let includeGlobs: string[] = [];
     let excludeGlobs: string[] = [];
     let useGitignore = true;
@@ -96,6 +122,16 @@ async function main() {
             if (v === 'json' || v === 'text') { format = v as any; i++; continue; }
         }
         if (a === '--strict' || a === '-s') { strict = true; continue; }
+        if (a === '--fix' || a.startsWith('--fix=')) {
+            if (a === '--fix') fixLevel = 'safe';
+            else {
+                const v = a.split('=')[1]?.toLowerCase();
+                fixLevel = v === 'all' ? 'all' : 'safe';
+            }
+            continue;
+        }
+        if (a === '--dry-run' || a === '-n') { dryRun = true; continue; }
+        if (a === '--print-fixed') { printFixed = true; continue; }
         if (a === '--include' || a === '-I') {
             const v = args[i + 1];
             if (v) {
@@ -112,7 +148,7 @@ async function main() {
         }
         if (a === '--no-gitignore') { useGitignore = false; continue; }
         if (a === '--gitignore') { useGitignore = true; continue; }
-        if (!a.startsWith('-')) positionals.push(a);
+        if (a === '-' || !a.startsWith('-')) positionals.push(a);
     }
     const target = positionals[0] || args[0];
     // Directory mode
@@ -121,24 +157,62 @@ async function main() {
         type FileResult = { file: string; content: string; errors: ValidationError[] };
         const results: FileResult[] = [];
         let diagramCount = 0;
+        let modifiedCount = 0;
         for (const file of files) {
             const content = fs.readFileSync(file, 'utf8');
             const ext = path.extname(file).toLowerCase();
             const isMermaidFile = ext === '.mmd' || ext === '.mermaid';
             const blocks = extractMermaidBlocks(content);
             let errs: ValidationError[] = [];
+            let newContent: string | null = null;
             if (blocks.length > 0) {
                 diagramCount += blocks.length;
-                for (const b of blocks) {
-                    const { errors: blockErrors } = validate(b.content, { strict });
-                    if (blockErrors.length) errs = errs.concat(offsetErrors(blockErrors, b.startLine - 1));
+                // Optionally fix each block and reassemble file
+                if (fixLevel) {
+                    const lines = content.split(/\r?\n/);
+                    // Rebuild by replacing each block with its multipass-fixed content
+                    let accLines = [...lines];
+                    for (const b of blocks) {
+                        const { fixed: fixedBlock } = autoFixMultipass(b.content, strict, fixLevel);
+                        if (fixedBlock !== b.content) {
+                            const realStart = b.startLine - 1;
+                            const realEnd = b.endLine - 2;
+                            const before = accLines.slice(0, realStart);
+                            const after = accLines.slice(realEnd + 1);
+                            const fixedLines = fixedBlock.split('\n');
+                            accLines = before.concat(fixedLines, after);
+                        }
+                    }
+                    newContent = accLines.join('\n');
+                    if (newContent !== null && !dryRun) {
+                        fs.writeFileSync(file, newContent, 'utf8');
+                        modifiedCount++;
+                    }
+                    // Validate result content (new or original)
+                    const checkText = newContent ?? content;
+                    const freshBlocks = extractMermaidBlocks(checkText);
+                    for (const b of freshBlocks) {
+                        const { errors: blockErrors2 } = validate(b.content, { strict });
+                        if (blockErrors2.length) errs = errs.concat(offsetErrors(blockErrors2, b.startLine - 1));
+                    }
+                } else {
+                    for (const b of blocks) {
+                        const { errors: blockErrors } = validate(b.content, { strict });
+                        if (blockErrors.length) errs = errs.concat(offsetErrors(blockErrors, b.startLine - 1));
+                    }
                 }
             } else {
                 const kind = detectDiagramType(content);
                 if (kind !== 'unknown') {
                     diagramCount++;
-                    const res = validate(content, { strict });
-                    errs = res.errors;
+                    if (fixLevel) {
+                        const { fixed, errors: afterErrs } = autoFixMultipass(content, strict, fixLevel);
+                        if (fixed !== content && !dryRun) { fs.writeFileSync(file, fixed, 'utf8'); modifiedCount++; }
+                        errs = afterErrs;
+                    } else {
+                        const res = validate(content, { strict });
+                        errs = res.errors;
+                    }
                 } else if (isMermaidFile) {
                     // Mermaid file without header → invalid
                     diagramCount++;
@@ -166,7 +240,8 @@ async function main() {
             process.exit(overallValid ? 0 : 1);
         } else {
             if (results.length === 0) {
-                console.log(diagramCount === 0 ? 'No Mermaid diagrams found.' : 'All diagrams valid.');
+                if (diagramCount === 0) console.log('No Mermaid diagrams found.');
+                else console.log(modifiedCount > 0 ? `All diagrams valid after fixes. Modified ${modifiedCount} file(s).` : 'All diagrams valid.');
                 process.exit(0);
             }
             for (const r of results) {
@@ -189,17 +264,56 @@ async function main() {
     let diagramsFound = false;
     if (blocks.length > 0) {
         diagramsFound = true;
-        for (const b of blocks) {
-            const { errors: blockErrors } = validate(b.content, { strict });
-            errors = errors.concat(offsetErrors(blockErrors, b.startLine - 1));
+        if (fixLevel) {
+            // Fix each block (multipass) and reconstruct
+            const lines = content.split(/\r?\n/);
+            let accLines = [...lines];
+            for (const b of blocks) {
+                const { fixed: fixedBlock } = autoFixMultipass(b.content, strict, fixLevel);
+                if (fixedBlock !== b.content) {
+                    const realStart = b.startLine - 1;
+                    const realEnd = b.endLine - 2;
+                    const before = accLines.slice(0, realStart);
+                    const after = accLines.slice(realEnd + 1);
+                    const fixedLines = fixedBlock.split('\n');
+                    accLines = before.concat(fixedLines, after);
+                }
+            }
+            const fixed = accLines.join('\n');
+            const err2: ValidationError[] = [];
+            const newBlocks = extractMermaidBlocks(fixed);
+            for (const b of newBlocks) {
+                const { errors: blockErrors2 } = validate(b.content, { strict });
+                err2.push(...offsetErrors(blockErrors2, b.startLine - 1));
+            }
+            if (!dryRun && filename !== '<stdin>') {
+                fs.writeFileSync(filename, fixed, 'utf8');
+            }
+            if (printFixed || filename === '<stdin>') {
+                // Print only the fixed content when requested or on stdin
+                process.stdout.write(fixed);
+            }
+            errors = err2;
+        } else {
+            for (const b of blocks) {
+                const { errors: blockErrors } = validate(b.content, { strict });
+                errors = errors.concat(offsetErrors(blockErrors, b.startLine - 1));
+            }
         }
     } else {
         // If no mermaid fences found, only validate whole file when it looks like a diagram.
         const kind = detectDiagramType(content);
         if (kind !== 'unknown') {
             diagramsFound = true;
-            const res = validate(content, { strict });
-            errors = res.errors;
+            if (fixLevel) {
+                const { fixed, errors: afterErrs } = autoFixMultipass(content, strict, fixLevel);
+                if (!dryRun && filename !== '<stdin>') fs.writeFileSync(filename, fixed, 'utf8');
+                if (printFixed || filename === '<stdin>') process.stdout.write(fixed);
+                errors = afterErrs;
+            } else {
+                const res = validate(content, { strict });
+                errors = res.errors;
+            }
         } else {
             if (isMermaidFile) {
                 // Treat standalone Mermaid files without a proper header as invalid
@@ -223,12 +337,14 @@ async function main() {
         process.exit(json.valid ? 0 : 1);
     } else {
         // Text output: caret-underlined snippets without border lines
-        if (errorCount === 0 && !diagramsFound) {
-            console.log('No Mermaid diagrams found.');
-        } else {
-            const report = textReport(filename, content, errors);
-            const outTo = errorCount > 0 ? 'stderr' : 'stdout';
-            if (outTo === 'stderr') console.error(report); else console.log(report);
+        if (!fixLevel) {
+          if (errorCount === 0 && !diagramsFound) {
+              console.log('No Mermaid diagrams found.');
+          } else {
+              const report = textReport(filename, content, errors);
+              const outTo = errorCount > 0 ? 'stderr' : 'stdout';
+              if (outTo === 'stderr') console.error(report); else console.log(report);
+          }
         }
         process.exit(errorCount > 0 ? 1 : 0);
     }

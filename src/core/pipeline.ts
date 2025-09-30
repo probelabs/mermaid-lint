@@ -27,7 +27,7 @@ export function lintWithChevrotain(text: string, adapters: LintAdapters): Valida
 
   // Parsing (only if no fatal lexer errors)
   let cst: any | null = null;
-  if (errors.filter(e => e.severity === 'error').length === 0) {
+  if (lex.errors.length === 0) {
     const parseRes = adapters.parse(lex.tokens);
     cst = parseRes.cst;
     if (parseRes.errors.length > 0) {
@@ -42,11 +42,11 @@ export function lintWithChevrotain(text: string, adapters: LintAdapters): Valida
     }
   }
 
-  // Post-parse hooks
-  if (cst && adapters.postParse) {
+  // Post-parse hooks: run even when parsing errored (cst may be null) so we can add
+  // cross-line diagnostics based on tokens and already-mapped parser errors.
+  if (adapters.postParse) {
     try { errors.push(...(adapters.postParse(text, lex.tokens, cst, errors) || [])); } catch {}
   }
 
   return errors;
 }
-

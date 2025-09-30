@@ -44,10 +44,13 @@ export class SequenceParser extends CstParser {
   });
 
   private actorRef = this.RULE('actorRef', () => {
-    this.OR([
+    // Accept a sequence of tokens that form the actor name until 'as' or newline/arrow/punct
+    this.AT_LEAST_ONE(() => this.OR([
       { ALT: () => this.CONSUME(t.Identifier) },
       { ALT: () => this.CONSUME(t.QuotedString) },
-    ]);
+      { ALT: () => this.CONSUME(t.NumberLiteral) },
+      { ALT: () => this.CONSUME(t.Text) },
+    ]));
   });
 
   private participantDecl = this.RULE('participantDecl', () => {

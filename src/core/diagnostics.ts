@@ -113,7 +113,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
 
   // 1) Direction after header
   if (atHeader(err) && expecting(err, 'Direction')) {
-    if (tokType === 'EOF') {
+    if (tokType === 'EOF' || tokType === 'Newline') {
       return {
         line, column, severity: 'error', code: 'FL-DIR-MISSING',
         message: 'Missing direction after diagram header. Use TD, TB, BT, RL, or LR.',
@@ -230,6 +230,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       if (q?.kind === 'double-in-double') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
       }
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '([ '. Add a matching '])'.", hint: "Example: A([Stadium])", length: len };
     }
     if (expecting(err, 'CylinderClose')) {
       let q = findInnerQuoteIssue('(') || findInnerQuoteIssue('[');
@@ -239,6 +240,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       if (q?.kind === 'double-in-double') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
       }
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '[( '. Add a matching ')]'.", hint: "Example: A[(Cylinder)]", length: len };
     }
     if (expecting(err, 'HexagonClose')) {
       const q = findInnerQuoteIssue('{');
@@ -248,6 +250,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       if (q?.kind === 'double-in-double') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
       }
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '{{ '. Add a matching '}}'.", hint: "Example: A{{Hexagon}}", length: len };
     }
   }
 
@@ -320,6 +323,26 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
       hint: 'Example: "Dogs" : 10',
       length: len
     };
+  }
+
+  // Heuristic: unquoted label before a colon (token may point anywhere on the line)
+  if (err.name === 'NotAllInputParsedException') {
+    const colonIdx = ltxt.indexOf(':');
+    if (colonIdx > 0) {
+      const left = ltxt.slice(0, colonIdx);
+      const startsWithQuote = left.trimStart().startsWith('"') || left.trimStart().startsWith("'");
+      if (!startsWithQuote) {
+        return {
+          line,
+          column: Math.max(1, colonIdx),
+          severity: 'error',
+          code: 'PI-LABEL-REQUIRES-QUOTES',
+          message: 'Slice labels must be quoted (single or double quotes).',
+          hint: 'Example: "Dogs" : 10',
+          length: 1
+        };
+      }
+    }
   }
 
   // Unclosed quote: token looks like it starts with a quote but never closed
@@ -462,7 +485,7 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       limitPerFile: Number.MAX_SAFE_INTEGER
     });
     const onLine = unc.find(u => u.line === line);
-    if (onLine) return onLine;
+    if (onLine) return { ...onLine, severity: 'warning' };
 
     const dblEsc = (ltxt.match(/\"/g) || []).length;
     const dq = (ltxt.match(/"/g) || []).length - dblEsc;
@@ -471,7 +494,7 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       const qPos: number[] = [];
       for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
       const col3 = (qPos[2] ?? (column - 1)) + 1;
-      return { line, column: col3, severity: 'error', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
+      return { line, column: col3, severity: 'warning', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
     }
   }
 
@@ -514,21 +537,34 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   if (err.name === 'MismatchedTokenException' && exp('EndKeyword')) {
     const blk = blockRules.find(b => isInRule(err, b.rule));
     if (blk) {
-      // Place caret at end of previous non-empty line if current is blank
       const lines = text.split(/\r?\n/);
-      let caretLine = line;
-      // Walk up to the nearest non-empty line to anchor the caret meaningfully
-      while (caretLine > 1 && (lines[caretLine - 1] ?? '').trim() === '') {
-        caretLine--;
+      // Find opener and its indent
+      const openerRe = /^(\s*)(alt\b|opt\b|loop\b|par\b|rect\b|critical\b|break\b|box\b)/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = Math.max(0, line - 1); i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
       }
-      const caretCol = Math.max(1, ((lines[caretLine - 1] ?? '').length + 1));
+      // Default caret line is current if opener not found
+      let caretLine = line;
+      if (openIdx !== -1) {
+        // Find first non-empty line whose indent <= opener indent → insert before it
+        caretLine = lines.length; // default to EOF
+        for (let i = openIdx + 1; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          if (raw.trim() === '') continue;
+          const ind = (raw.match(/^(\s*)/)?.[1] || '');
+          if (ind.length <= openIndent.length) { caretLine = i + 1; break; }
+        }
+        if (caretLine > lines.length) caretLine = lines.length + 1; // at EOF
+      }
       return {
         line: caretLine,
-        column: caretCol,
+        column: 1,
         severity: 'error',
         code: 'SE-BLOCK-MISSING-END',
         message: `Missing 'end' to close a '${blk.label}' block.`,
-        hint: "Add 'end' on a new line after the block contents.",
+        hint: "Add 'end' on its own line aligned with the block's start.",
         length: 1
       };
     }

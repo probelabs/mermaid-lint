@@ -2,6 +2,57 @@
 
 Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error includes a stable code and an optional hint.
 
+## Autofix Support Matrix
+
+This table shows which diagnostics Maid can auto-fix and how. Levels:
+- Safe: applied with `--fix`.
+- All: applied with `--fix=all` (includes Safe).
+- None: not auto-fixed (by design or needs author intent).
+
+| Code | Auto-fix | What maid changes |
+| --- | --- | --- |
+| FL-ARROW-INVALID | Safe | Replace `->` with `-->`. |
+| FL-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` inside quoted labels. |
+| FL-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
+| FL-LABEL-DOUBLE-IN-SINGLE | Safe | Replace inner `"` with `&quot;` in single-quoted labels. |
+| FL-LABEL-QUOTE-IN-UNQUOTED | Safe | Wrap label content with double quotes and normalize inner quotes to `&quot;` (single-line heuristic). |
+| FL-DIR-MISSING | Safe | Insert default direction ` TD` after header. |
+| FL-DIR-INVALID | None | No change (ambiguous); suggests valid tokens. |
+| FL-DIR-KW-INVALID | Safe | Replace unknown keyword before direction with `direction`. |
+| FL-LINK-MISSING | All | Insert ` --> ` between two nodes on the same line. |
+| FL-NODE-UNCLOSED-BRACKET | All | Insert the best-guess closing bracket at caret. |
+| FL-NODE-MIXED-BRACKETS | Safe | Replace mismatched closer with correct one. |
+| FL-NODE-EMPTY | Safe | Remove empty square-bracket shapes (A[""] / A[" "] / A[]) and keep plain node id (A). |
+| FL-QUOTE-UNCLOSED | All | Insert a closing `"` before the nearest closing bracket on the line. |
+| FL-CLASS-MALFORMED | None | No change (requires author intent). |
+| FL-SUBGRAPH-MISSING-HEADER | None | No change (requires header choice). |
+| FL-END-WITHOUT-SUBGRAPH | None | No change (structural intent needed). |
+| FL-STRICT-LABEL-QUOTES-REQUIRED | All | Wrap label content with double quotes on the line (same heuristic as FL-LABEL-QUOTE-IN-UNQUOTED). |
+| PI-LABEL-REQUIRES-QUOTES | Safe | Wrap label before `:` in double quotes; normalize inner quotes to `&quot;`. |
+| PI-MISSING-COLON | Safe | Insert ` : ` between label and number. |
+| PI-MISSING-NUMBER | None | No change (don’t invent values). |
+| PI-QUOTE-UNCLOSED | All | Close the quote before `:` if present, else at end of line. |
+| PI-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` in label. |
+| PI-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
+| SE-MSG-COLON-MISSING | Safe | Insert `: ` after target actor. |
+| SE-NOTE-MALFORMED | Safe | Insert `: ` after note header (colon path). |
+| SE-ARROW-INVALID | None | No change (don’t guess arrow variants). |
+| SE-ELSE-OUTSIDE-ALT | None | No change (wrap in `alt … end` or remove). |
+| SE-AND-OUTSIDE-PAR | None | No change (wrap in `par … end` or remove). |
+| SE-END-WITHOUT-BLOCK | None | No change (structural intent needed). |
+| SE-BLOCK-MISSING-END | Safe | Insert a new line with `end` after block content (keeps indentation). |
+| SE-ELSE-IN-CRITICAL | Safe | Replace `else` with `option`. |
+| SE-AUTONUMBER-MALFORMED | All | Normalize to a minimal valid form (`autonumber`) when junk follows. |
+| SE-AUTONUMBER-NON-NUMERIC | None | No change (don’t coerce words to numbers). |
+| SE-AUTONUMBER-EXTRANEOUS | Safe | Move participant/actor to next line (keeps indentation). |
+| SE-CREATE-MALFORMED | None | No change (could insert `participant`, but left to author). |
+| SE-DESTROY-MALFORMED | None | No change. |
+| SE-CREATE-MISSING-NAME | None | No change. |
+| SE-DESTROY-MISSING-NAME | None | No change. |
+| SE-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` in names/labels. |
+| SE-LABEL-DOUBLE-IN-DOUBLE | Safe | Replace inner `"` with `&quot;` inside participant/actor names (keeps outer quotes). |
+| SE-QUOTE-UNCLOSED | All | Close the quote at end of the line. |
+
 ## Flowchart (FL-*)
 
 - FL-ARROW-INVALID
@@ -165,6 +216,8 @@ Tip: quoting inside labels
 
 ## Sequence (SE-*)
 
+Severity note: By default, quoting issues in participant/actor names are warnings to match mermaid-cli. Use `--strict` to treat them as errors.
+
 - SE-HEADER-MISSING
   - When: File does not start with `sequenceDiagram`.
   - Message: "Missing 'sequenceDiagram' header."
@@ -184,23 +237,23 @@ Tip: quoting inside labels
   - When: A note statement is incomplete or missing the colon.
   - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
 
-- SE-QUOTE-UNCLOSED
+- SE-QUOTE-UNCLOSED (warning; error under --strict)
   - When: A participant/actor name or alias starts a quote but does not close it.
   - Message: "Unclosed quote in participant/actor name."
   - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
 
-- SE-LABEL-ESCAPED-QUOTE
+- SE-LABEL-ESCAPED-QUOTE (warning; error under --strict)
   - When: Participant/actor names, aliases, or block labels contain backslash-escaped quotes (\"). Mermaid does not support `\"`.
   - Message: "Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead."
   - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
 
-- SE-LABEL-DOUBLE-IN-DOUBLE
+- SE-LABEL-DOUBLE-IN-DOUBLE (warning; error under --strict)
   - When: A double-quoted participant/actor name or label contains another double quote.
   - Message: "Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes."
   - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
   - Hint: "Examples: Note right of Alice: Hi | Note over A,B: Hello"
 
-- SE-QUOTE-UNCLOSED
+- SE-QUOTE-UNCLOSED (warning; error under --strict)
   - When: A participant/actor name or alias starts a quote but does not close it.
   - Message: "Unclosed quote in participant/actor name."
   - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""

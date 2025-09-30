@@ -196,6 +196,9 @@ export class MermaidParser extends CstParser {
                             { ALT: () => this.CONSUME(tokens.RoundClose) },
                             { ALT: () => this.CONSUME(tokens.Comma) },
                             { ALT: () => this.CONSUME(tokens.Colon) },
+                            // HTML entities and ampersands inside labels
+                            { ALT: () => this.CONSUME(tokens.Ampersand) },
+                            { ALT: () => this.CONSUME(tokens.Semicolon) },
                             // Allow hyphens/lines inside labels without forcing them to be links
                             { ALT: () => this.CONSUME(tokens.TwoDashes) },
                             { ALT: () => this.CONSUME(tokens.Line) },
@@ -284,7 +287,7 @@ export class MermaidParser extends CstParser {
     // Subgraph definition
     private subgraph = this.RULE("subgraph", () => {
         this.CONSUME(tokens.SubgraphKeyword);
-        // Require at least an ID or a title in brackets
+        // Require at least an ID, a quoted title, or a title in brackets
         this.OR([
             {
                 ALT: () => {
@@ -294,6 +297,12 @@ export class MermaidParser extends CstParser {
                         this.SUBRULE(this.nodeContent);
                         this.CONSUME1(tokens.SquareClose);
                     });
+                }
+            },
+            {
+                ALT: () => {
+                    // Quoted subgraph title: subgraph "My Title"
+                    this.CONSUME(tokens.QuotedString, { LABEL: 'subgraphTitleQ' });
                 }
             },
             {
