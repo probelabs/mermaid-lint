@@ -639,3 +639,94 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
 
   return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
 }
+
+// ------------------ Class Diagram diagnostics ------------------
+export function mapClassParserError(err: IRecognitionException, text: string): ValidationError {
+  const tok = err.token;
+  const posFallback = endOfTextPos(text);
+  const { line, column } = coercePos(tok?.startLine ?? null, tok?.startColumn ?? null, posFallback.line, posFallback.column);
+  const tokType = tok?.tokenType?.name;
+  const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
+  const lines = text.split(/\r?\n/);
+  const ltxt = lines[Math.max(0, line - 1)] || '';
+
+  // Header required
+  if (atHeader(err) && !expecting(err, 'ClassDiagramKeyword')) {
+    return { line, column, severity: 'error', code: 'CL-HEADER-MISSING', message: "Missing 'classDiagram' header.", hint: 'Start with: classDiagram', length: len };
+  }
+
+  // Invalid relation operator
+  if (isInRule(err, 'relationOp')) {
+    return { line, column, severity: 'error', code: 'CL-REL-INVALID', message: 'Invalid relationship operator. Use <|--, *--, o--, --, ..> or ..|>.', hint: 'Example: Foo <|-- Bar', length: len };
+  }
+
+  // Class block missing closing brace
+  if (isInRule(err, 'classBlock') && err.name === 'MismatchedTokenException' && expecting(err, 'RCurly')) {
+    return { line, column, severity: 'error', code: 'CL-BLOCK-MISSING-RBRACE', message: "Missing '}' to close class block.", hint: "Close the block: class Foo { ... }", length: len };
+  }
+
+  // Member line malformed (e.g., missing name)
+  if (isInRule(err, 'memberLine') && (err.name === 'MismatchedTokenException' || err.name === 'NoViableAltException')) {
+    return { line, column, severity: 'error', code: 'CL-MEMBER-MALFORMED', message: 'Malformed class member. Use visibility + name [()][: type].', hint: 'Examples: +foo() : void  |  -bar: int', length: len };
+  }
+
+  // Relation line missing target
+  if (isInRule(err, 'relationStmt') && err.name === 'MismatchedTokenException') {
+    return { line, column, severity: 'error', code: 'CL-REL-MALFORMED', message: 'Malformed relationship. Use: A <op> B [: label]', hint: 'Example: Foo <|-- Bar : extends', length: len };
+  }
+
+  // Double quotes inside double-quoted label/name
+  const dblEsc = (ltxt.match(/\\\"/g) || []).length;
+  const dq = (ltxt.match(/\"/g) || []).length - dblEsc;
+  if (dq >= 3) {
+    const qPos: number[] = [];
+    for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
+    const col3 = (qPos[2] ?? (column - 1)) + 1;
+    return { line, column: col3, severity: 'error', code: 'CL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: class "Logger &quot;core&quot;" as L', length: 1 };
+  }
+
+  return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
+}
+
+// ------------------ State Diagram diagnostics ------------------
+export function mapStateParserError(err: IRecognitionException, text: string): ValidationError {
+  const tok = err.token;
+  const posFallback = endOfTextPos(text);
+  const { line, column } = coercePos(tok?.startLine ?? null, tok?.startColumn ?? null, posFallback.line, posFallback.column);
+  const tokType = tok?.tokenType?.name;
+  const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
+  const lines = text.split(/\r?\n/);
+  const ltxt = lines[Math.max(0, line - 1)] || '';
+
+  // Header must be stateDiagram or stateDiagram-v2
+  if (atHeader(err) && !(expecting(err, 'StateDiagram') || expecting(err, 'StateDiagramV2'))) {
+    return { line, column, severity: 'error', code: 'ST-HEADER-MISSING', message: "Missing 'stateDiagram' header.", hint: 'Start with: stateDiagram-v2', length: len };
+  }
+
+  // Invalid arrow token
+  if (isInRule(err, 'transitionStmt') && tokType === 'InvalidArrow') {
+    return { line, column, severity: 'error', code: 'ST-ARROW-INVALID', message: "Invalid arrow '->'. Use '-->' in state transitions.", hint: 'Example: A --> B : event', length: len };
+  }
+
+  // Missing colon in note forms
+  if (isInRule(err, 'noteStmt') && (err.name === 'MismatchedTokenException' && expecting(err, 'Colon'))) {
+    return { line, column, severity: 'error', code: 'ST-NOTE-MALFORMED', message: 'Malformed note: missing colon before note text.', hint: 'Example: Note right of A: message', length: len };
+  }
+
+  // state block missing closing brace
+  if (isInRule(err, 'stateBlock') && err.name === 'MismatchedTokenException' && expecting(err, 'RCurly')) {
+    return { line, column, severity: 'error', code: 'ST-BLOCK-MISSING-RBRACE', message: "Missing '}' to close a state block.", hint: "Close the block: state Foo { ... }", length: len };
+  }
+
+  // Double-in-double label/name heuristic
+  const dblEsc = (ltxt.match(/\\\"/g) || []).length;
+  const dq = (ltxt.match(/\"/g) || []).length - dblEsc;
+  if (dq >= 3) {
+    const qPos: number[] = [];
+    for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
+    const col3 = (qPos[2] ?? (column - 1)) + 1;
+    return { line, column: col3, severity: 'warning', code: 'ST-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label may be invalid. Use &quot; for inner quotes.', hint: 'Example: state "Logger &quot;core&quot;" as L', length: 1 };
+  }
+
+  return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
+}

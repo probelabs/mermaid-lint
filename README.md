@@ -211,8 +211,10 @@ This isn't about competing with Mermaid—it's about making Mermaid more accessi
 - Flowchart (`flowchart`, `graph`)
 - Sequence (`sequenceDiagram`)
 - Pie (`pie`)
+- Class (`classDiagram`)
+- State (`stateDiagram`, `stateDiagram-v2`)
 
-Note: Other Mermaid diagram types (e.g., `classDiagram`, `stateDiagram-v2`, `gantt`, etc.) are treated as valid (pass‑through) by Maid. They won’t fail your CI. We’ll add native validation over time.
+Note: Other Mermaid diagram types (e.g., `gantt`, `journey`, `erDiagram`, etc.) are treated as valid (pass‑through). We’ll add native validation over time.
 
 ## What It Catches
 
@@ -253,11 +255,11 @@ As of 2025‑09‑30. Mermaid statuses summarized from the docs.
 | Flowchart | Stable | Yes | TD/TB/BT/RL/LR; subgraphs; strict mode optional |
 | Sequence | Stable | Yes | Blocks (alt/opt/par/critical/etc.), autonumber, notes |
 | Pie | Stable | Yes | Titles, showData, label/number rules |
-| Class | Stable | Planned | |
-| State | Stable | Planned | |
-| ER | Experimental | Planned | |
-| Gantt | Stable | Planned | |
-| User Journey | Stable | Planned | |
+| Class | Stable | Yes | Class/members/relations; stereotypes; alias |
+| State | Stable | Yes | Transitions, start `[*]`, state blocks, notes |
+| ER | Experimental | Pass-through | |
+| Gantt | Stable | Pass-through | |
+| User Journey | Stable | Pass-through | |
 | GitGraph | Stable | Planned | |
 | Mindmap | Stable (icons experimental) | Planned | |
 | Timeline | Stable (icons experimental) | Planned | |

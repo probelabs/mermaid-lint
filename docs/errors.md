@@ -201,8 +201,8 @@ Tip: quoting inside labels
 
 - GEN-HEADER-INVALID
   - When: The file does not start with a known Mermaid diagram header.
-  - Message: "Diagram must start with \"graph\", \"flowchart\", or \"pie\""
-  - Hint: "Start your diagram with e.g. \"flowchart TD\" or \"pie\"."
+  - Message: "Diagram must start with \"graph\", \"flowchart\", \"pie\", \"sequenceDiagram\", \"classDiagram\" or \"stateDiagram[-v2]\""
+  - Hint: "Start your diagram with e.g. flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2."
 
 ## Notes
 
@@ -257,6 +257,60 @@ Severity note: By default, quoting issues in participant/actor names are warning
   - When: A participant/actor name or alias starts a quote but does not close it.
   - Message: "Unclosed quote in participant/actor name."
   - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
+
+## Class (CL-*)
+
+- CL-HEADER-MISSING
+  - When: File does not start with `classDiagram`.
+  - Message: "Missing 'classDiagram' header."
+  - Hint: "Start with: classDiagram"
+
+- CL-REL-INVALID
+  - When: Relationship operator is invalid (e.g., `->`).
+  - Message: "Invalid relationship operator. Use <|--, *--, o--, --, ..> or ..|>."
+  - Hint: "Example: Foo <|-- Bar"
+
+- CL-REL-MALFORMED
+  - When: Relationship line is incomplete (missing target or label syntax invalid).
+  - Message: "Malformed relationship. Use: A <op> B [: label]"
+  - Hint: "Example: Foo <|-- Bar : extends"
+
+- CL-BLOCK-MISSING-RBRACE
+  - When: `class X {` block is not closed with `}`.
+  - Message: "Missing '}' to close class block."
+  - Hint: "Close the block: class Foo { ... }"
+
+- CL-MEMBER-MALFORMED
+  - When: Member line is malformed (missing name or wrong order of tokens).
+  - Message: "Malformed class member. Use visibility + name [()][: type]."
+  - Hint: "Examples: +foo() : void  |  -bar: int"
+
+- CL-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted class name/label contains an inner `"`.
+  - Message: "Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes."
+  - Hint: "Example: class \"Logger &quot;core&quot;\" as L"
+
+## State (ST-*)
+
+- ST-HEADER-MISSING
+  - When: File does not start with `stateDiagram` or `stateDiagram-v2`.
+  - Message: "Missing 'stateDiagram' header."
+  - Hint: "Start with: stateDiagram-v2"
+
+- ST-ARROW-INVALID
+  - When: A transition uses `->` instead of `-->`.
+  - Message: "Invalid arrow '->'. Use '-->' in state transitions."
+  - Hint: "Example: A --> B : event"
+
+- ST-NOTE-MALFORMED
+  - When: A Note statement misses a colon before the text.
+  - Message: "Malformed note: missing colon before note text."
+  - Hint: "Example: Note right of A: message"
+
+- ST-BLOCK-MISSING-RBRACE
+  - When: `state X {` block is not closed with `}`.
+  - Message: "Missing '}' to close a state block."
+  - Hint: "Close the block: state Foo { ... }"
 
 - SE-ELSE-OUTSIDE-ALT
   - When: `else` appears outside an `alt` block.

@@ -1,0 +1,10 @@
+stateDiagram-v2
+direction LR
+state Auth {
+  [*] --> Login
+  Login --> Success : ok
+}
+[*] --> Auth
+Auth --> [*]
+Note right of Auth: Handles user authentication
+

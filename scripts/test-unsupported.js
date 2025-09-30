@@ -8,8 +8,8 @@ function runJSON(file) {
 }
 
 const files = [
-  'test-fixtures/unsupported/class-diagram.mmd',
-  'test-fixtures/unsupported/state-v2.mmd',
+  'test-fixtures/unsupported/gantt.mmd',
+  'test-fixtures/unsupported/journey.mmd',
 ];
 
 let ok = 0;
@@ -20,4 +20,3 @@ for (const f of files) {
   ok++;
 }
 console.log(`Unsupported diagram pass-through: ${ok}/${files.length} OK`);
-
