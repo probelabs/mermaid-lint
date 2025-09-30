@@ -216,6 +216,8 @@ Tip: quoting inside labels
 
 ## Sequence (SE-*)
 
+Severity note: By default, quoting issues in participant/actor names are warnings to match mermaid-cli. Use `--strict` to treat them as errors.
+
 - SE-HEADER-MISSING
   - When: File does not start with `sequenceDiagram`.
   - Message: "Missing 'sequenceDiagram' header."
@@ -235,23 +237,23 @@ Tip: quoting inside labels
   - When: A note statement is incomplete or missing the colon.
   - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
 
-- SE-QUOTE-UNCLOSED
+- SE-QUOTE-UNCLOSED (warning; error under --strict)
   - When: A participant/actor name or alias starts a quote but does not close it.
   - Message: "Unclosed quote in participant/actor name."
   - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
 
-- SE-LABEL-ESCAPED-QUOTE
+- SE-LABEL-ESCAPED-QUOTE (warning; error under --strict)
   - When: Participant/actor names, aliases, or block labels contain backslash-escaped quotes (\"). Mermaid does not support `\"`.
   - Message: "Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead."
   - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
 
-- SE-LABEL-DOUBLE-IN-DOUBLE
+- SE-LABEL-DOUBLE-IN-DOUBLE (warning; error under --strict)
   - When: A double-quoted participant/actor name or label contains another double quote.
   - Message: "Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes."
   - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
   - Hint: "Examples: Note right of Alice: Hi | Note over A,B: Hello"
 
-- SE-QUOTE-UNCLOSED
+- SE-QUOTE-UNCLOSED (warning; error under --strict)
   - When: A participant/actor name or alias starts a quote but does not close it.
   - Message: "Unclosed quote in participant/actor name."
   - Hint: "Close the quote: participant \"Bob\"  or  participant Alice as \"Alias\""
