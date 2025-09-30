@@ -280,10 +280,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
 at test-fixtures/sequence/invalid/box-unclosed.mmd:5:11
-      participant B
+    box Aqua Group
+  …
     A->B: hi
             ^
-  
 hint: Add 'end' on a new line after the block contents.
 ```
 
@@ -413,10 +413,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'critical' block.
 at test-fixtures/sequence/invalid/critical-else.mmd:4:39
-      A->B: try
+    critical Do critical
+  …
     else Should not use else in critical
                                         ^
-      A->B: nope
 hint: Add 'end' on a new line after the block contents.
 ```
 
