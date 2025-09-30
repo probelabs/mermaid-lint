@@ -34,7 +34,7 @@ Exit codes
 
 ## Using as an SDK
 
-Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public API lives at the package root export.
+Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public API lives at the package root export. See docs/SDK.md for complete examples.
 
 ESM
 ```js
