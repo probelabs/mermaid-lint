@@ -56,12 +56,18 @@
     "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
     "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-invalid-preview.js pie && node scripts/generate-preview.js sequence && node scripts/generate-invalid-preview.js sequence",
     "generate:valid": "node scripts/generate-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-preview.js sequence",
-    "generate:invalid": "node scripts/generate-invalid-preview.js flowchart && node scripts/generate-invalid-preview.js pie && node scripts/generate-invalid-preview.js sequence"
-  ,
+    "generate:invalid": "node scripts/generate-invalid-preview.js flowchart && node scripts/generate-invalid-preview.js pie && node scripts/generate-invalid-preview.js sequence",
     "ci:previews": "npm run build && npm run generate:previews && git update-index -q --refresh && git diff --exit-code || (echo '\nPreview files are outdated. Run: npm run generate:previews' && exit 1)",
     "test:sdk": "node scripts/test-sdk.js"
   },
-  "keywords": ["mermaid", "linter", "cli", "docs", "markdown", "diagram"],
+  "keywords": [
+    "mermaid",
+    "linter",
+    "cli",
+    "docs",
+    "markdown",
+    "diagram"
+  ],
   "author": "Probelabs",
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.12.0",
@@ -69,7 +75,9 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.2",
     "chevrotain": "^11.0.3",
-    "globby": "^14.0.2"
+    "globby": "^14.0.2",
+    "zod": "^4.1.11"
   }
 }

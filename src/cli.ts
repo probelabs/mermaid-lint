@@ -30,8 +30,10 @@ function printUsage() {
     console.log('Usage: maid <file>');
     console.log('       cat file | maid -');
     console.log('       maid <directory>');
+    console.log('       maid mcp');
     console.log('  - Validates standalone .mmd files or Markdown with ```mermaid fences');
     console.log('  - When a directory is given, scans recursively for .md/.markdown/.mdx/.mmd/.mermaid');
+    console.log('  - "maid mcp" starts Model Context Protocol server for AI assistant integration');
     console.log('Options:');
     console.log('  --include, -I   Glob(s) to include (repeatable or comma-separated)');
     console.log('  --exclude, -E   Glob(s) to exclude (repeatable or comma-separated)');
@@ -98,6 +100,14 @@ async function listCandidateFiles(root: string, includes: string[], excludes: st
 
 async function main() {
     const args = process.argv.slice(2);
+
+    // Handle MCP mode
+    if (args[0] === 'mcp') {
+        // Dynamically import and start MCP server
+        await import('./mcp.js');
+        return; // MCP server takes over from here
+    }
+
     if (args.length === 0 || args[0] === '-h' || args[0] === '--help') {
         printUsage();
         process.exit(args.length === 0 ? 1 : 0);

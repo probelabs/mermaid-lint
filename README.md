@@ -47,6 +47,56 @@ Exit codes
 - 0: no errors (including when no Mermaid diagrams are found)
 - 1: at least one error (warnings do not fail)
 
+## MCP Server for AI Assistants
+
+Maid includes a Model Context Protocol (MCP) server that allows AI assistants like Claude Code to validate and fix Mermaid diagrams directly in conversations.
+
+### Quick Setup for Claude Code
+
+Add Maid MCP server using the CLI:
+
+```bash
+claude mcp add -- npx -y @probelabs/maid mcp
+```
+
+Or configure manually in `~/.claude.json`:
+
+```json
+{
+  "mcpServers": {
+    "maid": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@probelabs/maid", "mcp"]
+    }
+  }
+}
+```
+
+After configuration, restart Claude Code. The assistant will now be able to validate and fix Mermaid diagrams when you ask.
+
+### MCP Tool: `validate_mermaid`
+
+**Inputs:**
+- `text` (string, required): Mermaid diagram text or Markdown content with ```mermaid blocks
+- `autofix` (boolean, optional): Set to `true` to automatically fix syntax errors
+
+**Returns (JSON):**
+- `valid` (boolean): Whether the diagram is valid
+- `diagramType` (string): Detected diagram type (flowchart, pie, sequence, unknown)
+- `errorCount`, `warningCount` (number): Count of errors and warnings
+- `errors` (array): Detailed error objects with line, column, message, code, hint
+- `fixed` (string): Corrected diagram text (only when autofix=true)
+
+### Example Usage in Conversations
+
+Once configured, you can ask Claude Code:
+- "Check this Mermaid diagram for errors"
+- "Validate the Mermaid diagrams in my README.md"
+- "Fix the syntax errors in this flowchart"
+
+The assistant will use the MCP server to validate or fix diagrams and show you the results.
+
 ## Using as an SDK
 
 Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public API lives at the package root export. See docs/SDK.md for complete examples.
