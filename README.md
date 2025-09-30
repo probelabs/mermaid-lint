@@ -28,6 +28,21 @@ npx -y @probelabs/maid README.md
 npx -y @probelabs/maid docs/
 ```
 
+### SDK Quick Example
+
+Use Maid programmatically (ESM). See docs/SDK.md for more.
+
+```js
+import { validate, fixText } from '@probelabs/maid';
+
+const src = 'flowchart TD\nA->B';
+const { errors } = validate(src);
+if (errors.length) {
+  const { fixed } = fixText(src, { level: 'safe' });
+  console.log(fixed);
+}
+```
+
 Exit codes
 - 0: no errors (including when no Mermaid diagrams are found)
 - 1: at least one error (warnings do not fail)
