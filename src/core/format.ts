@@ -1,6 +1,6 @@
 import type { ValidationError } from './types.js';
 
-export type OutputFormat = 'human' | 'json' | 'rust';
+export type OutputFormat = 'text' | 'json';
 
 export function groupErrors(errors: ValidationError[]) {
   const errs = errors.filter(e => e.severity === 'error');
@@ -8,7 +8,7 @@ export function groupErrors(errors: ValidationError[]) {
   return { errs, warns };
 }
 
-export function humanReport(filename: string, content: string, errors: ValidationError[]): string {
+export function textReport(filename: string, content: string, errors: ValidationError[]): string {
   const { errs, warns } = groupErrors(errors);
   const lines: string[] = [];
   const printBlock = (kind: 'error' | 'warning', e: ValidationError) => {
@@ -45,5 +45,4 @@ export function toJsonResult(filename: string, errors: ValidationError[]) {
   };
 }
 
-// Note: there is only one human-friendly format. The previous "rust"-style
-// output is removed; --format rust (if provided) is treated as 'human' by the CLI.
+// Single text format for humans; JSON is intended for tooling.

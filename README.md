@@ -103,17 +103,15 @@ Diagnostics include stable error codes and hints for quick fixes. See the full l
 
 ### CLI Output Formats
 
-- Human (default): caret-underlined snippet style with codes, hints, and precise spans.
+- Text (default): caret-underlined snippet style with codes, hints, and precise spans.
 - JSON: machine-readable report for editors/CI.
 
 ```bash
-# Human (default)
+# Text (default)
 npx mermaid-lint diagram.mmd
 
 # JSON
 npx mermaid-lint --format json diagram.mmd
-
-## Note: There is one human format. `--format rust` is deprecated and behaves the same as human.
 ```
 
 ### Strict Mode
