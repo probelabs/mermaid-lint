@@ -25,8 +25,8 @@ This file contains invalid pie test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [Colon Only](#1-colon-only) | INVALID | INVALID | — |
-| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | — |
-| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | INVALID | ✅ safe |
+| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | ✅ safe |
+| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | VALID | — |
 | 4 | [Invalid Header](#4-invalid-header) | INVALID | INVALID | — |
 | 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID | ✅ safe |
 | 6 | [Missing Label](#6-missing-label) | INVALID | INVALID | — |
@@ -120,15 +120,33 @@ at test-fixtures/pie/invalid/double-in-double.mmd:2:15
     |               ^
   3 | 
 hint: Example: "He said &quot;Hi&quot;" : 1
+
+error[PI-MISSING-COLON]: Missing colon between slice label and value.
+at test-fixtures/pie/invalid/double-in-double.mmd:2:13
+  1 | pie
+  2 |   "He said "Hi"" : 1
+    |             ^^^^^
+  3 | 
+hint: Use: "Label" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+pie
+  "He said " : Hi"" : 1
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+pie
+  "He said " : Hi"" : 1
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -160,51 +178,15 @@ pie
 
 ### mermaid-cli Result: VALID
 
-### maid Result: INVALID
-
-```
-error[PI-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead.
-at test-fixtures/pie/invalid/escaped-quotes.mmd:2:12
-  1 | pie
-  2 |   "He said \"Hi\"" : 1
-    |            ^^
-  3 | 
-hint: Example: "He said &quot;Hi&quot;" : 1
-
-error[PI-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead.
-at test-fixtures/pie/invalid/escaped-quotes.mmd:2:16
-  1 | pie
-  2 |   "He said \"Hi\"" : 1
-    |                ^^
-  3 | 
-hint: Example: "He said &quot;Hi&quot;" : 1
-
-error[PI-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.
-at test-fixtures/pie/invalid/escaped-quotes.mmd:2:17
-  1 | pie
-  2 |   "He said \"Hi\"" : 1
-    |                 ^
-  3 | 
-hint: Example: "He said &quot;Hi&quot;" : 1
-```
+### maid Result: VALID
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-pie
-  "He said &quot;Hi&quot;" : 1
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-pie
-  "He said &quot;Hi&quot;" : 1
-
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -472,6 +454,14 @@ at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
   1 | pie
   2 |   "Dogs : 10
     |   ^
+  3 | 
+hint: Close the quote: "Dogs" : 10
+
+error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
+at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
+  1 | pie
+  2 |   "Dogs : 10
+    |   ^^^^^^
   3 | 
 hint: Close the quote: "Dogs" : 10
 ```

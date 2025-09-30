@@ -230,6 +230,14 @@ at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
     |                            ^^
   7 |         B -- Yes --> E{"Is "Driver" configured?"}
 hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
+
+error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.
+at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:7:35
+  6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+  7 |         B -- Yes --> E{"Is "Driver" configured?"}
+    |                                   ^
+  8 |     end
+hint: Example: A["He said &quot;Hi&quot;"]
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -241,7 +249,7 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
-        B -- Yes --> E{"Is "Driver" configured?"}
+        B -- Yes --> E{"Is &quot;Driver&quot; configured?"}
     end
 
 ```
@@ -255,7 +263,7 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
-        B -- Yes --> E{"Is "Driver" configured?"}
+        B -- Yes --> E{"Is &quot;Driver&quot; configured?"}
     end
 
 ```
@@ -473,7 +481,7 @@ hint: Example: A((Circle))
 
 ```mermaid
 flowchart TD
-    A(( )-> B
+    A(( ))--> B
     B --> C
 ```
 
@@ -481,7 +489,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A(( )-> B
+    A(( ))--> B
     B --> C
 ```
 
@@ -690,9 +698,9 @@ hint: Close with ')' or change the opening bracket to '['.
 flowchart LR
     A[Text] --> B[Text]
     B --> C
-    X{{Hexagon]
-    S([Stadium})
-    Y[(Cylinder))
+    X{{Hexagon}}
+    S([Stadium])
+    Y[(Cylinder)]
 
 ```
 
@@ -702,9 +710,9 @@ flowchart LR
 flowchart LR
     A[Text] --> B[Text]
     B --> C
-    X{{Hexagon]
-    S([Stadium})
-    Y[(Cylinder))
+    X{{Hexagon}}
+    S([Stadium])
+    Y[(Cylinder)]
 
 ```
 
@@ -1005,7 +1013,7 @@ hint: Example: A[Label] --> B
 
 ```mermaid
 flowchart LR
-    A[Start ]-> B
+    A[Start ]--> B
     B --> C
 ```
 
@@ -1013,7 +1021,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[Start ]-> B
+    A[Start ]--> B
     B --> C
 ```
 

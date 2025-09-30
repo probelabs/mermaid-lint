@@ -172,6 +172,14 @@ hint: Use the proper branch for 'alt' or close it with 'end'.
   and
     …
   end
+
+warning[SE-HINT-PAR-BLOCK-SUGGEST]: Found 'and' but no 'par' block in the file.
+at test-fixtures/sequence/invalid/and-in-alt.mmd:4:3
+  3 |     A->B: one
+  4 |   and
+    |   ^^^
+  5 |     A->C: two
+hint: Start a parallel section with: par … and … end
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -725,6 +733,14 @@ at test-fixtures/sequence/invalid/critical-else.mmd:4:3
 hint: Replace with: option <label>
   Example:
   option Retry
+
+warning[SE-HINT-ALT-BLOCK-SUGGEST]: Found 'else' but no 'alt' block in the file.
+at test-fixtures/sequence/invalid/critical-else.mmd:4:3
+  3 |     A->B: try
+  4 |   else Should not use else in critical
+    |   ^^^^
+  5 |     A->B: nope
+hint: Use: alt Condition … else … end
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1269,6 +1285,15 @@ at test-fixtures/sequence/invalid/participant-double-in-double.mmd:2:29
     |                             ^
   3 |   L->>L: hi
 hint: Example: participant "Logger &quot;debug&quot;" as L
+
+error: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
+  <[Newline]>
+but found: 'debug'
+at test-fixtures/sequence/invalid/participant-double-in-double.mmd:2:24
+  1 | sequenceDiagram
+  2 |   participant "Logger "debug"" as L
+    |                        ^^^^^
+  3 |   L->>L: hi
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1333,29 +1358,13 @@ at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:23
     |                       ^^
   3 |   L->>L: hi
 hint: Example: participant "Logger &quot;debug&quot;" as L
-
-error[SE-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead.
-at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:30
-  1 | sequenceDiagram
-  2 |   participant "Logger \"debug\"" as L
-    |                              ^^
-  3 |   L->>L: hi
-hint: Example: participant "Logger &quot;debug&quot;" as L
-
-error[SE-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
-at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:31
-  1 | sequenceDiagram
-  2 |   participant "Logger \"debug\"" as L
-    |                               ^
-  3 |   L->>L: hi
-hint: Example: participant "Logger &quot;debug&quot;" as L
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
 ```mermaid
 sequenceDiagram
-  participant "Logger \&quot;debug\&quot;ug&quot;" as L
+  participant "Logger &quot;debug&quot;" as L
   L->>L: hi
 
 
@@ -1365,7 +1374,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant "Logger \&quot;debug\&quot;ug&quot;" as L
+  participant "Logger &quot;debug&quot;" as L
   L->>L: hi
 
 
