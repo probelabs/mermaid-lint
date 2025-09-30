@@ -15,9 +15,9 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
     ```
 
 - FL-NODE-EMPTY
-  - When: Node shape has empty content, e.g. `[]`, `('')`, `(" ")`.
-  - Message: "Empty node content is not allowed. Add a label inside the shape."
-  - Hint: "Put some text inside [], (), {}, etc. For example: A[Start]"
+  - When: Node shape has empty content, e.g., `[]`, `('')`, `(" ")`.
+  - Message: "Empty label inside a shape."
+  - Hint: "Write non-empty text inside the brackets (quotes optional unless --strict), e.g., A[\"Start\"] or A[Start]. If you want no label, omit the brackets and just use A."
   - Example:
     ```mermaid
     flowchart LR

@@ -116,28 +116,28 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[FL-NODE-EMPTY]: Empty node content is not allowed. Label cannot be just empty quotes.
+error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7
   1 | flowchart TD
   2 |     A[""] --> B[" "]
     |       ^
   3 |     B --> C[]
-hint: Use non-empty quoted text, e.g. "Start" or remove the quotes.
+hint: Provide non-empty text (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 
-error[FL-NODE-EMPTY]: Empty node content is not allowed. Label cannot be just empty quotes.
+error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17
   1 | flowchart TD
   2 |     A[""] --> B[" "]
     |                 ^
   3 |     B --> C[]
-hint: Use non-empty quoted text, e.g. "Start" or remove the quotes.
+hint: Provide non-empty text (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 
-error[FL-NODE-EMPTY]: Empty node content is not allowed. Add a label inside the shape.
+error[FL-NODE-EMPTY]: Empty label inside a shape.
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
   2 |     A[""] --> B[" "]
   3 |     B --> C[]
     |            ^
-hint: Put some text inside [], (), {}, etc. For example: A[Start]
+hint: Write non-empty text inside the brackets (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 ```
 
 <details>
