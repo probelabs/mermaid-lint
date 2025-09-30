@@ -123,6 +123,8 @@ async function main() {
         let diagramCount = 0;
         for (const file of files) {
             const content = fs.readFileSync(file, 'utf8');
+            const ext = path.extname(file).toLowerCase();
+            const isMermaidFile = ext === '.mmd' || ext === '.mermaid';
             const blocks = extractMermaidBlocks(content);
             let errs: ValidationError[] = [];
             if (blocks.length > 0) {
@@ -137,6 +139,11 @@ async function main() {
                     diagramCount++;
                     const res = validate(content, { strict });
                     errs = res.errors;
+                } else if (isMermaidFile) {
+                    // Mermaid file without header → invalid
+                    diagramCount++;
+                    const res = validate(content, { strict });
+                    errs = res.errors; // expect GEN-HEADER-INVALID
                 }
             }
             if (errs.length > 0) {
@@ -174,6 +181,8 @@ async function main() {
 
     // Single-file or stdin mode
     const { content, filename } = readInput(target);
+    const fileExt = filename === '<stdin>' ? '' : path.extname(filename).toLowerCase();
+    const isMermaidFile = fileExt === '.mmd' || fileExt === '.mermaid';
     // If the file contains one or more ```mermaid fences, validate each block
     const blocks = extractMermaidBlocks(content);
     let errors: ValidationError[] = [];
@@ -192,7 +201,14 @@ async function main() {
             const res = validate(content, { strict });
             errors = res.errors;
         } else {
-            errors = []; // No diagrams detected in file; treat as valid
+            if (isMermaidFile) {
+                // Treat standalone Mermaid files without a proper header as invalid
+                diagramsFound = true;
+                const res = validate(content, { strict });
+                errors = res.errors; // will include GEN-HEADER-INVALID
+            } else {
+                errors = []; // No diagrams detected (Markdown or other) → success
+            }
         }
     }
 
