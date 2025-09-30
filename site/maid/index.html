@@ -1408,7 +1408,7 @@
                     <p class="hero-description">
                         Lightning-fast Mermaid linter with intelligent auto-fix. No browser, no Puppeteer—just pure JavaScript
                         validation that works everywhere: CLI, CI/CD, and AI agents. Catches errors with precision and fixes
-                        them instantly.
+                        them instantly. When Maid says it's valid, it will render—guaranteed.
                     </p>
                     <div class="hero-buttons">
                         <a href="#demo" class="btn btn-primary">
@@ -1430,7 +1430,7 @@
     <section class="demo" id="demo">
         <div class="container">
             <h2 class="section-title">See <span class="highlight">Maid</span> in Action</h2>
-            <p class="section-subtitle">Watch her catch and fix errors with style</p>
+            <p class="section-subtitle">Watch errors get caught and fixed with style</p>
 
             <div class="terminal">
                 <div class="terminal-header">
@@ -1482,39 +1482,39 @@ at diagram.mmd:4:13
 
             <div class="features-grid">
                 <div class="feature-card">
-                    <span class="feature-icon">⚡</span>
-                    <h3>Lightning Fast Service</h3>
-                    <p>Validates complex diagrams in milliseconds. No browser launch, no Puppeteer overhead—works with pure JavaScript speed and elegance.</p>
+                    <span class="feature-icon">✅</span>
+                    <h3>Render Guarantee</h3>
+                    <p>When Maid says your diagram is valid, it will render. No more "looks correct but fails in production." Our validation matches actual Mermaid rendering behavior.</p>
                 </div>
 
                 <div class="feature-card">
-                    <span class="feature-icon">🎯</span>
-                    <h3>Perfect Accuracy</h3>
-                    <p>100% compatibility tested against curated fixtures. Catches every invalid arrow, unclosed bracket, malformed syntax, and direction error with precision.</p>
+                    <span class="feature-icon">🤖</span>
+                    <h3>Built for AI Agents</h3>
+                    <p>Designed from the ground up for LLMs and AI agents. Clear, semantic error messages that AI can understand and learn from—not cryptic token lists.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🪶</span>
+                    <h3>5MB vs. 1.7GB</h3>
+                    <p>Pure JavaScript validation without Puppeteer or Chrome. Maid is ~300x smaller than mermaid-cli, installs in seconds, and runs instantly.</p>
                 </div>
 
                 <div class="feature-card">
                     <span class="feature-icon">🔬</span>
-                    <h3>Independent Parser</h3>
-                    <p>Built with a robust, flexible parser that doesn't depend on Mermaid itself. Validates diagrams without the overhead of rendering, catching errors before they reach your browser.</p>
-                </div>
-
-                <div class="feature-card">
-                    <span class="feature-icon">💬</span>
-                    <h3>Crystal Clear Guidance</h3>
-                    <p>Human-friendly errors with line numbers, caret underlines, stable error codes, and actionable hints—no cryptic parser messages, just helpful advice.</p>
+                    <h3>Modern Architecture</h3>
+                    <p>Built with Chevrotain, not 1990s Bison/Jison. Decoupled validation from rendering means we can validate at scale without launching browsers.</p>
                 </div>
 
                 <div class="feature-card">
                     <span class="feature-icon">✨</span>
-                    <h3>Magical Auto-Fix</h3>
-                    <p>Fixes your diagrams automatically with two levels: safe mechanical fixes and intelligent heuristics. Preview changes with <code>--dry-run</code> before applying.</p>
+                    <h3>Intelligent Auto-Fix</h3>
+                    <p>Automatically fixes common AI-generated mistakes. Two levels: safe mechanical fixes and smart heuristics that understand intent.</p>
                 </div>
 
                 <div class="feature-card">
-                    <span class="feature-icon">🔧</span>
-                    <h3>CI/CD & Documentation Ready</h3>
-                    <p>Perfect for validating documentation sites with recursive directory scanning, glob patterns, and .gitignore support. JSON output and proper exit codes make CI/CD integration seamless.</p>
+                    <span class="feature-icon">💬</span>
+                    <h3>Human-Friendly Errors</h3>
+                    <p>No more "Expecting 'SEMI', got 'MINUS'". Get clear messages with line numbers, visual carets, and actionable hints for fixing issues.</p>
                 </div>
             </div>
         </section>
@@ -1522,29 +1522,32 @@ at diagram.mmd:4:13
         <section class="comparison">
             <div class="container">
                 <h2 class="section-title"><span class="highlight">Maid</span> vs Mermaid-CLI</h2>
+                <p class="section-subtitle">A modern solution for a modern problem</p>
                 <div class="comparison-grid">
                     <div class="comparison-col">
                         <h3 style="color: #dc2626;">❌ Mermaid-CLI</h3>
                         <ul class="comparison-bad">
-                            <li>• Requires Puppeteer & Chromium</li>
-                            <li>• Slow startup (browser launch)</li>
-                            <li>• Memory hungry</li>
-                            <li>• Complex installation</li>
-                            <li>• Validation tightly coupled with rendering</li>
-                            <li>• Cryptic parser errors</li>
-                            <li>• No auto-fix</li>
+                            <li>• Requires Puppeteer & Chromium (1.7GB)</li>
+                            <li>• Must render to validate</li>
+                            <li>• Jison parser (1990s technology)</li>
+                            <li>• Tightly coupled architecture</li>
+                            <li>• Cryptic errors: "Expecting 'SEMI', got 'MINUS'"</li>
+                            <li>• No auto-fix capability</li>
+                            <li>• Not designed for AI agents</li>
                         </ul>
                     </div>
                     <div class="comparison-col">
                         <h3 style="color: #16a34a;">✨ Maid</h3>
                         <ul class="comparison-good">
-                            <li>• Pure JavaScript without heavy dependencies</li>
-                            <li>• Instant startup</li>
-                            <li>• Minimal memory footprint</li>
-                            <li>• Simple npm install</li>
-                            <li>• Independent validation without rendering</li>
-                            <li>• Human-friendly error messages</li>
-                            <li>• Intelligent auto-fix</li>
+                            <li>• Pure JavaScript (~5MB)</li>
+                            <li>• Validates without rendering</li>
+                            <li>• Chevrotain parser (modern, fast)</li>
+                            <li>• Decoupled validation logic</li>
+                            <li>• Semantic errors: "Invalid arrow: -> (use -->)"</li>
+                            <li>• Intelligent auto-fix (2 levels)</li>
+                            <li>• Built for AI & humans</li>
+                            <li>• Active development</li>
+                            <li>• Render guarantee when valid</li>
                         </ul>
                     </div>
                 </div>
@@ -1753,8 +1756,14 @@ done</code></pre>
         </section>
 
         <section class="error-comparison" id="comparison">
-            <h2 class="section-title"><span class="highlight">Maid</span> vs Mermaid CLI</h2>
-            <p class="section-subtitle">See the difference quality service makes • Real examples from our test suite</p>
+            <h2 class="section-title"><span class="highlight">Error Messages</span> Matter</h2>
+            <p class="section-subtitle">Especially when AI agents need to understand and fix their mistakes</p>
+
+            <div style="max-width: 800px; margin: 40px auto; text-align: center; color: #5a5a6e; font-size: 1.1rem; line-height: 1.75;">
+                <p>When an AI agent generates an invalid diagram, cryptic error messages create a broken feedback loop.
+                The AI can't learn from <code style="background: #f5e6eb; color: #c93866; padding: 2px 6px; border-radius: 4px;">Expecting 'SEMI', got 'MINUS'</code>.
+                But it can understand and fix <code style="background: #e6f5eb; color: #16a34a; padding: 2px 6px; border-radius: 4px;">Invalid arrow: -> (use -->)</code>.</p>
+            </div>
 
             <div class="comparison-tabs">
                 <button class="tab-btn active" data-example="invalid-arrow">Invalid Arrow</button>
@@ -1955,6 +1964,55 @@ hint: Insert --> between nodes, e.g., A --> B.</code></pre>
                     <a href="https://github.com/probelabs/maid/blob/main/test-fixtures/flowchart/INVALID_DIAGRAMS.md" target="_blank" class="more-examples-badge">
                         More Examples →
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="why-maid-section" id="why" style="padding: 100px 0; background: transparent;">
+            <h2 class="section-title">Why <span class="highlight">Maid</span> Was Created</h2>
+            <p class="section-subtitle">Making Mermaid more accessible for the AI age</p>
+
+            <div style="max-width: 900px; margin: 60px auto; text-align: center;">
+                <div style="background: white; border-radius: 16px; padding: 50px; border: 2px solid #f5e6eb; margin-bottom: 40px;">
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; color: #2d2d3f; margin-bottom: 30px;">
+                        Mermaid Has Become Essential
+                    </h3>
+                    <p style="color: #5a5a6e; font-size: 1.15rem; line-height: 1.8; margin-bottom: 24px;">
+                        Mermaid diagrams are everywhere—in documentation, README files, and AI-generated content.
+                        Every major LLM knows the syntax. It's become the universal language for text-based diagrams.
+                    </p>
+                    <p style="color: #5a5a6e; font-size: 1.15rem; line-height: 1.8;">
+                        But there's been a gap: lightweight validation. The current approach requires a full browser
+                        environment (1.7GB with Puppeteer) just to check syntax. We built Maid to fill this gap with
+                        a modern, lightweight validator that guarantees your diagrams will render.
+                    </p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+                    <div style="background: linear-gradient(135deg, #fff5f8, #fef9fc); border-radius: 16px; padding: 35px; border: 2px solid #ff6b9d;">
+                        <div style="font-size: 2.5rem; margin-bottom: 12px;">🤖</div>
+                        <h4 style="font-family: 'Space Grotesk', sans-serif; color: #2d2d3f; margin-bottom: 12px;">Built for AI</h4>
+                        <p style="color: #5a5a6e; font-size: 1rem; line-height: 1.6;">
+                            Clear, semantic error messages that AI agents can understand and learn from.
+                            Auto-fixes common patterns that AI frequently generates incorrectly.
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f8f0ff, #fcf9ff); border-radius: 16px; padding: 35px; border: 2px solid #a855f7;">
+                        <div style="font-size: 2.5rem; margin-bottom: 12px;">⚡</div>
+                        <h4 style="font-family: 'Space Grotesk', sans-serif; color: #2d2d3f; margin-bottom: 12px;">Modern Architecture</h4>
+                        <p style="color: #5a5a6e; font-size: 1rem; line-height: 1.6;">
+                            Built with Chevrotain for fast, flexible parsing. Validation is decoupled from rendering,
+                            enabling instant checks without launching browsers.
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #fff5f8, #fef9fc); border-radius: 16px; padding: 35px; border: 2px solid #ff6b9d;">
+                        <div style="font-size: 2.5rem; margin-bottom: 12px;">✅</div>
+                        <h4 style="font-family: 'Space Grotesk', sans-serif; color: #2d2d3f; margin-bottom: 12px;">Render Guarantee</h4>
+                        <p style="color: #5a5a6e; font-size: 1rem; line-height: 1.6;">
+                            When Maid validates your diagram, it will render. No more "looks correct but fails in production."
+                            Our test suite ensures compatibility with actual Mermaid rendering.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
