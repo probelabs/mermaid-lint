@@ -68,6 +68,11 @@ const cases = [
     after:  'flowchart TD\n  A[Start] --> B{Custom Auth Enabled?}\n  B -- Yes --> C{"Is &quot;Driver&quot; configured?"}\n'
   },
   {
+    name: 'FL-LABEL-ESCAPED-QUOTE (decision full-span)',
+    before: 'flowchart TD\n  B -- Yes --> D{"Is \\\"Driver\\\" AND \\\"AuthCheck.Path\\\" configured?"}\n',
+    after:  'flowchart TD\n  B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}\n'
+  },
+  {
     name: 'FL-LABEL-QUOTE-IN-UNQUOTED (all, wrap + encode)',
     before: 'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];\n',
     after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];\n',

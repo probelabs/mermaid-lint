@@ -42,7 +42,7 @@ This file contains invalid flowchart test fixtures with:
 | 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | — |
 | 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
 | 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
-| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | — |
+| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | ✅ safe |
 | 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
 | 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | — |
@@ -654,11 +654,19 @@ hint: Close with ')' or change the opening bracket to '['.
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart LR
+    A[Text] --> B[Text]
+    B --> C
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart LR
+    A[Text] --> B[Text]
+    B --> C
+```
 
 <details>
 <summary>View source code</summary>
