@@ -18,8 +18,49 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
       continue;
     }
-    // Note: '*-LABEL-DOUBLE-IN-DOUBLE' is intentionally not auto-fixed; naive single-char replacement
-    // at the second quoted token can corrupt the line. We leave it as a hint-only for now.
+    // Flowchart: fix inner quotes inside a double-quoted label within shapes ([], (), {}, [[ ]], (( ))).
+    if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      // Find nearest shape opener before caret
+      const opens = [
+        { tok: '[[', idx: lineText.lastIndexOf('[[', caret0) },
+        { tok: '((', idx: lineText.lastIndexOf('((', caret0) },
+        { tok: '{',  idx: lineText.lastIndexOf('{', caret0) },
+        { tok: '(',  idx: lineText.lastIndexOf('(', caret0) },
+        { tok: '[',  idx: lineText.lastIndexOf('[', caret0) },
+      ];
+      const open = opens.sort((a,b)=> (a.idx||-1) - (b.idx||-1)).pop();
+      const openIdx = open && open.idx >= 0 ? open.idx : -1;
+      if (openIdx >= 0) {
+        // Find nearest closer after caret
+        const closers = [
+          { tok: ']]', idx: lineText.indexOf(']]', caret0) },
+          { tok: '))', idx: lineText.indexOf('))', caret0) },
+          { tok: '}',  idx: lineText.indexOf('}',  caret0) },
+          { tok: ')',  idx: lineText.indexOf(')',  caret0) },
+          { tok: ']',  idx: lineText.indexOf(']',  caret0) },
+        ].filter(c => c.idx !== -1).sort((a,b)=> a.idx - b.idx);
+        const close = closers[0];
+        const closeIdx = close ? close.idx : lineText.length;
+        // Outer quotes within the shape content
+        const q1 = lineText.indexOf('"', openIdx + 1);
+        const q2 = lineText.lastIndexOf('"', closeIdx - 1);
+        if (q1 !== -1 && q2 !== -1 && q2 > q1) {
+          const inner = lineText.slice(q1 + 1, q2);
+          const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+          if (replaced !== inner) {
+            const start = { line: e.line, column: q1 + 2 };
+            const end = { line: e.line, column: q2 + 1 };
+            edits.push({ start, end, newText: replaced });
+            continue;
+          }
+        }
+      }
+      // Fallback: replace the current character only
+      edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
+      continue;
+    }
     if (is('FL-LABEL-DOUBLE-IN-SINGLE', e)) {
       const lineText = lineTextAt(text, e.line);
       const caret0 = Math.max(0, e.column - 1);

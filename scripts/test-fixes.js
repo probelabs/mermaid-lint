@@ -63,6 +63,11 @@ const cases = [
     after:  "flowchart LR\n  A['She said &quot;Hello&quot;'] --> B\n"
   },
   {
+    name: 'FL-LABEL-DOUBLE-IN-DOUBLE (decision)',
+    before: 'flowchart TD\n  A[Start] --> B{Custom Auth Enabled?}\n  B -- Yes --> C{"Is "Driver" configured?"}\n',
+    after:  'flowchart TD\n  A[Start] --> B{Custom Auth Enabled?}\n  B -- Yes --> C{"Is &quot;Driver&quot; configured?"}\n'
+  },
+  {
     name: 'FL-QUOTE-UNCLOSED (all)',
     before: 'flowchart TD\n  A["Unclosed label]\n  A --> B\n',
     after:  'flowchart TD\n  A["Unclosed label"]\n  A --> B\n',

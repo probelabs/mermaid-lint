@@ -44,11 +44,11 @@ This file contains invalid flowchart test fixtures with:
 | 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
 | 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | — |
 | 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
-| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | — |
+| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | — |
 | 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ all |
-| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | — |
-| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | — |
+| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID | — |
 | 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | — |
 | 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID | — |
@@ -784,11 +784,21 @@ hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart LR
+  A['She said &quot;Hello&quot;'] --> B
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart LR
+  A['She said &quot;Hello&quot;'] --> B
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -1003,7 +1013,13 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+  A["Unclosed label"]
+  A --> B
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -1069,11 +1085,23 @@ hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configure
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is &quot;Driver&quot; configured?"}
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is &quot;Driver&quot; configured?"}
+
+
+```
 
 <details>
 <summary>View source code</summary>
