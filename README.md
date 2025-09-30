@@ -23,6 +23,43 @@ npx maid diagram.mmd
 # Validate from stdin
 cat diagram.mmd | npx maid -
 
+# Validate a Markdown file with multiple diagrams
+npx maid README.md
+
+# Lint all docs in a directory (recursively)
+npx maid docs/
+
+Exit codes:
+- 0 when no errors are found across all files.
+- 1 when any error is found (warnings do not affect the exit code).
+
+### Directory Scans: Includes, Excludes, and .gitignore
+
+By default, Maid respects your repository’s `.gitignore` when scanning a directory. You can tailor which files are checked using glob patterns:
+
+- Include globs: `--include` or `-I` (repeatable or comma-separated)
+- Exclude globs: `--exclude` or `-E` (repeatable or comma-separated)
+- Disable `.gitignore`: `--no-gitignore`
+
+Examples:
+
+```bash
+# Scan docs/, respecting .gitignore (default)
+npx maid docs/
+
+# Only Markdown and Mermaid files inside docs/content
+npx maid docs/ -I "docs/content/**/*.md,docs/content/**/*.mmd"
+
+# Exclude legacy docs folder and draft files
+npx maid docs/ -E "docs/legacy/**" -E "**/*.draft.md"
+
+# Do not respect .gitignore (e.g., scan everything including ignored files)
+npx maid docs/ --no-gitignore
+
+# JSON report for CI
+npx maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
+```
+
 # Run tests
 npm test
 ```
