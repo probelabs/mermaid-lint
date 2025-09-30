@@ -642,13 +642,17 @@ flowchart TD
 flowchart LR
     A[Text] --> B(Text]
     B --> C
+    X{{Hexagon]
+    S([Stadium})
+    Y[(Cylinder))
+
 ```
 
 ### mermaid-cli Result: INVALID
 
 ```
 Error: Parse error on line 2:
-...  A[Text] --> B(Text]    B --> C
+...  A[Text] --> B(Text]    B --> C    X{
 -----------------------^
 Expecting 'PE', 'TAGEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'SQE'
 Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
@@ -682,6 +686,10 @@ hint: Close with ')' or change the opening bracket to '['.
 flowchart LR
     A[Text] --> B[Text]
     B --> C
+    X{{Hexagon]
+    S([Stadium})
+    Y[(Cylinder))
+
 ```
 
 ### maid Auto-fix (`--fix=all`) Preview
@@ -690,6 +698,10 @@ flowchart LR
 flowchart LR
     A[Text] --> B[Text]
     B --> C
+    X{{Hexagon]
+    S([Stadium})
+    Y[(Cylinder))
+
 ```
 
 <details>
@@ -699,6 +711,10 @@ flowchart LR
 flowchart LR
     A[Text] --> B(Text]
     B --> C
+    X{{Hexagon]
+    S([Stadium})
+    Y[(Cylinder))
+
 ```
 </details>
 

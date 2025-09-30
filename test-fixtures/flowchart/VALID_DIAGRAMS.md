@@ -96,10 +96,12 @@ flowchart TB
     C -->|Link 2| E[[Subroutine]]
     D --> F[(Database)]
     E --> F
+    F --> H{{Hexagon}}
     F --> G[/Parallelogram/]
     G --> H[\Parallelogram Alt\]
     H --> I[/Trapezoid\]
     I --> J[\Trapezoid Alt/]
+
 ```
 
 <details>
@@ -113,10 +115,12 @@ flowchart TB
     C -->|Link 2| E[[Subroutine]]
     D --> F[(Database)]
     E --> F
+    F --> H{{Hexagon}}
     F --> G[/Parallelogram/]
     G --> H[\Parallelogram Alt\]
     H --> I[/Trapezoid\]
     I --> J[\Trapezoid Alt/]
+
 ```
 </details>
 
