@@ -21,7 +21,10 @@ export function detectEscapedQuotes(tokens: IToken[], opts: { code: string; mess
   return out;
 }
 
-export function detectDoubleInDouble(tokens: IToken[], opts: { code: string; message: string; hint: string }): ValidationError[] {
+export function detectDoubleInDouble(
+  tokens: IToken[],
+  opts: { code: string; message: string; hint: string; scopeEndTokenNames?: string[] }
+): ValidationError[] {
   const out: ValidationError[] = [];
   const byLine = new Map<number, IToken[]>();
   for (const tk of tokens) {
@@ -29,20 +32,35 @@ export function detectDoubleInDouble(tokens: IToken[], opts: { code: string; mes
     if (!byLine.has(ln)) byLine.set(ln, []);
     byLine.get(ln)!.push(tk);
   }
+  const ends = new Set(opts.scopeEndTokenNames || []);
   for (const [ln, arr] of byLine) {
-    const quoted = arr.filter(t => t.tokenType?.name === 'QuotedString');
-    if (quoted.length >= 2) {
-      const second = quoted[1];
-      const { line, column } = coercePos(second.startLine ?? null, second.startColumn ?? null, ln, 1);
-      out.push({ line, column, severity: 'error', code: opts.code, message: opts.message, hint: opts.hint, length: 1 });
-      continue;
-    }
-    const textWithQuote = arr.find(t => t.tokenType?.name === 'Text' && typeof t.image === 'string' && t.image.includes('"'));
-    if (quoted.length >= 1 && textWithQuote) {
-      const idx = (textWithQuote.image as string).indexOf('"');
-      const col = (textWithQuote.startColumn ?? 1) + (idx >= 0 ? idx : 0);
-      const { line, column } = coercePos(textWithQuote.startLine ?? null, col, ln, 1);
-      out.push({ line, column, severity: 'error', code: opts.code, message: opts.message, hint: opts.hint, length: 1 });
+    // Walk tokens on this line; for each QuotedString, look ahead until a scope end token.
+    for (let i = 0; i < arr.length; i++) {
+      const t = arr[i];
+      if (t.tokenType?.name !== 'QuotedString') continue;
+      // Scan forward until scope end
+      for (let j = i + 1; j < arr.length; j++) {
+        const u = arr[j];
+        if (ends.size > 0 && ends.has(u.tokenType?.name || '')) break;
+        // Another quoted string before end → likely inner quote case
+        if (u.tokenType?.name === 'QuotedString') {
+          const { line, column } = coercePos(u.startLine ?? null, u.startColumn ?? null, ln, 1);
+          out.push({ line, column, severity: 'error', code: opts.code, message: opts.message, hint: opts.hint, length: 1 });
+          j = arr.length; // stop scanning this line
+          break;
+        }
+        // Some lexers may surface a bare '"' in a free-text token; handle that too
+        if (u.tokenType?.name === 'Text' && typeof u.image === 'string' && u.image.includes('"')) {
+          const idx = (u.image as string).indexOf('"');
+          const col = (u.startColumn ?? 1) + (idx >= 0 ? idx : 0);
+          const { line, column } = coercePos(u.startLine ?? null, col, ln, 1);
+          out.push({ line, column, severity: 'error', code: opts.code, message: opts.message, hint: opts.hint, length: 1 });
+          j = arr.length;
+          break;
+        }
+      }
+      // Only one error per line to reduce noise
+      if (out.length > 0 && out[out.length - 1].line === ln) break;
     }
   }
   return out;

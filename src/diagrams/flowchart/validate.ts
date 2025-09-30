@@ -41,7 +41,10 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
         prevErrors.some(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE') ? [] : detectDoubleInDouble(tokens as IToken[], {
           code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
           message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
-          hint: 'Example: A["He said &quot;Hi&quot;"]'
+          hint: 'Example: A["He said &quot;Hi&quot;"]',
+          scopeEndTokenNames: [
+            'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
+          ]
         })
       );
       if (!prevErrors.some(e => e.code === 'FL-QUOTE-UNCLOSED')) {

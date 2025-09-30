@@ -33,7 +33,8 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
         ...detectDoubleInDouble(tokList, {
           code: 'SE-LABEL-DOUBLE-IN-DOUBLE',
           message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.',
-          hint: 'Example: participant "Logger &quot;debug&quot;" as L'
+          hint: 'Example: participant "Logger &quot;debug&quot;" as L',
+          scopeEndTokenNames: ['Newline']
         })
       );
       return errs;

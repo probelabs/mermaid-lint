@@ -142,14 +142,6 @@ at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
   3 |     B --> C[]
     |            ^
 hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
-
-error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.
-at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17
-  1 | flowchart TD
-  2 |     A[""] --> B[" "]
-    |                 ^
-  3 |     B --> C[]
-hint: Example: A["He said &quot;Hi&quot;"]
 ```
 
 <details>

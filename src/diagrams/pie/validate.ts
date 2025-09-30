@@ -31,7 +31,8 @@ export function validatePie(text: string, _options: ValidateOptions = {}): Valid
         ...detectDoubleInDouble(tokens as IToken[], {
           code: 'PI-LABEL-DOUBLE-IN-DOUBLE',
           message: 'Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.',
-          hint: 'Example: "He said &quot;Hi&quot;" : 1'
+          hint: 'Example: "He said &quot;Hi&quot;" : 1',
+          scopeEndTokenNames: ['Colon']
         })
       );
       return out;
