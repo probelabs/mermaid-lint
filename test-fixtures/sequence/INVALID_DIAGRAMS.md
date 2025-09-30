@@ -413,10 +413,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ```
 error[SE-ELSE-IN-CRITICAL]: 'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.
 at test-fixtures/sequence/invalid/critical-else.mmd:4:3
-  3 |     A->B: try
+  2 |   critical Do critical  ← start of 'critical'
+    | …
   4 |   else Should not use else in critical
-    |   ^^^^
-  5 |     A->B: nope
+  5 |   end  ← insert 'end' here
 hint: Replace with: option <label>
   Example:
   option Retry
