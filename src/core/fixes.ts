@@ -353,12 +353,71 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
 
     // Sequence fixes
     if (is('SE-MSG-COLON-MISSING', e)) {
-      edits.push(insertAt(text, at(e), ': '));
+      const lineText = lineTextAt(text, e.line);
+      // Heuristic: insert ' : ' immediately after the target actorRef.
+      // 1) Find the first arrow occurrence on the line
+      const arrows = ['<<-->>','<<->>','-->>','->>','-->', '->', '--x','-x','--)', '-)'];
+      let ai = -1, alen = 0;
+      for (const a of arrows) {
+        const idx = lineText.indexOf(a);
+        if (idx !== -1 && (ai === -1 || idx < ai)) { ai = idx; alen = a.length; }
+      }
+      if (ai !== -1) {
+        let i = ai + alen;
+        // optional + or - suffix after arrow
+        if (lineText[i] === '+' || lineText[i] === '-') i++;
+        // skip spaces
+        while (i < lineText.length && /\s/.test(lineText[i])) i++;
+        // actorRef may be quoted or identifier-like; find its end index j (exclusive)
+        let j = i;
+        if (lineText[i] === '"' || lineText[i] === "'") {
+          const quote = lineText[i];
+          j = i + 1;
+          while (j < lineText.length) {
+            if (lineText[j] === '\\') { j += 2; continue; }
+            if (lineText[j] === quote) { j++; break; }
+            j++;
+          }
+        } else {
+          while (j < lineText.length && !/\s/.test(lineText[j]) && lineText[j] !== ':') j++;
+        }
+        const insertCol = j + 1; // 1-based column after actorRef
+        const nextCh = lineText[j] || '';
+        if (nextCh === ' ') {
+          // Replace the following space with ' : '
+          edits.push(replaceRange(text, { line: e.line, column: insertCol }, 1, ' : '));
+        } else {
+          edits.push(insertAt(text, { line: e.line, column: insertCol }, ' : '));
+        }
+      } else {
+        // Fallback: insert at current caret
+        edits.push(insertAt(text, at(e), ': '));
+      }
       continue;
     }
     if (is('SE-NOTE-MALFORMED', e)) {
-      // Only safe to insert colon variant when missing colon kind; but we map the colon-missing path with this code
-      edits.push(insertAt(text, at(e), ': '));
+      const lineText = lineTextAt(text, e.line);
+      const mLR = /^(\s*)Note\s+(left|right)\s+of\s+(.+?)\s+(.+)$/.exec(lineText);
+      const mOver = /^(\s*)Note\s+over\s+(.+?)\s+(.+)$/.exec(lineText);
+      let insertCol = e.column;
+      if (mLR) {
+        const indent = mLR[1] || '';
+        const beforeHeader = `${indent}Note ${mLR[2]} of ${mLR[3]}`;
+        insertCol = beforeHeader.length + 1; // 1-based after header
+      } else if (mOver) {
+        const indent = mOver[1] || '';
+        const beforeHeader = `${indent}Note over ${mOver[2]}`;
+        insertCol = beforeHeader.length + 1;
+      }
+      // Normalize spaces around colon: ensure one space before and one after
+      // If there is already a space at insertCol, replace it
+      const idx0 = Math.max(0, insertCol - 1);
+      const nextCh = lineText[idx0] || '';
+      if (nextCh === ' ') {
+        edits.push(replaceRange(text, { line: e.line, column: insertCol }, 1, ' : '));
+      } else {
+        edits.push(insertAt(text, { line: e.line, column: insertCol }, ' : '));
+      }
       continue;
     }
     if (is('SE-ELSE-IN-CRITICAL', e)) {
