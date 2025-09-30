@@ -155,9 +155,23 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
   // 4) Unclosed/mismatched brackets inside a node
   if (isInRule(err, 'nodeShape') && err.name === 'MismatchedTokenException') {
     if (expecting(err, 'SquareClose')) {
+      const q = findInnerQuoteIssue('[');
+      if (q?.kind === 'escaped') {
+        return { line, column: q.column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE', message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.', hint: 'Prefer "He said &quot;Hi&quot;".', length: 2 };
+      }
+      if (q?.kind === 'double-in-double') {
+        return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
+      }
       return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '['. Add a matching ']' before the arrow or newline.", hint: "Example: A[Label] --> B", length: 1 };
     }
     if (expecting(err, 'RoundClose')) {
+      const q = findInnerQuoteIssue('(');
+      if (q?.kind === 'escaped') {
+        return { line, column: q.column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE', message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.', hint: 'Prefer "He said &quot;Hi&quot;".', length: 2 };
+      }
+      if (q?.kind === 'double-in-double') {
+        return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
+      }
       return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '('. Add a matching ')'.", hint: "Example: B(Label)", length: 1 };
     }
     if (expecting(err, 'DiamondClose')) {

@@ -738,13 +738,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
-at test-fixtures/flowchart/invalid/special-chars.mmd:2:44
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/flowchart/invalid/special-chars.mmd:2:42
   1 | flowchart LR
   2 |     A["Node with quotes"] --> B["Another \"quoted\" node"]
-    |                                            ^
+    |                                          ^^
   3 |     B --> C[Node with #35; special &amp; chars]
-hint: Example: A[Label] --> B
+hint: Prefer "He said &quot;Hi&quot;".
 ```
 
 <details>

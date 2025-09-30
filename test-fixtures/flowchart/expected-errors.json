@@ -32,7 +32,7 @@
     "FL-LABEL-DOUBLE-IN-SINGLE"
   ],
   "special-chars.mmd": [
-    "FL-NODE-UNCLOSED-BRACKET"
+    "FL-LABEL-ESCAPED-QUOTE"
   ],
   "unclosed-bracket.mmd": [
     "FL-NODE-UNCLOSED-BRACKET"
