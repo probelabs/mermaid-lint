@@ -230,6 +230,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       if (q?.kind === 'double-in-double') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
       }
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '([ '. Add a matching '])'.", hint: "Example: A([Stadium])", length: len };
     }
     if (expecting(err, 'CylinderClose')) {
       let q = findInnerQuoteIssue('(') || findInnerQuoteIssue('[');
@@ -239,6 +240,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       if (q?.kind === 'double-in-double') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
       }
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '[( '. Add a matching ')]'.", hint: "Example: A[(Cylinder)]", length: len };
     }
     if (expecting(err, 'HexagonClose')) {
       const q = findInnerQuoteIssue('{');
@@ -248,6 +250,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       if (q?.kind === 'double-in-double') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.', hint: 'Example: A["He said &quot;Hi&quot;"]', length: 1 };
       }
+      return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '{{ '. Add a matching '}}'.", hint: "Example: A{{Hexagon}}", length: len };
     }
   }
 

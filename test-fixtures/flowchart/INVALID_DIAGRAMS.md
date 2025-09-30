@@ -473,7 +473,7 @@ hint: Example: A((Circle))
 
 ```mermaid
 flowchart TD
-    A(( ))--> B
+    A(( )-> B
     B --> C
 ```
 
@@ -481,7 +481,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A(( ))--> B
+    A(( )-> B
     B --> C
 ```
 
@@ -1005,7 +1005,7 @@ hint: Example: A[Label] --> B
 
 ```mermaid
 flowchart LR
-    A[Start ]--> B
+    A[Start ]-> B
     B --> C
 ```
 
@@ -1013,7 +1013,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[Start ]--> B
+    A[Start ]-> B
     B --> C
 ```
 

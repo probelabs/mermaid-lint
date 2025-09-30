@@ -110,6 +110,11 @@ const cases = [
     after:  'flowchart LR\n  A[Text] --> B[Text]\n  B --> C\n'
   },
   {
+    name: 'FL-NODE-UNCLOSED-BRACKET (complex closers)',
+    before: 'flowchart LR\n  X{{Hexagon]\n  S([Stadium})\n  Y[(Cylinder))\n',
+    after:  'flowchart LR\n  X{{Hexagon}}\n  S([Stadium])\n  Y[(Cylinder)]\n'
+  },
+  {
     name: 'FL-LABEL-ESCAPED-QUOTE (full-span)',
     before: 'flowchart LR\n  A["Node with quotes"] --> B["Another \\"quoted\\" node"]\n',
     after:  'flowchart LR\n  A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]\n'

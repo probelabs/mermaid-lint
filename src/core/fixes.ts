@@ -169,27 +169,54 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       if (level === 'safe' || level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
-        // Try a smarter recovery: if there's a '[' before caret and a ']' later, and we see inner quotes,
-        // treat this as unquoted-label-with-quotes and wrap+encode instead of inserting a stray bracket.
-        const openIdx = lineText.lastIndexOf('[', caret0);
-        const closeIdx = lineText.indexOf(']', caret0);
-        if (openIdx !== -1 && closeIdx !== -1 && closeIdx > openIdx) {
-          const innerSeg = lineText.slice(openIdx + 1, closeIdx);
+        // Prefer wrap+encode when it looks like quotes inside an unquoted label within square brackets
+        const sqOpen = lineText.lastIndexOf('[', caret0);
+        const sqClose = lineText.indexOf(']', caret0);
+        if (sqOpen !== -1 && sqClose !== -1 && sqClose > sqOpen) {
+          const innerSeg = lineText.slice(sqOpen + 1, sqClose);
           if (innerSeg.includes('"')) {
             const replaced = innerSeg.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
             const newInner = '"' + replaced + '"';
-            edits.push({ start: { line: e.line, column: openIdx + 2 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
+            edits.push({ start: { line: e.line, column: sqOpen + 2 }, end: { line: e.line, column: sqClose + 1 }, newText: newInner });
             continue;
           }
         }
-        // Fallback: plain closer insertion
-        const m = e.message || '';
+        // Fallback: determine opener shape before caret and replace current closer token with the right closer
+        const opens = [
+          { open: '{{', close: '}}', idx: lineText.lastIndexOf('{{', caret0), len: 2 },
+          { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), len: 2 },
+          { open: '([', close: '])', idx: lineText.lastIndexOf('([', caret0), len: 2 },
+          { open: '[(', close: ')]', idx: lineText.lastIndexOf('[(', caret0), len: 2 },
+          { open: '{',  close: '}',  idx: lineText.lastIndexOf('{',  caret0), len: 1 },
+          { open: '(',  close: ')',  idx: lineText.lastIndexOf('(',  caret0), len: 1 },
+          { open: '[',  close: ']',  idx: lineText.lastIndexOf('[',  caret0), len: 1 },
+        ];
+        let opened = opens.filter(o => o.idx !== -1).sort((a,b)=> a.idx - b.idx).pop();
+        // Prefer double/open-pair tokens over their single-char counterparts when adjacent
+        if (opened) {
+          if (opened.open === '{') {
+            const dj = lineText.lastIndexOf('{{', caret0);
+            if (dj !== -1 && dj + 1 === opened.idx) opened = { open: '{{', close: '}}', idx: dj, len: 2 } as any;
+          } else if (opened.open === '[') {
+            const jj = lineText.lastIndexOf('[[', caret0);
+            const cj = lineText.lastIndexOf('[(', caret0);
+            if (jj !== -1 && jj === opened.idx) opened = { open: '[[', close: ']]', idx: jj, len: 2 } as any;
+            else if (cj !== -1 && cj === opened.idx) opened = { open: '[(', close: ')]', idx: cj, len: 2 } as any;
+          } else if (opened.open === '(') {
+            const jj = lineText.lastIndexOf('((', caret0);
+            const sj = lineText.lastIndexOf('([', caret0);
+            const cj2 = lineText.lastIndexOf('[(', caret0);
+            if (jj !== -1 && jj === opened.idx) opened = { open: '((', close: '))', idx: jj, len: 2 } as any;
+            else if (sj !== -1 && sj === opened.idx - 1) opened = { open: '([', close: '])', idx: sj, len: 2 } as any;
+            else if (cj2 !== -1 && cj2 === opened.idx - 1) opened = { open: '[(', close: ')]', idx: cj2, len: 2 } as any;
+          }
+        }
         let closer = ']';
-        if (m.includes("'('")) closer = ')';
-        if (m.includes("'{'")) closer = '}';
-        if (m.includes("'[[ '")) closer = ']]';
-        else if (m.includes("'(( '")) closer = '))';
-        edits.push(insertAt(text, at(e), closer));
+        if (opened) closer = opened.close;
+        // Replace the wrong token(s) at caret with the correct closer
+        const avail = lineText.slice(caret0);
+        const replaceLen = Math.min(closer.length, Math.max(1, avail.length));
+        edits.push({ start: { line: e.line, column: caret0 + 1 }, end: { line: e.line, column: caret0 + 1 + replaceLen }, newText: closer });
       }
       continue;
     }
