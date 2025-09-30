@@ -18,10 +18,8 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
       continue;
     }
-    if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {
-      edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
-      continue;
-    }
+    // Note: '*-LABEL-DOUBLE-IN-DOUBLE' is intentionally not auto-fixed; naive single-char replacement
+    // at the second quoted token can corrupt the line. We leave it as a hint-only for now.
     if (is('FL-LABEL-DOUBLE-IN-SINGLE', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       continue;
@@ -58,42 +56,11 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-    if (is('FL-STRICT-LABEL-QUOTES-REQUIRED', e)) {
-      if (level === 'safe' || level === 'all') {
-        // Insert opening quote at caret and closing right after contiguous label span? We can safely insert quotes around the first token.
-        // Minimal safe approach: insert opening quote at caret and closing quote at same caret (no-op). This needs context – skip here.
-        // Leave to label-quote-in-unquoted handler below (medium), which we run only in 'all'.
-      }
-      continue;
-    }
-    if (is('FL-LABEL-QUOTE-IN-UNQUOTED', e)) {
-      if (level === 'all') {
-        // Heuristic: wrap content between nearest matching []/()/{} on this line
-        const lineText = lineTextAt(text, e.line);
-        const caret = Math.max(0, e.column - 1);
-        const before = lineText.slice(0, caret);
-        const after = lineText.slice(caret);
-        // Find last opener
-        const openIdx = Math.max(before.lastIndexOf('['), before.lastIndexOf('('), before.lastIndexOf('{'));
-        if (openIdx >= 0) {
-          const openCh = before[openIdx];
-          const closeCh = openCh === '[' ? ']' : openCh === '(' ? ')' : '}';
-          const closeIdx = lineText.indexOf(closeCh, caret);
-          if (closeIdx > openIdx) {
-            // Build edits: insert '"' after open, '"' before close, and convert inner " to &quot;
-            const startCol = openIdx + 2; // after opener, 1-based later
-            const endCol = closeIdx + 1;  // 1-based
-            edits.push(insertAt(text, { line: e.line, column: startCol }, '"'));
-            edits.push(insertAt(text, { line: e.line, column: endCol }, '"'));
-            // Best-effort: replace any inner bare " inside the range with &quot; (performed by later passes using error codes)
-          }
-        }
-      }
-      continue;
-    }
+        // No flowchart quote-wrapping autofixes (strict/unquoted)
+
 
     // Pie fixes
-    if (is('PI-LABEL-ESCAPED-QUOTE', e) || is('PI-LABEL-DOUBLE-IN-DOUBLE', e)) {
+    if (is('PI-LABEL-ESCAPED-QUOTE', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       continue;
     }
@@ -152,7 +119,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(insertAt(text, at(e), `\n${indent}`));
       continue;
     }
-    if (is('SE-AUTONUMBER-MALFORMED', e)) {
+    if (is('SE-AUTONUMBER-MALFORMED', e) || is('SE-AUTONUMBER-NON-NUMERIC', e)) {
       if (level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const idx = lineText.indexOf('autonumber');
@@ -163,7 +130,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-    if (is('SE-LABEL-ESCAPED-QUOTE', e) || is('SE-LABEL-DOUBLE-IN-DOUBLE', e)) {
+    if (is('SE-LABEL-ESCAPED-QUOTE', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       continue;
     }

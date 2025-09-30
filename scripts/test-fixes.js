@@ -68,27 +68,35 @@ const cases = [
     before: 'flowchart TD\nA[Label\n',
     afterLevel: 'all', // we treat as insertion; still valid
   },
+  // Note: Flowchart quote-wrapping heuristics are intentionally not auto-fixed.
   // Pie
   { name: 'PI-LABEL-REQUIRES-QUOTES', before: 'pie\nDogs : 10\n', after: 'pie\n"Dogs" : 10\n' },
   { name: 'PI-MISSING-COLON', before: 'pie\n"Dogs" 10\n', after: 'pie\n"Dogs"  : 10\n' },
   { name: 'PI-LABEL-ESCAPED-QUOTE', before: 'pie\n"He \\"said\\"" : 1\n' },
+  // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
+  { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },
   // Sequence
   { name: 'SE-MSG-COLON-MISSING', before: 'sequenceDiagram\nA->B hi\n', after: 'sequenceDiagram\nA->B : hi\n' },
   { name: 'SE-NOTE-MALFORMED', before: 'sequenceDiagram\nNote right of A Hello\n', after: 'sequenceDiagram\nNote right of A : Hello\n' },
   { name: 'SE-ELSE-IN-CRITICAL', before: 'sequenceDiagram\ncritical Do\n  else Not allowed\nend\n', after: 'sequenceDiagram\ncritical Do\n  option Not allowed\nend\n' },
   { name: 'SE-BLOCK-MISSING-END', before: 'sequenceDiagram\npar Do work\n  A->B: hi\n', afterLevel: 'safe' },
   { name: 'SE-AUTONUMBER-EXTRANEOUS', before: 'sequenceDiagram\nautonumber 10 10 participant A\n', afterLevel: 'safe' },
+  { name: 'SE-AUTONUMBER-MALFORMED (all)', before: 'sequenceDiagram\nautonumber foo bar baz\nA->B: ok\n', afterLevel: 'all' },
+  { name: 'SE-QUOTE-UNCLOSED (all)', before: 'sequenceDiagram\nparticipant "Bob\n', afterLevel: 'all' },
+  { name: 'SE-LABEL-ESCAPED-QUOTE', before: 'sequenceDiagram\nparticipant "Logger \\"debug\\"" as L\n' },
+  // SE-LABEL-DOUBLE-IN-DOUBLE is intentionally not auto-fixed (unsafe single-char rewrite).
 ];
 
 let passed = 0;
 for (const c of cases) {
   const level = c.afterLevel || 'safe';
-  const fixed = applyFixes(c.before, level);
+  const opts = c.opts || {};
+  const fixed = applyFixes(c.before, level, opts);
   if (c.after) {
     assert.strictEqual(fixed, c.after, `Fix output mismatch for ${c.name}`);
   }
   // Validate fixed content
-  expectValid(fixed);
+  expectValid(fixed, opts);
   passed++;
 }
 

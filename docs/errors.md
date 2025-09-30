@@ -13,7 +13,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | --- | --- | --- |
 | FL-ARROW-INVALID | Safe | Replace `->` with `-->`. |
 | FL-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` inside quoted labels. |
-| FL-LABEL-DOUBLE-IN-DOUBLE | Safe | Replace inner `"` with `&quot;` in double-quoted labels. |
+| FL-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | FL-LABEL-DOUBLE-IN-SINGLE | Safe | Replace inner `"` with `&quot;` in single-quoted labels. |
 | FL-LABEL-QUOTE-IN-UNQUOTED | All | Wrap label content with double quotes and normalize inner quotes to `&quot;` (single-line heuristic). |
 | FL-DIR-MISSING | Safe | Insert default direction ` TD` after header. |
@@ -33,7 +33,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | PI-MISSING-NUMBER | None | No change (don’t invent values). |
 | PI-QUOTE-UNCLOSED | All | Close the quote before `:` if present, else at end of line. |
 | PI-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` in label. |
-| PI-LABEL-DOUBLE-IN-DOUBLE | Safe | Replace inner `"` with `&quot;`. |
+| PI-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | SE-MSG-COLON-MISSING | Safe | Insert `: ` after target actor. |
 | SE-NOTE-MALFORMED | Safe | Insert `: ` after note header (colon path). |
 | SE-ARROW-INVALID | None | No change (don’t guess arrow variants). |
@@ -50,7 +50,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | SE-CREATE-MISSING-NAME | None | No change. |
 | SE-DESTROY-MISSING-NAME | None | No change. |
 | SE-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` in names/labels. |
-| SE-LABEL-DOUBLE-IN-DOUBLE | Safe | Replace inner `"` with `&quot;` in names/labels. |
+| SE-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | SE-QUOTE-UNCLOSED | All | Close the quote at end of the line. |
 
 ## Flowchart (FL-*)

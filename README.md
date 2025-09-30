@@ -32,6 +32,25 @@ Exit codes
 - 0: no errors (including when no Mermaid diagrams are found)
 - 1: at least one error (warnings do not fail)
 
+### Autofix in a nutshell
+
+```bash
+# Safe fixes only (mechanical)
+npx -y @probelabs/maid --fix docs/
+
+# Safe + heuristic fixes (more aggressive)
+npx -y @probelabs/maid --fix=all docs/
+
+# Preview the fixed content without writing (single file or stdin)
+npx -y @probelabs/maid --fix --dry-run --print-fixed diagram.mmd
+```
+
+Notes
+- Safe fixes are idempotent and conservative (arrows, inner quotes to `&quot;`, missing `:`, missing `end`, etc.).
+- `--fix=all` additionally enables conservative heuristics (e.g., wrap unquoted labels, close unclosed quotes/brackets).
+- In directory mode, Maid prints “All diagrams valid after fixes. Modified X file(s).” when it succeeds post-fix.
+- See “Autofix” below for details and examples.
+
 ### Directory Scans: Include/Exclude and .gitignore
 
 - Include globs: `--include` or `-I` (repeatable or comma‑separated)
@@ -170,6 +189,98 @@ Diagnostics include stable error codes and hints for quick fixes. See the full l
 
 - Use `--fix` for safe, mechanical fixes and `--fix=all` to include conservative heuristics.
 - A complete matrix of error codes and autofix behavior is in docs/errors.md (section “Autofix Support Matrix”).
+
+## Autofix
+
+Maid can optionally fix many common issues for you. There are two levels:
+
+- Safe (`--fix`): mechanical, low‑risk changes, idempotent.
+- All (`--fix=all`): includes Safe and adds heuristic fixes that require mild inference.
+
+What gets fixed (highlights)
+- Flowchart (Safe):
+  - `->` → `-->`
+  - Inner quotes → `&quot;` inside quoted labels
+  - `direction` keyword inside subgraphs (replace unknown kw)
+  - Mismatched closer for shapes (e.g., `A(text]` → `A(text)`)
+- Flowchart (All):
+  - Wrap unquoted labels when a `"` appears inside (and normalize inner quotes)
+  - Insert a best‑guess missing closing bracket
+  - Add default direction ` TD` after `flowchart`/`graph` header
+  - Insert ` --> ` when two nodes are placed on one line without an arrow
+- Sequence (Safe):
+  - Add `: ` in messages and notes
+  - Replace `else` with `option` inside `critical`
+  - Insert a new `end` for unclosed blocks (keeps indentation)
+  - Move extraneous tokens after `autonumber` to the next line
+- Sequence (All):
+  - Normalize malformed `autonumber` to `autonumber`
+  - Close unclosed quotes at end of line
+- Pie (Safe):
+  - Insert missing ` : ` between label and number
+  - Wrap unquoted labels and normalize inner quotes to `&quot;`
+- Pie (All):
+  - Close unclosed quotes (before colon if present, else end of line)
+
+Before/After examples
+
+Flowchart (Safe — arrow and quotes)
+```mermaid
+%% before
+flowchart TD
+  A -> B
+  C["He said \"Hi\""]
+```
+becomes
+```mermaid
+flowchart TD
+  A --> B
+  C["He said &quot;Hi&quot;"]
+```
+
+Flowchart (All — wrap unquoted label containing quotes)
+```mermaid
+%% before
+flowchart TD
+  A[Calls logger.debug("msg", data)]
+```
+becomes
+```mermaid
+flowchart TD
+  A["Calls logger.debug(&quot;msg&quot;, data)"]
+```
+
+Sequence (Safe — message colon and missing end)
+```mermaid
+%% before
+sequenceDiagram
+  par Work
+    A->B hi
+```
+becomes
+```mermaid
+sequenceDiagram
+  par Work
+    A->B : hi
+  end
+```
+
+Pie (Safe — missing colon and unquoted label)
+```text
+pie
+  Dogs 10
+```
+becomes
+```text
+pie
+  "Dogs"  : 10
+```
+
+Tips
+- Run with a clean working tree so you can review diffs easily.
+- Use `--dry-run --print-fixed` to preview changes for a single file or stdin.
+- After `--fix`, run without `--fix` to confirm exit code 0.
+- Full code → fix mapping is in docs/errors.md (Autofix Support Matrix).
 
 ### CLI Output Formats
 
