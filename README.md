@@ -1,74 +1,67 @@
 # Maid
 
-Fast, accurate Mermaid diagram validator with 100% compatibility with mermaid-cli.
+Fast, accurate Mermaid diagram validator with clear, actionable diagnostics.
 
 ## Why Maid?
 
-Stop pushing broken diagrams to production. This linter catches syntax errors before they break your documentation.
-
-- **🚀 Fast** - Validates diagrams in milliseconds
-- **✅ Accurate** - 100% compatibility with official mermaid-cli
-- **🎯 Comprehensive** - 30+ test cases covering all edge cases
-- **🔧 Developer-friendly** - Clear error messages with line numbers
+- Fast: validates in milliseconds
+- Accurate: parity with mermaid‑cli on curated fixtures
+- Helpful: human‑friendly errors with line numbers, carets, and hints
 
 ## Quick Start
 
 ```bash
-# Install
-npm install -D maid
+# One‑off (npx)
+npx -y @probelabs/maid diagram.mmd
 
-# Validate a diagram
-npx maid diagram.mmd
+# Or install locally (dev dependency)
+npm install -D @probelabs/maid
+npx maid diagram.mmd   # uses local bin from @probelabs/maid
 
-# Validate from stdin
-cat diagram.mmd | npx maid -
+# From stdin
+cat diagram.mmd | npx -y @probelabs/maid -
 
-# Validate a Markdown file with multiple diagrams
-npx maid README.md
+# Markdown with multiple diagrams
+npx -y @probelabs/maid README.md
 
-# Lint all docs in a directory (recursively)
-npx maid docs/
+# Lint an entire docs directory (recursively)
+npx -y @probelabs/maid docs/
+```
 
-Exit codes:
-- 0 when no errors are found across all files.
-- 1 when any error is found (warnings do not affect the exit code).
+Exit codes
+- 0: no errors (including when no Mermaid diagrams are found)
+- 1: at least one error (warnings do not fail)
 
-### Directory Scans: Includes, Excludes, and .gitignore
+### Directory Scans: Include/Exclude and .gitignore
 
-By default, Maid respects your repository’s `.gitignore` when scanning a directory. You can tailor which files are checked using glob patterns:
+- Include globs: `--include` or `-I` (repeatable or comma‑separated)
+- Exclude globs: `--exclude` or `-E` (repeatable or comma‑separated)
+- Respect `.gitignore` by default; disable with `--no-gitignore`
 
-- Include globs: `--include` or `-I` (repeatable or comma-separated)
-- Exclude globs: `--exclude` or `-E` (repeatable or comma-separated)
-- Disable `.gitignore`: `--no-gitignore`
-
-Examples:
+Examples
 
 ```bash
-# Scan docs/, respecting .gitignore (default)
-npx maid docs/
+# Respect .gitignore (default)
+npx -y @probelabs/maid docs/
 
-# Only Markdown and Mermaid files inside docs/content
-npx maid docs/ -I "docs/content/**/*.md,docs/content/**/*.mmd"
+# Only files under docs/content
+npx -y @probelabs/maid docs/ -I "docs/content/**/*.md,docs/content/**/*.mmd"
 
-# Exclude legacy docs folder and draft files
-npx maid docs/ -E "docs/legacy/**" -E "**/*.draft.md"
+# Exclude legacy and drafts
+npx -y @probelabs/maid docs/ -E "docs/legacy/**" -E "**/*.draft.md"
 
-# Do not respect .gitignore (e.g., scan everything including ignored files)
-npx maid docs/ --no-gitignore
+# Do not respect .gitignore
+npx -y @probelabs/maid docs/ --no-gitignore
 
 # JSON report for CI
-npx maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
+npx -y @probelabs/maid --format json -I "**/*.mdx" -E "**/node_modules/**" docs/
 ```
 
-# Run tests
-npm test
-```
-
-## Supported Diagrams
+## Supported Diagrams (today)
 
 - Flowchart (`flowchart`, `graph`)
-- Pie (`pie`)
 - Sequence (`sequenceDiagram`)
+- Pie (`pie`)
 
 ## What It Catches
 
@@ -86,53 +79,49 @@ npm test
 
 ## Testing & Validation
 
-We maintain 100% accuracy with mermaid-cli through comprehensive testing:
+Commands
+- Run baseline tests: `npm test`
+- Error‑code assertions (all types): `npm run test:errors:all`
+- Markdown extraction and offsets: `npm run test:markdown`
+- Directory scan behavior: `npm run test:dir`
+- Compare with mermaid‑cli (non‑blocking): `node scripts/compare-linters.js flowchart|pie|sequence`
 
-```bash
-# Run test suite
-npm test
+Current coverage
+- Flowchart: 20 valid • 18 invalid
+- Pie: 4 valid • 8 invalid
+- Sequence: 13 valid • 20 invalid
 
-# Compare with mermaid-cli
-npm run test:compare
+## Roadmap & Support
 
-# Generate visual previews
-npm run generate:previews
-```
+As of 2025‑09‑30. Mermaid statuses summarized from the docs.
 
-### Test Coverage
-- Flowchart: [20 valid](./test-fixtures/flowchart/VALID_DIAGRAMS.md) • [16 invalid](./test-fixtures/flowchart/INVALID_DIAGRAMS.md)
-- Pie: [4 valid](./test-fixtures/pie/VALID_DIAGRAMS.md) • [6 invalid](./test-fixtures/pie/INVALID_DIAGRAMS.md)
-- Sequence: [13 valid](./test-fixtures/sequence/VALID_DIAGRAMS.md) • [12 invalid](./test-fixtures/sequence/INVALID_DIAGRAMS.md)
-- 100% accuracy against mermaid-cli on fixtures
+| Diagram | Mermaid status | Maid support | Notes |
+| --- | --- | --- | --- |
+| Flowchart | Stable | Yes | TD/TB/BT/RL/LR; subgraphs; strict mode optional |
+| Sequence | Stable | Yes | Blocks (alt/opt/par/critical/etc.), autonumber, notes |
+| Pie | Stable | Yes | Titles, showData, label/number rules |
+| Class | Stable | Planned | |
+| State | Stable | Planned | |
+| ER | Experimental | Planned | |
+| Gantt | Stable | Planned | |
+| User Journey | Stable | Planned | |
+| GitGraph | Stable | Planned | |
+| Mindmap | Stable (icons experimental) | Planned | |
+| Timeline | Stable (icons experimental) | Planned | |
+| Quadrant Chart | Stable | Planned | |
+| XY Chart | Stable | Planned | |
+| Requirement | Stable | Planned | |
+| C4 | Experimental | Planned | |
+| Sankey | Experimental | Planned | |
+| Block Diagram | New/experimental | Planned | |
+| Treemap | Beta/New | Planned | |
 
-## Diagram Type Coverage (Mermaid vs Maid)
+Support
 
-As of 2025-09-29, Mermaid 11.x documents support for the following diagram types. Items marked experimental/beta indicate syntax may change. References: Mermaid docs pages for each diagram type.
-
-- Flowchart — stable. We support now. [Docs]
-- Sequence diagram — stable. We support now. [Docs]
-- Class diagram — stable. Planned. [Docs]
-- State diagram — stable. Planned. [Docs]
-- Entity Relationship (ER) — experimental. Planned. [Docs]
-- Gantt — stable. Planned. [Docs]
-- User Journey — stable. Planned. [Docs]
-- GitGraph — stable. Planned. [Docs]
-- Pie chart — stable. We support now. [Docs]
-- Mindmap — stable (icon integration experimental). Planned. [Docs]
-- Timeline — stable (icon integration experimental). Planned. [Docs]
-- Quadrant Chart — stable. Planned. [Docs]
-- XY Chart (bar, line) — stable in 11.x. Planned. [Docs]
-- Requirement Diagram — stable (SysML v1.6). Planned. [Docs]
-- C4 — experimental/subject to change. Planned. [Docs]
-- Sankey — experimental. Planned. [Docs]
-- Block Diagram — new. Planned. [Docs]
-- Treemap — beta/new. Planned. [Docs]
-
-Notes
-- We validate against `@mermaid-js/mermaid-cli` v11.12.0 (see `package.json`).
-- When Mermaid returns an “error SVG” instead of a non‑zero exit code, our preview scripts detect and surface the actual error text for parity.
-
-[Docs]: https://mermaid.js.org/
+| Channel | Use for |
+| --- | --- |
+| GitHub Issues | Bugs, feature requests, questions |
+| Pull Requests | Improvements to validators, diagnostics, docs |
 
 ## Testing / CI
 
@@ -168,12 +157,13 @@ Steps
 Notes
 - The package includes only the compiled `out/` folder, README, and LICENSE.
 - Node.js >= 18 is required (see `engines`).
+- Requires a repository secret `NPM_TOKEN` with publish access to the npm package.
 
 These layers give confidence in correctness (baseline), diagnostic quality (error codes), and compatibility with the reference renderer (mermaid-cli comparison).
 
 ## Error Codes
 
-Diagnostics include stable error codes and hints for quick fixes. See the full list in [docs/errors.md](./docs/errors.md).
+Diagnostics include stable error codes and hints for quick fixes. See the full list in docs/errors.md.
 
 ### CLI Output Formats
 
@@ -182,10 +172,10 @@ Diagnostics include stable error codes and hints for quick fixes. See the full l
 
 ```bash
 # Text (default)
-npx maid diagram.mmd
+npx -y @probelabs/maid diagram.mmd
 
 # JSON
-npx maid --format json diagram.mmd
+npx -y @probelabs/maid --format json diagram.mmd
 ```
 
 ### Strict Mode
@@ -193,10 +183,10 @@ npx maid --format json diagram.mmd
 Enable strict mode to require quoted labels inside shapes (e.g., `[ ... ]`, `{ ... }`, `( ... )`).
 
 ```bash
-npx maid --strict diagram.mmd
+npx -y @probelabs/maid --strict diagram.mmd
 ```
 
-In strict mode, unquoted labels are flagged with `FL-STRICT-LABEL-QUOTES-REQUIRED`. Use double quotes and `&quot;` for inner quotes.
+In strict mode, unquoted labels are flagged with FL-STRICT-LABEL-QUOTES-REQUIRED. Use double quotes and &quot; for inner quotes.
 
 ## Scanning Markdown and Directories
 
@@ -226,22 +216,22 @@ Examples
 
 ```bash
 # Validate Markdown containing multiple diagrams
-npx maid README.md
+npx -y @probelabs/maid README.md
 
 # Lint all docs, respecting .gitignore
-npx maid docs/
+npx -y @probelabs/maid docs/
 
 # Only Markdown/Mermaid under docs/content
-npx maid docs/ -I "docs/content/**/*.md,docs/content/**/*.mmd"
+npx -y @probelabs/maid docs/ -I "docs/content/**/*.md,docs/content/**/*.mmd"
 
 # Exclude legacy docs and any *.draft.md files
-npx maid docs/ -E "docs/legacy/**" -E "**/*.draft.md"
+npx -y @probelabs/maid docs/ -E "docs/legacy/**" -E "**/*.draft.md"
 
 # Disable .gitignore filtering
-npx maid docs/ --no-gitignore
+npx -y @probelabs/maid docs/ --no-gitignore
 
 # JSON report for CI
-npx maid --format json docs/
+npx -y @probelabs/maid --format json docs/
 ```
 
 ### JSON Output
@@ -284,8 +274,7 @@ Directory scan:
 ```yaml
 - name: Validate Mermaid Diagrams
   run: |
-    npm install -D maid
-    find . -name "*.mmd" -exec npx maid {} \;
+    npx -y @probelabs/maid docs/
 ```
 
 ### Pre-commit Hook
@@ -296,7 +285,7 @@ Directory scan:
 files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.mmd$')
 if [ -n "$files" ]; then
   for file in $files; do
-    npx maid "$file" || exit 1
+    npx -y @probelabs/maid "$file" || exit 1
   done
 fi
 ```
@@ -317,6 +306,7 @@ Built with modern tooling for reliability and performance:
 │   │   └── types.ts          # Shared types
 │   ├── diagrams/
 │   │   ├── flowchart/        # Flowchart lexer/parser/validation
+│   │   ├── sequence/         # Sequence lexer/parser/validation
 │   │   └── pie/              # Pie lexer/parser/validation
 │   └── cli.ts                # CLI implementation
 ├── test-fixtures/
@@ -337,7 +327,7 @@ Built with modern tooling for reliability and performance:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/maid.git
+git clone https://github.com/probelabs/maid.git
 cd maid
 
 # Install dependencies
@@ -358,15 +348,21 @@ npm test
 4. Build and verify: `npm run build && node scripts/compare-linters.js <type>`
 5. Regenerate previews: `node scripts/generate-preview.js <type>`
 
-## Roadmap
+## Releasing
 
-- [x] Support for pie charts
-- [ ] Support for sequence diagrams
-- [ ] Support for class diagrams
-- [ ] Support for state diagrams
-- [ ] VS Code extension
-- [ ] ESLint plugin
-- [ ] Online playground
+We publish to npm when a Git tag is pushed that matches the package version.
+
+Rules
+- Tags must be in the form `vX.Y.Z` and match `package.json`’s `version`.
+
+Steps
+1. Bump version and tag: `npm version patch|minor|major`
+2. Push with tags: `git push --follow-tags`
+3. Release workflow builds, runs quick tests, and publishes to npm
+
+Notes
+- Package includes only compiled `out/`, README, and LICENSE
+- Requires repository secret `NPM_TOKEN` (publish access)
 
 ## Edge Cases Covered
 
@@ -392,7 +388,7 @@ We welcome contributions! Please ensure:
 
 ## License
 
-MIT
+ISC
 
 ---
 
