@@ -88,7 +88,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
         message: 'Empty label inside a shape.',
         code: 'FL-NODE-EMPTY',
         hint:
-          'Write non-empty text inside the brackets (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.'
+          'Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.'
       });
       return;
     }
@@ -111,7 +111,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
             message: 'Empty label inside a shape (only empty quotes/whitespace).',
             code: 'FL-NODE-EMPTY',
             hint:
-              'Provide non-empty text (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.'
+              'Provide non-empty text, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.'
           });
         }
       }

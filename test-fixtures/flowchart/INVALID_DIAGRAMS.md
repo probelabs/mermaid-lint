@@ -122,7 +122,7 @@ at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:7
   2 |     A[""] --> B[" "]
     |       ^
   3 |     B --> C[]
-hint: Provide non-empty text (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
+hint: Provide non-empty text, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 
 error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17
@@ -130,14 +130,14 @@ at test-fixtures/flowchart/invalid/empty-nodes.mmd:2:17
   2 |     A[""] --> B[" "]
     |                 ^
   3 |     B --> C[]
-hint: Provide non-empty text (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
+hint: Provide non-empty text, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 
 error[FL-NODE-EMPTY]: Empty label inside a shape.
 at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
   2 |     A[""] --> B[" "]
   3 |     B --> C[]
     |            ^
-hint: Write non-empty text inside the brackets (quotes optional unless --strict), e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
+hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 ```
 
 <details>
