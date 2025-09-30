@@ -63,6 +63,12 @@ const cases = [
     after:  "flowchart LR\n  A['She said &quot;Hello&quot;'] --> B\n"
   },
   {
+    name: 'FL-QUOTE-UNCLOSED (all)',
+    before: 'flowchart TD\n  A["Unclosed label]\n  A --> B\n',
+    after:  'flowchart TD\n  A["Unclosed label"]\n  A --> B\n',
+    afterLevel: 'all'
+  },
+  {
     name: 'FL-LINK-MISSING (all)',
     before: 'flowchart TD\nA[Foo] B[Bar]\n',
     after:  'flowchart TD\nA[Foo]  --> B[Bar]\n',

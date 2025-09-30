@@ -87,6 +87,32 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    if (is('FL-QUOTE-UNCLOSED', e)) {
+      // Heuristic: if line has an odd number of double quotes and a closing bracket ahead,
+      // insert a closing quote just before the nearest bracket. Conservative → only under --fix=all.
+      if (level === 'all') {
+        const lineText = lineTextAt(text, e.line);
+        const caret0 = Math.max(0, e.column - 1);
+        const withoutEsc = lineText.replace(/\\\"/g, '');
+        const dq = (withoutEsc.match(/\"/g) || []).length;
+        if (dq % 2 === 1) {
+          // candidates of bracket closers after caret
+          const candidates: Array<{idx:number}> = [];
+          const pushIdx = (i:number) => { if (i >= 0) candidates.push({ idx: i }); };
+          pushIdx(lineText.indexOf(']]', caret0));
+          pushIdx(lineText.indexOf('))', caret0));
+          pushIdx(lineText.indexOf('}', caret0));
+          pushIdx(lineText.indexOf(']', caret0));
+          pushIdx(lineText.indexOf(')', caret0));
+          if (candidates.length) {
+            const ins = candidates.reduce((a,b)=> a.idx !== -1 && a.idx <= b.idx ? a : b);
+            const col = (ins.idx >= 0 ? ins.idx : lineText.length) + 1; // 1-based
+            edits.push(insertAt(text, { line: e.line, column: col }, '"'));
+          }
+        }
+      }
+      continue;
+    }
         // No flowchart quote-wrapping autofixes (strict/unquoted)
 
 
