@@ -9,26 +9,22 @@ This file contains invalid sequence test fixtures with:
 
 ## Table of Contents
 
-1. [Alias Unclosed Quote](#1-alias-unclosed-quote)
-2. [And In Alt](#2-and-in-alt)
-3. [And Outside Par](#3-and-outside-par)
-4. [Autonumber Extraneous](#4-autonumber-extraneous)
-5. [Autonumber Malformed](#5-autonumber-malformed)
-6. [Box Unclosed](#6-box-unclosed)
-7. [Create Malformed](#7-create-malformed)
-8. [Create Missing Name](#8-create-missing-name)
-9. [Critical Else](#9-critical-else)
-10. [Destroy Malformed](#10-destroy-malformed)
-11. [Else Outside Alt](#11-else-outside-alt)
-12. [Missing Colon](#12-missing-colon)
-13. [Note Malformed](#13-note-malformed)
-14. [Option In Par](#14-option-in-par)
-15. [Option Outside Critical](#15-option-outside-critical)
-16. [Participant Double In Double](#16-participant-double-in-double)
-17. [Participant Escaped Quotes](#17-participant-escaped-quotes)
-18. [Participant Unclosed Quote](#18-participant-unclosed-quote)
-19. [Unmatched End](#19-unmatched-end)
-20. [Wrong Arrow](#20-wrong-arrow)
+1. [And In Alt](#1-and-in-alt)
+2. [And Outside Par](#2-and-outside-par)
+3. [Autonumber Extraneous](#3-autonumber-extraneous)
+4. [Autonumber Malformed](#4-autonumber-malformed)
+5. [Box Unclosed](#5-box-unclosed)
+6. [Create Malformed](#6-create-malformed)
+7. [Create Missing Name](#7-create-missing-name)
+8. [Critical Else](#8-critical-else)
+9. [Destroy Malformed](#9-destroy-malformed)
+10. [Else Outside Alt](#10-else-outside-alt)
+11. [Missing Colon](#11-missing-colon)
+12. [Note Malformed](#12-note-malformed)
+13. [Option In Par](#13-option-in-par)
+14. [Option Outside Critical](#14-option-outside-critical)
+15. [Unmatched End](#15-unmatched-end)
+16. [Wrong Arrow](#16-wrong-arrow)
 
 ---
 
@@ -36,88 +32,26 @@ This file contains invalid sequence test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [Alias Unclosed Quote](#1-alias-unclosed-quote) | VALID | INVALID | ✅ all |
-| 2 | [And In Alt](#2-and-in-alt) | INVALID | INVALID | — |
-| 3 | [And Outside Par](#3-and-outside-par) | INVALID | INVALID | — |
-| 4 | [Autonumber Extraneous](#4-autonumber-extraneous) | INVALID | INVALID | ✅ safe |
-| 5 | [Autonumber Malformed](#5-autonumber-malformed) | INVALID | INVALID | ✅ all |
-| 6 | [Box Unclosed](#6-box-unclosed) | INVALID | INVALID | ✅ safe |
-| 7 | [Create Malformed](#7-create-malformed) | INVALID | INVALID | — |
-| 8 | [Create Missing Name](#8-create-missing-name) | INVALID | INVALID | — |
-| 9 | [Critical Else](#9-critical-else) | INVALID | INVALID | ✅ safe |
-| 10 | [Destroy Malformed](#10-destroy-malformed) | INVALID | INVALID | — |
-| 11 | [Else Outside Alt](#11-else-outside-alt) | INVALID | INVALID | — |
-| 12 | [Missing Colon](#12-missing-colon) | INVALID | INVALID | ✅ safe |
-| 13 | [Note Malformed](#13-note-malformed) | INVALID | INVALID | ✅ safe |
-| 14 | [Option In Par](#14-option-in-par) | INVALID | INVALID | — |
-| 15 | [Option Outside Critical](#15-option-outside-critical) | INVALID | INVALID | — |
-| 16 | [Participant Double In Double](#16-participant-double-in-double) | VALID | INVALID | ✅ safe |
-| 17 | [Participant Escaped Quotes](#17-participant-escaped-quotes) | VALID | INVALID | ✅ safe |
-| 18 | [Participant Unclosed Quote](#18-participant-unclosed-quote) | VALID | INVALID | ✅ all |
-| 19 | [Unmatched End](#19-unmatched-end) | INVALID | INVALID | — |
-| 20 | [Wrong Arrow](#20-wrong-arrow) | INVALID | INVALID | — |
+| 1 | [And In Alt](#1-and-in-alt) | INVALID | INVALID | — |
+| 2 | [And Outside Par](#2-and-outside-par) | INVALID | INVALID | — |
+| 3 | [Autonumber Extraneous](#3-autonumber-extraneous) | INVALID | INVALID | ✅ safe |
+| 4 | [Autonumber Malformed](#4-autonumber-malformed) | INVALID | INVALID | ✅ all |
+| 5 | [Box Unclosed](#5-box-unclosed) | INVALID | INVALID | ✅ safe |
+| 6 | [Create Malformed](#6-create-malformed) | INVALID | INVALID | — |
+| 7 | [Create Missing Name](#7-create-missing-name) | INVALID | INVALID | — |
+| 8 | [Critical Else](#8-critical-else) | INVALID | INVALID | ✅ safe |
+| 9 | [Destroy Malformed](#9-destroy-malformed) | INVALID | INVALID | — |
+| 10 | [Else Outside Alt](#10-else-outside-alt) | INVALID | INVALID | — |
+| 11 | [Missing Colon](#11-missing-colon) | INVALID | INVALID | ✅ safe |
+| 12 | [Note Malformed](#12-note-malformed) | INVALID | INVALID | ✅ safe |
+| 13 | [Option In Par](#13-option-in-par) | INVALID | INVALID | — |
+| 14 | [Option Outside Critical](#14-option-outside-critical) | INVALID | INVALID | — |
+| 15 | [Unmatched End](#15-unmatched-end) | INVALID | INVALID | — |
+| 16 | [Wrong Arrow](#16-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
-## 1. Alias Unclosed Quote
-
-📄 **Source**: [`alias-unclosed-quote.mmd`](./invalid/alias-unclosed-quote.mmd)
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-sequenceDiagram
-  participant Alice as "Eve
-  Alice->B: hi
-
-
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: INVALID
-
-```
-error[SE-QUOTE-UNCLOSED]: Unclosed quote in participant/actor name.
-at test-fixtures/sequence/invalid/alias-unclosed-quote.mmd:2:24
-  1 | sequenceDiagram
-  2 |   participant Alice as "Eve
-    |                        ^
-  3 |   Alice->B: hi
-hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
-```
-
-### maid Auto-fix (`--fix`) Preview
-
-No auto-fix changes (safe level).
-
-### maid Auto-fix (`--fix=all`) Preview
-
-```mermaid
-sequenceDiagram
-  participant Alice as "Eve"
-  Alice->B: hi
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-sequenceDiagram
-  participant Alice as "Eve
-  Alice->B: hi
-
-
-```
-</details>
-
----
-
-## 2. And In Alt
+## 1. And In Alt
 
 📄 **Source**: [`and-in-alt.mmd`](./invalid/and-in-alt.mmd)
 
@@ -207,7 +141,7 @@ sequenceDiagram
 
 ---
 
-## 3. And Outside Par
+## 2. And Outside Par
 
 📄 **Source**: [`and-outside-par.mmd`](./invalid/and-outside-par.mmd)
 
@@ -279,7 +213,7 @@ sequenceDiagram
 
 ---
 
-## 4. Autonumber Extraneous
+## 3. Autonumber Extraneous
 
 📄 **Source**: [`autonumber-extraneous.mmd`](./invalid/autonumber-extraneous.mmd)
 
@@ -365,7 +299,7 @@ sequenceDiagram
 
 ---
 
-## 5. Autonumber Malformed
+## 4. Autonumber Malformed
 
 📄 **Source**: [`autonumber-malformed.mmd`](./invalid/autonumber-malformed.mmd)
 
@@ -447,7 +381,7 @@ sequenceDiagram
 
 ---
 
-## 6. Box Unclosed
+## 5. Box Unclosed
 
 📄 **Source**: [`box-unclosed.mmd`](./invalid/box-unclosed.mmd)
 
@@ -539,7 +473,7 @@ sequenceDiagram
 
 ---
 
-## 7. Create Malformed
+## 6. Create Malformed
 
 📄 **Source**: [`create-malformed.mmd`](./invalid/create-malformed.mmd)
 
@@ -613,7 +547,7 @@ sequenceDiagram
 
 ---
 
-## 8. Create Missing Name
+## 7. Create Missing Name
 
 📄 **Source**: [`create-missing-name.mmd`](./invalid/create-missing-name.mmd)
 
@@ -682,7 +616,7 @@ sequenceDiagram
 
 ---
 
-## 9. Critical Else
+## 8. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -786,7 +720,7 @@ sequenceDiagram
 
 ---
 
-## 10. Destroy Malformed
+## 9. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -858,7 +792,7 @@ sequenceDiagram
 
 ---
 
-## 11. Else Outside Alt
+## 10. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -930,7 +864,7 @@ sequenceDiagram
 
 ---
 
-## 12. Missing Colon
+## 11. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -971,10 +905,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 
 ```
 error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
-at test-fixtures/sequence/invalid/missing-colon.mmd:4:9
+at test-fixtures/sequence/invalid/missing-colon.mmd:4:35
   3 |   participant B
   4 |   A->>B Message text without colon
-    |         ^^^^^^^
+    |                                   ^^
   5 | 
 hint: Use: A->>B: Message text
 ```
@@ -985,7 +919,7 @@ hint: Use: A->>B: Message text
 sequenceDiagram
   participant A
   participant B
-  A->>B : Message text without colon
+  A->>B Message text without colon: 
 
 
 ```
@@ -996,7 +930,7 @@ sequenceDiagram
 sequenceDiagram
   participant A
   participant B
-  A->>B : Message text without colon
+  A->>B Message text without colon: 
 
 
 ```
@@ -1016,7 +950,7 @@ sequenceDiagram
 
 ---
 
-## 13. Note Malformed
+## 12. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -1057,10 +991,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 
 ```
 error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
-at test-fixtures/sequence/invalid/note-malformed.mmd:3:19
+at test-fixtures/sequence/invalid/note-malformed.mmd:3:32
   2 |   participant A
   3 |   Note right of A Missing colon
-    |                   ^^^^^^^
+    |                                ^
   4 |   A->B: ok
 hint: Example: Note right of Alice: Hello
 ```
@@ -1070,7 +1004,7 @@ hint: Example: Note right of Alice: Hello
 ```mermaid
 sequenceDiagram
   participant A
-  Note right of A : Missing colon
+  Note right of A Missing colon: 
   A->B: ok
 
 
@@ -1081,7 +1015,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
   participant A
-  Note right of A : Missing colon
+  Note right of A Missing colon: 
   A->B: ok
 
 
@@ -1102,7 +1036,7 @@ sequenceDiagram
 
 ---
 
-## 14. Option In Par
+## 13. Option In Par
 
 📄 **Source**: [`option-in-par.mmd`](./invalid/option-in-par.mmd)
 
@@ -1182,7 +1116,7 @@ sequenceDiagram
 
 ---
 
-## 15. Option Outside Critical
+## 14. Option Outside Critical
 
 📄 **Source**: [`option-outside-critical.mmd`](./invalid/option-outside-critical.mmd)
 
@@ -1257,202 +1191,7 @@ sequenceDiagram
 
 ---
 
-## 16. Participant Double In Double
-
-📄 **Source**: [`participant-double-in-double.mmd`](./invalid/participant-double-in-double.mmd)
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-sequenceDiagram
-  participant "Logger "debug"" as L
-  L->>L: hi
-
-
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: INVALID
-
-```
-error[SE-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
-at test-fixtures/sequence/invalid/participant-double-in-double.mmd:2:29
-  1 | sequenceDiagram
-  2 |   participant "Logger "debug"" as L
-    |                             ^
-  3 |   L->>L: hi
-hint: Example: participant "Logger &quot;debug&quot;" as L
-
-error: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
-  <[Newline]>
-but found: 'debug'
-at test-fixtures/sequence/invalid/participant-double-in-double.mmd:2:24
-  1 | sequenceDiagram
-  2 |   participant "Logger "debug"" as L
-    |                        ^^^^^
-  3 |   L->>L: hi
-```
-
-### maid Auto-fix (`--fix`) Preview
-
-```mermaid
-sequenceDiagram
-  participant "Logger &quot;debug&quot;" as L
-  L->>L: hi
-
-
-```
-
-### maid Auto-fix (`--fix=all`) Preview
-
-```mermaid
-sequenceDiagram
-  participant "Logger &quot;debug&quot;" as L
-  L->>L: hi
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-sequenceDiagram
-  participant "Logger "debug"" as L
-  L->>L: hi
-
-
-```
-</details>
-
----
-
-## 17. Participant Escaped Quotes
-
-📄 **Source**: [`participant-escaped-quotes.mmd`](./invalid/participant-escaped-quotes.mmd)
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-sequenceDiagram
-  participant "Logger \"debug\"" as L
-  L->>L: hi
-
-
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: INVALID
-
-```
-error[SE-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead.
-at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:23
-  1 | sequenceDiagram
-  2 |   participant "Logger \"debug\"" as L
-    |                       ^^
-  3 |   L->>L: hi
-hint: Example: participant "Logger &quot;debug&quot;" as L
-```
-
-### maid Auto-fix (`--fix`) Preview
-
-```mermaid
-sequenceDiagram
-  participant "Logger &quot;debug&quot;" as L
-  L->>L: hi
-
-
-```
-
-### maid Auto-fix (`--fix=all`) Preview
-
-```mermaid
-sequenceDiagram
-  participant "Logger &quot;debug&quot;" as L
-  L->>L: hi
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-sequenceDiagram
-  participant "Logger \"debug\"" as L
-  L->>L: hi
-
-
-```
-</details>
-
----
-
-## 18. Participant Unclosed Quote
-
-📄 **Source**: [`participant-unclosed-quote.mmd`](./invalid/participant-unclosed-quote.mmd)
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-sequenceDiagram
-  participant "Bob
-  A->B: hi
-
-
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: INVALID
-
-```
-error[SE-QUOTE-UNCLOSED]: Unclosed quote in participant/actor name.
-at test-fixtures/sequence/invalid/participant-unclosed-quote.mmd:2:15
-  1 | sequenceDiagram
-  2 |   participant "Bob
-    |               ^
-  3 |   A->B: hi
-hint: Close the quote: participant "Bob"  or  participant Alice as "Alias"
-```
-
-### maid Auto-fix (`--fix`) Preview
-
-No auto-fix changes (safe level).
-
-### maid Auto-fix (`--fix=all`) Preview
-
-```mermaid
-sequenceDiagram
-  participant "Bob"
-  A->B: hi
-
-
-```
-
-<details>
-<summary>View source code</summary>
-
-```
-sequenceDiagram
-  participant "Bob
-  A->B: hi
-
-
-```
-</details>
-
----
-
-## 19. Unmatched End
+## 15. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1526,7 +1265,7 @@ sequenceDiagram
 
 ---
 
-## 20. Wrong Arrow
+## 16. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
@@ -1566,11 +1305,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-ARROW-INVALID]: Invalid sequence arrow near '==>>B: Unknown arrow'.
-at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:4
+error[SE-ARROW-INVALID]: Invalid sequence arrow near '
+
+'.
+at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:24
   3 |   participant B
   4 |   A==>>B: Unknown arrow
-    |    ^^^^^^^^^^^^^^^^^^^^
+    |                        ^^
   5 | 
 hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ```

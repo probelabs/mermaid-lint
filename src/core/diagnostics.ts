@@ -485,7 +485,7 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       limitPerFile: Number.MAX_SAFE_INTEGER
     });
     const onLine = unc.find(u => u.line === line);
-    if (onLine) return onLine;
+    if (onLine) return { ...onLine, severity: 'warning' };
 
     const dblEsc = (ltxt.match(/\"/g) || []).length;
     const dq = (ltxt.match(/"/g) || []).length - dblEsc;
@@ -494,7 +494,7 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       const qPos: number[] = [];
       for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
       const col3 = (qPos[2] ?? (column - 1)) + 1;
-      return { line, column: col3, severity: 'error', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
+      return { line, column: col3, severity: 'warning', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
     }
   }
 

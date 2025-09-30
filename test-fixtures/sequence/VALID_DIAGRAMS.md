@@ -9,17 +9,21 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 1. [Activation Suffix](#1-activation-suffix)
 2. [Actors And Aliases](#2-actors-and-aliases)
-3. [Alt Minimal](#3-alt-minimal)
-4. [Autonumber Variants](#4-autonumber-variants)
-5. [Basic](#5-basic)
-6. [Bidir And Async Arrows](#6-bidir-and-async-arrows)
-7. [Blocks Alt Opt Loop](#7-blocks-alt-opt-loop)
-8. [Box Groups](#8-box-groups)
-9. [Critical Break Rect](#9-critical-break-rect)
-10. [Links And Menus](#10-links-and-menus)
-11. [Notes](#11-notes)
-12. [Par And](#12-par-and)
-13. [Par Minimal](#13-par-minimal)
+3. [Alias Unclosed Quote](#3-alias-unclosed-quote)
+4. [Alt Minimal](#4-alt-minimal)
+5. [Autonumber Variants](#5-autonumber-variants)
+6. [Basic](#6-basic)
+7. [Bidir And Async Arrows](#7-bidir-and-async-arrows)
+8. [Blocks Alt Opt Loop](#8-blocks-alt-opt-loop)
+9. [Box Groups](#9-box-groups)
+10. [Critical Break Rect](#10-critical-break-rect)
+11. [Links And Menus](#11-links-and-menus)
+12. [Notes](#12-notes)
+13. [Par And](#13-par-and)
+14. [Par Minimal](#14-par-minimal)
+15. [Participant Double In Double](#15-participant-double-in-double)
+16. [Participant Escaped Quotes](#16-participant-escaped-quotes)
+17. [Participant Unclosed Quote](#17-participant-unclosed-quote)
 
 ---
 
@@ -87,7 +91,33 @@ sequenceDiagram
 
 ---
 
-## 3. Alt Minimal
+## 3. Alias Unclosed Quote
+
+📄 **Source**: [`alias-unclosed-quote.mmd`](./valid/alias-unclosed-quote.mmd)
+
+```mermaid
+sequenceDiagram
+  participant Alice as "Eve
+  Alice->B: hi
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant Alice as "Eve
+  Alice->B: hi
+
+
+```
+</details>
+
+---
+
+## 4. Alt Minimal
 
 📄 **Source**: [`alt-minimal.mmd`](./valid/alt-minimal.mmd)
 
@@ -119,7 +149,7 @@ sequenceDiagram
 
 ---
 
-## 4. Autonumber Variants
+## 5. Autonumber Variants
 
 📄 **Source**: [`autonumber-variants.mmd`](./valid/autonumber-variants.mmd)
 
@@ -157,7 +187,7 @@ sequenceDiagram
 
 ---
 
-## 5. Basic
+## 6. Basic
 
 📄 **Source**: [`basic.mmd`](./valid/basic.mmd)
 
@@ -185,7 +215,7 @@ sequenceDiagram
 
 ---
 
-## 6. Bidir And Async Arrows
+## 7. Bidir And Async Arrows
 
 📄 **Source**: [`bidir-and-async-arrows.mmd`](./valid/bidir-and-async-arrows.mmd)
 
@@ -231,7 +261,7 @@ sequenceDiagram
 
 ---
 
-## 7. Blocks Alt Opt Loop
+## 8. Blocks Alt Opt Loop
 
 📄 **Source**: [`blocks-alt-opt-loop.mmd`](./valid/blocks-alt-opt-loop.mmd)
 
@@ -283,7 +313,7 @@ sequenceDiagram
 
 ---
 
-## 8. Box Groups
+## 9. Box Groups
 
 📄 **Source**: [`box-groups.mmd`](./valid/box-groups.mmd)
 
@@ -325,7 +355,7 @@ sequenceDiagram
 
 ---
 
-## 9. Critical Break Rect
+## 10. Critical Break Rect
 
 📄 **Source**: [`critical-break-rect.mmd`](./valid/critical-break-rect.mmd)
 
@@ -371,7 +401,7 @@ sequenceDiagram
 
 ---
 
-## 10. Links And Menus
+## 11. Links And Menus
 
 📄 **Source**: [`links-and-menus.mmd`](./valid/links-and-menus.mmd)
 
@@ -403,7 +433,7 @@ sequenceDiagram
 
 ---
 
-## 11. Notes
+## 12. Notes
 
 📄 **Source**: [`notes.mmd`](./valid/notes.mmd)
 
@@ -435,7 +465,7 @@ sequenceDiagram
 
 ---
 
-## 12. Par And
+## 13. Par And
 
 📄 **Source**: [`par-and.mmd`](./valid/par-and.mmd)
 
@@ -471,7 +501,7 @@ sequenceDiagram
 
 ---
 
-## 13. Par Minimal
+## 14. Par Minimal
 
 📄 **Source**: [`par-minimal.mmd`](./valid/par-minimal.mmd)
 
@@ -496,6 +526,84 @@ sequenceDiagram
   and
     A->>C: Second
   end
+
+
+```
+</details>
+
+---
+
+## 15. Participant Double In Double
+
+📄 **Source**: [`participant-double-in-double.mmd`](./valid/participant-double-in-double.mmd)
+
+```mermaid
+sequenceDiagram
+  participant "Logger "debug"" as L
+  L->>L: hi
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant "Logger "debug"" as L
+  L->>L: hi
+
+
+```
+</details>
+
+---
+
+## 16. Participant Escaped Quotes
+
+📄 **Source**: [`participant-escaped-quotes.mmd`](./valid/participant-escaped-quotes.mmd)
+
+```mermaid
+sequenceDiagram
+  participant "Logger \"debug\"" as L
+  L->>L: hi
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant "Logger \"debug\"" as L
+  L->>L: hi
+
+
+```
+</details>
+
+---
+
+## 17. Participant Unclosed Quote
+
+📄 **Source**: [`participant-unclosed-quote.mmd`](./valid/participant-unclosed-quote.mmd)
+
+```mermaid
+sequenceDiagram
+  participant "Bob
+  A->B: hi
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant "Bob
+  A->B: hi
 
 
 ```
