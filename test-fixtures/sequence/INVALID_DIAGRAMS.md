@@ -10,16 +10,17 @@ This file contains invalid sequence test fixtures with:
 ## Table of Contents
 
 1. [And Outside Par](#1-and-outside-par)
-2. [Autonumber Malformed](#2-autonumber-malformed)
-3. [Box Unclosed](#3-box-unclosed)
-4. [Create Malformed](#4-create-malformed)
-5. [Critical Else](#5-critical-else)
-6. [Destroy Malformed](#6-destroy-malformed)
-7. [Else Outside Alt](#7-else-outside-alt)
-8. [Missing Colon](#8-missing-colon)
-9. [Note Malformed](#9-note-malformed)
-10. [Unmatched End](#10-unmatched-end)
-11. [Wrong Arrow](#11-wrong-arrow)
+2. [Autonumber Extraneous](#2-autonumber-extraneous)
+3. [Autonumber Malformed](#3-autonumber-malformed)
+4. [Box Unclosed](#4-box-unclosed)
+5. [Create Malformed](#5-create-malformed)
+6. [Critical Else](#6-critical-else)
+7. [Destroy Malformed](#7-destroy-malformed)
+8. [Else Outside Alt](#8-else-outside-alt)
+9. [Missing Colon](#9-missing-colon)
+10. [Note Malformed](#10-note-malformed)
+11. [Unmatched End](#11-unmatched-end)
+12. [Wrong Arrow](#12-wrong-arrow)
 
 ---
 
@@ -28,16 +29,17 @@ This file contains invalid sequence test fixtures with:
 | # | Diagram | mermaid-cli | mermaid-lint |
 |---:|---|:---:|:---:|
 | 1 | [And Outside Par](#1-and-outside-par) | INVALID | INVALID |
-| 2 | [Autonumber Malformed](#2-autonumber-malformed) | INVALID | INVALID |
-| 3 | [Box Unclosed](#3-box-unclosed) | INVALID | INVALID |
-| 4 | [Create Malformed](#4-create-malformed) | INVALID | INVALID |
-| 5 | [Critical Else](#5-critical-else) | INVALID | INVALID |
-| 6 | [Destroy Malformed](#6-destroy-malformed) | INVALID | INVALID |
-| 7 | [Else Outside Alt](#7-else-outside-alt) | INVALID | INVALID |
-| 8 | [Missing Colon](#8-missing-colon) | INVALID | INVALID |
-| 9 | [Note Malformed](#9-note-malformed) | INVALID | INVALID |
-| 10 | [Unmatched End](#10-unmatched-end) | INVALID | INVALID |
-| 11 | [Wrong Arrow](#11-wrong-arrow) | INVALID | INVALID |
+| 2 | [Autonumber Extraneous](#2-autonumber-extraneous) | INVALID | INVALID |
+| 3 | [Autonumber Malformed](#3-autonumber-malformed) | INVALID | INVALID |
+| 4 | [Box Unclosed](#4-box-unclosed) | INVALID | INVALID |
+| 5 | [Create Malformed](#5-create-malformed) | INVALID | INVALID |
+| 6 | [Critical Else](#6-critical-else) | INVALID | INVALID |
+| 7 | [Destroy Malformed](#7-destroy-malformed) | INVALID | INVALID |
+| 8 | [Else Outside Alt](#8-else-outside-alt) | INVALID | INVALID |
+| 9 | [Missing Colon](#9-missing-colon) | INVALID | INVALID |
+| 10 | [Note Malformed](#10-note-malformed) | INVALID | INVALID |
+| 11 | [Unmatched End](#11-unmatched-end) | INVALID | INVALID |
+| 12 | [Wrong Arrow](#12-wrong-arrow) | INVALID | INVALID |
 
 ---
 
@@ -105,7 +107,70 @@ sequenceDiagram
 
 ---
 
-## 2. Autonumber Malformed
+## 2. Autonumber Extraneous
+
+📄 **Source**: [`autonumber-extraneous.mmd`](./invalid/autonumber-extraneous.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  autonumber 10 10 participant A
+  A->B: ok
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+...  autonumber 10 10 participant A  A->B
+----------------------^
+Expecting 'NEWLINE', got 'participant'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-AUTONUMBER-EXTRANEOUS]: Unexpected token after 'autonumber'. Put 'autonumber' on its own line.
+at test-fixtures/sequence/invalid/autonumber-extraneous.mmd:2:20
+  sequenceDiagram
+    autonumber 10 10 participant A
+                     ^^^^^^^^^^^
+    A->B: ok
+hint: Example: autonumber 10 10
+participant A
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  autonumber 10 10 participant A
+  A->B: ok
+
+
+```
+</details>
+
+---
+
+## 3. Autonumber Malformed
 
 📄 **Source**: [`autonumber-malformed.mmd`](./invalid/autonumber-malformed.mmd)
 
@@ -146,14 +211,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::
-  <[Newline]>
-but found: 'ten'
+error[SE-AUTONUMBER-NON-NUMERIC]: Autonumber values must be numbers. Found 'ten'.
 at test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
   sequenceDiagram
     autonumber 10 ten
                   ^^^
     participant A
+hint: Use numbers: autonumber 10 or autonumber 10 10 (start and step).
 ```
 
 <details>
@@ -172,7 +236,7 @@ sequenceDiagram
 
 ---
 
-## 3. Box Unclosed
+## 4. Box Unclosed
 
 📄 **Source**: [`box-unclosed.mmd`](./invalid/box-unclosed.mmd)
 
@@ -236,7 +300,7 @@ sequenceDiagram
 
 ---
 
-## 4. Create Malformed
+## 5. Create Malformed
 
 📄 **Source**: [`create-malformed.mmd`](./invalid/create-malformed.mmd)
 
@@ -302,7 +366,7 @@ sequenceDiagram
 
 ---
 
-## 5. Critical Else
+## 6. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -369,7 +433,7 @@ sequenceDiagram
 
 ---
 
-## 6. Destroy Malformed
+## 7. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -436,7 +500,7 @@ sequenceDiagram
 
 ---
 
-## 7. Else Outside Alt
+## 8. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -500,7 +564,7 @@ sequenceDiagram
 
 ---
 
-## 8. Missing Colon
+## 9. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -564,7 +628,7 @@ sequenceDiagram
 
 ---
 
-## 9. Note Malformed
+## 10. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -628,7 +692,7 @@ sequenceDiagram
 
 ---
 
-## 10. Unmatched End
+## 11. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -694,7 +758,7 @@ sequenceDiagram
 
 ---
 
-## 11. Wrong Arrow
+## 12. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 

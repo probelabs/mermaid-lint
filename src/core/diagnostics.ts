@@ -303,9 +303,19 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     return { line, column, severity: 'error', code: 'SE-END-WITHOUT-BLOCK', message: "'end' without an open block (alt/opt/loop/par/rect/critical/break/box).", hint: 'Add a block above (e.g., par … end | alt … end) or remove this end.', length: len };
   }
 
-  // Autonumber malformed
-  if (inRule('autonumberStmt') && err.name === 'NoViableAltException') {
-    return { line, column, severity: 'error', code: 'SE-AUTONUMBER-MALFORMED', message: 'Malformed autonumber statement.', hint: 'Use: autonumber | autonumber off | autonumber 10 10', length: len };
+  // Autonumber malformed / specific cases
+  if (inRule('autonumberStmt')) {
+    // Non-numeric step value
+    if (tokType === 'Identifier') {
+      return { line, column, severity: 'error', code: 'SE-AUTONUMBER-NON-NUMERIC', message: `Autonumber values must be numbers. Found '${found}'.`, hint: 'Use numbers: autonumber 10 or autonumber 10 10 (start and step).', length: len };
+    }
+    // Participant/actor where a number or newline is expected
+    if (tokType === 'ParticipantKeyword' || tokType === 'ActorKeyword') {
+      return { line, column, severity: 'error', code: 'SE-AUTONUMBER-EXTRANEOUS', message: "Unexpected token after 'autonumber'. Put 'autonumber' on its own line.", hint: 'Example: autonumber 10 10\nparticipant A', length: len };
+    }
+    if (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException' || err.name === 'NotAllInputParsedException') {
+      return { line, column, severity: 'error', code: 'SE-AUTONUMBER-MALFORMED', message: 'Malformed autonumber statement.', hint: 'Use: autonumber | autonumber off | autonumber 10 10', length: len };
+    }
   }
 
   // Create/destroy malformed

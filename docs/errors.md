@@ -190,6 +190,16 @@ Tip: quoting inside labels
   - Message: "Malformed autonumber statement."
   - Hint: "Use: autonumber | autonumber off | autonumber 10 10"
 
+- SE-AUTONUMBER-NON-NUMERIC
+  - When: A non-numeric value is used for start/step (e.g., `autonumber 10 ten`).
+  - Message: "Autonumber values must be numbers. Found 'X'."
+  - Hint: "Use numbers: autonumber 10 or autonumber 10 10 (start and step)."
+
+- SE-AUTONUMBER-EXTRANEOUS
+  - When: Extra tokens appear after `autonumber` on the same line (e.g., a participant declaration).
+  - Message: "Unexpected token after 'autonumber'. Put 'autonumber' on its own line."
+  - Hint: "Example: autonumber 10 10\nparticipant A"
+
 - SE-CREATE-MALFORMED
   - When: `create` is missing the target or has invalid syntax.
   - Message: "Malformed create statement. Use: create [participant|actor] ID"

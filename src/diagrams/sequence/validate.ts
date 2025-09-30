@@ -24,7 +24,10 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
       // Only add these hints if there were parse errors (to avoid noisy hints on valid files)
       const hadErrors = prevErrors.some(e => e.severity === 'error');
       if (hadErrors) {
-        if (hasAnd && !hasPar) {
+        const hasAndOutsideParErr = prevErrors.some(e => e.code === 'SE-AND-OUTSIDE-PAR');
+        const hasElseOutsideAltErr = prevErrors.some(e => e.code === 'SE-ELSE-OUTSIDE-ALT');
+
+        if (hasAnd && !hasPar && !hasAndOutsideParErr) {
           const first = tokenList.find(x => x.tokenType === t.AndKeyword)!;
           warnings.push({
             line: first.startLine ?? 1,
@@ -36,7 +39,7 @@ export function validateSequence(text: string, _options: ValidateOptions = {}): 
             length: (first.image?.length ?? 3)
           });
         }
-        if (hasElse && !hasAlt) {
+        if (hasElse && !hasAlt && !hasElseOutsideAltErr) {
           const first = tokenList.find(x => x.tokenType === t.ElseKeyword)!;
           warnings.push({
             line: first.startLine ?? 1,
