@@ -22,9 +22,10 @@ This file contains invalid flowchart test fixtures with:
 11. [Quotes Double Inside Single](#11-quotes-double-inside-single)
 12. [Special Chars](#12-special-chars)
 13. [Unclosed Bracket](#13-unclosed-bracket)
-14. [Unmatched End](#14-unmatched-end)
-15. [Unquoted Label With Quotes](#15-unquoted-label-with-quotes)
-16. [Wrong Direction](#16-wrong-direction)
+14. [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision)
+15. [Unmatched End](#15-unmatched-end)
+16. [Unquoted Label With Quotes](#16-unquoted-label-with-quotes)
+17. [Wrong Direction](#17-wrong-direction)
 
 ---
 
@@ -45,9 +46,10 @@ This file contains invalid flowchart test fixtures with:
 | 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID |
 | 12 | [Special Chars](#12-special-chars) | INVALID | INVALID |
 | 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID |
-| 14 | [Unmatched End](#14-unmatched-end) | INVALID | INVALID |
-| 15 | [Unquoted Label With Quotes](#15-unquoted-label-with-quotes) | INVALID | INVALID |
-| 16 | [Wrong Direction](#16-wrong-direction) | INVALID | INVALID |
+| 14 | [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision) | INVALID | INVALID |
+| 15 | [Unmatched End](#15-unmatched-end) | INVALID | INVALID |
+| 16 | [Unquoted Label With Quotes](#16-unquoted-label-with-quotes) | INVALID | INVALID |
+| 17 | [Wrong Direction](#17-wrong-direction) | INVALID | INVALID |
 
 ---
 
@@ -167,8 +169,8 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
     end
-
 
 ```
 
@@ -195,13 +197,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### mermaid-lint Result: INVALID
 
 ```
-error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '{'. Add a matching '}'.
-at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:30
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
   5 |         B -- No --> C[Continue with other auth methods]
   6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
-    |                              ^
-  7 |     end
-hint: Example: C{Decision}
+    |                            ^^
+  7 |         B -- Yes --> E{"Is "Driver" configured?"}
+hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
 ```
 
 <details>
@@ -214,8 +216,8 @@ flowchart TD
         A[Start processing API definition] --> B{Custom Auth Enabled?}
         B -- No --> C[Continue with other auth methods]
         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+        B -- Yes --> E{"Is "Driver" configured?"}
     end
-
 
 ```
 </details>
@@ -818,7 +820,69 @@ flowchart LR
 
 ---
 
-## 14. Unmatched End
+## 14. Unescaped Quotes In Decision
+
+📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is "Driver" configured?"}
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 3:
+...s --> C{"Is "Driver" configured?"}
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### mermaid-lint Result: INVALID
+
+```
+error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.
+at test-fixtures/flowchart/invalid/unescaped-quotes-in-decision.mmd:3:31
+  2 |     A[Start] --> B{Custom Auth Enabled?}
+  3 |     B -- Yes --> C{"Is "Driver" configured?"}
+    |                               ^
+  4 | 
+hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A[Start] --> B{Custom Auth Enabled?}
+    B -- Yes --> C{"Is "Driver" configured?"}
+
+
+```
+</details>
+
+---
+
+## 15. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -877,7 +941,7 @@ flowchart TD
 
 ---
 
-## 15. Unquoted Label With Quotes
+## 16. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -967,7 +1031,7 @@ flowchart TD
 
 ---
 
-## 16. Wrong Direction
+## 17. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 

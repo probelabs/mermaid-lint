@@ -5,7 +5,7 @@
     "FL-NODE-EMPTY"
   ],
   "escaped-quotes-in-decision.mmd": [
-    "FL-NODE-UNCLOSED-BRACKET"
+    "FL-LABEL-ESCAPED-QUOTE"
   ],
   "invalid-arrow.mmd": [
     "FL-ARROW-INVALID"
@@ -42,6 +42,9 @@
   ],
   "unquoted-label-with-quotes.mmd": [
     "FL-SUBGRAPH-MISSING-HEADER"
+  ],
+  "unescaped-quotes-in-decision.mmd": [
+    "FL-LABEL-DOUBLE-IN-DOUBLE"
   ],
   "wrong-direction.mmd": [
     "FL-DIR-INVALID"

@@ -44,6 +44,16 @@ Clear, actionable diagnostics aligned with mermaid-cli behavior. Each error incl
       A["She said &quot;Hello&quot;"] --> B
     ```
 
+- FL-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted label contains another double quote.
+  - Message: "Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes."
+  - Hint: "Example: D{\"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?\"}"
+  - Example (fixed):
+    ```mermaid
+    flowchart TD
+      D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
+    ```
+
 - FL-LABEL-QUOTE-IN-UNQUOTED
   - When: A double quote appears inside an unquoted label (e.g., within `[...]`).
   - Message: "Double quotes inside an unquoted label are not allowed. Wrap the entire label in quotes or use &quot;."

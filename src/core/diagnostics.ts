@@ -79,6 +79,36 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
   const found = tokenImage(tok);
   const tokType = tok?.tokenType?.name;
   const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
+  const allLines = text.split(/\r?\n/);
+  const lineStr = allLines[Math.max(0, line - 1)] ?? '';
+  const findInnerQuoteIssue = (openCh: '{'|'['|'(') => {
+    const caret0 = Math.max(0, column - 1);
+    const before = lineStr.slice(0, caret0);
+    const openIdx = before.lastIndexOf(openCh);
+    if (openIdx === -1) return null;
+    const seg = lineStr.slice(openIdx + 1);
+    // If we see a backslash-escaped double-quote anywhere between brackets on this line
+    const escIdx = seg.indexOf('\\"');
+    if (escIdx !== -1) {
+      const col = openIdx + 1 + escIdx + 1; // 1-based later
+      return {
+        kind: 'escaped' as const,
+        column: col
+      };
+    }
+    // Heuristic: inner unescaped double-quote inside a double-quoted label → at least 3 quotes in segment
+    const quoteIdxs: number[] = [];
+    for (let i = 0; i < seg.length; i++) if (seg[i] === '"') quoteIdxs.push(i);
+    if (quoteIdxs.length >= 3) {
+      const inner = quoteIdxs[2];
+      const col = openIdx + 1 + inner + 1;
+      return {
+        kind: 'double-in-double' as const,
+        column: col
+      };
+    }
+    return null;
+  };
 
   // 1) Direction after header
   if (atHeader(err) && expecting(err, 'Direction')) {
@@ -130,6 +160,30 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '('. Add a matching ')'.", hint: "Example: B(Label)", length: 1 };
     }
     if (expecting(err, 'DiamondClose')) {
+      // Try to recognize common quote issues inside decision labels and map them to clearer errors
+      const q = findInnerQuoteIssue('{');
+      if (q?.kind === 'escaped') {
+        return {
+          line,
+          column: q.column,
+          severity: 'error',
+          code: 'FL-LABEL-ESCAPED-QUOTE',
+          message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
+          hint: 'Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}',
+          length: 2
+        };
+      }
+      if (q?.kind === 'double-in-double') {
+        return {
+          line,
+          column: q.column,
+          severity: 'error',
+          code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
+          message: 'Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.',
+          hint: 'Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}',
+          length: 1
+        };
+      }
       return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '{'. Add a matching '}'.", hint: "Example: C{Decision}", length: 1 };
     }
     if (expecting(err, 'DoubleRoundClose')) {
