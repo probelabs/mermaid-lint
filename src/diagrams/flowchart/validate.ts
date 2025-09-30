@@ -5,6 +5,7 @@ import { analyzeFlowchart } from './semantics.js';
 import type { IToken } from 'chevrotain';
 import { lintWithChevrotain } from '../../core/pipeline.js';
 import { coercePos, mapFlowchartParserError } from '../../core/diagnostics.js';
+import { detectEscapedQuotes } from '../../core/quoteHygiene.js';
 
 export function validateFlowchart(text: string, options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
@@ -30,22 +31,12 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       return errs;
     },
     postParse: (_text, tokens, _cst, prevErrors) => {
-      // Token-level fallback: detect backslash-escaped quotes if not already reported
       if (prevErrors.some(e => e.code === 'FL-LABEL-ESCAPED-QUOTE')) return [];
-      for (const tok of tokens as IToken[]) {
-        if (typeof tok.image === 'string' && tok.image.includes('\\"')) {
-          const idx = tok.image.indexOf('\\"');
-          const col = (tok.startColumn ?? 1) + Math.max(0, idx);
-          const { line, column } = coercePos(tok.startLine ?? null, col, 1, 1);
-          return [{
-            line, column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE',
-            message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
-            hint: 'Prefer "He said &quot;Hi&quot;".',
-            length: 2
-          }];
-        }
-      }
-      return [];
+      return detectEscapedQuotes(tokens as IToken[], {
+        code: 'FL-LABEL-ESCAPED-QUOTE',
+        message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
+        hint: 'Prefer "He said &quot;Hi&quot;".'
+      });
     }
   });
 }

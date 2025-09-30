@@ -17,4 +17,7 @@
   "note-malformed.mmd": ["SE-NOTE-MALFORMED"],
   "unmatched-end.mmd": ["SE-END-WITHOUT-BLOCK"],
   "wrong-arrow.mmd": ["SE-ARROW-INVALID"]
+  ,
+  "participant-escaped-quotes.mmd": ["SE-LABEL-ESCAPED-QUOTE"],
+  "participant-double-in-double.mmd": ["SE-LABEL-DOUBLE-IN-DOUBLE"]
 }

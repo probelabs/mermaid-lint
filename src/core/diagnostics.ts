@@ -252,6 +252,8 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
   const { line, column } = coercePos(tok?.startLine ?? null, tok?.startColumn ?? null, posFallback.line, posFallback.column);
   const found = tokenImage(tok);
   const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
+  const lines = text.split(/\r?\n/);
+  const ltxt = lines[Math.max(0, line - 1)] || '';
 
   // Colon at top-level usually means missing quoted label before it
   if (err.name === 'NotAllInputParsedException' && tok?.tokenType?.name === 'Colon') {
@@ -278,6 +280,23 @@ export function mapPieParserError(err: IRecognitionException, text: string): Val
 
   // Missing colon between label and number
   if (expecting(err, 'Colon')) {
+    // Heuristic: inner unescaped quotes inside a double-quoted label often yield an unexpected token before ':'
+    const dbl = (ltxt.match(/\"/g) || []).length;
+    const dq = (ltxt.match(/"/g) || []).length - dbl;
+    if (dq >= 3) {
+      const qPos: number[] = [];
+      for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
+      const col3 = (qPos[2] ?? (column - 1)) + 1;
+      return {
+        line,
+        column: col3,
+        severity: 'error',
+        code: 'PI-LABEL-DOUBLE-IN-DOUBLE',
+        message: 'Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.',
+        hint: 'Example: "He said &quot;Hi&quot;" : 1',
+        length: 1
+      };
+    }
     return {
       line, column, severity: 'error', code: 'PI-MISSING-COLON',
       message: 'Missing colon between slice label and value.',
@@ -316,6 +335,8 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   const found = tokenImage(tok);
   const tokType = tok?.tokenType?.name;
   const len = typeof (tok as any)?.image === 'string' && (tok as any).image.length > 0 ? (tok as any).image.length : 1;
+  const lines = text.split(/\r?\n/);
+  const ltxt = lines[Math.max(0, line - 1)] || '';
 
   const inRule = (name: string) => isInRule(err, name);
   // Debug fallback: if in participantDecl when actorRef fails, treat as actorRef for quote heuristics
@@ -376,15 +397,20 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
   }
 
   // Unclosed quotes in actor references (participant/actor names or aliases)
-  if (inActorRefContext && (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException')) {
+  if (inActorRefContext && (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException' || err.name === 'EarlyExitException')) {
     const img = (tok as any)?.image as string | undefined;
     if (img && (img.startsWith('"') || img.startsWith("'"))) {
       return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: Math.max(1, img.length) };
     }
-    const lines = text.split(/\r?\n/);
-    const ltxt = lines[Math.max(0, line - 1)] || '';
-    const dq = (ltxt.match(/"/g) || []).length;
+    const dblEsc = (ltxt.match(/\"/g) || []).length;
+    const dq = (ltxt.match(/"/g) || []).length - dblEsc;
     const sq = (ltxt.match(/'/g) || []).length;
+    if (dq >= 3) {
+      const qPos: number[] = [];
+      for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
+      const col3 = (qPos[2] ?? (column - 1)) + 1;
+      return { line, column: col3, severity: 'error', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
+    }
     if (dq % 2 === 1 || sq % 2 === 1) {
       return { line, column, severity: 'error', code: 'SE-QUOTE-UNCLOSED', message: 'Unclosed quote in participant/actor name.', hint: 'Close the quote: participant "Bob"  or  participant Alice as "Alias"', length: 1 };
     }
@@ -514,6 +540,16 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
       hint: "Use: destroy participant A  or  destroy actor B",
       length: len
     };
+  }
+
+  // Generic fallback: if the current line has triple or more quotes, hint double-in-double
+  const dblEsc2 = (ltxt.match(/\"/g) || []).length;
+  const dq2 = (ltxt.match(/"/g) || []).length - dblEsc2;
+  if (dq2 >= 3) {
+    const qPos: number[] = [];
+    for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
+    const col3 = (qPos[2] ?? (column - 1)) + 1;
+    return { line, column: col3, severity: 'error', code: 'SE-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: participant "Logger &quot;debug&quot;" as L', length: 1 };
   }
 
   return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };

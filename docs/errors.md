@@ -131,6 +131,16 @@ Tip: quoting inside labels
   - Message: "Unclosed quote in slice label."
   - Hint: "Close the quote: \"Dogs\" : 10"
 
+- PI-LABEL-ESCAPED-QUOTE
+  - When: A slice label contains backslash-escaped double quotes (\"). Mermaid does not support `\"`.
+  - Message: "Escaped quotes (\") in slice labels are not supported by Mermaid. Use &quot; instead."
+  - Hint: "Example: \"He said &quot;Hi&quot;\" : 1"
+
+- PI-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted slice label contains another double quote.
+  - Message: "Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes."
+  - Hint: "Example: \"He said &quot;Hi&quot;\" : 1"
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID
@@ -168,6 +178,16 @@ Tip: quoting inside labels
 - SE-NOTE-MALFORMED
   - When: A note statement is incomplete or missing the colon.
   - Message: "Malformed note: missing colon before the note text." (or generic malformed note)
+
+- SE-LABEL-ESCAPED-QUOTE
+  - When: Participant/actor names, aliases, or block labels contain backslash-escaped quotes (\"). Mermaid does not support `\"`.
+  - Message: "Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead."
+  - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
+
+- SE-LABEL-DOUBLE-IN-DOUBLE
+  - When: A double-quoted participant/actor name or label contains another double quote.
+  - Message: "Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes."
+  - Hint: "Example: participant \"Logger &quot;debug&quot;\" as L"
   - Hint: "Examples: Note right of Alice: Hi | Note over A,B: Hello"
 
 - SE-QUOTE-UNCLOSED

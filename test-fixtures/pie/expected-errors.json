@@ -17,4 +17,11 @@
   "unclosed-quote.mmd": [
     "PI-QUOTE-UNCLOSED"
   ]
+  ,
+  "escaped-quotes.mmd": [
+    "PI-LABEL-ESCAPED-QUOTE"
+  ],
+  "double-in-double.mmd": [
+    "PI-LABEL-DOUBLE-IN-DOUBLE"
+  ]
 }

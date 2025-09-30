@@ -24,9 +24,11 @@ This file contains invalid sequence test fixtures with:
 13. [Note Malformed](#13-note-malformed)
 14. [Option In Par](#14-option-in-par)
 15. [Option Outside Critical](#15-option-outside-critical)
-16. [Participant Unclosed Quote](#16-participant-unclosed-quote)
-17. [Unmatched End](#17-unmatched-end)
-18. [Wrong Arrow](#18-wrong-arrow)
+16. [Participant Double In Double](#16-participant-double-in-double)
+17. [Participant Escaped Quotes](#17-participant-escaped-quotes)
+18. [Participant Unclosed Quote](#18-participant-unclosed-quote)
+19. [Unmatched End](#19-unmatched-end)
+20. [Wrong Arrow](#20-wrong-arrow)
 
 ---
 
@@ -49,9 +51,11 @@ This file contains invalid sequence test fixtures with:
 | 13 | [Note Malformed](#13-note-malformed) | INVALID | INVALID |
 | 14 | [Option In Par](#14-option-in-par) | INVALID | INVALID |
 | 15 | [Option Outside Critical](#15-option-outside-critical) | INVALID | INVALID |
-| 16 | [Participant Unclosed Quote](#16-participant-unclosed-quote) | VALID | INVALID |
-| 17 | [Unmatched End](#17-unmatched-end) | INVALID | INVALID |
-| 18 | [Wrong Arrow](#18-wrong-arrow) | INVALID | INVALID |
+| 16 | [Participant Double In Double](#16-participant-double-in-double) | VALID | INVALID |
+| 17 | [Participant Escaped Quotes](#17-participant-escaped-quotes) | VALID | INVALID |
+| 18 | [Participant Unclosed Quote](#18-participant-unclosed-quote) | VALID | INVALID |
+| 19 | [Unmatched End](#19-unmatched-end) | INVALID | INVALID |
+| 20 | [Wrong Arrow](#20-wrong-arrow) | INVALID | INVALID |
 
 ---
 
@@ -1025,7 +1029,111 @@ sequenceDiagram
 
 ---
 
-## 16. Participant Unclosed Quote
+## 16. Participant Double In Double
+
+📄 **Source**: [`participant-double-in-double.mmd`](./invalid/participant-double-in-double.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant "Logger "debug"" as L
+  L->>L: hi
+
+
+```
+
+### mermaid-cli Result: VALID
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
+at test-fixtures/sequence/invalid/participant-double-in-double.mmd:2:29
+  1 | sequenceDiagram
+  2 |   participant "Logger "debug"" as L
+    |                             ^
+  3 |   L->>L: hi
+hint: Example: participant "Logger &quot;debug&quot;" as L
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant "Logger "debug"" as L
+  L->>L: hi
+
+
+```
+</details>
+
+---
+
+## 17. Participant Escaped Quotes
+
+📄 **Source**: [`participant-escaped-quotes.mmd`](./invalid/participant-escaped-quotes.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant "Logger \"debug\"" as L
+  L->>L: hi
+
+
+```
+
+### mermaid-cli Result: VALID
+
+### mermaid-lint Result: INVALID
+
+```
+error[SE-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:23
+  1 | sequenceDiagram
+  2 |   participant "Logger \"debug\"" as L
+    |                       ^^
+  3 |   L->>L: hi
+hint: Example: participant "Logger &quot;debug&quot;" as L
+
+error[SE-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in names or labels are not supported by Mermaid. Use &quot; instead.
+at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:30
+  1 | sequenceDiagram
+  2 |   participant "Logger \"debug\"" as L
+    |                              ^^
+  3 |   L->>L: hi
+hint: Example: participant "Logger &quot;debug&quot;" as L
+
+error[SE-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
+at test-fixtures/sequence/invalid/participant-escaped-quotes.mmd:2:31
+  1 | sequenceDiagram
+  2 |   participant "Logger \"debug\"" as L
+    |                               ^
+  3 |   L->>L: hi
+hint: Example: participant "Logger &quot;debug&quot;" as L
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant "Logger \"debug\"" as L
+  L->>L: hi
+
+
+```
+</details>
+
+---
+
+## 18. Participant Unclosed Quote
 
 📄 **Source**: [`participant-unclosed-quote.mmd`](./invalid/participant-unclosed-quote.mmd)
 
@@ -1069,7 +1177,7 @@ sequenceDiagram
 
 ---
 
-## 17. Unmatched End
+## 19. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1135,7 +1243,7 @@ sequenceDiagram
 
 ---
 
-## 18. Wrong Arrow
+## 20. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
