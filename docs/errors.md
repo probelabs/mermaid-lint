@@ -22,7 +22,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-LINK-MISSING | All | Insert ` --> ` between two nodes on the same line. |
 | FL-NODE-UNCLOSED-BRACKET | All | Insert the best-guess closing bracket at caret. |
 | FL-NODE-MIXED-BRACKETS | Safe | Replace mismatched closer with correct one. |
-| FL-NODE-EMPTY | None | No change (requires author intent). |
+| FL-NODE-EMPTY | Safe | Remove empty square-bracket shapes (A[""] / A[" "] / A[]) and keep plain node id (A). |
 | FL-QUOTE-UNCLOSED | None | No change (could mask larger issues). |
 | FL-CLASS-MALFORMED | None | No change (requires author intent). |
 | FL-SUBGRAPH-MISSING-HEADER | None | No change (requires header choice). |

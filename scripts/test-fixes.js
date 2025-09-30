@@ -58,6 +58,11 @@ const cases = [
     after:  'flowchart TD\n'
   },
   {
+    name: 'FL-LABEL-DOUBLE-IN-SINGLE (whole-label)',
+    before: "flowchart LR\n  A['She said \"Hello\"'] --> B\n",
+    after:  "flowchart LR\n  A['She said &quot;Hello&quot;'] --> B\n"
+  },
+  {
     name: 'FL-LINK-MISSING (all)',
     before: 'flowchart TD\nA[Foo] B[Bar]\n',
     after:  'flowchart TD\nA[Foo]  --> B[Bar]\n',

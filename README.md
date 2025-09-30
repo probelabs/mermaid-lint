@@ -213,6 +213,7 @@ What gets fixed (highlights)
   - Replace `else` with `option` inside `critical`
   - Insert a new `end` for unclosed blocks (keeps indentation)
   - Move extraneous tokens after `autonumber` to the next line
+  - Fix inner quotes in participant/actor names by using `&quot;` (e.g., `participant "Logger \"debug\""` → `participant "Logger &quot;debug&quot;"`)
 - Sequence (All):
   - Normalize malformed `autonumber` to `autonumber`
   - Close unclosed quotes at end of line
@@ -221,6 +222,8 @@ What gets fixed (highlights)
   - Wrap unquoted labels and normalize inner quotes to `&quot;`
 - Pie (All):
   - Close unclosed quotes (before colon if present, else end of line)
+ - Flowchart (Safe):
+   - Remove empty shapes A[""] / A[" "] / A[] → A
 
 Before/After examples
 

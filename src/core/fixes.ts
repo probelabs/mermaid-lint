@@ -21,6 +21,21 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     // Note: '*-LABEL-DOUBLE-IN-DOUBLE' is intentionally not auto-fixed; naive single-char replacement
     // at the second quoted token can corrupt the line. We leave it as a hint-only for now.
     if (is('FL-LABEL-DOUBLE-IN-SINGLE', e)) {
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      const q1 = lineText.lastIndexOf("'", caret0);
+      const q2 = lineText.indexOf("'", Math.max(caret0 + 1, q1 + 1));
+      if (q1 !== -1 && q2 !== -1 && q2 > q1) {
+        const inner = lineText.slice(q1 + 1, q2);
+        const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+        if (replaced !== inner) {
+          const start = { line: e.line, column: q1 + 2 };
+          const end = { line: e.line, column: q2 + 1 };
+          edits.push({ start, end, newText: replaced });
+          continue;
+        }
+      }
+      // Fallback: replace the current character only
       edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       continue;
     }
