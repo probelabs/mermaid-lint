@@ -40,7 +40,9 @@
   "scripts": {
     "clean": "rm -rf out",
     "build": "tsc",
-    "build:browser": "npm run build && esbuild out/index.js --bundle --format=esm --outfile=site/maid/maid.bundle.js --platform=browser --external:fs --external:path --external:url --external:util",
+    "build:browser": "npm run build && esbuild out/browser.js --bundle --minify --format=esm --outfile=site/maid/maid.bundle.js --platform=browser --tree-shaking=true --target=es2020 --external:fs --external:path --external:url --external:util --external:@modelcontextprotocol/sdk --external:@modelcontextprotocol/sdk/*",
+    "build:browser:analyze": "npm run build && esbuild out/browser.js --bundle --minify --format=esm --metafile=meta.json --platform=browser --tree-shaking=true --target=es2020 --external:fs --external:path --external:url --external:util --analyze",
+    "build:browser:minimal": "npm run build && esbuild out/browser-minimal.js --bundle --minify --format=esm --outfile=site/maid/maid-minimal.bundle.js --platform=browser --tree-shaking=true --target=es2020 --external:fs --external:path --external:url --external:util",
     "prepack": "npm run build",
     "test": "node scripts/test-chevrotain.js",
     "test:errors:sequence": "npm run build && node scripts/test-errors.js sequence",
