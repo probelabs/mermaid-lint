@@ -106,6 +106,28 @@ Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public AP
 
 For detailed examples (ESM, CommonJS, TypeScript) and API surface, see docs/SDK.md.
 
+### Rendering Diagrams (Experimental)
+
+```bash
+# Render to SVG (default)
+npx -y @probelabs/maid render diagram.mmd
+
+# Render to PNG
+npx -y @probelabs/maid render diagram.mmd output.png
+
+# Render from stdin
+cat diagram.mmd | npx -y @probelabs/maid render - output.svg
+
+# Force output format
+npx -y @probelabs/maid render diagram.mmd -f png
+```
+
+Notes
+- The renderer is **experimental** and primarily for parser validation
+- Currently supports **flowchart diagrams only**
+- PNG output requires `rsvg-convert` or `ImageMagick` installed
+- See "Development > Experimental Renderer" for technical details
+
 ### Autofix in a nutshell
 
 ```bash
@@ -122,8 +144,8 @@ npx -y @probelabs/maid --fix --dry-run --print-fixed diagram.mmd
 Notes
 - Safe fixes are idempotent and conservative (arrows, inner quotes to `&quot;`, missing `:`, missing `end`, etc.).
 - `--fix=all` additionally enables conservative heuristics (e.g., wrap unquoted labels, close unclosed quotes/brackets).
-- In directory mode, Maid prints “All diagrams valid after fixes. Modified X file(s).” when it succeeds post-fix.
-- See “Autofix” below for details and examples.
+- In directory mode, Maid prints "All diagrams valid after fixes. Modified X file(s)." when it succeeds post-fix.
+- See "Autofix" below for details and examples.
 
 ### Directory Scans: Include/Exclude and .gitignore
 
@@ -686,6 +708,75 @@ npm run build
 # Run tests
 npm test
 ```
+
+### Experimental Renderer
+
+Maid includes an experimental lightweight renderer for flowchart diagrams. This renderer serves as a visual validation tool for our parser implementation.
+
+**Purpose:**
+- Validate parser correctness by visually rendering diagrams
+- Identify parsing issues that are difficult to detect through other testing methods
+- Provide a lightweight alternative for basic diagram rendering (294KB vs Mermaid.js's 2.6MB)
+
+**Status:**
+- ⚠️ **Experimental** - Not intended for production use
+- Currently supports only flowchart diagrams
+- Primary goal is parser validation, not feature parity with Mermaid.js
+
+**Building the Browser Bundle:**
+```bash
+npm run build:browser
+# Generates site/maid/maid.bundle.js (294KB, 87KB gzipped)
+```
+
+**Architecture:**
+- Chevrotain parser for CST generation
+- Dagre.js for automatic graph layout
+- Custom SVG generation for shapes and edges
+- **Pluggable design** - Swap layout engines and output renderers
+
+**Pluggability:**
+
+The renderer uses a clean interface-based architecture that allows you to:
+- Use alternative layout engines (e.g., Graphviz DOT, D3 force-directed)
+- Generate different output formats (e.g., SVG, Canvas, DOT)
+
+Example - Using a custom DOT renderer:
+```typescript
+import { renderMermaid, DotRenderer } from '@probelabs/maid';
+
+const result = renderMermaid(diagramText, {
+  renderer: new DotRenderer()
+});
+// result.svg now contains Graphviz DOT format
+```
+
+Example - Custom layout engine:
+```typescript
+import { renderMermaid, ILayoutEngine } from '@probelabs/maid';
+
+class MyLayoutEngine implements ILayoutEngine {
+  layout(graph: Graph): Layout {
+    // Your custom layout algorithm
+    return { nodes, edges, width, height };
+  }
+}
+
+const result = renderMermaid(diagramText, {
+  layoutEngine: new MyLayoutEngine()
+});
+```
+
+**Core Interfaces:**
+- `ILayoutEngine` - Calculates node/edge positions from graph model
+- `IRenderer` - Generates output (SVG, DOT, etc.) from positioned layout
+
+**Implementations:**
+- `DagreLayoutEngine` - Hierarchical layout using Dagre (default)
+- `SVGRenderer` - SVG output with Mermaid-like styling (default)
+- `DotRenderer` - Graphviz DOT format (example implementation)
+
+See `src/renderer/interfaces.ts` for interface definitions.
 
 ### Extending the Linter
 

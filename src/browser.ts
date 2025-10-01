@@ -1,45 +1,34 @@
-// Public SDK surface for programmatic use
-// Re-export core types
+// Browser-specific entry point with minimal exports
+// This reduces bundle size by only including what's needed for web usage
+
+// Core types
 export type {
   ValidationError,
   DiagramType,
   ValidateOptions,
-  PositionLC,
-  TextEditLC,
   FixLevel,
 } from './core/types.js';
 
-// Core validators and helpers
+// Main validation and fixing
 export { validate, detectDiagramType } from './core/router.js';
-export { validateFlowchart } from './diagrams/flowchart/validate.js';
-export { validatePie } from './diagrams/pie/validate.js';
-export { validateSequence } from './diagrams/sequence/validate.js';
 
-// Markdown utilities
-export type { MermaidBlock } from './core/markdown.js';
-export { extractMermaidBlocks, offsetErrors } from './core/markdown.js';
-
-// Formatting and edits
-export { textReport, toJsonResult } from './core/format.js';
-export { applyEdits, posToOffset, lineTextAt, inferIndentFromLine } from './core/edits.js';
-
-// Auto-fixes
+// Auto-fixes - main browser use case
 export { computeFixes } from './core/fixes.js';
+export { applyEdits } from './core/edits.js';
 
-// Renderer - NEW!
+// Renderer for browser
 export { MermaidRenderer, renderMermaid } from './renderer/index.js';
 export type { RenderOptions, RenderResult } from './renderer/index.js';
 export type { Graph, Node, Edge, NodeShape, ArrowType, Direction } from './renderer/types.js';
 
-// Convenience: multi-pass fix for a single diagram string
+// Convenience function for browser - simplified version
 import type { FixLevel, ValidateOptions as Opts, ValidationError } from './core/types.js';
 import { validate as _validate } from './core/router.js';
 import { computeFixes as _computeFixes } from './core/fixes.js';
 import { applyEdits as _applyEdits } from './core/edits.js';
 
 /**
- * Run validation and repeatedly apply computed fixes until stable (max 5 passes).
- * Returns the final fixed text and the remaining diagnostics after fixes.
+ * Browser-friendly validation and auto-fix in one call
  */
 export function fixText(text: string, options: Opts & { level?: FixLevel } = {}): { fixed: string; errors: ValidationError[] } {
   const { strict = false, level = 'safe' } = options as Opts & { level: FixLevel };
@@ -56,3 +45,8 @@ export function fixText(text: string, options: Opts & { level?: FixLevel } = {})
   return { fixed: current, errors: finalRes.errors };
 }
 
+// Excluded from browser bundle:
+// - textReport, toJsonResult (CLI formatting)
+// - extractMermaidBlocks, offsetErrors (markdown processing - not needed in browser)
+// - validateFlowchart, validatePie, validateSequence (internal, use validate() instead)
+// - posToOffset, lineTextAt, inferIndentFromLine (editor utilities)

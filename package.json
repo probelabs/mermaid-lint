@@ -40,7 +40,8 @@
   "scripts": {
     "clean": "rm -rf out",
     "build": "tsc",
-    "build:browser": "npm run build && esbuild out/index.js --bundle --format=esm --outfile=site/maid/maid.bundle.js --platform=browser --external:fs --external:path --external:url --external:util",
+    "build:browser": "npm run build && esbuild out/browser.js --bundle --minify --format=esm --outfile=site/maid/maid.bundle.js --platform=browser --tree-shaking=true --target=es2020 --external:fs --external:path --external:url --external:util --external:@modelcontextprotocol/sdk --external:@modelcontextprotocol/sdk/*",
+    "build:browser:analyze": "npm run build && esbuild out/browser.js --bundle --minify --format=esm --metafile=meta.json --platform=browser --tree-shaking=true --target=es2020 --external:fs --external:path --external:url --external:util --analyze",
     "prepack": "npm run build",
     "test": "node scripts/test-chevrotain.js",
     "test:errors:sequence": "npm run build && node scripts/test-errors.js sequence",
@@ -56,6 +57,7 @@
     "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.js \"$file\" || exit 1; done",
     "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
     "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-invalid-preview.js pie && node scripts/generate-preview.js sequence && node scripts/generate-invalid-preview.js sequence",
+    "generate:previews:with-renderer": "npm run build && node scripts/generate-preview-with-renderer.js flowchart && node scripts/generate-preview-with-renderer.js pie && node scripts/generate-preview-with-renderer.js sequence",
     "generate:valid": "node scripts/generate-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-preview.js sequence",
     "generate:invalid": "node scripts/generate-invalid-preview.js flowchart && node scripts/generate-invalid-preview.js pie && node scripts/generate-invalid-preview.js sequence",
     "ci:previews": "npm run build && npm run generate:previews && git update-index -q --refresh && git diff --exit-code || (echo '\nPreview files are outdated. Run: npm run generate:previews' && exit 1)",
@@ -78,7 +80,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.18.2",
+    "@types/dagre": "^0.7.53",
     "chevrotain": "^11.0.3",
+    "dagre": "^0.8.5",
     "globby": "^14.0.2",
     "zod": "^4.1.11"
   }

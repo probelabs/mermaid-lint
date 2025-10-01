@@ -30,9 +30,11 @@ function printUsage() {
     console.log('Usage: maid <file>');
     console.log('       cat file | maid -');
     console.log('       maid <directory>');
+    console.log('       maid render <input> [output]');
     console.log('       maid mcp');
     console.log('  - Validates standalone .mmd files or Markdown with ```mermaid fences');
     console.log('  - When a directory is given, scans recursively for .md/.markdown/.mdx/.mmd/.mermaid');
+    console.log('  - "maid render" renders diagrams to SVG/PNG using experimental renderer');
     console.log('  - "maid mcp" starts Model Context Protocol server for AI assistant integration');
     console.log('Options:');
     console.log('  --include, -I   Glob(s) to include (repeatable or comma-separated)');
@@ -98,6 +100,124 @@ async function listCandidateFiles(root: string, includes: string[], excludes: st
     return files.sort();
 }
 
+async function handleRenderCommand(args: string[]) {
+    const { execSync } = await import('child_process');
+
+    // Parse render-specific arguments
+    let format: 'svg' | 'png' | null = null;
+    let outputPath: string | null = null;
+    const positionals: string[] = [];
+
+    for (let i = 0; i < args.length; i++) {
+        const arg = args[i];
+
+        if (arg === '--format' || arg === '-f') {
+            const v = (args[i + 1] || '').toLowerCase();
+            if (v === 'svg' || v === 'png') {
+                format = v as 'svg' | 'png';
+                i++;
+                continue;
+            }
+        }
+
+        if (arg === '--output' || arg === '-o') {
+            outputPath = args[i + 1];
+            i++;
+            continue;
+        }
+
+        if (arg === '-' || !arg.startsWith('-')) {
+            positionals.push(arg);
+        }
+    }
+
+    const inputFile = positionals[0];
+    if (!inputFile) {
+        console.error('Error: No input file specified');
+        process.exit(1);
+    }
+
+    // Determine output path and format
+    if (!outputPath && positionals[1]) {
+        outputPath = positionals[1];
+    }
+
+    // Auto-detect format from output extension if not specified
+    if (!format && outputPath) {
+        const ext = path.extname(outputPath).toLowerCase();
+        if (ext === '.png') format = 'png';
+        else if (ext === '.svg') format = 'svg';
+    }
+
+    // Default to SVG if no format specified
+    if (!format) format = 'svg';
+
+    // Default output path
+    if (!outputPath) {
+        if (inputFile === '-') {
+            outputPath = `output.${format}`;
+        } else {
+            const baseName = path.basename(inputFile, path.extname(inputFile));
+            outputPath = `${baseName}.${format}`;
+        }
+    }
+
+    // Read input content
+    const { content } = readInput(inputFile);
+
+    // Dynamically import renderer to avoid loading it for non-render commands
+    const { renderMermaid } = await import('./renderer/index.js');
+
+    try {
+        // Render to SVG
+        const result = renderMermaid(content);
+
+        if (!result || !result.svg) {
+            console.error('Error: Failed to render diagram');
+            if (result?.errors && result.errors.length > 0) {
+                for (const err of result.errors) {
+                    console.error(`  ${err.severity}: ${err.message} at line ${err.line}`);
+                }
+            }
+            process.exit(1);
+        }
+
+        if (format === 'svg') {
+            // Write SVG directly
+            fs.writeFileSync(outputPath, result.svg, 'utf8');
+            console.log(`✅ Rendered to SVG: ${outputPath}`);
+        } else {
+            // Convert to PNG
+            const tempSvg = outputPath.replace('.png', '.tmp.svg');
+            fs.writeFileSync(tempSvg, result.svg, 'utf8');
+
+            try {
+                // Try rsvg-convert first
+                execSync(`rsvg-convert -o "${outputPath}" "${tempSvg}" 2>/dev/null`, { stdio: 'pipe' });
+                console.log(`✅ Rendered to PNG: ${outputPath}`);
+            } catch {
+                try {
+                    // Fallback to ImageMagick
+                    execSync(`convert "${tempSvg}" "${outputPath}" 2>/dev/null`, { stdio: 'pipe' });
+                    console.log(`✅ Rendered to PNG: ${outputPath}`);
+                } catch {
+                    console.error('Error: PNG conversion requires rsvg-convert or ImageMagick');
+                    console.error('  On macOS: brew install librsvg');
+                    console.error('  Or: brew install imagemagick');
+                    console.error(`  SVG saved as: ${tempSvg}`);
+                    process.exit(1);
+                }
+            }
+
+            // Clean up temp file
+            fs.unlinkSync(tempSvg);
+        }
+    } catch (error: any) {
+        console.error(`Error rendering diagram: ${error.message}`);
+        process.exit(1);
+    }
+}
+
 async function main() {
     const args = process.argv.slice(2);
 
@@ -106,6 +226,33 @@ async function main() {
         // Dynamically import and start MCP server
         await import('./mcp.js');
         return; // MCP server takes over from here
+    }
+
+    // Handle render mode
+    if (args[0] === 'render') {
+        const renderArgs = args.slice(1);
+        if (renderArgs.length === 0 || renderArgs[0] === '--help' || renderArgs[0] === '-h') {
+            console.log('Usage: maid render <input.mmd> [output.svg|output.png]');
+            console.log('       cat file.mmd | maid render - [output.svg|output.png]');
+            console.log('');
+            console.log('Renders a Mermaid flowchart diagram to SVG or PNG using the experimental Maid renderer.');
+            console.log('');
+            console.log('Options:');
+            console.log('  --format, -f    Output format: svg|png (default: auto-detect from extension or svg)');
+            console.log('  --output, -o    Output file path (alternative to positional argument)');
+            console.log('');
+            console.log('Examples:');
+            console.log('  maid render diagram.mmd                    # Outputs diagram.svg');
+            console.log('  maid render diagram.mmd output.png         # Outputs PNG');
+            console.log('  maid render diagram.mmd -f png             # Force PNG output');
+            console.log('  cat diagram.mmd | maid render - out.svg    # Read from stdin');
+            console.log('');
+            console.log('Note: PNG output requires rsvg-convert or ImageMagick installed.');
+            console.log('      The renderer is experimental and currently supports only flowchart diagrams.');
+            process.exit(renderArgs.length === 0 ? 1 : 0);
+        }
+        await handleRenderCommand(renderArgs);
+        return;
     }
 
     if (args.length === 0 || args[0] === '-h' || args[0] === '--help') {

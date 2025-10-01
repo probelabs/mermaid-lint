@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="789" height="220" viewBox="0 0 789 220">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+      <circle cx="3" cy="3" r="3" fill="#333" />
+    </marker>
+  </defs>
+  <path d="M184,105 L209,105 L234,105" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g>
+    <path d="M357.23333333333335,81 L406,60 L463,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+    <rect x="376" y="50" width="60" height="20" fill="white" opacity="0.9" rx="3" />
+    <text x="406" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Yes</text>
+  </g>
+  <g>
+    <path d="M357.23333333333335,129 L406,150 L443,150" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+    <rect x="376" y="140" width="60" height="20" fill="white" opacity="0.9" rx="3" />
+    <text x="406" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">No</text>
+  </g>
+  <path d="M599,60 L644,60 L680.1111111111111,85" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M619,150 L644,150 L680.1111111111111,125" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g id="A">
+    <rect x="40" y="85" width="144" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="112" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start Process</text>
+  </g>
+  <g id="B">
+    <polygon points="301.5,81 369,105 301.5,129 234,105" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="301.5" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
+  </g>
+  <g id="C">
+    <rect x="463" y="40" width="136" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="531" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something</text>
+  </g>
+  <g id="D">
+    <rect x="443" y="130" width="176" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="531" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something else</text>
+  </g>
+  <g id="E">
+    <rect x="669" y="85" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="709" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
+  </g>
+</svg>

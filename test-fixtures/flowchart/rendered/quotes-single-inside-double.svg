@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="346" height="120" viewBox="0 0 346 120">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+      <circle cx="3" cy="3" r="3" fill="#333" />
+    </marker>
+  </defs>
+  <path d="M176,60 L201,60 L226,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g id="A">
+    <rect x="40" y="40" width="136" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="108" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">He said &apos;Hi&apos;</text>
+  </g>
+  <g id="B">
+    <rect x="226" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="266" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+  </g>
+</svg>
