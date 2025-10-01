@@ -149,14 +149,26 @@ export class LayoutEngine {
   }
 
   private calculateNodeDimensions(label: string, shape: string): { width: number; height: number } {
-    // Base dimensions on label length
+    // Base dimensions on label length with wrapping
     const charWidth = 8;
     const padding = 20;
     const minWidth = 80;
     const minHeight = 40;
+    const maxWidth = 200; // Maximum width before wrapping
+    const lineHeight = 20;
 
-    let width = Math.max(label.length * charWidth + padding * 2, minWidth);
-    let height = minHeight;
+    // Calculate width (capped at maxWidth)
+    let width = Math.min(
+      Math.max(label.length * charWidth + padding * 2, minWidth),
+      maxWidth
+    );
+
+    // Calculate number of lines needed
+    const charsPerLine = Math.floor((width - padding * 2) / charWidth);
+    const lines = Math.ceil(label.length / charsPerLine);
+
+    // Calculate height based on lines
+    let height = Math.max(lines * lineHeight + padding, minHeight);
 
     // Adjust based on shape
     switch (shape) {

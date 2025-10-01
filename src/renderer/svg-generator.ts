@@ -152,13 +152,59 @@ export class SVGGenerator {
         shape = `<rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
     }
 
-    // Add text label
-    const text = `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${this.escapeXml(node.label)}</text>`;
+    // Add text label with wrapping
+    const text = this.generateWrappedText(node.label, cx, cy, node.width - 20);
 
     return `<g id="${node.id}">
     ${shape}
     ${text}
   </g>`;
+  }
+
+  private generateWrappedText(text: string, x: number, y: number, maxWidth: number): string {
+    // Estimate character width (rough approximation)
+    const charWidth = this.fontSize * 0.6;
+    const maxCharsPerLine = Math.floor(maxWidth / charWidth);
+
+    if (maxCharsPerLine <= 0 || text.length <= maxCharsPerLine) {
+      // Single line
+      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${this.escapeXml(text)}</text>`;
+    }
+
+    // Split text into words
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+
+      if (testLine.length > maxCharsPerLine && currentLine) {
+        // Current line is full, start new line
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+
+    // Add remaining text
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    // Generate SVG text with tspans for each line
+    const lineHeight = this.fontSize * 1.2;
+    const startY = y - ((lines.length - 1) * lineHeight) / 2;
+
+    const tspans = lines.map((line, i) => {
+      const lineY = startY + i * lineHeight;
+      return `<tspan x="${x}" y="${lineY}" text-anchor="middle" dominant-baseline="middle">${this.escapeXml(line)}</tspan>`;
+    }).join('\n    ');
+
+    return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">
+    ${tspans}
+  </text>`;
   }
 
   private generateEdge(edge: LayoutEdge): string {
