@@ -75,8 +75,7 @@ export class LayoutEngine {
             try {
               g.setParent(nodeId, subgraph.id);
             } catch (e) {
-              // Skip if parent can't be set
-              console.warn(`Cannot set parent ${subgraph.id} for node ${nodeId}`);
+              // Skip if parent can't be set - this is normal for subgraph edges
             }
           }
         }
@@ -86,8 +85,7 @@ export class LayoutEngine {
           try {
             g.setParent(subgraph.id, subgraph.parent);
           } catch (e) {
-            // Skip if parent can't be set
-            console.warn(`Cannot set parent ${subgraph.parent} for subgraph ${subgraph.id}`);
+            // Skip if parent can't be set - this is normal for nested subgraphs
           }
         }
       }

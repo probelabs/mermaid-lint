@@ -9,5 +9,15 @@ syntaxes/
 /test*.mmd
 /test-*.mmd
 /test-*.js
+/test-*.mjs
+/test-*.html
+/test-*.svg
+/debug-*.js
+/debug-*.mjs
+/temp-*.js
+/temp-*.mjs
+/*.svg
 /comparison-results.txt
 /debug-tokens.js
+/meta.json
+/size-badge.json
