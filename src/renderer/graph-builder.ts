@@ -392,10 +392,15 @@ export class GraphBuilder {
       id = idToken.image;
     }
 
-    // Label can be in square brackets (like node shape) or in subgraphLabel
+    // Label can be in: [Label], quoted title, or plain subgraphLabel (legacy)
     if (children?.SquareOpen && children?.nodeContent) {
       // Format: subgraph id[Label]
       label = this.extractTextContent(children.nodeContent[0] as CstNode);
+    } else if ((children as any).subgraphTitleQ?.[0]) {
+      // Format: subgraph "Label"
+      const qt = (children as any).subgraphTitleQ[0] as IToken;
+      const img = qt.image;
+      label = img && img.length >= 2 && (img.startsWith('"') || img.startsWith("'")) ? img.slice(1, -1) : img;
     } else if (children?.subgraphLabel) {
       // Format: subgraph id Label (without brackets)
       label = this.extractTextContent(children.subgraphLabel[0] as CstNode);

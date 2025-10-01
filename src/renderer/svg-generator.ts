@@ -15,8 +15,32 @@ export class SVGRenderer implements IRenderer {
   private arrowMarkerSize = 6; // px
 
   render(layout: Layout): string {
-    const width = layout.width + this.padding * 2;
-    const height = layout.height + this.padding * 2;
+    // Compute extra padding when some items (notably subgraph titles) extend above/left of (0,0)
+    let minX = Infinity;
+    let minY = Infinity;
+    for (const n of layout.nodes) {
+      minX = Math.min(minX, n.x);
+      minY = Math.min(minY, n.y);
+    }
+    if ((layout as any).subgraphs) {
+      for (const sg of (layout as any).subgraphs as Array<{x:number;y:number}>) {
+        minX = Math.min(minX, sg.x);
+        minY = Math.min(minY, sg.y);
+      }
+    }
+    for (const e of layout.edges) {
+      if (e.points) for (const p of e.points) { minX = Math.min(minX, p.x); minY = Math.min(minY, p.y); }
+    }
+    if (!isFinite(minX)) { minX = 0; }
+    if (!isFinite(minY)) { minY = 0; }
+    const extraPadX = Math.max(0, -Math.floor(minX) + 1);
+    const extraPadY = Math.max(0, -Math.floor(minY) + 1);
+
+    const padX = this.padding + extraPadX;
+    const padY = this.padding + extraPadY;
+
+    const width = layout.width + this.padding * 2 + extraPadX;
+    const height = layout.height + this.padding * 2 + extraPadY;
 
     const elements: string[] = [];
 
@@ -35,8 +59,8 @@ export class SVGRenderer implements IRenderer {
         return d;
       };
       for (const sg of order) {
-        const x = sg.x + this.padding;
-        const y = sg.y + this.padding;
+        const x = sg.x + padX;
+        const y = sg.y + padY;
         const w = sg.width;
         const h = sg.height;
         boxes.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" />`);
@@ -52,12 +76,12 @@ export class SVGRenderer implements IRenderer {
 
     // Draw edges first (so they appear behind nodes)
     for (const edge of layout.edges) {
-      elements.push(this.generateEdge(edge));
+      elements.push(this.generateEdge(edge, padX, padY));
     }
 
     // Draw nodes
     for (const node of layout.nodes) {
-      elements.push(this.generateNode(node));
+      elements.push(this.generateNodeWithPad(node, padX, padY));
     }
 
     // White background rect to match Mermaid output
@@ -83,9 +107,9 @@ export class SVGRenderer implements IRenderer {
   </defs>`;
   }
 
-  private generateNode(node: LayoutNode): string {
-    const x = node.x + this.padding;
-    const y = node.y + this.padding;
+  private generateNodeWithPad(node: LayoutNode, padX: number, padY: number): string {
+    const x = node.x + padX;
+    const y = node.y + padY;
     const cx = x + node.width / 2;
     const cy = y + node.height / 2;
 
@@ -362,13 +386,13 @@ export class SVGRenderer implements IRenderer {
       .replace(/&#39;/g, "'");
   }
 
-  private generateEdge(edge: LayoutEdge): string {
+  private generateEdge(edge: LayoutEdge, padX: number, padY: number): string {
     if (!edge.points || edge.points.length < 2) {
       return '';
     }
 
     // Build smoothed path (Catmull-Rom to Bezier) from dagre points
-    const points = edge.points.map(p => ({ x: p.x + this.padding, y: p.y + this.padding }));
+    const points = edge.points.map(p => ({ x: p.x + padX, y: p.y + padY }));
     const segData = this.buildSmoothSegments(points);
 
     // Style based on arrow type

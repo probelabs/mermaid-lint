@@ -149,21 +149,7 @@ export class DagreLayoutEngine implements ILayoutEngine {
     const rawH: number | undefined = (graphInfo as any).height;
     const w: number = Number.isFinite(rawW as number) && (rawW as number) > 0 ? (rawW as number) : 800;
     const h: number = Number.isFinite(rawH as number) && (rawH as number) > 0 ? (rawH as number) : 600;
-    // Adjust edges that connect to subgraphs to start/end at cluster boundaries
-    if (layoutEdges.length && layoutSubgraphs.length) {
-      const nodeById: Record<string, LayoutNode> = Object.fromEntries(layoutNodes.map(n => [n.id, n]));
-      const sgById: Record<string, LayoutSubgraph> = Object.fromEntries(layoutSubgraphs.map(s => [s.id, s]));
-      const dir = this.mapDirection(graph.direction);
-      for (const e of layoutEdges) {
-        const sSg = sgById[e.source];
-        const tSg = sgById[e.target];
-        if (!sSg && !tSg) continue;
-        const s = sSg ? this.clusterAnchor(sSg, dir, 'out') : this.nodeAnchor(nodeById[e.source], dir, 'out');
-        const t = tSg ? this.clusterAnchor(tSg, dir, 'in') : this.nodeAnchor(nodeById[e.target], dir, 'in');
-        const mid = { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2 };
-        (e as any).points = [s, mid, t];
-      }
-    }
+    // Keep dagre's computed routing for all edges, including cluster edges.
 
     return {
       nodes: layoutNodes,
