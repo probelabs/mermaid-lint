@@ -5,7 +5,6 @@
     "FL-NODE-EMPTY"
   ],
   "escaped-quotes-in-decision.mmd": [
-    "FL-LABEL-ESCAPED-QUOTE",
     "FL-LABEL-DOUBLE-IN-DOUBLE"
   ],
   "invalid-arrow.mmd": [
@@ -31,9 +30,6 @@
   ],
   "quotes-double-inside-single.mmd": [
     "FL-LABEL-DOUBLE-IN-SINGLE"
-  ],
-  "special-chars.mmd": [
-    "FL-LABEL-ESCAPED-QUOTE"
   ],
   "unclosed-bracket.mmd": [
     "FL-NODE-UNCLOSED-BRACKET"

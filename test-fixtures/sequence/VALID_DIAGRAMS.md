@@ -24,12 +24,13 @@ This file contains all valid sequence test fixtures rendered with both Mermaid a
 9. [Box Groups](#9-box-groups)
 10. [Critical Break Rect](#10-critical-break-rect)
 11. [Links And Menus](#11-links-and-menus)
-12. [Notes](#12-notes)
-13. [Par And](#13-par-and)
-14. [Par Minimal](#14-par-minimal)
-15. [Participant Double In Double](#15-participant-double-in-double)
-16. [Participant Escaped Quotes](#16-participant-escaped-quotes)
-17. [Participant Unclosed Quote](#17-participant-unclosed-quote)
+12. [No Trailing Newline](#12-no-trailing-newline)
+13. [Notes](#13-notes)
+14. [Par And](#14-par-and)
+15. [Par Minimal](#15-par-minimal)
+16. [Participant Double In Double](#16-participant-double-in-double)
+17. [Participant Escaped Quotes](#17-participant-escaped-quotes)
+18. [Participant Unclosed Quote](#18-participant-unclosed-quote)
 
 ---
 
@@ -439,7 +440,29 @@ sequenceDiagram
 
 ---
 
-## 12. Notes
+## 12. No Trailing Newline
+
+📄 **Source**: [`no-trailing-newline.mmd`](./valid/no-trailing-newline.mmd)
+
+```mermaid
+sequenceDiagram
+A->>B: hi
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+A->>B: hi
+
+```
+</details>
+
+---
+
+## 13. Notes
 
 📄 **Source**: [`notes.mmd`](./valid/notes.mmd)
 
@@ -471,7 +494,7 @@ sequenceDiagram
 
 ---
 
-## 13. Par And
+## 14. Par And
 
 📄 **Source**: [`par-and.mmd`](./valid/par-and.mmd)
 
@@ -507,7 +530,7 @@ sequenceDiagram
 
 ---
 
-## 14. Par Minimal
+## 15. Par Minimal
 
 📄 **Source**: [`par-minimal.mmd`](./valid/par-minimal.mmd)
 
@@ -539,7 +562,7 @@ sequenceDiagram
 
 ---
 
-## 15. Participant Double In Double
+## 16. Participant Double In Double
 
 📄 **Source**: [`participant-double-in-double.mmd`](./valid/participant-double-in-double.mmd)
 
@@ -565,7 +588,7 @@ sequenceDiagram
 
 ---
 
-## 16. Participant Escaped Quotes
+## 17. Participant Escaped Quotes
 
 📄 **Source**: [`participant-escaped-quotes.mmd`](./valid/participant-escaped-quotes.mmd)
 
@@ -591,7 +614,7 @@ sequenceDiagram
 
 ---
 
-## 17. Participant Unclosed Quote
+## 18. Participant Unclosed Quote
 
 📄 **Source**: [`participant-unclosed-quote.mmd`](./valid/participant-unclosed-quote.mmd)
 

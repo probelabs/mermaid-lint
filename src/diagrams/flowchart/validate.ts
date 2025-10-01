@@ -32,22 +32,19 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {
-      // Run quote hygiene regardless of other errors, but avoid duplicates when semantics already reported the same line.
-      const seenEscapedLines = new Set(
-        prevErrors.filter(e => e.code === 'FL-LABEL-ESCAPED-QUOTE').map(e => e.line)
-      );
-      const esc = detectEscapedQuotes(tokens as IToken[], {
+      // Mermaid accepts backslash-escaped quotes inside quoted labels.
+      // Emit as a warning (not an error) so --fix can normalize to &quot; if desired.
+      const escWarn = detectEscapedQuotes(tokens as IToken[], {
         code: 'FL-LABEL-ESCAPED-QUOTE',
-        message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.',
-        hint: 'Prefer "He said &quot;Hi&quot;".'
-      }).filter(e => !seenEscapedLines.has(e.line));
+        message: 'Escaped quotes (\\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.',
+        hint: 'Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]'
+      }).map(e => ({ ...e, severity: 'warning' } as ValidationError));
       // Detect double-in-double for lines not already reported by the parser mapping
       const seenDoubleLines = new Set(
         prevErrors.filter(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE').map(e => e.line)
       );
-      const escapedLinesAll = new Set(
-        detectEscapedQuotes(tokens as IToken[], { code: 'x' }).map(e => e.line)
-      );
+      // Avoid reporting when a properly escaped quote appears on the same line
+      const escapedLinesAll = new Set(detectEscapedQuotes(tokens as IToken[], { code: 'x' }).map(e => e.line));
       const dbl = detectDoubleInDouble(tokens as IToken[], {
         code: 'FL-LABEL-DOUBLE-IN-DOUBLE',
         message: 'Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.',
@@ -56,7 +53,7 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
         ]
       }).filter(e => !seenDoubleLines.has(e.line) && !escapedLinesAll.has(e.line));
-      const errs = esc.concat(dbl);
+      const errs = escWarn.concat(dbl);
       // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
       // per-line mismatches as OK as long as the file balances quotes overall).
       const dblEsc = (text.match(/\\\"/g) || []).length;

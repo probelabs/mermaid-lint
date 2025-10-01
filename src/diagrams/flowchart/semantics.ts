@@ -233,7 +233,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
 
     if (openTok) {
       this.checkEmptyContent(openTok, contentNodes.length ? contentNodes : undefined);
-      this.checkEscapedQuotes(contentNodes);
+      // Mermaid accepts backslash-escaped quotes inside labels; do not flag as error.
       this.checkDoubleInSingleQuoted(contentNodes);
       this.warnParensInUnquoted(contentNodes);
 

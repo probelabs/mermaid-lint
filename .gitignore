@@ -24,3 +24,6 @@ syntaxes/
 
 # Temporary PNG exports
 temp/
+
+# Local scratch/testing folders
+.tmp-*/

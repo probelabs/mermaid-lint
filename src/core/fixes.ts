@@ -141,10 +141,12 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           const start = { line: e.line, column: q1 + 2 };
           const end = { line: e.line, column: q2 + 1 };
           edits.push({ start, end, newText: replaced });
+          patchedLines.add(e.line);
           continue;
         }
       }
       // Fallback: replace the current character only
+      if (patchedLines.has(e.line)) { continue; }
       edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       continue;
     }
@@ -720,5 +722,17 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
   }
-  return edits;
+
+  // No global rewrite pass: prefer targeted, diagnostic-driven fixes above to avoid over-editing.
+
+  // De-duplicate identical edits that may arise from overlapping detectors
+  const uniq: TextEditLC[] = [];
+  const seenEd = new Set<string>();
+  for (const ed of edits) {
+    const key = `${ed.start.line}:${ed.start.column}:${ed.end?.line ?? 0}:${ed.end?.column ?? 0}:${ed.newText}`;
+    if (seenEd.has(key)) continue;
+    seenEd.add(key);
+    uniq.push(ed);
+  }
+  return uniq;
 }
