@@ -2,6 +2,89 @@
 
 This document contains information for Claude Code and developers working on the Maid project.
 
+## Debugging the Renderer
+
+The Maid renderer is experimental and primarily used for validating our parser implementation. Here's how to debug rendering issues by comparing with the official Mermaid renderer.
+
+### Quick Comparison Workflow
+
+Use the comparison script to render a diagram with both renderers side-by-side:
+
+```bash
+# Compare a specific diagram
+node scripts/compare-renderers.js test-fixtures/flowchart/valid/complex-shapes.mmd
+
+# Run example comparison
+node scripts/compare-renderers.js --example
+```
+
+The script will:
+1. Render with official mermaid-cli (via Puppeteer)
+2. Render with our Maid renderer (Chevrotain + Dagre)
+3. Generate PNG files for both in `temp/comparison/`
+4. Open both images for visual comparison
+
+### Manual Debugging Steps
+
+1. **Generate PNG with Maid renderer only:**
+```bash
+node scripts/render-to-png.js diagram.mmd temp/output.png
+```
+
+2. **Generate PNG with official Mermaid:**
+```bash
+# Install mermaid-cli if needed
+npm install -g @mermaid-js/mermaid-cli
+
+# Render with mermaid-cli
+mmdc -i diagram.mmd -o temp/mermaid.png
+```
+
+3. **Compare the outputs:**
+```bash
+open temp/output.png temp/mermaid.png
+```
+
+### Common Issues to Check
+
+When comparing renderers, look for:
+- **Node labels**: Should show actual text (e.g., "Circle") not IDs (e.g., "B")
+- **Edge labels**: Text on connections like "Link 1", "Link 2"
+- **Node shapes**: Rectangle, circle, diamond, stadium, etc.
+- **Subgraphs**: Proper grouping and nesting
+- **Arrow types**: Solid, dotted, thick arrows
+- **Layout**: Node positioning and edge routing
+
+### Reading Generated Images in Claude
+
+When debugging, you can have Claude analyze the differences:
+
+```bash
+# Generate comparison images
+node scripts/compare-renderers.js diagram.mmd
+
+# The images will be in:
+# - temp/comparison/diagram-mermaid.png (official)
+# - temp/comparison/diagram-maid.png (our renderer)
+```
+
+Then use the Read tool on both PNG files to visually compare and identify issues.
+
+### Troubleshooting
+
+**PNG conversion fails:**
+- Install rsvg-convert: `brew install librsvg` (macOS)
+- Or ImageMagick: `brew install imagemagick` (macOS)
+
+**Mermaid-cli issues:**
+- The script will auto-install mermaid-cli if missing
+- For manual install: `npm install -g @mermaid-js/mermaid-cli`
+
+**Renderer differences:**
+- Our renderer is experimental and only supports flowcharts
+- Primary goal is parser validation, not feature parity
+- Some visual differences are expected and acceptable
+
 ## Deployment Workflow
 
 ### Deploying the Website to Cloudflare
