@@ -1,5 +1,6 @@
 classDiagram
-User: +login(username: string, password: string) : bool
-User: -id: int
-User: -name: string
-
+class User {
+  +bool login(username: string, password: string)
+  -int id
+  -string name
+}

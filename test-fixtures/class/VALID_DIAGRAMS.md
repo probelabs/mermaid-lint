@@ -22,10 +22,9 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 ```mermaid
 classDiagram
-class "IService" <<Interface>> as IService
+class IService <<Interface>>
 class Service
 IService ..|> Service : implements
-
 
 ```
 
@@ -34,10 +33,9 @@ IService ..|> Service : implements
 
 ```
 classDiagram
-class "IService" <<Interface>> as IService
+class IService <<Interface>>
 class Service
 IService ..|> Service : implements
-
 
 ```
 </details>
@@ -50,10 +48,11 @@ IService ..|> Service : implements
 
 ```mermaid
 classDiagram
-User: +login(username: string, password: string) : bool
-User: -id: int
-User: -name: string
-
+class User {
+  +bool login(username: string, password: string)
+  -int id
+  -string name
+}
 
 ```
 
@@ -62,10 +61,11 @@ User: -name: string
 
 ```
 classDiagram
-User: +login(username: string, password: string) : bool
-User: -id: int
-User: -name: string
-
+class User {
+  +bool login(username: string, password: string)
+  -int id
+  -string name
+}
 
 ```
 </details>
