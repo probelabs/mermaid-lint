@@ -105,11 +105,13 @@ jobs:
         node scripts/compare-linters.js sequence || echo "Comparison completed with differences"
 
     - name: Compare with mermaid-cli (class)
+      continue-on-error: true
       run: |
         echo "Comparing with official mermaid-cli (class)..."
         node scripts/compare-linters.js class || echo "Comparison completed with differences"
 
     - name: Compare with mermaid-cli (state)
+      continue-on-error: true
       run: |
         echo "Comparing with official mermaid-cli (state)..."
         node scripts/compare-linters.js state || echo "Comparison completed with differences"
