@@ -1,24 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="387.5" height="368" viewBox="0 0 387.5 368">
+<svg xmlns="http://www.w3.org/2000/svg" width="232.5" height="308" viewBox="0 0 232.5 308">
+  <rect x="0" y="0" width="232.5" height="308" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M107.5,110 L107.5,165 L107.5,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M107.5,238 L107.5,263 L107.5,288" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g class="subgraph-boxes"><rect x="16" y="-2" width="173" height="204" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /></g>
+  <g class="subgraph-titles"><text x="102.5" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">subgraph_0</text></g>
+  <path d="M102.5,80 C102.5,84.16666666666667 102.5,97.66666666666667 102.5,105 C102.5,112.33333333333333 102.5,120.83333333333333 102.5,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M102.5,178 C102.5,182.16666666666666 102.5,195.66666666666666 102.5,203 C102.5,210.33333333333334 102.5,218.83333333333334 102.5,222" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="67.5" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="107.5" y="94.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start</text>
+    <rect x="62.5" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="102.5" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start</text>
   </g>
   <g id="B">
-    <polygon points="107.5,190 175,214 107.5,238 40,214" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="107.5" y="218.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
+    <polygon points="102.5,130 165,154 102.5,178 40,154" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="102.5" y="158.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
   </g>
   <g id="C">
-    <rect x="67.5" y="288" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="107.5" y="312.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Done</text>
+    <rect x="62.5" y="228" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="102.5" y="252.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Done</text>
   </g>
 </svg>

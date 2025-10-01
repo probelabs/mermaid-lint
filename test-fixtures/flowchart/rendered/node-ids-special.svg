@@ -1,34 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="168" height="480" viewBox="0 0 168 480">
+<svg xmlns="http://www.w3.org/2000/svg" width="162" height="480" viewBox="0 0 162 480">
+  <rect x="0" y="0" width="162" height="480" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M84,80 L84,105 L84,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M84,170 L84,195 L84,220" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M84,260 L84,285 L84,310" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M84,350 L84,375 L84,400" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M81,80 C81,84.16666666666667 81,97.66666666666667 81,105 C81,112.33333333333333 81,120.83333333333333 81,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,170 C81,174.16666666666666 81,187.66666666666666 81,195 C81,202.33333333333334 81,210.83333333333334 81,214" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,260 C81,264.1666666666667 81,277.6666666666667 81,285 C81,292.3333333333333 81,300.8333333333333 81,304" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,350 C81,354.1666666666667 81,367.6666666666667 81,375 C81,382.3333333333333 81,390.8333333333333 81,394" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="id1">
-    <rect x="40" y="40" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="84" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 1</text>
+    <rect x="40" y="40" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="81" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 1</text>
   </g>
   <g id="id-2">
-    <rect x="40" y="130" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="84" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 2</text>
+    <rect x="40" y="130" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="81" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 2</text>
   </g>
   <g id="id_3">
-    <rect x="40" y="220" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="84" y="244.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 3</text>
+    <rect x="40" y="220" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="81" y="244.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 3</text>
   </g>
   <g id="ID4">
-    <rect x="40" y="310" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="84" y="334.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 4</text>
+    <rect x="40" y="310" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="81" y="334.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 4</text>
   </g>
   <g id="_id5">
-    <rect x="40" y="400" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="84" y="424.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 5</text>
+    <rect x="40" y="400" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="81" y="424.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 5</text>
   </g>
 </svg>

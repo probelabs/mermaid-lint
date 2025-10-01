@@ -1,5 +1,11 @@
 // Graph model types for renderer
 
+export interface NodeStyle {
+  stroke?: string;
+  strokeWidth?: number;
+  fill?: string;
+}
+
 export interface Node {
   id: string;
   label: string;
@@ -8,6 +14,7 @@ export interface Node {
   y?: number;
   width?: number;
   height?: number;
+  style?: NodeStyle;
 }
 
 export interface Edge {
@@ -66,9 +73,20 @@ export interface LayoutEdge extends Edge {
   points: Array<{ x: number; y: number }>;
 }
 
+export interface LayoutSubgraph {
+  id: string;
+  label?: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  parent?: string;
+}
+
 export interface Layout {
   nodes: LayoutNode[];
   edges: LayoutEdge[];
   width: number;
   height: number;
+  subgraphs?: LayoutSubgraph[];
 }

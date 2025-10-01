@@ -1,19 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="160" height="210" viewBox="0 0 160 210">
+  <rect x="0" y="0" width="160" height="210" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M80,80 L80,105 L80,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M80,80 C80,84.16666666666667 80,97.66666666666667 80,105 C80,112.33333333333333 80,120.83333333333333 80,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#f9f" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
-    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="4" fill="#eef0ff" />
     <text x="80" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
 </svg>

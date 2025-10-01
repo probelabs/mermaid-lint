@@ -1,5 +1,5 @@
 import dagre from 'dagre';
-import type { Graph, Layout, LayoutNode, LayoutEdge, Direction } from './types.js';
+import type { Graph, Layout, LayoutNode, LayoutEdge, Direction, LayoutSubgraph } from './types.js';
 import type { ILayoutEngine } from './interfaces.js';
 
 /**
@@ -58,36 +58,18 @@ export class DagreLayoutEngine implements ILayoutEngine {
 
     // Handle subgraphs as compound nodes (if any)
     if (graph.subgraphs && graph.subgraphs.length > 0) {
-      // First, add all subgraphs as nodes
+      // Register subgraphs as clusters for layout grouping
       for (const subgraph of graph.subgraphs) {
-        g.setNode(subgraph.id, {
-          label: subgraph.label || subgraph.id,
-          clusterLabelPos: 'top',
-          width: 150, // Default width for subgraph
-          height: 100  // Default height for subgraph
-        });
+        g.setNode(subgraph.id, { label: subgraph.label || subgraph.id, clusterLabelPos: 'top' });
       }
-
-      // Then set parent relationships
       for (const subgraph of graph.subgraphs) {
-        // Set parent relationships for nodes in this subgraph
         for (const nodeId of subgraph.nodes) {
           if (g.hasNode(nodeId)) {
-            try {
-              g.setParent(nodeId, subgraph.id);
-            } catch (e) {
-              // Skip if parent can't be set - this is normal for subgraph edges
-            }
+            try { g.setParent(nodeId, subgraph.id); } catch {}
           }
         }
-
-        // Set subgraph's parent if nested
         if (subgraph.parent && g.hasNode(subgraph.parent)) {
-          try {
-            g.setParent(subgraph.id, subgraph.parent);
-          } catch (e) {
-            // Skip if parent can't be set - this is normal for nested subgraphs
-          }
+          try { g.setParent(subgraph.id, subgraph.parent); } catch {}
         }
       }
     }
@@ -125,11 +107,70 @@ export class DagreLayoutEngine implements ILayoutEngine {
       }
     }
 
+    // Process subgraphs (clusters)
+    const layoutSubgraphs: LayoutSubgraph[] = [];
+    if (graph.subgraphs && graph.subgraphs.length > 0) {
+      for (const sg of graph.subgraphs) {
+        // Compute bounds from member nodes (includes nested members due to builder stacking)
+        const members = layoutNodes.filter(nd => sg.nodes.includes(nd.id));
+        if (members.length) {
+          const minX = Math.min(...members.map(m => m.x));
+          const minY = Math.min(...members.map(m => m.y));
+          const maxX = Math.max(...members.map(m => m.x + m.width));
+          const maxY = Math.max(...members.map(m => m.y + m.height));
+          const pad = 24; // tighter cluster padding
+          layoutSubgraphs.push({
+            id: sg.id,
+            label: sg.label || sg.id,
+            x: minX - pad,
+            y: minY - pad - 18, // space for title
+            width: (maxX - minX) + pad * 2,
+            height: (maxY - minY) + pad * 2 + 18,
+            parent: sg.parent
+          });
+        }
+      }
+
+      // Expand parent bounds to also contain child subgraphs
+      const byId: Record<string, LayoutSubgraph> = Object.fromEntries(layoutSubgraphs.map(s => [s.id, s]));
+      for (const sg of layoutSubgraphs) {
+        if (!sg.parent) continue;
+        const p = byId[sg.parent];
+        if (!p) continue;
+        const minX = Math.min(p.x, sg.x);
+        const minY = Math.min(p.y, sg.y);
+        const maxX = Math.max(p.x + p.width, sg.x + sg.width);
+        const maxY = Math.max(p.y + p.height, sg.y + sg.height);
+        p.x = minX; p.y = minY; p.width = maxX - minX; p.height = maxY - minY;
+      }
+    }
+
+    const rawW: number | undefined = (graphInfo as any).width;
+    const rawH: number | undefined = (graphInfo as any).height;
+    const w: number = Number.isFinite(rawW as number) && (rawW as number) > 0 ? (rawW as number) : 800;
+    const h: number = Number.isFinite(rawH as number) && (rawH as number) > 0 ? (rawH as number) : 600;
+    // Adjust edges that connect to subgraphs to start/end at cluster boundaries
+    if (layoutEdges.length && layoutSubgraphs.length) {
+      const nodeById: Record<string, LayoutNode> = Object.fromEntries(layoutNodes.map(n => [n.id, n]));
+      const sgById: Record<string, LayoutSubgraph> = Object.fromEntries(layoutSubgraphs.map(s => [s.id, s]));
+      const dir = this.mapDirection(graph.direction);
+      for (const e of layoutEdges) {
+        const sSg = sgById[e.source];
+        const tSg = sgById[e.target];
+        if (!sSg && !tSg) continue;
+        const s = sSg ? this.clusterAnchor(sSg, dir, 'out') : this.nodeAnchor(nodeById[e.source], dir, 'out');
+        const t = tSg ? this.clusterAnchor(tSg, dir, 'in') : this.nodeAnchor(nodeById[e.target], dir, 'in');
+        const mid = { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2 };
+        (e as any).points = [s, mid, t];
+      }
+    }
+
     return {
       nodes: layoutNodes,
       edges: layoutEdges,
-      width: graphInfo.width || 800,
-      height: graphInfo.height || 600
+      width: w,
+      height: h,
+      subgraphs: layoutSubgraphs
     };
   }
 
@@ -150,13 +191,13 @@ export class DagreLayoutEngine implements ILayoutEngine {
   }
 
   private calculateNodeDimensions(label: string, shape: string): { width: number; height: number } {
-    // Base dimensions on label length with wrapping
-    const charWidth = 8;
+    // Base dimensions on label length with wrapping – tuned to resemble Mermaid
+    const charWidth = 7;     // tighter text measure
     const padding = 20;
     const minWidth = 80;
     const minHeight = 40;
-    const maxWidth = 200; // Maximum width before wrapping
-    const lineHeight = 20;
+    const maxWidth = 240;    // allow a bit wider boxes
+    const lineHeight = 16;   // tighter line spacing
 
     // Calculate width (capped at maxWidth)
     let width = Math.min(
@@ -165,7 +206,7 @@ export class DagreLayoutEngine implements ILayoutEngine {
     );
 
     // Calculate number of lines needed
-    const charsPerLine = Math.floor((width - padding * 2) / charWidth);
+    const charsPerLine = Math.max(1, Math.floor((width - padding * 2) / charWidth));
     const lines = Math.ceil(label.length / charsPerLine);
 
     // Calculate height based on lines
@@ -212,5 +253,26 @@ export class DagreLayoutEngine implements ILayoutEngine {
     }
 
     return { width: Math.round(width), height: Math.round(height) };
+  }
+
+  private clusterAnchor(sg: LayoutSubgraph, rankdir: string, mode: 'in'|'out') {
+    switch (rankdir) {
+      case 'LR': return { x: mode === 'out' ? sg.x + sg.width : sg.x, y: sg.y + sg.height / 2 };
+      case 'RL': return { x: mode === 'out' ? sg.x : sg.x + sg.width, y: sg.y + sg.height / 2 };
+      case 'BT': return { x: sg.x + sg.width / 2, y: mode === 'out' ? sg.y : sg.y + sg.height };
+      case 'TB':
+      default:   return { x: sg.x + sg.width / 2, y: mode === 'out' ? sg.y + sg.height : sg.y };
+    }
+  }
+
+  private nodeAnchor(n: LayoutNode | undefined, rankdir: string, mode: 'in'|'out') {
+    if (!n) return { x: 0, y: 0 };
+    switch (rankdir) {
+      case 'LR': return { x: mode === 'in' ? n.x : n.x + n.width, y: n.y + n.height / 2 };
+      case 'RL': return { x: mode === 'in' ? n.x + n.width : n.x, y: n.y + n.height / 2 };
+      case 'BT': return { x: n.x + n.width / 2, y: mode === 'in' ? n.y + n.height : n.y };
+      case 'TB':
+      default:   return { x: n.x + n.width / 2, y: mode === 'in' ? n.y : n.y + n.height };
+    }
   }
 }

@@ -204,6 +204,10 @@ export const AngleLess = createToken({ name: "AngleLess", pattern: /</ });
 // Link text delimiter
 export const Pipe = createToken({ name: "Pipe", pattern: /\|/ });
 
+// Slash tokens (used in shapes like [/text/] and [\\text/])
+export const ForwardSlash = createToken({ name: 'ForwardSlash', pattern: /\// });
+export const Backslash = createToken({ name: 'Backslash', pattern: /\\/ });
+
 // Text content patterns
 export const QuotedString = createToken({
     name: "QuotedString",
@@ -306,6 +310,8 @@ export const allTokens = [
     DiamondClose,
     AngleOpen,
     AngleLess,
+    ForwardSlash,
+    Backslash,
     Pipe,
     TripleColon,
     Ampersand,

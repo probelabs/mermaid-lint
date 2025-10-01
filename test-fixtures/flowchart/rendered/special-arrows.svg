@@ -1,34 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="120" viewBox="0 0 680 120">
+  <rect x="0" y="0" width="680" height="120" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M120,60 L145,60 L170,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M250,60 L275,60 L300,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M380,60 L405,60 L430,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M510,60 L535,60 L560,60" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+  <path d="M120,60 C124.16666666666667,60 137.66666666666666,60 145,60 C152.33333333333334,60 160.83333333333334,60 164,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M250,60 C254.16666666666666,60 267.6666666666667,60 275,60 C282.3333333333333,60 290.8333333333333,60 294,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M380,60 C384.1666666666667,60 397.6666666666667,60 405,60 C412.3333333333333,60 420.8333333333333,60 424,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M510,60 C514.1666666666666,60 527.6666666666666,60 535,60 C542.3333333333334,60 550.8333333333334,60 554,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
-    <rect x="170" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="170" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="210" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
-    <rect x="300" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="300" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="340" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <g id="D">
-    <rect x="430" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="430" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="470" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <g id="E">
-    <rect x="560" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="560" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="600" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
   </g>
 </svg>

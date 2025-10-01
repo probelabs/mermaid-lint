@@ -60,7 +60,8 @@
     "generate:valid": "node scripts/generate-previews.js all --valid-only",
     "generate:invalid": "node scripts/generate-previews.js all --invalid-only",
     "ci:previews": "npm run build && node scripts/generate-previews.js all && git update-index -q --refresh && git diff --exit-code || (echo '\nPreview files are outdated. Run: npm run generate:previews' && exit 1)",
-    "test:sdk": "node scripts/test-sdk.js"
+    "test:sdk": "node scripts/test-sdk.js",
+    "compare:renderers:flowchart": "npm run build && node scripts/compare-renderers-all.js flowchart"
   },
   "keywords": [
     "mermaid",

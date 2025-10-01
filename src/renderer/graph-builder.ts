@@ -10,7 +10,11 @@ export class GraphBuilder {
   private nodeCounter = 0;
   private edgeCounter = 0;
   private subgraphs: Subgraph[] = [];
-  private currentSubgraph: string | undefined;
+  private currentSubgraphStack: string[] = [];
+  // Styling support (classDef/class/style)
+  private classStyles: Map<string, Record<string,string>> = new Map();
+  private nodeStyles: Map<string, Record<string,string>> = new Map();
+  private nodeClasses: Map<string, Set<string>> = new Map();
 
   build(cst: CstNode | undefined): Graph {
     this.reset();
@@ -42,7 +46,10 @@ export class GraphBuilder {
     this.nodeCounter = 0;
     this.edgeCounter = 0;
     this.subgraphs = [];
-    this.currentSubgraph = undefined;
+    this.currentSubgraphStack = [];
+    this.classStyles.clear();
+    this.nodeStyles.clear();
+    this.nodeClasses.clear();
   }
 
   private extractDirection(cst: CstNode): Direction {
@@ -68,6 +75,12 @@ export class GraphBuilder {
         this.processNodeStatement(stmt.children.nodeStatement[0] as CstNode);
       } else if (stmt.children?.subgraph) {
         this.processSubgraph(stmt.children.subgraph[0] as CstNode);
+      } else if (stmt.children?.classDefStatement) {
+        this.processClassDef(stmt.children.classDefStatement[0] as CstNode);
+      } else if (stmt.children?.classStatement) {
+        this.processClassAssign(stmt.children.classStatement[0] as CstNode);
+      } else if (stmt.children?.styleStatement) {
+        this.processStyle(stmt.children.styleStatement[0] as CstNode);
       }
       // Skip class, style, and other statements for now
     }
@@ -137,6 +150,8 @@ export class GraphBuilder {
         if (!isSubgraph) {
           // Add or update node only if it's not a subgraph
           if (!this.nodes.has(nodeInfo.id)) {
+            // Apply any known styles/classes to the node on first creation
+            nodeInfo.style = this.computeNodeStyle(nodeInfo.id);
             this.nodes.set(nodeInfo.id, nodeInfo);
           } else {
             // Update existing node only if new info has actual shape/label definition
@@ -150,13 +165,20 @@ export class GraphBuilder {
                 existing.shape = nodeInfo.shape;
               }
             }
+            // Merge styles if we learned about class/style later
+            const merged = this.computeNodeStyle(nodeInfo.id);
+            if (Object.keys(merged).length) {
+              existing.style = { ...(existing.style || {}), ...merged };
+            }
           }
 
           // Track subgraph membership
-          if (this.currentSubgraph) {
-            const subgraph = this.subgraphs.find(s => s.id === this.currentSubgraph);
-            if (subgraph && !subgraph.nodes.includes(nodeInfo.id)) {
-              subgraph.nodes.push(nodeInfo.id);
+          if (this.currentSubgraphStack.length) {
+            for (const sgId of this.currentSubgraphStack) {
+              const subgraph = this.subgraphs.find(s => s.id === sgId);
+              if (subgraph && !subgraph.nodes.includes(nodeInfo.id)) {
+                subgraph.nodes.push(nodeInfo.id);
+              }
             }
           }
         }
@@ -199,6 +221,14 @@ export class GraphBuilder {
       if (result.label) label = result.label;
     }
 
+    // Capture inline class annotation if present
+    const clsTok = (children as any).nodeClass?.[0] as IToken | undefined;
+    if (clsTok) {
+      const set = this.nodeClasses.get(id) || new Set<string>();
+      set.add(clsTok.image);
+      this.nodeClasses.set(id, set);
+    }
+
     return { id, label, shape };
   }
 
@@ -215,21 +245,28 @@ export class GraphBuilder {
 
     // Detect shape based on opening token
     if (children?.SquareOpen) {
-      // Check for special bracket patterns for parallelogram and trapezoid variants
-      if (label.startsWith('/') && label.endsWith('/')) {
-        shape = 'parallelogram';
-        label = label.slice(1, -1).trim(); // Remove slashes
-      } else if (label.startsWith('\\') && label.endsWith('\\')) {
-        shape = 'parallelogram';
-        label = label.slice(1, -1).trim(); // Remove backslashes
-      } else if (label.startsWith('/') && label.endsWith('\\')) {
-        shape = 'trapezoid';
-        label = label.slice(1, -1).trim(); // Remove slashes
-      } else if (label.startsWith('\\') && label.endsWith('/')) {
-        shape = 'trapezoid';
-        label = label.slice(1, -1).trim(); // Remove slashes
-      } else {
-        shape = 'rectangle';
+      // Default rectangle; try to detect angled variants by looking at first/last token inside nodeContent
+      shape = 'rectangle';
+      const contentNode = children.nodeContent?.[0] as CstNode | undefined;
+      if (contentNode) {
+        const c = contentNode.children as any;
+        const tokTypes = ['ForwardSlash','Backslash','Identifier','Text','NumberLiteral','RoundOpen','RoundClose','AngleLess','AngleOpen','Comma','Colon','Ampersand','Semicolon','TwoDashes','Line','ThickLine','DottedLine'];
+        const toks: Array<{type:string; t: any; start:number}> = [];
+        for (const tt of tokTypes) {
+          const arr = c[tt] as IToken[] | undefined;
+          arr?.forEach((t) => toks.push({ type: tt, t, start: t.startOffset ?? 0 }));
+        }
+        if (toks.length >= 2) {
+          toks.sort((a,b) => a.start - b.start);
+          const first = toks[0].type;
+          const last = toks[toks.length - 1].type;
+          if ((first === 'ForwardSlash' && last === 'ForwardSlash') || (first === 'Backslash' && last === 'Backslash')) {
+            shape = 'parallelogram';
+            // Remove outer markers from the label later when extracting text
+          } else if ((first === 'ForwardSlash' && last === 'Backslash') || (first === 'Backslash' && last === 'ForwardSlash')) {
+            shape = 'trapezoid';
+          }
+        }
       }
     } else if (children?.RoundOpen) {
       shape = 'round';
@@ -260,9 +297,9 @@ export class GraphBuilder {
 
     // Collect all text tokens with their positions
     const tokenTypes = ['Text', 'Identifier', 'QuotedString', 'NumberLiteral', 'Ampersand',
-                       'Comma', 'Colon', 'Semicolon', 'Dot', 'Underscore', 'Dash'];
+                       'Comma', 'Colon', 'Semicolon', 'Dot', 'Underscore', 'Dash', 'ForwardSlash', 'Backslash'];
 
-    const tokenWithPositions: Array<{ text: string; startOffset: number }> = [];
+    const tokenWithPositions: Array<{ text: string; startOffset: number; type: string }> = [];
 
     for (const type of tokenTypes) {
       const tokens = children[type] as IToken[] | undefined;
@@ -273,9 +310,15 @@ export class GraphBuilder {
           if (type === 'QuotedString' && text.startsWith('"') && text.endsWith('"')) {
             text = text.slice(1, -1);
           }
+          // Strip outer angle markers for parallelogram/trapezoid detection from visible label if they are at extremes
+          if ((type === 'ForwardSlash' || type === 'Backslash') && (tokenWithPositions.length === 0)) {
+            // leading marker: skip adding now; we'll keep inner slashes
+            continue;
+          }
           tokenWithPositions.push({
             text,
-            startOffset: token.startOffset ?? 0
+            startOffset: token.startOffset ?? 0,
+            type
           });
         }
       }
@@ -283,6 +326,18 @@ export class GraphBuilder {
 
     // Sort by position to preserve original order
     tokenWithPositions.sort((a, b) => a.startOffset - b.startOffset);
+
+    // Trim leading/trailing marker if present
+    if (tokenWithPositions.length) {
+      const first = tokenWithPositions[0];
+      if (first.type === 'ForwardSlash' || first.type === 'Backslash') {
+        tokenWithPositions.shift();
+      }
+      const last = tokenWithPositions[tokenWithPositions.length - 1];
+      if (last.type === 'ForwardSlash' || last.type === 'Backslash') {
+        tokenWithPositions.pop();
+      }
+    }
 
     // Extract just the text in correct order
     const parts = tokenWithPositions.map(t => t.text);
@@ -352,18 +407,13 @@ export class GraphBuilder {
     }
 
     // Create subgraph
-    const sg: Subgraph = {
-      id,
-      label,
-      nodes: [],
-      parent: this.currentSubgraph
-    };
+    const parent = this.currentSubgraphStack.length ? this.currentSubgraphStack[this.currentSubgraphStack.length - 1] : undefined;
+    const sg: Subgraph = { id, label, nodes: [], parent };
 
     this.subgraphs.push(sg);
 
     // Process statements within subgraph
-    const prevSubgraph = this.currentSubgraph;
-    this.currentSubgraph = id;
+    this.currentSubgraphStack.push(id);
 
     const statements = children?.subgraphStatement as CstNode[] | undefined;
     if (statements) {
@@ -376,6 +426,121 @@ export class GraphBuilder {
       }
     }
 
-    this.currentSubgraph = prevSubgraph;
+    this.currentSubgraphStack.pop();
+  }
+
+  // ---- Styling helpers ----
+  private processClassDef(cst: CstNode) {
+    const idTok = (cst.children?.Identifier?.[0] as IToken | undefined);
+    if (!idTok) return;
+    const className = idTok.image;
+    const props = this.collectStyleProps(cst, { skipFirstIdentifier: true });
+    if (Object.keys(props).length) {
+      // debug: console.log('classDef', className, props);
+      this.classStyles.set(className, props);
+      // Re-apply to any existing nodes already assigned to this class
+      for (const [nodeId, classes] of this.nodeClasses.entries()) {
+        if (classes.has(className)) {
+          const node = this.nodes.get(nodeId);
+          if (node) {
+            node.style = { ...(node.style || {}), ...this.computeNodeStyle(nodeId) };
+          }
+        }
+      }
+    }
+  }
+
+  private processClassAssign(cst: CstNode) {
+    const ids = (cst.children?.Identifier as IToken[] | undefined) || [];
+    if (!ids.length) return;
+    // Last Identifier is className per grammar (LABEL: className)
+    const classNameTok = (cst.children as any).className?.[0] as IToken | undefined;
+    const className = classNameTok?.image || ids[ids.length - 1].image;
+    const nodeIds = classNameTok ? ids.slice(0, -1) : ids.slice(0, -1); // conservative
+    for (const tok of nodeIds) {
+      const id = tok.image;
+      const set = this.nodeClasses.get(id) || new Set<string>();
+      set.add(className);
+      this.nodeClasses.set(id, set);
+      // If node already exists, merge style now
+      const node = this.nodes.get(id);
+      if (node) {
+        node.style = { ...(node.style || {}), ...this.computeNodeStyle(id) };
+      }
+    }
+  }
+
+  private processStyle(cst: CstNode) {
+    const idTok = (cst.children?.Identifier?.[0] as IToken | undefined);
+    if (!idTok) return;
+    const nodeId = idTok.image;
+    const props = this.collectStyleProps(cst, { skipFirstIdentifier: true });
+    if (Object.keys(props).length) {
+      this.nodeStyles.set(nodeId, props);
+      const node = this.nodes.get(nodeId);
+      if (node) {
+        node.style = { ...(node.style || {}), ...this.computeNodeStyle(nodeId) };
+      }
+    }
+  }
+
+  private collectStyleProps(cst: CstNode, opts: { skipFirstIdentifier?: boolean } = {}): Record<string,string> {
+    const tokens: Array<{ text: string; startOffset: number; type: string }> = [];
+    const ch = (cst.children || {}) as any;
+    const push = (arr?: any[], type = 't') => arr?.forEach((t: any) => tokens.push({ text: (t as IToken).image, startOffset: (t as IToken).startOffset ?? 0, type }));
+    push(ch.Text as any[], 'Text');
+    push(ch.Identifier as any[], 'Identifier');
+    push(ch.ColorValue as any[], 'Color');
+    push(ch.Colon as any[], 'Colon');
+    push(ch.Comma as any[], 'Comma');
+    push(ch.NumberLiteral as any[], 'Number');
+
+    // Sort to preserve original order
+    tokens.sort((a, b) => a.startOffset - b.startOffset);
+
+    // Optionally drop the first Identifier (class name or node id)
+    if (opts.skipFirstIdentifier) {
+      const idx = tokens.findIndex(t => t.type === 'Identifier');
+      if (idx >= 0) tokens.splice(idx, 1);
+    }
+
+    const joined = tokens.map(t => t.text).join('');
+    const props: Record<string,string> = {};
+    for (const seg of joined.split(',').map(s => s.trim()).filter(Boolean)) {
+      const [k, v] = seg.split(':');
+      if (k && v) props[k.trim()] = v.trim();
+    }
+    return props;
+  }
+
+  private computeNodeStyle(nodeId: string): Record<string, any> {
+    const out: Record<string, any> = {};
+    const classes = this.nodeClasses.get(nodeId);
+    if (classes) {
+      for (const c of classes) {
+        const s = this.classStyles.get(c);
+        if (s) Object.assign(out, this.normalizeStyle(s));
+      }
+    }
+    const direct = this.nodeStyles.get(nodeId);
+    if (direct) Object.assign(out, this.normalizeStyle(direct));
+    return out;
+  }
+
+  private normalizeStyle(s: Record<string,string>): Record<string, any> {
+    const out: Record<string, any> = {};
+    for (const [kRaw, vRaw] of Object.entries(s)) {
+      const k = kRaw.trim().toLowerCase();
+      const v = vRaw.trim();
+      if (k === 'stroke-width') {
+        const num = parseFloat(v);
+        if (!Number.isNaN(num)) out.strokeWidth = num;
+      } else if (k === 'stroke') {
+        out.stroke = v;
+      } else if (k === 'fill') {
+        out.fill = v;
+      }
+    }
+    return out;
   }
 }

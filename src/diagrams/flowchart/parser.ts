@@ -197,6 +197,8 @@ export class MermaidParser extends CstParser {
                             // Allow HTML-like tags (e.g., <br/>) inside labels
                             { ALT: () => this.CONSUME(tokens.AngleLess) },
                             { ALT: () => this.CONSUME(tokens.AngleOpen) },
+                            { ALT: () => this.CONSUME(tokens.ForwardSlash) },
+                            { ALT: () => this.CONSUME(tokens.Backslash) },
                             { ALT: () => this.CONSUME(tokens.Comma) },
                             { ALT: () => this.CONSUME(tokens.Colon) },
                             // HTML entities and ampersands inside labels

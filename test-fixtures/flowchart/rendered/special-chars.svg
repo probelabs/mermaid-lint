@@ -1,28 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="580" height="160" viewBox="0 0 580 160">
+<svg xmlns="http://www.w3.org/2000/svg" width="610" height="132" viewBox="0 0 610 132">
+  <rect x="0" y="0" width="610" height="132" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M240,80 L265,80 L290,80" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M370,80 L395,80 L420,80" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M280,66 C284.1666666666667,66 297.6666666666667,66 305,66 C312.3333333333333,66 320.8333333333333,66 324,66" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M410,66 C414.1666666666667,66 427.6666666666667,66 435,66 C442.3333333333333,66 450.8333333333333,66 454,66" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="200" height="80" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="40" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="140" y="68.10000000000001" text-anchor="middle">Node with</tspan>
-    <tspan x="140" y="84.9" text-anchor="middle">&amp;quot;quotes&amp;quot;</tspan>
-    <tspan x="140" y="101.70000000000002" text-anchor="middle">and &amp;amp; ampersand</tspan>
+    <tspan x="160" y="62.9" text-anchor="middle">Node with &amp;quot;quotes&amp;quot;</tspan>
+    <tspan x="160" y="78.9" text-anchor="middle">and &amp;amp; ampersand</tspan>
   </text>
   </g>
   <g id="B">
-    <rect x="290" y="60" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="330" y="84.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">OK</text>
+    <rect x="330" y="46" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="370" y="70.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">OK</text>
   </g>
   <g id="C">
-    <rect x="420" y="60" width="120" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="480" y="84.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Plain text</text>
+    <rect x="460" y="46" width="110" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="515" y="70.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Plain text</text>
   </g>
 </svg>

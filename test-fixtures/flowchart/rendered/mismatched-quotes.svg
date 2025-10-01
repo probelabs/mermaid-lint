@@ -1,24 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="250" viewBox="0 0 280 250">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="222" viewBox="0 0 320 222">
+  <rect x="0" y="0" width="320" height="222" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M140,120 L140,145 L140,170" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M160,92 C160,96.16666666666667 160,109.66666666666667 160,117 C160,124.33333333333333 160,132.83333333333334 160,136" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="200" height="80" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="40" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="140" y="68.10000000000001" text-anchor="middle">Mismatched label&apos;]</tspan>
-    <tspan x="140" y="84.9" text-anchor="middle">--&gt; B
-  C[&apos;Another</tspan>
-    <tspan x="140" y="101.70000000000002" text-anchor="middle">mismatch</tspan>
+    <tspan x="160" y="62.9" text-anchor="middle">Mismatched label&apos;] --&gt; B
+ </tspan>
+    <tspan x="160" y="78.9" text-anchor="middle">C[&apos;Another mismatch</tspan>
   </text>
   </g>
   <g id="D">
-    <rect x="100" y="170" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="140" y="194.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <rect x="120" y="142" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="160" y="166.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
 </svg>

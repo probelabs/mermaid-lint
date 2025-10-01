@@ -1,22 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="230" viewBox="0 0 280 230">
+<svg xmlns="http://www.w3.org/2000/svg" width="302" height="210" viewBox="0 0 302 210">
+  <rect x="0" y="0" width="302" height="210" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
     </marker>
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+      <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
   </defs>
-  <path d="M140,100 L140,125 L140,150" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M151,80 C151,84.16666666666667 151,97.66666666666667 151,105 C151,112.33333333333333 151,120.83333333333333 151,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="200" height="60" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="140" y="66.5" text-anchor="middle">Load Prompt br / from</tspan>
-    <tspan x="140" y="83.3" text-anchor="middle">file</tspan>
-  </text>
+    <rect x="40" y="40" width="222" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="151" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Load Prompt br / from file</text>
   </g>
   <g id="B">
-    <rect x="100" y="150" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="140" y="174.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
+    <rect x="111" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="151" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
   </g>
 </svg>
