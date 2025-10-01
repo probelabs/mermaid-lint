@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="340" height="210" viewBox="0 0 340 210">
-  <rect x="0" y="0" width="340" height="210" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="345" height="233" viewBox="0 0 345 233">
+  <rect x="0" y="0" width="345" height="233" fill="#ffffff" />
   <defs>
     <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
@@ -7,25 +7,28 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <g class="subgraph-boxes"><rect x="16" y="-2" width="258" height="196" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /></g>
-  <g class="subgraph-titles"><text x="145" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">First</text></g>
-  <path d="M80,80 C80,84.16666666666667 80,97.66666666666667 80,105 C80,112.33333333333333 80,120.83333333333333 80,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M210,80 C210,84.16666666666667 210,97.66666666666667 210,105 C210,112.33333333333333 210,120.83333333333333 210,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <g class="subgraph-boxes"><rect x="21" y="21" width="258" height="196" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /></g>
+  <g class="subgraph-titles"><text x="150" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">First</text></g>
+  <path d="M85,103 C85,105.29166666666667 85,119.66666666666667 85,128 C85,136.33333333333334 85,150.70833333333334 85,151.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M215,103 C215,105.29166666666667 215,119.66666666666667 215,128 C215,136.33333333333334 215,150.70833333333334 215,151.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+    <rect x="45" y="63" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="85" y="87.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
-    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="80" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+    <rect x="45" y="153" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="85" y="177.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
-    <rect x="170" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="210" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+    <rect x="175" y="63" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="215" y="87.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <g id="D">
-    <rect x="170" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="210" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <rect x="175" y="153" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="215" y="177.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
 </svg>

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="250" viewBox="0 0 320 250">
-  <rect x="0" y="0" width="320" height="250" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="260" viewBox="0 0 320 260">
+  <rect x="0" y="0" width="320" height="260" fill="#ffffff" />
   <defs>
     <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
@@ -7,18 +7,21 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <path d="M160,108 C160,112.16666666666667 160,125.66666666666667 160,133 C160,140.33333333333334 160,148.83333333333334 160,152" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M160,114 C160,116.29166666666667 160,130.66666666666666 160,139 C160,147.33333333333334 160,161.70833333333334 160,162.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="240" height="68" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect x="40" y="40" width="240" height="74" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="160" y="62.9" text-anchor="middle">This is a very long text that</tspan>
-    <tspan x="160" y="78.9" text-anchor="middle">spans quite a bit of space in</tspan>
-    <tspan x="160" y="94.9" text-anchor="middle">the node</tspan>
+    <tspan x="160" y="63.9" text-anchor="middle">This is a very long text that</tspan>
+    <tspan x="160" y="81.9" text-anchor="middle">spans quite a bit of space in</tspan>
+    <tspan x="160" y="99.9" text-anchor="middle">the node</tspan>
   </text>
   </g>
   <g id="B">
-    <rect x="40" y="158" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="160" y="188.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Another long piece of text here</text>
+    <rect x="40" y="164" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="160" y="196.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Another long piece of text here</text>
   </g>
 </svg>

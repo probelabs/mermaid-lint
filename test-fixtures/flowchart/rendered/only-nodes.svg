@@ -7,6 +7,9 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
   <g id="A">
     <rect x="40" y="40" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />

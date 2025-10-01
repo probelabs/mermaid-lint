@@ -7,14 +7,17 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <path d="M80,80 C80,84.16666666666667 80,97.66666666666667 80,105 C80,112.33333333333333 80,120.83333333333333 80,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M80,170 C80,174.16666666666666 80,187.66666666666666 80,195 C80,202.33333333333334 80,210.83333333333334 80,214" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M80,260 C80,264.1666666666667 80,277.6666666666667 80,285 C80,292.3333333333333 80,300.8333333333333 80,304" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M186.11111111111111,80 C180.0925925925926,84.16666666666667 151.26296296296297,97.26666666666667 150,105 C148.73703703703703,112.73333333333333 173.77777777777777,122.83333333333334 178.53333333333333,126.4" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M246.11111111111111,80 C252.5925925925926,84.16666666666667 273.3221921916438,97.23587664549697 285,105 C296.6778078083562,112.76412335450303 310.9816316343737,122.9872834391818 316.1779579612484,126.58474012701815" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M313.8888888888889,80 C307.40740740740745,84.16666666666667 286.67780780835625,97.23587664549697 275,105 C263.32219219164375,112.76412335450303 249.01836836562632,122.9872834391818 243.82204203875156,126.58474012701815" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M349.44444444444446,80 C350.3703703703704,84.16666666666667 354.4266055109622,97.66055040134029 355,105 C355.5733944890378,112.33944959865971 353.23734281555943,120.86391465996525 352.8848113786713,124.03669759195829" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M80,80 C80,82.29166666666667 80,96.66666666666667 80,105 C80,113.33333333333333 80,127.70833333333333 80,128.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M80,170 C80,172.29166666666666 80,186.66666666666666 80,195 C80,203.33333333333334 80,217.70833333333334 80,218.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M80,260 C80,262.2916666666667 80,276.6666666666667 80,285 C80,293.3333333333333 80,307.7083333333333 80,308.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M186.11111111111111,80 C182.80092592592592,82.29166666666667 150.46296296296296,96.66666666666667 150,105 C149.53703703703704,113.33333333333333 180.2777777777778,127.70833333333333 182.13333333333335,129.1" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M246.11111111111111,80 C249.67592592592592,82.29166666666667 272.5,96.66666666666667 285,105 C297.5,113.33333333333333 317.8009259259259,127.70833333333333 319.87782282364543,129.14618503175453" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M313.8888888888889,80 C310.3240740740741,82.29166666666667 287.5,96.66666666666667 275,105 C262.5,113.33333333333333 242.19907407407408,127.70833333333333 240.12217717635454,129.14618503175453" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M349.44444444444446,80 C349.9537037037037,82.29166666666667 354.53703703703707,96.66666666666667 355,105 C355.46296296296293,113.33333333333333 352.47685185185185,127.70833333333333 352.3878695113345,128.50917439798957" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>

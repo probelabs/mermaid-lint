@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="357.75" height="932" viewBox="0 0 357.75 932">
-  <rect x="0" y="0" width="357.75" height="932" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="357.75" height="991" viewBox="0 0 357.75 991">
+  <rect x="0" y="0" width="357.75" height="991" fill="#ffffff" />
   <defs>
     <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
@@ -7,26 +7,29 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <path d="M175.25,80 C175.25,84.16666666666667 175.25,97.66666666666667 175.25,105 C175.25,112.33333333333333 175.25,120.83333333333333 175.25,124" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M175.25,212 C175.25,216.16666666666666 175.25,229.66666666666666 175.25,237 C175.25,244.33333333333334 175.25,252.83333333333334 175.25,256" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M175.25,80 C175.25,82.29166666666667 175.25,96.66666666666667 175.25,105 C175.25,113.33333333333333 175.25,127.70833333333333 175.25,128.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M175.25,212 C175.25,214.29166666666666 175.25,228.66666666666666 175.25,237 C175.25,245.33333333333334 175.25,259.7083333333333 175.25,260.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g>
-    <path d="M141.99576271186442,310 C133.91313559322035,315.8333333333333 101.58262711864407,333.5 93.5,345 C85.41737288135593,356.5 93.5,373.3333333333333 93.5,379" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-    <rect x="73.1597241934385" y="331.1935935484664" width="54" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
-    <text x="100.1597241934385" y="340.1935935484664" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Link 1</text>
+    <path d="M125.83050847457628,369 C122.86687853107345,372.2083333333333 98.88841807909604,391.5 93.5,404 C88.11158192090396,416.5 93.5,440.3333333333333 93.5,442.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="66.5" y="395.55873114551076" width="54" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="93.5" y="404.55873114551076" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Link 1</text>
   </g>
   <g>
-    <path d="M208.50423728813558,310 C216.58686440677965,315.8333333333333 248.91737288135593,334.3333333333333 257,345 C265.08262711864404,355.6666666666667 257,369.1666666666667 257,374" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-    <rect x="221.1103685967232" y="329.58424155604484" width="54" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
-    <text x="248.1103685967232" y="338.58424155604484" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Link 2</text>
+    <path d="M224.66949152542372,369 C227.63312146892656,372.2083333333333 251.61158192090394,392.3333333333333 257,404 C262.388418079096,415.6666666666667 257,435.7916666666667 257,437.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="228.51313947239237" y="393.3903711719477" width="54" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="255.51313947239237" y="402.3903711719477" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Link 2</text>
   </g>
-  <path d="M93.5,425 C93.5,430 87.66951373944158,446.36263242460575 93.5,455 C99.33048626055842,463.63736757539425 122.65243130279211,473.1868378769712 128.48291756335053,476.82420545236545" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M257,430 C257,434.1666666666667 262.8304862605584,447.1959657579391 257,455 C251.16951373944158,462.8040342420609 227.8475686972079,473.1868378769712 222.01708243664947,476.82420545236545" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M145.93627450980392,532 C141.23856209150327,536.1666666666666 122.44771241830065,545.3333333333334 117.75,557 C113.05228758169935,568.6666666666666 117.75,587 117.75,602 C117.75,617 113.21343092693351,635.9496415949915 117.75,647 C122.28656907306649,658.0503584050085 140.43284536533244,664.7517920250428 144.96941443839893,668.3021504300514" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M204.56372549019608,532 C209.26143790849673,536.1666666666666 228.05228758169935,549.6666666666666 232.75,557 C237.44771241830065,564.3333333333334 232.75,572.8333333333334 232.75,576" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M232.75,622 C232.75,626.1666666666666 237.2865690730665,639.2829749283247 232.75,647 C228.2134309269335,654.7170250716753 210.06715463466756,664.7517920250428 205.53058556160107,668.3021504300514" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M175.25,712 C175.25,716.1666666666666 175.25,729.6666666666666 175.25,737 C175.25,744.3333333333334 175.25,752.8333333333334 175.25,756" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M175.25,802 C175.25,806.1666666666666 175.25,819.6666666666666 175.25,827 C175.25,834.3333333333334 175.25,842.8333333333334 175.25,846" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M93.5,484 C93.5,486.75 86.82107843137256,504.8333333333333 93.5,514 C100.17892156862744,523.1666666666666 129.90012254901958,536.7083333333334 132.30087644966113,538.2060513630914" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M257,489 C257,491.2916666666667 263.67892156862746,505.6666666666667 257,514 C250.32107843137254,522.3333333333334 220.59987745098042,536.7083333333334 218.19912355033887,538.2060513630914" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M145.93627450980392,591 C143.35253267973857,593.2916666666666 122.44771241830065,604.3333333333334 117.75,616 C113.05228758169935,627.6666666666666 117.75,646 117.75,661 C117.75,676 112.42592592592592,694.3333333333334 117.75,706 C123.07407407407408,717.6666666666666 146.76620370370372,728.7083333333334 148.51318694293306,730.0755376075128" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M204.56372549019608,591 C207.14746732026143,593.2916666666666 228.05228758169935,607.6666666666666 232.75,616 C237.44771241830065,624.3333333333334 232.75,638.7083333333334 232.75,639.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M232.75,681 C232.75,683.2916666666666 238.07407407407408,697.6666666666666 232.75,706 C227.42592592592592,714.3333333333334 203.73379629629628,728.7083333333334 201.98681305706694,730.0755376075128" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M175.25,771 C175.25,773.2916666666666 175.25,787.6666666666666 175.25,796 C175.25,804.3333333333334 175.25,818.7083333333334 175.25,819.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M175.25,861 C175.25,863.2916666666666 175.25,877.6666666666666 175.25,886 C175.25,894.3333333333334 175.25,908.7083333333334 175.25,909.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="123.75" y="40" width="103" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="175.25" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Rectangle</text>
@@ -36,43 +39,43 @@
     <text x="175.25" y="175.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Circle</text>
   </g>
   <g id="C">
-    <polygon points="175.25,262 233.25,286 175.25,310 117.25,286" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="290.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Diamond</text>
+    <polygon points="175.25,262 228.75,315.5 175.25,369 121.75,315.5" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="175.25" y="320.4" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Diamond</text>
   </g>
   <g id="D">
-    <rect x="40" y="385" width="107" height="40" rx="20" ry="20" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="93.5" y="409.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Stadium</text>
+    <rect x="40" y="444" width="107" height="40" rx="20" ry="20" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="93.5" y="468.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Stadium</text>
   </g>
   <g id="E">
     <g>
-          <rect x="197" y="380" width="120" height="50" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-          <line x1="202" y1="380" x2="202" y2="430" stroke="#3f3f3f" stroke-width="1.5" />
-          <line x1="312" y1="380" x2="312" y2="430" stroke="#3f3f3f" stroke-width="1.5" />
+          <rect x="197" y="439" width="120" height="50" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+          <line x1="202" y1="439" x2="202" y2="489" stroke="#3f3f3f" stroke-width="1.5" />
+          <line x1="312" y1="439" x2="312" y2="489" stroke="#3f3f3f" stroke-width="1.5" />
         </g>
-    <text x="257" y="409.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Subroutine</text>
+    <text x="257" y="468.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Subroutine</text>
   </g>
   <g id="F">
     <g>
-          <ellipse cx="175.25" cy="490" rx="48" ry="10" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-          <rect x="127.25" y="490" width="96" height="32" stroke="none" fill="#eef0ff" />
-          <path d="M127.25,490 L127.25,522 A48,10 0 0,0 223.25,522 L223.25,490" stroke="#3f3f3f" stroke-width="1.5" fill="none" />
+          <rect x="127.25" y="550.44" width="96" height="29.12" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+          <ellipse cx="175.25" cy="550.44" rx="48" ry="11.44" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+          <path d="M127.25,550.44 L127.25,579.56 A48,11.44 0 0,0 223.25,579.56 L223.25,550.44" stroke="#3f3f3f" stroke-width="1.5" fill="none" />
         </g>
-    <text x="175.25" y="510.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Database</text>
+    <text x="175.25" y="569.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Database</text>
   </g>
   <g id="H">
-    <polygon points="102.8,672 278.75,672 247.7,712 71.75,712" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="696.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram Alt</text>
+    <polygon points="102.8,731 278.75,731 247.7,771 71.75,771" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="175.25" y="755.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram Alt</text>
   </g>
   <g id="G">
-    <polygon points="173.25,582 317.75,582 292.25,622 147.75,622" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="232.75" y="606.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram</text>
+    <polygon points="173.25,641 317.75,641 292.25,681 147.75,681" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="232.75" y="665.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram</text>
   </g>
   <g id="I">
-    <polygon points="128.35,762 222.15,762 242.25,802 108.25,802" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="786.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid</text>
+    <polygon points="128.35,821 222.15,821 242.25,861 108.25,861" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="175.25" y="845.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid</text>
   </g>
   <g id="J">
-    <polygon points="115.75,852 234.75,852 260.25,892 90.25,892" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="876.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid Alt</text>
+    <polygon points="109.75,911 240.75,911 221.1,951 129.4,951" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="175.25" y="935.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid Alt</text>
   </g>
 </svg>

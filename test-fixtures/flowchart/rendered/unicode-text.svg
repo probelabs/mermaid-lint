@@ -7,9 +7,12 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <path d="M136,60 C140.16666666666666,60 153.66666666666666,60 161,60 C168.33333333333334,60 176.83333333333334,60 180,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M282,60 C286.1666666666667,60 299.6666666666667,60 307,60 C314.3333333333333,60 322.8333333333333,60 326,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M136,60 C138.29166666666666,60 152.66666666666666,60 161,60 C169.33333333333334,60 183.70833333333334,60 184.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M282,60 C284.2916666666667,60 298.6666666666667,60 307,60 C315.3333333333333,60 329.7083333333333,60 330.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="96" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="88" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Hello 世界</text>

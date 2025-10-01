@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="749" height="220" viewBox="0 0 749 220">
-  <rect x="0" y="0" width="749" height="220" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="739" height="220" viewBox="0 0 739 220">
+  <rect x="0" y="0" width="739" height="220" fill="#ffffff" />
   <defs>
     <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
@@ -7,38 +7,41 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <path d="M171,105 C175.16666666666666,105 188.66666666666666,105 196,105 C203.33333333333334,105 211.83333333333334,105 215,105" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M171,105 C173.29166666666666,105 187.66666666666666,105 196,105 C204.33333333333334,105 218.70833333333334,105 219.5,105" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g>
-    <path d="M336.56666666666666,81 C344.30555555555554,77.5 367.1777777777778,63.5 383,60 C398.8222222222222,56.5 423.4166666666667,60 431.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-    <rect x="370.2424134690393" y="51" width="33" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
-    <text x="386.7424134690393" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Yes</text>
+    <path d="M336,77.61904761904762 C339.39166666666665,76.00396825396825 357.75,62.93650793650794 373,60 C388.25,57.06349206349206 422.50416666666666,60 426,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="368.03361325989937" y="51" width="33" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="384.53361325989937" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Yes</text>
   </g>
   <g>
-    <path d="M336.56666666666666,129 C344.30555555555554,132.5 370.09444444444443,146.5 383,150 C395.90555555555557,153.5 408.8333333333333,150 414,150" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-    <rect x="364.6400880075836" y="138.57591919940967" width="26" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
-    <text x="377.6400880075836" y="147.57591919940967" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">No</text>
+    <path d="M336,132.38095238095238 C339.39166666666665,133.99603174603175 360.6666666666667,147.06349206349205 373,150 C385.3333333333333,152.93650793650795 406.60833333333335,150 408.5,150" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="361.90861325989937" y="141" width="26" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="374.90861325989937" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">No</text>
   </g>
-  <path d="M561.5,60 C568.5833333333334,60 591.720340339792,56.402543312163644 604,60 C616.279659660208,63.597456687836356 629.9816316343737,77.9872834391818 635.1779579612485,81.58474012701815" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M579,150 C583.1666666666666,150 594.6370070064586,153.59745668783637 604,150 C613.3629929935414,146.40254331216363 629.9816316343737,132.0127165608182 635.1779579612485,128.41525987298186" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M551.5,60 C555.3958333333334,60 580.8981481481482,55.833333333333336 594,60 C607.1018518518518,64.16666666666667 626.8009259259259,82.70833333333333 628.8778228236454,84.14618503175454" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M569,150 C571.2916666666666,150 583.8148148148148,154.16666666666666 594,150 C604.1851851851852,145.83333333333334 626.8009259259259,127.29166666666667 628.8778228236454,125.85381496824546" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="85" width="131" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="105.5" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start Process</text>
   </g>
   <g id="B">
-    <polygon points="283.5,81 346,105 283.5,129 221,105" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="283.5" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
+    <polygon points="278.5,47.5 336,105 278.5,162.5 221,105" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="278.5" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
   </g>
   <g id="C">
-    <rect x="437.5" y="40" width="124" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="499.5" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something</text>
+    <rect x="427.5" y="40" width="124" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="489.5" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something</text>
   </g>
   <g id="D">
-    <rect x="420" y="130" width="159" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="499.5" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something else</text>
+    <rect x="410" y="130" width="159" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="489.5" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something else</text>
   </g>
   <g id="E">
-    <rect x="629" y="85" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="669" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
+    <rect x="619" y="85" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="659" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
   </g>
 </svg>

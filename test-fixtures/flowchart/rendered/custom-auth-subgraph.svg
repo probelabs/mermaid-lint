@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="791" height="562" viewBox="0 0 791 562">
-  <rect x="0" y="0" width="791" height="562" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="784" height="1041" viewBox="0 0 784 1041">
+  <rect x="0" y="0" width="784" height="1041" fill="#ffffff" />
   <defs>
     <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
@@ -7,65 +7,84 @@
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
+    </marker>
   </defs>
-  <g class="subgraph-boxes"><rect x="16" y="-2" width="759" height="548" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /></g>
-  <g class="subgraph-titles"><text x="395.5" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">API Loader : Custom Authentication Processing</text></g>
-  <path d="M323,92 C323,96.16666666666667 323,109.66666666666667 323,117 C323,124.33333333333333 323,132.83333333333334 323,136" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M243.16326530612247,190 C229.3027210884354,194.16666666666666 173.86054421768708,206.83333333333334 160,215 C146.13945578231292,223.16666666666666 160,235 160,239" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M402.83673469387753,190 C416.6972789115646,194.16666666666666 472.1394557823129,207.66666666666666 486,215 C499.8605442176871,222.33333333333334 486,230.83333333333334 486,234" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M405.7321428571429,302 C394.9434523809524,306.1666666666667 351.7886904761905,319.6666666666667 341,327 C330.2113095238095,334.3333333333333 341,342.8333333333333 341,346" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M341,404 C341,408.1666666666667 341,421.6666666666667 341,429 C341,436.3333333333333 341,444.8333333333333 341,448" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M566.2678571428571,302 C577.0565476190476,306.1666666666667 620.2113095238095,319.6666666666667 631,327 C641.7886904761905,334.3333333333333 631,342.8333333333333 631,346" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M631,404 C631,408.1666666666667 631,420.3333333333333 631,429 C631,437.6666666666667 631,451.5 631,456" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <g class="subgraph-boxes"><rect x="21" y="21" width="747" height="1004" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /></g>
+  <g class="subgraph-titles"><text x="394.5" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">API Loader : Custom Authentication Processing</text></g>
+  <path d="M322,119 C322,121.29166666666667 322,135.66666666666666 322,144 C322,152.33333333333334 322,166.70833333333334 322,167.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <g>
+    <path d="M210,385.86624203821657 C205.875,389.72850318471336 172.5,395.81104033970274 165,428 C157.5,460.18895966029726 165,565.1583333333333 165,577.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="152" y="474.3092115127132" width="26" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="165" y="483.3092115127132" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">No</text>
+  </g>
+  <g>
+    <path d="M434,385.86624203821657 C438.125,389.72850318471336 471.5,415.1443736730361 479,428 C486.5,440.8556263269639 479,459.7916666666667 479,461.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="456.30196179548557" y="413.1967412989578" width="33" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="472.80196179548557" y="422.1967412989578" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Yes</text>
+  </g>
+  <g>
+    <path d="M362.3519553072626,751 C359.7530260707635,754.2083333333334 338.72532588454374,774.3333333333334 334,786 C329.27467411545626,797.6666666666666 334,817.7916666666666 334,819.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="321.64150678301564" y="776.208070936829" width="26" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="334.64150678301564" y="785.208070936829" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">No</text>
+  </g>
+  <path d="M334,877 C334,879.2916666666666 334,893.6666666666666 334,902 C334,910.3333333333334 334,924.7083333333334 334,925.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <g>
+    <path d="M595.6480446927375,751 C598.2469739292366,754.2083333333334 619.2746741154563,774.3333333333334 624,786 C628.7253258845437,797.6666666666666 624,817.7916666666666 624,819.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+    <rect x="606.8584932169844" y="776.208070936829" width="33" height="18" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />
+    <text x="623.3584932169844" y="785.208070936829" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Yes</text>
+  </g>
+  <path d="M624,877 C624,879.2916666666666 624,892.1666666666666 624,902 C624,911.8333333333334 624,932.8833333333333 624,934.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="203" y="40" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="323" y="70.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start processing API definition</text>
+    <rect x="202" y="63" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="322" y="95.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start processing API definition</text>
   </g>
   <g id="B">
-    <polygon points="323,142 444.5,166 323,190 201.5,166" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="323" y="170.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Custom Auth Enabled ?</text>
+    <polygon points="322,169 434,281 322,393 210,281" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="322" y="285.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Custom Auth Enabled ?</text>
   </g>
   <g id="C">
-    <rect x="40" y="245" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect x="45" y="579" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="160" y="267.9" text-anchor="middle">Continue with other auth</tspan>
-    <tspan x="160" y="283.9" text-anchor="middle">methods</tspan>
+    <tspan x="165" y="602.9" text-anchor="middle">Continue with other auth</tspan>
+    <tspan x="165" y="620.9" text-anchor="middle">methods</tspan>
   </text>
   </g>
   <g id="D">
-    <polygon points="486,240 642,271 486,302 330,271" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <polygon points="479,463 623,607 479,751 335,607" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="486" y="267.9" text-anchor="middle">Is Driver AND AuthCheck .Path configured</tspan>
-    <tspan x="486" y="283.9" text-anchor="middle">?</tspan>
+    <tspan x="479" y="602.9" text-anchor="middle">Is Driver AND AuthCheck .Path</tspan>
+    <tspan x="479" y="620.9" text-anchor="middle">configured ?</tspan>
   </text>
   </g>
   <g id="E">
-    <rect x="221" y="352" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect x="214" y="821" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="341" y="374.9" text-anchor="middle">Inject</tspan>
-    <tspan x="341" y="390.9" text-anchor="middle">PluginAuthGatekeeperMiddleware</tspan>
+    <tspan x="334" y="844.9" text-anchor="middle">Inject</tspan>
+    <tspan x="334" y="862.9" text-anchor="middle">PluginAuthGatekeeperMiddleware</tspan>
   </text>
   </g>
   <g id="F">
-    <rect x="221" y="454" width="240" height="68" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect x="214" y="927" width="240" height="74" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="341" y="476.9" text-anchor="middle">API is now blocked . All</tspan>
-    <tspan x="341" y="492.9" text-anchor="middle">requests will be rejected with</tspan>
-    <tspan x="341" y="508.9" text-anchor="middle">403 Forbidden .</tspan>
+    <tspan x="334" y="950.9" text-anchor="middle">API is now blocked . All</tspan>
+    <tspan x="334" y="968.9" text-anchor="middle">requests will be rejected with</tspan>
+    <tspan x="334" y="986.9" text-anchor="middle">403 Forbidden .</tspan>
   </text>
   </g>
   <g id="G">
-    <rect x="511" y="352" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect x="504" y="821" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="631" y="374.9" text-anchor="middle">Load configured custom auth</tspan>
-    <tspan x="631" y="390.9" text-anchor="middle">plugin</tspan>
+    <tspan x="624" y="844.9" text-anchor="middle">Load configured custom auth</tspan>
+    <tspan x="624" y="862.9" text-anchor="middle">plugin</tspan>
   </text>
   </g>
   <g id="H">
-    <rect x="511" y="462" width="240" height="52" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect x="504" y="936" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
-    <tspan x="631" y="484.9" text-anchor="middle">Add custom auth plugin to</tspan>
-    <tspan x="631" y="500.9" text-anchor="middle">middleware chain</tspan>
+    <tspan x="624" y="959.9" text-anchor="middle">Add custom auth plugin to</tspan>
+    <tspan x="624" y="977.9" text-anchor="middle">middleware chain</tspan>
   </text>
   </g>
 </svg>
