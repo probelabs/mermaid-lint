@@ -195,6 +195,18 @@ export class SVGRenderer implements IRenderer {
         break;
       }
 
+      case 'trapezoidAlt': {
+        const inset = node.width * 0.15;
+        const points = [
+          `${x},${y}`,                               // top-left (full width)
+          `${x + node.width},${y}`,                  // top-right
+          `${x + node.width - inset},${y + node.height}`, // bottom-right (narrow)
+          `${x + inset},${y + node.height}`          // bottom-left (narrow)
+        ].join(' ');
+        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        break;
+      }
+
       case 'cylinder': {
         // Scale the ellipse vertically based on node size
         const rx = Math.max(8, node.width / 2);

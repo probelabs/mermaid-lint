@@ -267,8 +267,12 @@ export class GraphBuilder {
           if ((first === 'ForwardSlash' && last === 'ForwardSlash') || (first === 'Backslash' && last === 'Backslash')) {
             shape = 'parallelogram';
             // Remove outer markers from the label later when extracting text
-          } else if ((first === 'ForwardSlash' && last === 'Backslash') || (first === 'Backslash' && last === 'ForwardSlash')) {
+          } else if (first === 'ForwardSlash' && last === 'Backslash') {
+            // [/text\] top narrow
             shape = 'trapezoid';
+          } else if (first === 'Backslash' && last === 'ForwardSlash') {
+            // [\text/] bottom narrow
+            shape = 'trapezoidAlt';
           }
         }
       }

@@ -50,7 +50,8 @@ export type NodeShape =
   | 'diamond'       // {text}
   | 'hexagon'       // {{text}}
   | 'parallelogram' // [/text/]
-  | 'trapezoid'     // [text\]
+  | 'trapezoid'     // [/text\] (top narrow)
+  | 'trapezoidAlt'  // [\text/] (bottom narrow)
   | 'double'        // [[[text]]]
   | 'subroutine';   // [[text]]
 
