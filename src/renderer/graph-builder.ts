@@ -360,27 +360,47 @@ export class GraphBuilder {
     const children = link.children;
     let type: ArrowType = 'arrow';
     let label: string | undefined;
+    let markerStart: 'none'|'arrow'|'circle'|'cross' = 'none';
+    let markerEnd: 'none'|'arrow'|'circle'|'cross' = 'none';
 
     // Determine arrow type
-    if (children?.ArrowRight || children?.ArrowLeft) {
-      type = 'arrow';
-    } else if (children?.DottedArrowRight || children?.DottedArrowLeft) {
-      type = 'dotted';
-    } else if (children?.ThickArrowRight || children?.ThickArrowLeft) {
-      type = 'thick';
-    } else if (children?.LinkRight || children?.LinkLeft) {
-      type = 'open';
-    } else if (children?.InvisibleLink) {
-      type = 'invisible';
-    }
+    if ((children as any).BiDirectionalArrow) {
+      type = 'arrow'; markerStart = 'arrow'; markerEnd = 'arrow';
+    } else if ((children as any).CircleEndLine) {
+      type = 'open'; markerStart = 'circle'; markerEnd = 'circle';
+    } else if ((children as any).CrossEndLine) {
+      type = 'open'; markerStart = 'cross'; markerEnd = 'cross';
+    } else if (children?.ArrowRight) { type = 'arrow'; markerEnd = 'arrow'; }
+    else if (children?.ArrowLeft) { type = 'arrow'; markerStart = 'arrow'; }
+    else if (children?.DottedArrowRight) { type = 'dotted'; markerEnd = 'arrow'; }
+    else if (children?.DottedArrowLeft) { type = 'dotted'; markerStart = 'arrow'; }
+    else if (children?.ThickArrowRight) { type = 'thick'; markerEnd = 'arrow'; }
+    else if (children?.ThickArrowLeft) { type = 'thick'; markerStart = 'arrow'; }
+    else if (children?.LinkRight || children?.LinkLeft || children?.Line || children?.TwoDashes || children?.DottedLine || children?.ThickLine) {
+      if (children?.DottedLine) type = 'dotted'; else if (children?.ThickLine) type = 'thick'; else type = 'open';
+    } else if (children?.InvisibleLink) { type = 'invisible'; }
 
-    // Extract link label
+    // Extract link label (priority: |text|, then inline text, then inline carrier)
     const textNode = children?.linkText?.[0] as CstNode | undefined;
     if (textNode) {
       label = this.extractTextContent(textNode);
+    } else if ((children as any).linkTextInline?.[0]) {
+      label = this.extractTextContent((children as any).linkTextInline[0] as CstNode);
+    } else if ((children as any).inlineCarrier?.[0]) {
+      const token = (children as any).inlineCarrier[0] as IToken;
+      let s = token.image.trim();
+      // Strip common carriers like '-.text.-', '==text==', '--text--'
+      const strip = (str: string): string => {
+        if ((str.startsWith('-.') && str.endsWith('.-')) || (str.startsWith('==') && str.endsWith('==')) || (str.startsWith('--') && str.endsWith('--'))) {
+          return str.slice(2, -2).trim();
+        }
+        return str;
+      };
+      s = strip(s);
+      label = s;
     }
 
-    return { type, label };
+    return { type, label, markerStart, markerEnd };
   }
 
   private processSubgraph(subgraph: CstNode) {
