@@ -1,0 +1,6 @@
+stateDiagram-v2
+state "Logged In" as S1
+S1 : User authenticated
+[*] --> S1 : login
+S1 --> [*] : logout
+

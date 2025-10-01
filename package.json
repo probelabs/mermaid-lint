@@ -56,7 +56,7 @@
     "test:compare:sequence": "node scripts/compare-linters.js sequence",
     "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.js \"$file\" || exit 1; done",
     "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
-    "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-invalid-preview.js pie && node scripts/generate-preview.js sequence && node scripts/generate-invalid-preview.js sequence",
+    "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-invalid-preview.js pie && node scripts/generate-preview.js sequence && node scripts/generate-invalid-preview.js sequence && node scripts/generate-preview.js class && node scripts/generate-invalid-preview.js class && node scripts/generate-preview.js state && node scripts/generate-invalid-preview.js state",
     "generate:previews:with-renderer": "npm run build && node scripts/generate-preview-with-renderer.js flowchart && node scripts/generate-preview-with-renderer.js pie && node scripts/generate-preview-with-renderer.js sequence",
     "generate:valid": "node scripts/generate-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-preview.js sequence",
     "generate:invalid": "node scripts/generate-invalid-preview.js flowchart && node scripts/generate-invalid-preview.js pie && node scripts/generate-invalid-preview.js sequence",

@@ -103,6 +103,18 @@ jobs:
       run: |
         echo "Comparing with official mermaid-cli (sequence)..."
         node scripts/compare-linters.js sequence || echo "Comparison completed with differences"
+
+    - name: Compare with mermaid-cli (class)
+      continue-on-error: true
+      run: |
+        echo "Comparing with official mermaid-cli (class)..."
+        node scripts/compare-linters.js class || echo "Comparison completed with differences"
+
+    - name: Compare with mermaid-cli (state)
+      continue-on-error: true
+      run: |
+        echo "Comparing with official mermaid-cli (state)..."
+        node scripts/compare-linters.js state || echo "Comparison completed with differences"
     
     - name: Summary
       if: always()
@@ -115,6 +127,10 @@ jobs:
         echo "- Pie invalid:      $(ls -1 test-fixtures/pie/invalid/*.mmd | wc -l)"
         echo "- Sequence valid:   $(ls -1 test-fixtures/sequence/valid/*.mmd | wc -l)"
         echo "- Sequence invalid: $(ls -1 test-fixtures/sequence/invalid/*.mmd | wc -l)"
+        echo "- Class valid:      $(ls -1 test-fixtures/class/valid/*.mmd | wc -l)"
+        echo "- Class invalid:    $(ls -1 test-fixtures/class/invalid/*.mmd | wc -l)"
+        echo "- State valid:      $(ls -1 test-fixtures/state/valid/*.mmd | wc -l)"
+        echo "- State invalid:    $(ls -1 test-fixtures/state/invalid/*.mmd | wc -l)"
 
   lint:
     runs-on: ubuntu-latest

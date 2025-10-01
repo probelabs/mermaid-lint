@@ -14,6 +14,8 @@ export { validate, detectDiagramType } from './core/router.js';
 export { validateFlowchart } from './diagrams/flowchart/validate.js';
 export { validatePie } from './diagrams/pie/validate.js';
 export { validateSequence } from './diagrams/sequence/validate.js';
+export { validateClass } from './diagrams/class/validate.js';
+export { validateState } from './diagrams/state/validate.js';
 
 // Markdown utilities
 export type { MermaidBlock } from './core/markdown.js';
@@ -55,4 +57,3 @@ export function fixText(text: string, options: Opts & { level?: FixLevel } = {})
   const finalRes = _validate(current, { strict });
   return { fixed: current, errors: finalRes.errors };
 }
-

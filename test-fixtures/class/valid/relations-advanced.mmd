@@ -1,0 +1,21 @@
+classDiagram
+class A
+class B
+class C
+class D
+class Client
+class IService
+class Impl
+
+A *--o B
+A o--* C
+A o--o D
+A *--* C
+Client --() IService
+IService ()-- Impl
+
+A "1" -- "many" B
+A "0..1" ..> "1" C
+
+%% dotted realization both ways (via ..|>)
+Client ..|> IService

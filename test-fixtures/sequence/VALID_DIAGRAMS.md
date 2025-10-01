@@ -37,16 +37,6 @@ This file contains all valid sequence test fixtures rendered with both Mermaid a
 
 📄 **Source**: [`activation-suffix.mmd`](./valid/activation-suffix.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant A
@@ -58,15 +48,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/activation-suffix.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -90,16 +71,6 @@ sequenceDiagram
 
 📄 **Source**: [`actors-and-aliases.mmd`](./valid/actors-and-aliases.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   actor Alice as A
@@ -109,15 +80,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/actors-and-aliases.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -139,16 +101,6 @@ sequenceDiagram
 
 📄 **Source**: [`alias-unclosed-quote.mmd`](./valid/alias-unclosed-quote.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant Alice as "Eve
@@ -156,15 +108,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/alias-unclosed-quote.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -184,16 +127,6 @@ sequenceDiagram
 
 📄 **Source**: [`alt-minimal.mmd`](./valid/alt-minimal.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   alt
@@ -204,15 +137,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/alt-minimal.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -235,16 +159,6 @@ sequenceDiagram
 
 📄 **Source**: [`autonumber-variants.mmd`](./valid/autonumber-variants.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   autonumber
@@ -258,15 +172,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/autonumber-variants.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -292,16 +197,6 @@ sequenceDiagram
 
 📄 **Source**: [`basic.mmd`](./valid/basic.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant Alice
@@ -310,15 +205,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/basic.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -339,16 +225,6 @@ sequenceDiagram
 
 📄 **Source**: [`bidir-and-async-arrows.mmd`](./valid/bidir-and-async-arrows.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant A
@@ -366,15 +242,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/bidir-and-async-arrows.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -404,16 +271,6 @@ sequenceDiagram
 
 📄 **Source**: [`blocks-alt-opt-loop.mmd`](./valid/blocks-alt-opt-loop.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant Alice
@@ -434,15 +291,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/blocks-alt-opt-loop.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -475,16 +323,6 @@ sequenceDiagram
 
 📄 **Source**: [`box-groups.mmd`](./valid/box-groups.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   box LightBlue System A
@@ -500,15 +338,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/box-groups.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -536,16 +365,6 @@ sequenceDiagram
 
 📄 **Source**: [`critical-break-rect.mmd`](./valid/critical-break-rect.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant DB
@@ -563,15 +382,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/critical-break-rect.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -601,16 +411,6 @@ sequenceDiagram
 
 📄 **Source**: [`links-and-menus.mmd`](./valid/links-and-menus.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant Bob
@@ -621,15 +421,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/links-and-menus.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -652,16 +443,6 @@ sequenceDiagram
 
 📄 **Source**: [`notes.mmd`](./valid/notes.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant Alice
@@ -672,15 +453,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/notes.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -703,16 +475,6 @@ sequenceDiagram
 
 📄 **Source**: [`par-and.mmd`](./valid/par-and.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant Frontend as FE
@@ -725,15 +487,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/par-and.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -758,16 +511,6 @@ sequenceDiagram
 
 📄 **Source**: [`par-minimal.mmd`](./valid/par-minimal.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   par
@@ -778,15 +521,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/par-minimal.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -809,16 +543,6 @@ sequenceDiagram
 
 📄 **Source**: [`participant-double-in-double.mmd`](./valid/participant-double-in-double.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant "Logger "debug"" as L
@@ -826,15 +550,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/participant-double-in-double.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -854,16 +569,6 @@ sequenceDiagram
 
 📄 **Source**: [`participant-escaped-quotes.mmd`](./valid/participant-escaped-quotes.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant "Logger \"debug\"" as L
@@ -871,15 +576,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/participant-escaped-quotes.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -899,16 +595,6 @@ sequenceDiagram
 
 📄 **Source**: [`participant-unclosed-quote.mmd`](./valid/participant-unclosed-quote.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 sequenceDiagram
   participant "Bob
@@ -916,15 +602,6 @@ sequenceDiagram
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/participant-unclosed-quote.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -942,12 +619,11 @@ sequenceDiagram
 
 ## Validation Status
 
-All diagrams in this file have been validated against:
-- ✅ Our Mermaid linter
-- ✅ Official mermaid-cli
-- ✅ GitHub's Mermaid renderer
+All diagrams in this file are expected VALID. During generation we verify each with both tools.
+- ✅ maid (our validator)
+- ✅ mermaid-cli (official)
 
-Generated by scripts/generate-preview.js (deterministic output)
+Generated by scripts/generate-preview.js (deterministic output; fails on mismatches)
 
 ## How to Regenerate
 

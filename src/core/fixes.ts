@@ -20,6 +20,36 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
       continue;
     }
+    if (is('CL-NAME-DOUBLE-QUOTED', e)) {
+      // Safer transform:
+      // - If alias present: class "Label" as ID  => class ID["Label"]
+      // - Else: class "Label" => class `Label`
+      const lineText = lineTextAt(text, e.line);
+      const kwIdx = lineText.indexOf('class');
+      const startSearch = kwIdx >= 0 ? kwIdx + 5 : 0;
+      const q1 = lineText.indexOf('"', startSearch);
+      if (q1 !== -1) {
+        const asIdx = lineText.indexOf(' as ', q1 + 1);
+        const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+        if (q2 > q1) {
+          if (asIdx !== -1) {
+            // Extract label text and build a double-quoted label with &quot; for inner quotes
+            const innerLbl = lineText.slice(q1 + 1, q2);
+            const dblQuoted = '"' + innerLbl.replace(/\"/g, '"').replace(/"/g, '&quot;') + '"';
+            // Build: class <alias>["..."] (remove the quoted name and 'as')
+            const alias = lineText.slice(asIdx + 4).trim();
+            const before = lineText.slice(0, startSearch).trimEnd();
+            const newLine = `${before} ${alias}[${dblQuoted}]`;
+            edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
+          } else {
+            // No alias: switch to backticks around name
+            edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, 1, '`'));
+            edits.push(replaceRange(text, { line: e.line, column: q2 + 1 }, 1, '`'));
+          }
+        }
+      }
+      continue;
+    }
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
@@ -323,6 +353,21 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(insertAt(text, at(e), ' : '));
       continue;
     }
+    if (is('PI-LABEL-DOUBLE-IN-DOUBLE', e)) {
+      // Replace inner double quotes inside a double-quoted label (before the colon)
+      const lineText = lineTextAt(text, e.line);
+      const q1 = lineText.indexOf('"');
+      const colon = lineText.indexOf(':');
+      const q2 = colon !== -1 ? lineText.lastIndexOf('"', colon - 1) : lineText.lastIndexOf('"');
+      if (q1 !== -1 && q2 !== -1 && q2 > q1) {
+        const inner = lineText.slice(q1 + 1, q2);
+        const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+        if (replaced !== inner) {
+          edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
+        }
+      }
+      continue;
+    }
     if (is('PI-LABEL-REQUIRES-QUOTES', e)) {
       // Wrap label before colon
       const lineText = lineTextAt(text, e.line);
@@ -514,6 +559,142 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         const lineText = lineTextAt(text, e.line);
         const insertCol = lineText.length + 1;
         edits.push(insertAt(text, { line: e.line, column: insertCol }, '"'));
+      }
+      continue;
+    }
+
+    // State fixes
+    if (is('ST-ARROW-INVALID', e)) {
+      // Replace '->' with '-->' at caret
+      edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
+      continue;
+    }
+    if (is('ST-NOTE-MALFORMED', e)) {
+      // Normalize to: 'Note <left|right> of <target> : <text>' (convert 'over' to 'right')
+      // and ensure the target state exists before the note by inserting a stub if needed.
+      const lines = text.split(/\r?\n/);
+      const raw = lineTextAt(text, e.line);
+      const mLeft = /^(\s*)Note\s+(left|right)\s+of\s+([^:]+?)\s+(.+)$/.exec(raw);
+      const mOver = /^(\s*)Note\s+over\s+([^:]+?)\s+(.+)$/.exec(raw);
+      let indent = '';
+      let dir = 'right';
+      let target = '';
+      let rest = '';
+      if (mLeft) {
+        indent = mLeft[1] || '';
+        dir = (mLeft[2] || 'right').toLowerCase();
+        target = (mLeft[3] || '').trim();
+        rest = (mLeft[4] || '').trim();
+      } else if (mOver) {
+        indent = mOver[1] || '';
+        dir = 'right';
+        const targets = (mOver[2] || '').split(',').map(s => s.trim()).filter(Boolean);
+        target = targets[0] || '';
+        rest = (mOver[3] || '').trim();
+      }
+      if (target) {
+        const newLine = `${indent}Note ${dir} of ${target} : ${rest}`;
+        const upper = lines.slice(0, Math.max(0, e.line - 1)).join('\n');
+        const seenEarlier = new RegExp(`(^|\n|\b)${target}(\b)`).test(upper);
+        if (seenEarlier) {
+          // Replace in place
+          edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: raw.length + 1 }, newText: newLine });
+        } else {
+          // Move note after the next line that mentions the target; else to EOF
+          let afterLine = lines.length + 1;
+          for (let i = e.line; i < lines.length; i++) {
+            const ln = lines[i] || '';
+            if (new RegExp(`(^|\\b)${target}(\\b)`).test(ln)) { afterLine = i + 2; break; }
+          }
+          // Delete current note line and insert new note after the found line
+          edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
+          edits.push(insertAt(text, { line: afterLine, column: 1 }, newLine + '\n'));
+        }
+      } else {
+        // Fallback: just insert the colon after detected header
+        const mHdr = /^(\s*Note\s+(?:left|right)\s+of\s+[^:]+|\s*Note\s+over\s+[^:]+)/i.exec(raw);
+        const col = (mHdr ? (mHdr[0] || '').length + 1 : e.column);
+        edits.push(insertAt(text, { line: e.line, column: col }, ' : '));
+      }
+      continue;
+    }
+    if (is('ST-BLOCK-MISSING-RBRACE', e)) {
+      // Insert '}' aligned with the opening 'state' and before next outdented line
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      const openerRe = /^(\s*)state\b/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}}\n`));
+        continue;
+      }
+      let insIdx = lines.length;
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      edits.push(insertAt(text, { line: insIdx + 1, column: 1 }, `${openIndent}}\n`));
+      continue;
+    }
+
+    // Class fixes
+    if (is('CL-REL-INVALID', e)) {
+      // Replace first occurrence of '->' on the line with '--'
+      const lineText = lineTextAt(text, e.line);
+      const idx = lineText.indexOf('->');
+      if (idx >= 0) {
+        edits.push({ start: { line: e.line, column: idx + 1 }, end: { line: e.line, column: idx + 3 }, newText: '--' });
+      }
+      continue;
+    }
+    if (is('CL-BLOCK-MISSING-RBRACE', e)) {
+      // Insert '}' aligned with 'class X {'
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      const openerRe = /^(\s*)class\b.*\{\s*$/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}}\n`));
+        continue;
+      }
+      let insIdx = lines.length;
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      edits.push(insertAt(text, { line: insIdx + 1, column: 1 }, `${openIndent}}\n`));
+      continue;
+    }
+    if (is('CL-LABEL-DOUBLE-IN-DOUBLE', e)) {
+      // Replace inner quotes within the quoted class name (before optional ' as ')
+      const lineText = lineTextAt(text, e.line);
+      const q1 = lineText.indexOf('"');
+      if (q1 !== -1) {
+        const asIdx = lineText.indexOf(' as ', q1 + 1);
+        const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+        if (q2 > q1) {
+          const inner = lineText.slice(q1 + 1, q2);
+          const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+          if (replaced !== inner) {
+            edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
+          }
+        }
+      } else {
+        edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
       }
       continue;
     }

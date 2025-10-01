@@ -1,0 +1,11 @@
+stateDiagram-v2
+direction LR
+state Auth {
+  [*] --> Login
+  Login --> MFA : code
+  MFA --> Success
+}
+[*] --> Auth
+Auth --> [*]
+Note right of Auth: Handles user auth
+Note right of MFA: One-time code

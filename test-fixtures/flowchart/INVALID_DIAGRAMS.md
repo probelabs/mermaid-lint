@@ -9,24 +9,23 @@ This file contains invalid flowchart test fixtures with:
 
 ## Table of Contents
 
-1. [Empty Diagram](#1-empty-diagram)
-2. [Empty Nodes](#2-empty-nodes)
-3. [Escaped Quotes In Decision](#3-escaped-quotes-in-decision)
-4. [Invalid Arrow](#4-invalid-arrow)
-5. [Invalid Class](#5-invalid-class)
-6. [Invalid Node Syntax](#6-invalid-node-syntax)
-7. [Invalid Subgraph](#7-invalid-subgraph)
-8. [Missing Arrow](#8-missing-arrow)
-9. [Mixed Brackets](#9-mixed-brackets)
-10. [No Diagram Type](#10-no-diagram-type)
-11. [Quotes Double Inside Single](#11-quotes-double-inside-single)
-12. [Special Chars](#12-special-chars)
-13. [Unclosed Bracket](#13-unclosed-bracket)
-14. [Unclosed Quote In Label](#14-unclosed-quote-in-label)
-15. [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision)
-16. [Unmatched End](#16-unmatched-end)
-17. [Unquoted Label With Quotes](#17-unquoted-label-with-quotes)
-18. [Wrong Direction](#18-wrong-direction)
+1. [Empty Nodes](#1-empty-nodes)
+2. [Escaped Quotes In Decision](#2-escaped-quotes-in-decision)
+3. [Invalid Arrow](#3-invalid-arrow)
+4. [Invalid Class](#4-invalid-class)
+5. [Invalid Node Syntax](#5-invalid-node-syntax)
+6. [Invalid Subgraph](#6-invalid-subgraph)
+7. [Missing Arrow](#7-missing-arrow)
+8. [Mixed Brackets](#8-mixed-brackets)
+9. [No Diagram Type](#9-no-diagram-type)
+10. [Quotes Double Inside Single](#10-quotes-double-inside-single)
+11. [Special Chars](#11-special-chars)
+12. [Unclosed Bracket](#12-unclosed-bracket)
+13. [Unclosed Quote In Label](#13-unclosed-quote-in-label)
+14. [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision)
+15. [Unmatched End](#15-unmatched-end)
+16. [Unquoted Label With Quotes](#16-unquoted-label-with-quotes)
+17. [Wrong Direction](#17-wrong-direction)
 
 ---
 
@@ -34,64 +33,27 @@ This file contains invalid flowchart test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [Empty Diagram](#1-empty-diagram) | VALID | VALID | — |
-| 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID | ✅ safe |
-| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID | — |
-| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
-| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
-| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
-| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
-| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 12 | [Special Chars](#12-special-chars) | INVALID | INVALID | ✅ safe |
-| 13 | [Unclosed Bracket](#13-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 14 | [Unclosed Quote In Label](#14-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 15 | [Unescaped Quotes In Decision](#15-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 16 | [Unmatched End](#16-unmatched-end) | INVALID | INVALID | — |
-| 17 | [Unquoted Label With Quotes](#17-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 18 | [Wrong Direction](#18-wrong-direction) | INVALID | INVALID | — |
+| 1 | [Empty Nodes](#1-empty-nodes) | INVALID | INVALID | ✅ safe |
+| 2 | [Escaped Quotes In Decision](#2-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 3 | [Invalid Arrow](#3-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 4 | [Invalid Class](#4-invalid-class) | INVALID | INVALID | — |
+| 5 | [Invalid Node Syntax](#5-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
+| 6 | [Invalid Subgraph](#6-invalid-subgraph) | INVALID | INVALID | — |
+| 7 | [Missing Arrow](#7-missing-arrow) | INVALID | INVALID | ✅ all |
+| 8 | [Mixed Brackets](#8-mixed-brackets) | INVALID | INVALID | ✅ safe |
+| 9 | [No Diagram Type](#9-no-diagram-type) | INVALID | INVALID | — |
+| 10 | [Quotes Double Inside Single](#10-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
+| 11 | [Special Chars](#11-special-chars) | INVALID | INVALID | ✅ safe |
+| 12 | [Unclosed Bracket](#12-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 13 | [Unclosed Quote In Label](#13-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 14 | [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 15 | [Unmatched End](#15-unmatched-end) | INVALID | INVALID | — |
+| 16 | [Unquoted Label With Quotes](#16-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 17 | [Wrong Direction](#17-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
-## 1. Empty Diagram
-
-📄 **Source**: [`empty-diagram.mmd`](./invalid/empty-diagram.mmd)
-
-❌ **Error**: Diagram must contain at least one statement after declaration.
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-flowchart TD
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: VALID
-
-### maid Auto-fix (`--fix`) Preview
-
-No auto-fix changes (safe level).
-
-### maid Auto-fix (`--fix=all`) Preview
-
-No auto-fix changes (all level).
-
-<details>
-<summary>View source code</summary>
-
-```
-flowchart TD
-```
-</details>
-
----
-
-## 2. Empty Nodes
+## 1. Empty Nodes
 
 📄 **Source**: [`empty-nodes.mmd`](./invalid/empty-nodes.mmd)
 
@@ -162,11 +124,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A --> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -180,7 +138,7 @@ flowchart TD
 
 ---
 
-## 3. Escaped Quotes In Decision
+## 2. Escaped Quotes In Decision
 
 📄 **Source**: [`escaped-quotes-in-decision.mmd`](./invalid/escaped-quotes-in-decision.mmd)
 
@@ -256,17 +214,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
-        direction TB
-        A[Start processing API definition] --> B{Custom Auth Enabled?}
-        B -- No --> C[Continue with other auth methods]
-        B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
-        B -- Yes --> E{"Is &quot;Driver&quot; configured?"}
-    end
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -286,7 +234,7 @@ flowchart TD
 
 ---
 
-## 4. Invalid Arrow
+## 3. Invalid Arrow
 
 📄 **Source**: [`invalid-arrow.mmd`](./invalid/invalid-arrow.mmd)
 
@@ -344,11 +292,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A --> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -362,7 +306,7 @@ flowchart TD
 
 ---
 
-## 5. Invalid Class
+## 4. Invalid Class
 
 📄 **Source**: [`invalid-class.mmd`](./invalid/invalid-class.mmd)
 
@@ -429,7 +373,7 @@ flowchart TD
 
 ---
 
-## 6. Invalid Node Syntax
+## 5. Invalid Node Syntax
 
 📄 **Source**: [`invalid-node-syntax.mmd`](./invalid/invalid-node-syntax.mmd)
 
@@ -487,11 +431,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A(( ))--> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -505,7 +445,7 @@ flowchart TD
 
 ---
 
-## 7. Invalid Subgraph
+## 6. Invalid Subgraph
 
 📄 **Source**: [`invalid-subgraph.mmd`](./invalid/invalid-subgraph.mmd)
 
@@ -572,7 +512,7 @@ flowchart TD
 
 ---
 
-## 8. Missing Arrow
+## 7. Missing Arrow
 
 📄 **Source**: [`missing-arrow.mmd`](./invalid/missing-arrow.mmd)
 
@@ -640,7 +580,7 @@ flowchart TD
 
 ---
 
-## 9. Mixed Brackets
+## 8. Mixed Brackets
 
 📄 **Source**: [`mixed-brackets.mmd`](./invalid/mixed-brackets.mmd)
 
@@ -706,15 +646,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-    A[Text] --> B[Text]
-    B --> C
-    X{{Hexagon}}
-    S([Stadium])
-    Y[(Cylinder)]
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -732,7 +664,7 @@ flowchart LR
 
 ---
 
-## 10. No Diagram Type
+## 9. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -768,12 +700,12 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
 ### maid Result: INVALID
 
 ```
-error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", or "sequenceDiagram"
+error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", "sequenceDiagram", "classDiagram" or "stateDiagram[-v2]"
 at test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1
   1 | A --> B
     | ^
   2 | B --> C
-hint: Start your diagram with e.g. "flowchart TD", "pie", or "sequenceDiagram".
+hint: Start with: flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2.
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -795,7 +727,7 @@ B --> C
 
 ---
 
-## 11. Quotes Double Inside Single
+## 10. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -853,12 +785,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-  A['She said &quot;Hello&quot;'] --> B
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -873,7 +800,7 @@ flowchart LR
 
 ---
 
-## 12. Special Chars
+## 11. Special Chars
 
 📄 **Source**: [`special-chars.mmd`](./invalid/special-chars.mmd)
 
@@ -937,14 +864,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
-    B --> C[Node with #35; special &amp; chars]
-    C --> D["Multi
-    line
-    text"]
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -961,7 +881,7 @@ flowchart LR
 
 ---
 
-## 13. Unclosed Bracket
+## 12. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -1019,11 +939,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-    A[Start ]--> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -1037,7 +953,7 @@ flowchart LR
 
 ---
 
-## 14. Unclosed Quote In Label
+## 13. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -1113,7 +1029,7 @@ flowchart TD
 
 ---
 
-## 15. Unescaped Quotes In Decision
+## 14. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -1173,13 +1089,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A[Start] --> B{Custom Auth Enabled?}
-    B -- Yes --> C{"Is &quot;Driver&quot; configured?"}
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -1195,7 +1105,7 @@ flowchart TD
 
 ---
 
-## 16. Unmatched End
+## 15. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1262,7 +1172,7 @@ flowchart TD
 
 ---
 
-## 17. Unquoted Label With Quotes
+## 16. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -1350,26 +1260,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
-    B -- Yes --> C[Configure Logger: Level = DEBUG];
-    B -- No --> D[Configure Logger: Level = INFO];
-    
-    subgraph "Runtime Execution"
-        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
-        F --> G{Logger: Is current level DEBUG?};
-        G -- Yes --> H[Format and write message to stderr];
-        G -- No --> I[Discard message];
-    end
-
-    C --> E;
-    D --> E;
-    H --> J[End];
-    I --> J[End];
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -1398,7 +1289,7 @@ flowchart TD
 
 ---
 
-## 18. Wrong Direction
+## 17. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 

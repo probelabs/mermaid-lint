@@ -10,6 +10,19 @@ export function groupErrors(errors: ValidationError[]) {
 
 export function textReport(filename: string, content: string, errors: ValidationError[]): string {
   const { errs, warns } = groupErrors(errors);
+  // Suppress generic parser errors when a coded error exists on the same line (or very close)
+  const filteredErrs: ValidationError[] = [];
+  const codedLines = new Set(errs.filter(e => !!e.code).map(e => e.line));
+  for (const e of errs) {
+    if (!e.code) {
+      // Drop any uncoded error on a line that already has at least one coded error
+      if (codedLines.has(e.line)) continue;
+      // Also drop if a coded error is within a couple of columns (legacy proximity rule)
+      const nearby = errs.find(o => o !== e && !!o.code && o.line === e.line && Math.abs((o.column || 1) - (e.column || 1)) <= 2);
+      if (nearby) continue;
+    }
+    filteredErrs.push(e);
+  }
   const lines: string[] = [];
   const printBlock = (kind: 'error' | 'warning', e: ValidationError) => {
     const kindColor = kind === 'error' ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarning\x1b[0m';
@@ -25,19 +38,25 @@ export function textReport(filename: string, content: string, errors: Validation
     const text = allLines[idx] ?? '';
     const next = idx + 1 < allLines.length ? allLines[idx + 1] : undefined;
 
-    // Special snippet for missing 'end' in blocks: include the block header line
-    if (e.code === 'SE-BLOCK-MISSING-END' || e.code === 'SE-ELSE-IN-CRITICAL') {
+    // Special snippets for structural insertions: show header context and explicit insertion line
+    if (e.code === 'SE-BLOCK-MISSING-END' || e.code === 'SE-ELSE-IN-CRITICAL' || e.code === 'CL-BLOCK-MISSING-RBRACE' || e.code === 'ST-BLOCK-MISSING-RBRACE') {
       // Find nearest block header upwards
-      const headerRe = /^(?:\s*)(alt|opt|loop|par|rect|critical|break|box)\b/i;
+      const headerRe = e.code?.startsWith('CL-')
+        ? /^(?:\s*)class\b.*\{\s*$/i
+        : e.code?.startsWith('ST-')
+          ? /^(?:\s*)state\b.*\{\s*$/i
+          : /^(?:\s*)(alt|opt|loop|par|rect|critical|break|box)\b/i;
       let headerIdx = -1;
       for (let i = idx; i >= 0 && i >= idx - 100; i--) {
         if (headerRe.test(allLines[i] ?? '')) { headerIdx = i; break; }
       }
-      let blockName = 'block';
-      const m1 = /Missing 'end' to close a '([^']+)' block\./.exec(e.message || '');
-      if (m1 && m1[1]) blockName = m1[1];
-      const m2 = /inside a '([^']+)' block/.exec(e.message || '');
-      if (m2 && m2[1]) blockName = m2[1];
+      let blockName = e.code?.startsWith('CL-') ? 'class' : (e.code?.startsWith('ST-') ? 'state' : 'block');
+      if (!e.code?.startsWith('CL-') && !e.code?.startsWith('ST-')) {
+        const m1 = /Missing 'end' to close a '([^']+)' block\./.exec(e.message || '');
+        if (m1 && m1[1]) blockName = m1[1];
+        const m2 = /inside a '([^']+)' block/.exec(e.message || '');
+        if (m2 && m2[1]) blockName = m2[1];
+      }
       if (headerIdx >= 0) {
         const headerNo = headerIdx + 1;
         lines.push(`  ${fmtNum(headerNo)} | ${allLines[headerIdx]}  \x1b[2m\u2190 start of '${blockName}'\x1b[0m`);
@@ -50,14 +69,15 @@ export function textReport(filename: string, content: string, errors: Validation
       }
       const lineNo = idx + 1;
       lines.push(`  ${fmtNum(lineNo)} | ${text}`);
-      // For both cases, show explicit suggested 'end' insertion line.
+      // For both cases, show explicit suggested insertion line.
       let nextContentIdx = -1;
       for (let i = idx + 1; i < allLines.length; i++) {
         if ((allLines[i] ?? '').trim() !== '') { nextContentIdx = i; break; }
       }
       const insertionLine = (nextContentIdx >= 0) ? (nextContentIdx + 1) : (lineNo + 1);
       const indent = (text.match(/^\s*/)?.[0] ?? '');
-      lines.push(`  ${fmtNum(insertionLine)} | ${indent}end  \x1b[2m\u2190 insert 'end' here\x1b[0m`);
+      const insertToken = e.code?.startsWith('CL-') || e.code === 'ST-BLOCK-MISSING-RBRACE' ? '}' : 'end';
+      lines.push(`  ${fmtNum(insertionLine)} | ${indent}${insertToken}  \x1b[2m\u2190 insert '${insertToken}' here\x1b[0m`);
       // Skip printing next to keep the snippet tight and focused
     } else {
       if (typeof prev === 'string') lines.push(`  ${fmtNum(e.line - 1)} | ${prev}`);
@@ -82,9 +102,9 @@ export function textReport(filename: string, content: string, errors: Validation
     lines.push('');
   };
 
-  for (const e of errs) printBlock('error', e);
+  for (const e of filteredErrs) printBlock('error', e);
   for (const w of warns) printBlock('warning', w);
-  if (errs.length === 0 && warns.length === 0) return 'Valid';
+  if (filteredErrs.length === 0 && warns.length === 0) return 'Valid';
   return lines.join('\n');
 }
 

@@ -8,7 +8,7 @@ export interface ValidationError {
   length?: number;
 }
 
-export type DiagramType = 'flowchart' | 'pie' | 'sequence' | 'unknown';
+export type DiagramType = 'flowchart' | 'pie' | 'sequence' | 'class' | 'state' | 'unknown';
 
 export interface ValidateOptions {
   strict?: boolean;

@@ -1,0 +1,10 @@
+classDiagram
+direction LR
+class IService as ServiceInterface
+class ServiceInterface {
+  <<Interface>>
+}
+class Service {
+  +doWork(task: string): void
+}
+ServiceInterface ..|> Service : implements

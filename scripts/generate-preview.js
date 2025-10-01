@@ -4,10 +4,82 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
-import { renderMermaid } from '../out/renderer/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function runMermaidCli(filepath) {
+  const outSvg = `/tmp/mermaid-cli-${path.basename(filepath)}.svg`;
+  try {
+    const puppeteerCfg = path.resolve(__dirname, 'puppeteer-ci.json');
+    const pFlag = fs.existsSync(puppeteerCfg) ? ` -p "${puppeteerCfg}"` : '';
+    execSync(`npx @mermaid-js/mermaid-cli${pFlag} -i "${filepath}" -o "${outSvg}"`, {
+      stdio: 'pipe',
+      encoding: 'utf8',
+      timeout: 12000,
+    });
+  } catch (error) {
+    const raw = (error.stderr || error.stdout || error.message || '').toString();
+    const msg = sanitizeMermaidMessage(raw);
+    try { fs.unlinkSync(outSvg); } catch {}
+    return { valid: false, message: msg.trim() || 'INVALID (no message)' };
+  }
+
+  // Inspect SVG even on 0 exit code; mermaid-cli can render an error page
+  try {
+    const svg = fs.readFileSync(outSvg, 'utf8');
+    const isError = /aria-roledescription\s*=\s*"error"/.test(svg) || /class=\"error-text\"/.test(svg);
+    if (isError) {
+      const texts = Array.from(svg.matchAll(/<text[^>]*class=\"error-text\"[^>]*>([^<]*)<\/text>/g)).map(m => m[1].trim()).filter(Boolean);
+      const message = texts[0] || 'Syntax error (from mermaid-cli error SVG)';
+      try { fs.unlinkSync(outSvg); } catch {}
+      return { valid: false, message };
+    }
+    try { fs.unlinkSync(outSvg); } catch {}
+    return { valid: true, message: 'VALID' };
+  } catch {
+    try { fs.unlinkSync(outSvg); } catch {}
+    return { valid: false, message: 'INVALID (could not read output SVG)' };
+  }
+}
+
+function runOurLinter(filepath) {
+  try {
+    const out = execSync(`node ./out/cli.js "${filepath}"`, {
+      stdio: 'pipe',
+      encoding: 'utf8',
+      cwd: path.resolve(__dirname, '..'),
+      timeout: 8000,
+    });
+    return { valid: true, message: stripAnsi(out.trim() || 'VALID') };
+  } catch (error) {
+    const raw = ((error.stdout || '') + (error.stderr || '')).toString();
+    const repoRoot = path.resolve(__dirname, '..');
+    const msg = stripAnsi(raw)
+      .replaceAll(repoRoot + '/', '')
+      .replaceAll(repoRoot + '\\', '')
+      .trim();
+    return { valid: false, message: msg || 'INVALID (no message)' };
+  }
+}
+
+function stripAnsi(input) {
+  if (!input) return input;
+  return input.replace(/\u001b\[[0-?]*[ -\/]*[@-~]/g, '');
+}
+
+function sanitizeMermaidMessage(input) {
+  if (!input) return input;
+  let out = input;
+  out = out.replace(/file:\/\/[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  out = out.replace(/\/(?:[A-Za-z]:)?[^\s)]+node_modules\/(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  out = out.replace(/file:\/\/[A-Za-z]:\\[^\s)]+node_modules\\(.*?):(\d+):(\d+)/g, 'node_modules/$1:$2:$3');
+  out = out
+    .split(/\r?\n/)
+    .filter((line) => !/\s+at\s+.*\(node:internal\//.test(line))
+    .join('\n');
+  return out;
+}
 
 function generateMarkdownPreview(diagramType = 'flowchart') {
   const fixturesDir = path.resolve(__dirname, '..', 'test-fixtures', diagramType);
@@ -48,15 +120,33 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
   
   markdown += `\n---\n\n`;
   
-  // Generate diagram sections
+  // Generate diagram sections (and verify with both mermaid-cli and maid)
+  const repoRoot = path.resolve(__dirname, '..');
+  const mismatches = [];
+  const compatGaps = []; // mermaid-cli VALID but maid INVALID
+
   validFiles.forEach((file, index) => {
     const filePath = path.join(validDir, file);
+    const relPath = path.relative(repoRoot, filePath);
     const content = fs.readFileSync(filePath, 'utf-8');
     const name = file.replace('.mmd', '').replace(/-/g, ' ');
     const title = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    
+
     markdown += `## ${index + 1}. ${title}\n\n`;
     markdown += `📄 **Source**: [\`${file}\`](./valid/${file})\n\n`;
+
+    const mermaidRes = runMermaidCli(relPath);
+    const ourRes = runOurLinter(relPath);
+    if (!mermaidRes.valid) {
+      mismatches.push({ file, type: 'VALID', tool: 'mermaid-cli', message: mermaidRes.message });
+    }
+    if (!ourRes.valid) {
+      mismatches.push({ file, type: 'VALID', tool: 'maid', message: ourRes.message.split('\n')[0] });
+    }
+    if (mermaidRes.valid && !ourRes.valid) {
+      const firstLine = (ourRes.message || '').split('\n')[0] || 'INVALID (no message)';
+      compatGaps.push({ file, reason: firstLine });
+    }
     
     // Add description based on filename
     const descriptions = {
@@ -88,43 +178,12 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
     if (descriptions[key]) {
       markdown += `> ${descriptions[key]}\n\n`;
     }
-    
-    // Add tabs for comparing renderers
-    markdown += `### Rendered Output\n\n`;
-    markdown += `<table>\n<tr>\n`;
-    markdown += `<th width="50%">Mermaid (Official)</th>\n`;
-    markdown += `<th width="50%">Maid (Experimental)</th>\n`;
-    markdown += `</tr>\n<tr>\n<td>\n\n`;
+    // Mermaid diagram
+    markdown += `\`\`\`mermaid
+${content}
+\`\`\`
 
-    // Mermaid diagram (GitHub will render this)
-    markdown += `\`\`\`mermaid\n${content}\n\`\`\`\n\n`;
-    markdown += `</td>\n<td>\n\n`;
-
-    // Our renderer output
-    try {
-      const result = renderMermaid(content);
-      if (result && result.svg) {
-        // Create rendered directory if it doesn't exist
-        const renderedDir = path.join(fixturesDir, 'rendered');
-        if (!fs.existsSync(renderedDir)) {
-          fs.mkdirSync(renderedDir, { recursive: true });
-        }
-
-        // Save SVG file
-        const svgFile = file.replace('.mmd', '.svg');
-        const svgPath = path.join(renderedDir, svgFile);
-        fs.writeFileSync(svgPath, result.svg);
-
-        // Use HTML img tag to reference the SVG file
-        markdown += `<img src="./rendered/${svgFile}" alt="Maid Rendered Diagram" />\n\n`;
-      } else {
-        markdown += `<sub>⚠️ Rendering not yet implemented for this diagram type</sub>\n\n`;
-      }
-    } catch (error) {
-      markdown += `<sub>❌ Rendering failed: ${error.message}</sub>\n\n`;
-    }
-
-    markdown += `</td>\n</tr>\n</table>\n\n`;
+`;
 
     // Add collapsible source code section
     markdown += `<details>\n`;
@@ -135,15 +194,21 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
     markdown += `---\n\n`;
   });
   
+  // Inject compatibility gaps section if any
+  if (compatGaps.length) {
+    markdown += `## Compatibility Gaps (Mermaid OK, maid not yet)\n\n`;
+    markdown += `These fixtures render successfully with mermaid-cli but currently fail in maid. Use this list to track parser gaps.\n\n`;
+    compatGaps.forEach(({ file, reason }, i) => {
+      const base = file.replace('.mmd', '');
+      const anchor = `#${validFiles.indexOf(file) + 1}-${base.toLowerCase()}`;
+      markdown += `- [${file}](${anchor}) — ${reason}\n`;
+    });
+    markdown += `\n---\n\n`;
+  }
+
   // Add footer
   markdown += `## Validation Status
-
-All diagrams in this file have been validated against:
-- ✅ Our Mermaid linter
-- ✅ Official mermaid-cli
-- ✅ GitHub's Mermaid renderer
-
-Generated by scripts/generate-preview.js (deterministic output)
+\nAll diagrams in this file are expected VALID. During generation we verify each with both tools.\n- ✅ maid (our validator)\n- ✅ mermaid-cli (official)\n\nGenerated by scripts/generate-preview.js (deterministic output; fails on mismatches)
 
 ## How to Regenerate
 
@@ -152,7 +217,7 @@ node scripts/generate-preview.js ${diagramType}
 \`\`\`
 `;
   
-  return markdown;
+  return { markdown, mismatches, compatGaps };
 }
 
 function main() {
@@ -161,12 +226,24 @@ function main() {
   
   console.log(`Generating preview for ${diagramType} diagrams...`);
   
-  const markdown = generateMarkdownPreview(diagramType);
+  const { markdown, mismatches, compatGaps } = generateMarkdownPreview(diagramType);
   
   fs.writeFileSync(outputPath, markdown);
+  // Persist gaps to a small JSON for CI/history
+  try {
+    const gapsPath = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'compat-gaps.json');
+    fs.writeFileSync(gapsPath, JSON.stringify({ diagramType, items: compatGaps }, null, 2));
+  } catch {}
   
   console.log(`✅ Generated preview at: ${outputPath}`);
   console.log(`📊 Total valid diagrams: ${markdown.match(/```mermaid/g).length}`);
+  if (mismatches.length) {
+    console.error(`\n❌ Found ${mismatches.length} classification mismatch(es) in '${diagramType}/valid':`);
+    mismatches.forEach((m) => {
+      console.error(` - ${m.file}: expected VALID, but ${m.tool} says INVALID${m.message ? ` — ${m.message.split('\n')[0]}` : ''}`);
+    });
+    process.exit(1);
+  }
 }
 
 main();

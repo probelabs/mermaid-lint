@@ -152,6 +152,14 @@ const cases = [
   { name: 'SE-QUOTE-UNCLOSED (all)', before: 'sequenceDiagram\nparticipant "Bob\n', afterLevel: 'all' },
   { name: 'SE-LABEL-ESCAPED-QUOTE', before: 'sequenceDiagram\nparticipant "Logger \\"debug\\"" as L\n' },
   // SE-LABEL-DOUBLE-IN-DOUBLE is intentionally not auto-fixed (unsafe single-char rewrite).
+  // State (safe)
+  { name: 'ST-ARROW-INVALID', before: 'stateDiagram-v2\nA -> B : go\n', after: 'stateDiagram-v2\nA --> B : go\n' },
+  { name: 'ST-NOTE-MALFORMED', before: 'stateDiagram-v2\nNote right of A Hello\n', after: 'stateDiagram-v2\nNote right of A : Hello\n' },
+  { name: 'ST-BLOCK-MISSING-RBRACE', before: 'stateDiagram-v2\nstate Foo {\n  A --> B\n', afterLevel: 'safe' },
+  // Class (safe)
+  { name: 'CL-REL-INVALID', before: 'classDiagram\nA -> B : rel\n', after: 'classDiagram\nA -- B : rel\n' },
+  { name: 'CL-BLOCK-MISSING-RBRACE', before: 'classDiagram\nclass Foo {\n  +bar()\n', afterLevel: 'safe' },
+  { name: 'CL-NAME-DOUBLE-QUOTED', before: 'classDiagram\nclass "Logger "core"" as L\n', after: 'classDiagram\nclass L["Logger &quot;core&quot;"]\n' },
 ];
 
 let passed = 0;

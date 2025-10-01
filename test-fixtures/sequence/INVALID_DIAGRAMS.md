@@ -276,14 +276,7 @@ sequenceDiagram
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-sequenceDiagram
-  autonumber 10 10
-  participant A
-  A->B: ok
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -446,16 +439,7 @@ sequenceDiagram
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-sequenceDiagram
-  box Aqua Group
-    participant A
-    participant B
-  end
-  A->B: hi
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -692,16 +676,7 @@ sequenceDiagram
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-sequenceDiagram
-  critical Do critical
-    A->B: try
-  option Should not use else in critical
-    A->B: nope
-  end
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -926,14 +901,7 @@ sequenceDiagram
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-sequenceDiagram
-  participant A
-  participant B
-  A->>B : Message text without colon
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -1012,14 +980,7 @@ sequenceDiagram
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-sequenceDiagram
-  participant A
-  Note right of A : Missing colon
-  A->B: ok
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
