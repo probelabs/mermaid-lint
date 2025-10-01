@@ -162,14 +162,20 @@ export class SVGRenderer implements IRenderer {
         break;
       }
 
-      case 'cylinder':
-        const ellipseRy = 10;
+      case 'cylinder': {
+        // Scale the ellipse vertically based on node size
+        const rx = Math.max(8, node.width / 2);
+        const ry = Math.max(6, Math.min(node.height * 0.22, node.width * 0.25));
+        const topCY = y + ry;
+        const botCY = y + node.height - ry;
+        const bodyH = Math.max(0, node.height - ry * 2);
         shape = `<g>
-          <ellipse cx="${cx}" cy="${y + ellipseRy}" rx="${node.width/2}" ry="${ellipseRy}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
-          <rect x="${x}" y="${y + ellipseRy}" width="${node.width}" height="${node.height - ellipseRy * 2}" stroke="none" fill="${fill}" />
-          <path d="M${x},${y + ellipseRy} L${x},${y + node.height - ellipseRy} A${node.width/2},${ellipseRy} 0 0,0 ${x + node.width},${y + node.height - ellipseRy} L${x + node.width},${y + ellipseRy}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
+          <rect x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
+          <ellipse cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
+          <path d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
         </g>`;
         break;
+      }
 
       case 'subroutine':
         const insetX = 5;
@@ -363,8 +369,7 @@ export class SVGRenderer implements IRenderer {
 
     // Build smoothed path (Catmull-Rom to Bezier) from dagre points
     const points = edge.points.map(p => ({ x: p.x + this.padding, y: p.y + this.padding }));
-    // If we will draw an arrowhead, trim the endpoint slightly so the head doesn't overlap the node border
-    let pts = points;
+    const segData = this.buildSmoothSegments(points);
 
     // Style based on arrow type
     let strokeDasharray = '';
@@ -387,12 +392,10 @@ export class SVGRenderer implements IRenderer {
         break;
     }
 
-    // Apply endpoint trimming for arrows
-    if (markerEnd) {
-      const cut = Math.max(4, this.arrowMarkerSize); // pixels to trim
-      pts = this.trimPathEnd(points, cut);
-    }
-    const pathData = this.buildSmoothPath(pts);
+    // Apply endpoint trimming for arrows (trim along Bezier end tangent)
+    const cut = Math.max(4, this.arrowMarkerSize);
+    const finalSegs = markerEnd ? this.trimSegmentsEnd(segData, cut) : segData;
+    const pathData = this.pathFromSegments(finalSegs);
 
     let edgeElement = `<path d="${pathData}" stroke="${this.arrowStroke}" stroke-width="${strokeWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
     if (strokeDasharray) {
@@ -405,7 +408,7 @@ export class SVGRenderer implements IRenderer {
 
     // Add edge label if present
     if (edge.label) {
-      const pos = this.pointAtRatio(pts, 0.55);
+      const pos = this.pointAtRatio(points, 0.55);
       const text = this.escapeXml(edge.label);
       const padding = 6;
       const fontSize = this.fontSize - 2;
@@ -427,39 +430,53 @@ export class SVGRenderer implements IRenderer {
   }
 
   // --- helpers ---
-  private buildSmoothPath(points: Array<{x:number;y:number}>): string {
-    if (points.length === 2) {
-      return `M${points[0].x},${points[0].y} L${points[1].x},${points[1].y}`;
+  private buildSmoothSegments(points: Array<{x:number;y:number}>): { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} {
+    if (points.length < 2) {
+      const p = points[0] || {x:0,y:0};
+      return { start: p, segs: [] };
     }
-    // Catmull-Rom to Bezier
+    if (points.length === 2) {
+      const p0 = points[0];
+      const p1 = points[1];
+      const c1 = { x: p0.x + (p1.x - p0.x) / 3, y: p0.y + (p1.y - p0.y) / 3 };
+      const c2 = { x: p0.x + 2*(p1.x - p0.x) / 3, y: p0.y + 2*(p1.y - p0.y) / 3 };
+      return { start: p0, segs: [{ c1, c2, to: p1 }] };
+    }
     const pts = [points[0], ...points, points[points.length - 1]]; // duplicate ends
-    let d = `M${pts[1].x},${pts[1].y}`;
+    const segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}> = [];
     for (let i = 1; i < pts.length - 2; i++) {
       const p0 = pts[i - 1];
       const p1 = pts[i];
       const p2 = pts[i + 1];
       const p3 = pts[i + 2];
-      const c1x = p1.x + (p2.x - p0.x) / 6;
-      const c1y = p1.y + (p2.y - p0.y) / 6;
-      const c2x = p2.x - (p3.x - p1.x) / 6;
-      const c2y = p2.y - (p3.y - p1.y) / 6;
-      d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`;
+      const c1 = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 };
+      const c2 = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 };
+      segs.push({ c1, c2, to: { x: p2.x, y: p2.y } });
+    }
+    return { start: pts[1], segs };
+  }
+
+  private pathFromSegments(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>}): string {
+    let d = `M${data.start.x},${data.start.y}`;
+    for (const s of data.segs) {
+      d += ` C${s.c1.x},${s.c1.y} ${s.c2.x},${s.c2.y} ${s.to.x},${s.to.y}`;
     }
     return d;
   }
 
-  private trimPathEnd(points: Array<{x:number;y:number}>, cut: number): Array<{x:number;y:number}> {
-    if (points.length < 2) return points;
-    const out = points.slice();
-    const a = out[out.length - 2];
-    const b = out[out.length - 1];
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    const len = Math.hypot(dx, dy) || 1;
-    const nx = dx / len;
-    const ny = dy / len;
-    out[out.length - 1] = { x: b.x - nx * cut, y: b.y - ny * cut };
-    return out;
+  private trimSegmentsEnd(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , cut: number) {
+    const segs = data.segs.slice();
+    if (!segs.length) return data;
+    const last = { ...segs[segs.length - 1] };
+    const vx = last.to.x - last.c2.x;
+    const vy = last.to.y - last.c2.y;
+    const len = Math.hypot(vx, vy) || 1;
+    const nx = vx / len;
+    const ny = vy / len;
+    const newTo = { x: last.to.x - nx * cut, y: last.to.y - ny * cut };
+    last.to = newTo;
+    segs[segs.length - 1] = last;
+    return { start: data.start, segs };
   }
 
   private pointAtRatio(points: Array<{x:number;y:number}>, ratio: number): {x:number;y:number} {

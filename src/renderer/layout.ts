@@ -221,9 +221,16 @@ export class DagreLayoutEngine implements ILayoutEngine {
         height = size;
         break;
 
-      case 'diamond':
+      case 'diamond': {
+        // Render as a perfect rhombus (equal width/height)
+        const size = Math.max(width, height) * 1.2; // slight padding for readability
+        width = size;
+        height = size;
+        break;
+      }
+
       case 'hexagon':
-        // These shapes need more width
+        // Needs extra width/height for corners
         width *= 1.3;
         height *= 1.2;
         break;
