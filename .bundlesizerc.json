@@ -1,0 +1,32 @@
+{
+  "files": [
+    {
+      "path": "./site/maid/maid.bundle.js",
+      "maxSize": "300KB",
+      "compression": "none"
+    },
+    {
+      "path": "./site/maid/maid.bundle.js",
+      "maxSize": "90KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./site/maid/maid.bundle.js",
+      "maxSize": "75KB",
+      "compression": "brotli"
+    },
+    {
+      "path": "./site/maid/maid-minimal.bundle.js",
+      "maxSize": "280KB",
+      "compression": "none"
+    },
+    {
+      "path": "./site/maid/maid-lazy.bundle.js",
+      "maxSize": "100KB",
+      "compression": "none"
+    }
+  ],
+  "ci": {
+    "trackBranches": ["main", "develop"]
+  }
+}

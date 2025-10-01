@@ -1,0 +1,57 @@
+name: Bundle Size
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build bundles
+        run: |
+          npm run build
+          npm run build:browser
+
+      - name: Check bundle sizes
+        run: |
+          echo "## 📦 Bundle Size Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Bundle | Size | Gzipped |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          # Check main bundle
+          SIZE=$(stat -c%s site/maid/maid.bundle.js 2>/dev/null || stat -f%z site/maid/maid.bundle.js)
+          GZIP_SIZE=$(gzip -c site/maid/maid.bundle.js | wc -c)
+          echo "| Main | $((SIZE/1024))KB | $((GZIP_SIZE/1024))KB |" >> $GITHUB_STEP_SUMMARY
+
+          # Fail if bundle is too large
+          if [ $SIZE -gt 307200 ]; then  # 300KB limit
+            echo "❌ Bundle size exceeded 300KB limit!" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Bundle size is within limits" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Compare with base branch
+        uses: preactjs/compressed-size-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          pattern: "./site/maid/*.bundle.js"
+          compression: "gzip"
+          threshold: 5000  # 5KB threshold for warnings
