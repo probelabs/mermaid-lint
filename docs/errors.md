@@ -197,6 +197,33 @@ Tip: quoting inside labels
   - Message: "Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes."
   - Hint: "Example: \"He said &quot;Hi&quot;\" : 1"
 
+## State (ST-*)
+
+- ST-HEADER-MISSING
+  - When: Diagram header is not `stateDiagram` or `stateDiagram-v2`.
+  - Message: "Missing 'stateDiagram' header."
+  - Hint: "Start with: stateDiagram-v2"
+
+- ST-ARROW-INVALID
+  - When: Single arrow `->` is used instead of `-->`.
+  - Message: "Invalid arrow '->'. Use '-->' in state transitions."
+  - Hint: "Example: A --> B : event"
+
+- ST-CONCURRENCY-UNSUPPORTED
+  - When: A concurrency separator `---` is used inside a composite state.
+  - Message: "Concurrency separator '---' is not supported in Mermaid state diagrams."
+  - Hint: "Use separate states or regions without '---'."
+
+- ST-BLOCK-MISSING-RBRACE
+  - When: A state block `state X {` is not closed.
+  - Message: "Missing '}' to close a state block."
+  - Hint: "Close the block: state Foo { ... }"
+
+- ST-NOTE-MALFORMED
+  - When: Note statements are malformed or missing a colon.
+  - Message: "Malformed note: missing colon before note text."
+  - Hint: "Example: Note right of A: message"
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID
