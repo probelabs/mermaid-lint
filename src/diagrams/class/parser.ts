@@ -157,18 +157,18 @@ export class ClassParser extends CstParser {
   // Foo ["1..*"] <op> ["0..1"] Bar [: Label]
   private relationStmt = this.RULE('relationStmt', () => {
     this.SUBRULE(this.classRef);
-    this.OPTION(() => this.CONSUME(t.QuotedString));
+    this.OPTION1(() => this.CONSUME(t.QuotedString));
     this.SUBRULE(this.relationOp);
     this.OPTION2(() => this.CONSUME2(t.QuotedString));
     this.SUBRULE2(this.classRef);
-    this.OPTION(() => {
+    this.OPTION3(() => {
       this.CONSUME(t.Colon);
       this.AT_LEAST_ONE_SEP({
         SEP: t.Comma,
         DEF: () => this.SUBRULE(this.labelText),
       });
     });
-    this.OPTION2(() => this.CONSUME(t.Newline));
+    this.OPTION4(() => this.CONSUME(t.Newline));
   });
 }
 

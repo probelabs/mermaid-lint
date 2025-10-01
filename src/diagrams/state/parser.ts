@@ -20,8 +20,8 @@ export class StateParser extends CstParser {
     this.OR([
       { ALT: () => this.SUBRULE(this.directionStmt) },
       { ALT: () => this.SUBRULE(this.transitionStmt) },
-      { ALT: () => this.SUBRULE(this.stateDecl) },
       { ALT: () => this.SUBRULE(this.stateBlock) },
+      { ALT: () => this.SUBRULE(this.stateDecl) },
       { ALT: () => this.CONSUME(t.Dashes) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.SUBRULE(this.styleStmt) },
@@ -34,17 +34,17 @@ export class StateParser extends CstParser {
       {
         ALT: () => {
           this.CONSUME(t.StyleClassDefKw);
-          this.OPTION(() => this.CONSUME(t.LabelChunk));
+          this.OPTION1(() => this.CONSUME1(t.LabelChunk));
         }
       },
       {
         ALT: () => {
           this.CONSUME(t.StyleClassKw);
-          this.OPTION1(() => this.CONSUME(t.LabelChunk));
+          this.OPTION2(() => this.CONSUME2(t.LabelChunk));
         }
       }
     ]);
-    this.OPTION2(() => this.CONSUME(t.Newline));
+    this.OPTION3(() => this.CONSUME(t.Newline));
   });
 
   private directionStmt = this.RULE('directionStmt', () => {
@@ -115,7 +115,7 @@ export class StateParser extends CstParser {
       {
         ALT: () => {
           this.CONSUME2(t.Identifier);
-          this.OPTION(() => {
+          this.OPTION1(() => {
             this.CONSUME(t.AngleAngleOpen);
             this.CONSUME3(t.Identifier);
             this.CONSUME(t.AngleAngleClose);
@@ -123,7 +123,7 @@ export class StateParser extends CstParser {
         }
       }
     ]);
-    this.OPTION(() => this.CONSUME(t.Newline));
+    this.OPTION2(() => this.CONSUME(t.Newline));
   });
 
   // state Foo { ... }

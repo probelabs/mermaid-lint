@@ -695,10 +695,7 @@ export function mapStateParserError(err: IRecognitionException, text: string): V
     return { line, column, severity: 'error', code: 'ST-HEADER-MISSING', message: "Missing 'stateDiagram' header.", hint: 'Start with: stateDiagram-v2', length: len };
   }
 
-  // Invalid arrow token
-  if (isInRule(err, 'transitionStmt') && tokType === 'InvalidArrow') {
-    return { line, column, severity: 'error', code: 'ST-ARROW-INVALID', message: "Invalid arrow '->'. Use '-->' in state transitions.", hint: 'Example: A --> B : event', length: len };
-  }
+  // Invalid arrow token handled in postLex; avoid duplicate mapping here.
 
   // Missing colon in note forms
   if (isInRule(err, 'noteStmt') && (err.name === 'MismatchedTokenException' && expecting(err, 'Colon'))) {

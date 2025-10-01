@@ -36,7 +36,8 @@ export const QuotedString = createToken({ name: 'QuotedString', pattern: /"(?:\\
 export const Comment = createToken({ name: 'Comment', pattern: /%%[^\n\r]*/, group: Lexer.SKIPPED });
 export const WhiteSpace = createToken({ name: 'WhiteSpace', pattern: /[ \t]+/, group: Lexer.SKIPPED });
 export const Newline = createToken({ name: 'Newline', pattern: /[\n\r]+/, line_breaks: true });
-export const LabelChunk = createToken({ name: 'LabelChunk', pattern: /[^\n\r]+/ });
+// Free-form label content segments, but never start at '-' or '<' so arrow/markers win.
+export const LabelChunk = createToken({ name: 'LabelChunk', pattern: /[^\n\r<\-][^\n\r]*/ });
 
 export const allTokens = [
   Comment,
@@ -58,8 +59,8 @@ export const allTokens = [
   Colon, Comma,
   NumberLiteral,
   Identifier,
-  LabelChunk,
   WhiteSpace,
+  LabelChunk,
   Newline,
 ];
 

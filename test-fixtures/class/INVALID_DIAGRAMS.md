@@ -21,10 +21,10 @@ This file contains invalid class test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [Invalid Relation](#1-invalid-relation) | INVALID | INVALID | — |
+| 1 | [Invalid Relation](#1-invalid-relation) | INVALID | INVALID | ✅ safe |
 | 2 | [Member Malformed](#2-member-malformed) | VALID | INVALID | — |
-| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | — |
-| 4 | [Quoted Name Double In Double](#4-quoted-name-double-in-double) | INVALID | INVALID | — |
+| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 4 | [Quoted Name Double In Double](#4-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
 | 5 | [Relation Missing Target](#5-relation-missing-target) | INVALID | INVALID | — |
 
 ---
@@ -67,39 +67,85 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error[CL-REL-INVALID]: Invalid relationship operator '->'. Use <|--, *--, o--, --, ..> or ..|>.
+at test-fixtures/class/invalid/invalid-relation.mmd:2:5
+  1 | classDiagram
+  2 | Foo -> Bar : wrong arrow
+    |     ^^
+  3 | 
+hint: Example: Foo <|-- Bar
 
-Error: Parser Definition Errors detected:
- ->OPTION<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION2<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:156:14)
-    at file://out/diagrams/class/parser.js:159:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error: Expecting: one of these possible Token sequences:
+  1. [DirectionKw]
+  2. [ClassKw]
+  3. [Identifier, QuotedString]
+  4. [Identifier, RelCompToAgg]
+  5. [Identifier, RelAggToComp]
+  6. [Identifier, RelCompBoth]
+  7. [Identifier, RelAggBoth]
+  8. [Identifier, LollipopLeft]
+  9. [Identifier, LollipopRight]
+  10. [Identifier, RelExtends]
+  11. [Identifier, RelComposition]
+  12. [Identifier, RelAggregation]
+  13. [Identifier, RelRealization]
+  14. [Identifier, RelDependency]
+  15. [Identifier, RelAssociation]
+  16. [QuotedString, QuotedString]
+  17. [QuotedString, RelCompToAgg]
+  18. [QuotedString, RelAggToComp]
+  19. [QuotedString, RelCompBoth]
+  20. [QuotedString, RelAggBoth]
+  21. [QuotedString, LollipopLeft]
+  22. [QuotedString, LollipopRight]
+  23. [QuotedString, RelExtends]
+  24. [QuotedString, RelComposition]
+  25. [QuotedString, RelAggregation]
+  26. [QuotedString, RelRealization]
+  27. [QuotedString, RelDependency]
+  28. [QuotedString, RelAssociation]
+  29. [BacktickName, QuotedString]
+  30. [BacktickName, RelCompToAgg]
+  31. [BacktickName, RelAggToComp]
+  32. [BacktickName, RelCompBoth]
+  33. [BacktickName, RelAggBoth]
+  34. [BacktickName, LollipopLeft]
+  35. [BacktickName, LollipopRight]
+  36. [BacktickName, RelExtends]
+  37. [BacktickName, RelComposition]
+  38. [BacktickName, RelAggregation]
+  39. [BacktickName, RelRealization]
+  40. [BacktickName, RelDependency]
+  41. [BacktickName, RelAssociation]
+  42. [Identifier, Colon]
+  43. [QuotedString, Colon]
+  44. [BacktickName, Colon]
+  45. [Newline]
+but found: 'Foo'
+at test-fixtures/class/invalid/invalid-relation.mmd:2:1
+  1 | classDiagram
+  2 | Foo -> Bar : wrong arrow
+    | ^^^
+  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+classDiagram
+Foo -- Bar : wrong arrow
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+classDiagram
+Foo -- Bar : wrong arrow
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -136,30 +182,13 @@ class Foo {
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- ->OPTION<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION2<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:156:14)
-    at file://out/diagrams/class/parser.js:159:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[CL-MEMBER-MALFORMED]: Malformed class member. Use visibility + name [()][: type].
+at test-fixtures/class/invalid/member-malformed.mmd:3:5
+  2 | class Foo {
+  3 |   + () : void
+    |     ^
+  4 | }
+hint: Examples: +foo() : void  |  -bar: int
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -224,39 +253,36 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- ->OPTION<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION2<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:156:14)
-    at file://out/diagrams/class/parser.js:159:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[CL-BLOCK-MISSING-RBRACE]: Missing '}' to close class block.
+at test-fixtures/class/invalid/missing-rbrace.mmd:5:1
+  2 | class Foo {  ← start of 'class'
+    | …
+  5 | 
+  6 | }  ← insert '}' here
+hint: Close the block: class Foo { ... }
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+classDiagram
+class Foo {
+  +bar()
+
+}
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+classDiagram
+class Foo {
+  +bar()
+
+}
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -310,39 +336,40 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error[CL-NAME-DOUBLE-QUOTED]: Double-quoted class name is not supported. Use backticks for names with spaces/punctuation, or use a label.
+at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:7
+  1 | classDiagram
+  2 | class "Logger "core"" as L
+    |       ^^^^^^^^^
+  3 | 
+hint: Example: class `Logger "core"` as L  or  class L["Logger "core""]
 
-Error: Parser Definition Errors detected:
- ->OPTION<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION2<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:156:14)
-    at file://out/diagrams/class/parser.js:159:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[CL-REL-INVALID]: Invalid relationship operator. Use <|--, *--, o--, --, ..> or ..|>.
+at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:23
+  1 | classDiagram
+  2 | class "Logger "core"" as L
+    |                       ^^
+  3 | 
+hint: Example: Foo <|-- Bar
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+classDiagram
+class L['Logger "core"']
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+classDiagram
+class L['Logger "core"']
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -395,30 +422,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- ->OPTION<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION2<-
-appears more than once (2 times) in the top level rule: ->relationStmt<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:156:14)
-    at file://out/diagrams/class/parser.js:159:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[CL-REL-MALFORMED]: Malformed relationship. Provide a target class before the label.
+at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
+  1 | classDiagram
+  2 | Foo <|-- : extends
+    |          ^
+  3 | 
+hint: Use: A <|-- B : label
 ```
 
 ### maid Auto-fix (`--fix`) Preview
