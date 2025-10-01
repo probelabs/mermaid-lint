@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
-import { renderMermaid } from '../out/renderer/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -179,43 +178,12 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
     if (descriptions[key]) {
       markdown += `> ${descriptions[key]}\n\n`;
     }
-    
-    // Add tabs for comparing renderers
-    markdown += `### Rendered Output\n\n`;
-    markdown += `<table>\n<tr>\n`;
-    markdown += `<th width="50%">Mermaid (Official)</th>\n`;
-    markdown += `<th width="50%">Maid (Experimental)</th>\n`;
-    markdown += `</tr>\n<tr>\n<td>\n\n`;
+    // Mermaid diagram
+    markdown += `\`\`\`mermaid
+${content}
+\`\`\`
 
-    // Mermaid diagram (GitHub will render this)
-    markdown += `\`\`\`mermaid\n${content}\n\`\`\`\n\n`;
-    markdown += `</td>\n<td>\n\n`;
-
-    // Our renderer output
-    try {
-      const result = renderMermaid(content);
-      if (result && result.svg) {
-        // Create rendered directory if it doesn't exist
-        const renderedDir = path.join(fixturesDir, 'rendered');
-        if (!fs.existsSync(renderedDir)) {
-          fs.mkdirSync(renderedDir, { recursive: true });
-        }
-
-        // Save SVG file
-        const svgFile = file.replace('.mmd', '.svg');
-        const svgPath = path.join(renderedDir, svgFile);
-        fs.writeFileSync(svgPath, result.svg);
-
-        // Use HTML img tag to reference the SVG file
-        markdown += `<img src="./rendered/${svgFile}" alt="Maid Rendered Diagram" />\n\n`;
-      } else {
-        markdown += `<sub>⚠️ Rendering not yet implemented for this diagram type</sub>\n\n`;
-      }
-    } catch (error) {
-      markdown += `<sub>❌ Rendering failed: ${error.message}</sub>\n\n`;
-    }
-
-    markdown += `</td>\n</tr>\n</table>\n\n`;
+`;
 
     // Add collapsible source code section
     markdown += `<details>\n`;

@@ -51,16 +51,6 @@ pie title Quotes
 
 📄 **Source**: [`inline-title.mmd`](./valid/inline-title.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 pie title Pets adopted by volunteers
   "Dogs" : 386
@@ -69,15 +59,6 @@ pie title Pets adopted by volunteers
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/inline-title.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -98,16 +79,6 @@ pie title Pets adopted by volunteers
 
 📄 **Source**: [`labels-and-formats.mmd`](./valid/labels-and-formats.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 pie
   title "Sales Q1"
@@ -118,15 +89,6 @@ pie
   'She said "Yo"' : 4
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/labels-and-formats.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -149,16 +111,6 @@ pie
 
 📄 **Source**: [`showdata-header.mmd`](./valid/showdata-header.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 pie showData
   title Key elements in Product X
@@ -169,15 +121,6 @@ pie showData
 
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/showdata-header.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
@@ -200,16 +143,6 @@ pie showData
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
 ```mermaid
 pie
   title "Pets"
@@ -217,15 +150,6 @@ pie
   "Cats" : 5
 
 ```
-
-</td>
-<td>
-
-<img src="./rendered/simple.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary>View source code</summary>
