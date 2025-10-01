@@ -106,6 +106,28 @@ Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public AP
 
 For detailed examples (ESM, CommonJS, TypeScript) and API surface, see docs/SDK.md.
 
+### Rendering Diagrams (Experimental)
+
+```bash
+# Render to SVG (default)
+npx -y @probelabs/maid render diagram.mmd
+
+# Render to PNG
+npx -y @probelabs/maid render diagram.mmd output.png
+
+# Render from stdin
+cat diagram.mmd | npx -y @probelabs/maid render - output.svg
+
+# Force output format
+npx -y @probelabs/maid render diagram.mmd -f png
+```
+
+Notes
+- The renderer is **experimental** and primarily for parser validation
+- Currently supports **flowchart diagrams only**
+- PNG output requires `rsvg-convert` or `ImageMagick` installed
+- See "Development > Experimental Renderer" for technical details
+
 ### Autofix in a nutshell
 
 ```bash
@@ -122,8 +144,8 @@ npx -y @probelabs/maid --fix --dry-run --print-fixed diagram.mmd
 Notes
 - Safe fixes are idempotent and conservative (arrows, inner quotes to `&quot;`, missing `:`, missing `end`, etc.).
 - `--fix=all` additionally enables conservative heuristics (e.g., wrap unquoted labels, close unclosed quotes/brackets).
-- In directory mode, Maid prints “All diagrams valid after fixes. Modified X file(s).” when it succeeds post-fix.
-- See “Autofix” below for details and examples.
+- In directory mode, Maid prints "All diagrams valid after fixes. Modified X file(s)." when it succeeds post-fix.
+- See "Autofix" below for details and examples.
 
 ### Directory Scans: Include/Exclude and .gitignore
 
