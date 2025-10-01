@@ -35,6 +35,8 @@ export const GTgt = createToken({ name: 'GTgt', pattern: />>/ });
 
 export const QuotedString = createToken({ name: 'QuotedString', pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/ });
 export const BacktickName = createToken({ name: 'BacktickName', pattern: /`(?:\\.|[^`\\])*`/ });
+export const SquareOpen = createToken({ name: 'SquareOpen', pattern: /\[/ });
+export const SquareClose = createToken({ name: 'SquareClose', pattern: /\]/ });
 export const Comment = createToken({ name: 'Comment', pattern: /%%[^\n\r]*/, group: Lexer.SKIPPED });
 export const WhiteSpace = createToken({ name: 'WhiteSpace', pattern: /[ \t]+/, group: Lexer.SKIPPED });
 export const Newline = createToken({ name: 'Newline', pattern: /[\n\r]+/, line_breaks: true });
@@ -62,6 +64,7 @@ export const allTokens = [
   GTgt,
   LCurly, RCurly,
   LParen, RParen,
+  SquareOpen, SquareClose,
   Colon, Comma,
   Visibility,
   // Atoms

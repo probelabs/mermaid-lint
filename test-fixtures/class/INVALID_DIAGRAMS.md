@@ -360,7 +360,7 @@ at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:16
 
 ```mermaid
 classDiagram
-class `Logger "core"` as L
+class L['Logger "core"']
 
 
 ```
@@ -369,7 +369,7 @@ class `Logger "core"` as L
 
 ```mermaid
 classDiagram
-class `Logger "core"` as L
+class L['Logger "core"']
 
 
 ```
@@ -432,17 +432,6 @@ at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
     |          ^
   3 | 
 hint: Use: A <|-- B : label
-
-error: Expecting: one of these possible Token sequences:
-  1. [Identifier]
-  2. [QuotedString]
-  3. [BacktickName]
-but found: ':'
-at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
-  1 | classDiagram
-  2 | Foo <|-- : extends
-    |          ^
-  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview

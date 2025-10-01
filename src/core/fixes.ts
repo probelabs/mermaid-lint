@@ -21,18 +21,32 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('CL-NAME-DOUBLE-QUOTED', e)) {
-      // Convert outer double quotes around class name to backticks: class "Name" -> class `Name`
+      // Safer transform:
+      // - If alias present: class "Label" as ID  => class ID["Label"]
+      // - Else: class "Label" => class `Label`
       const lineText = lineTextAt(text, e.line);
       const kwIdx = lineText.indexOf('class');
       const startSearch = kwIdx >= 0 ? kwIdx + 5 : 0;
       const q1 = lineText.indexOf('"', startSearch);
       if (q1 !== -1) {
-        // close before ' as ' if present, else last quote on line
         const asIdx = lineText.indexOf(' as ', q1 + 1);
         const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
         if (q2 > q1) {
-          edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, 1, '`'));
-          edits.push(replaceRange(text, { line: e.line, column: q2 + 1 }, 1, '`'));
+          if (asIdx !== -1) {
+            // Extract label text and prefer single-quoted label to avoid escaping inner double quotes
+            const innerLbl = lineText.slice(q1 + 1, q2);
+            const singleQuoted = `'` + innerLbl.replace(/'/g, "\\'") + `'`;
+            // Remove the quoted segment and replace with alias label form
+            // Build: class <alias>[<label>]
+            const alias = lineText.slice(asIdx + 4).trim();
+            const before = lineText.slice(0, startSearch).trimEnd();
+            const newLine = `${before} ${alias}[${singleQuoted}]`;
+            edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
+          } else {
+            // No alias: switch to backticks around name
+            edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, 1, '`'));
+            edits.push(replaceRange(text, { line: e.line, column: q2 + 1 }, 1, '`'));
+          }
         }
       }
       continue;

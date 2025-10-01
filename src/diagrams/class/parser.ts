@@ -49,16 +49,22 @@ export class ClassParser extends CstParser {
       },
       {
         ALT: () => {
+          // Optional bracket label: class X ["Label"]
           this.OPTION1(() => {
+            this.CONSUME(t.SquareOpen);
+            this.CONSUME(t.QuotedString);
+            this.CONSUME(t.SquareClose);
+          });
+          this.OPTION2(() => {
             this.CONSUME(t.LTlt);
             this.CONSUME2(t.Identifier);
             this.CONSUME(t.GTgt);
           });
-          this.OPTION2(() => {
+          this.OPTION3(() => {
             this.CONSUME(t.AsKw);
             this.CONSUME3(t.Identifier);
           });
-          this.OPTION3(() => this.CONSUME2(t.Newline));
+          this.OPTION4(() => this.CONSUME2(t.Newline));
         }
       }
     ]);

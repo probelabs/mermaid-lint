@@ -10,6 +10,15 @@ export function groupErrors(errors: ValidationError[]) {
 
 export function textReport(filename: string, content: string, errors: ValidationError[]): string {
   const { errs, warns } = groupErrors(errors);
+  // Suppress generic parser errors when a specific coded error exists at the same spot.
+  const filteredErrs: ValidationError[] = [];
+  for (const e of errs) {
+    if (!e.code) {
+      const nearby = errs.find(o => o !== e && !!o.code && o.line === e.line && Math.abs((o.column || 1) - (e.column || 1)) <= 2);
+      if (nearby) continue;
+    }
+    filteredErrs.push(e);
+  }
   const lines: string[] = [];
   const printBlock = (kind: 'error' | 'warning', e: ValidationError) => {
     const kindColor = kind === 'error' ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarning\x1b[0m';
@@ -89,9 +98,9 @@ export function textReport(filename: string, content: string, errors: Validation
     lines.push('');
   };
 
-  for (const e of errs) printBlock('error', e);
+  for (const e of filteredErrs) printBlock('error', e);
   for (const w of warns) printBlock('warning', w);
-  if (errs.length === 0 && warns.length === 0) return 'Valid';
+  if (filteredErrs.length === 0 && warns.length === 0) return 'Valid';
   return lines.join('\n');
 }
 
