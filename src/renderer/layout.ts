@@ -1,10 +1,11 @@
 import dagre from 'dagre';
 import type { Graph, Layout, LayoutNode, LayoutEdge, Direction } from './types.js';
+import type { ILayoutEngine } from './interfaces.js';
 
 /**
  * Calculates node and edge positions using dagre layout algorithm
  */
-export class LayoutEngine {
+export class DagreLayoutEngine implements ILayoutEngine {
   private nodeWidth = 120;
   private nodeHeight = 50;
   private rankSep = 50;     // Vertical spacing between ranks

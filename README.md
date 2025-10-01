@@ -733,6 +733,50 @@ npm run build:browser
 - Chevrotain parser for CST generation
 - Dagre.js for automatic graph layout
 - Custom SVG generation for shapes and edges
+- **Pluggable design** - Swap layout engines and output renderers
+
+**Pluggability:**
+
+The renderer uses a clean interface-based architecture that allows you to:
+- Use alternative layout engines (e.g., Graphviz DOT, D3 force-directed)
+- Generate different output formats (e.g., SVG, Canvas, DOT)
+
+Example - Using a custom DOT renderer:
+```typescript
+import { renderMermaid, DotRenderer } from '@probelabs/maid';
+
+const result = renderMermaid(diagramText, {
+  renderer: new DotRenderer()
+});
+// result.svg now contains Graphviz DOT format
+```
+
+Example - Custom layout engine:
+```typescript
+import { renderMermaid, ILayoutEngine } from '@probelabs/maid';
+
+class MyLayoutEngine implements ILayoutEngine {
+  layout(graph: Graph): Layout {
+    // Your custom layout algorithm
+    return { nodes, edges, width, height };
+  }
+}
+
+const result = renderMermaid(diagramText, {
+  layoutEngine: new MyLayoutEngine()
+});
+```
+
+**Core Interfaces:**
+- `ILayoutEngine` - Calculates node/edge positions from graph model
+- `IRenderer` - Generates output (SVG, DOT, etc.) from positioned layout
+
+**Implementations:**
+- `DagreLayoutEngine` - Hierarchical layout using Dagre (default)
+- `SVGRenderer` - SVG output with Mermaid-like styling (default)
+- `DotRenderer` - Graphviz DOT format (example implementation)
+
+See `src/renderer/interfaces.ts` for interface definitions.
 
 ### Extending the Linter
 

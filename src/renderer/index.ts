@@ -1,10 +1,11 @@
 import { tokenize } from '../diagrams/flowchart/lexer.js';
 import { parserInstance } from '../diagrams/flowchart/parser.js';
 import { GraphBuilder } from './graph-builder.js';
-import { LayoutEngine } from './layout.js';
-import { SVGGenerator } from './svg-generator.js';
+import { DagreLayoutEngine } from './layout.js';
+import { SVGRenderer } from './svg-generator.js';
 import type { Graph } from './types.js';
 import type { ValidationError } from '../core/types.js';
+import type { ILayoutEngine, IRenderer } from './interfaces.js';
 
 export interface RenderOptions {
   /** Include validation errors as overlays on the diagram */
@@ -13,6 +14,10 @@ export interface RenderOptions {
   width?: number;
   /** Custom height for the SVG */
   height?: number;
+  /** Custom layout engine (defaults to DagreLayoutEngine) */
+  layoutEngine?: ILayoutEngine;
+  /** Custom renderer (defaults to SVGRenderer) */
+  renderer?: IRenderer;
 }
 
 export interface RenderResult {
@@ -26,20 +31,24 @@ export interface RenderResult {
  */
 export class MermaidRenderer {
   private graphBuilder: GraphBuilder;
-  private layoutEngine: LayoutEngine;
-  private svgGenerator: SVGGenerator;
+  private layoutEngine: ILayoutEngine;
+  private renderer: IRenderer;
 
-  constructor() {
+  constructor(layoutEngine?: ILayoutEngine, renderer?: IRenderer) {
     this.graphBuilder = new GraphBuilder();
-    this.layoutEngine = new LayoutEngine();
-    this.svgGenerator = new SVGGenerator();
+    this.layoutEngine = layoutEngine || new DagreLayoutEngine();
+    this.renderer = renderer || new SVGRenderer();
   }
 
   /**
-   * Renders a Mermaid flowchart diagram to SVG
+   * Renders a Mermaid flowchart diagram
    */
   render(text: string, options: RenderOptions = {}): RenderResult {
     const errors: ValidationError[] = [];
+
+    // Use custom engines if provided in options
+    const layoutEngine = options.layoutEngine || this.layoutEngine;
+    const renderer = options.renderer || this.renderer;
 
     try {
       // Step 1: Tokenize
@@ -83,7 +92,7 @@ export class MermaidRenderer {
       // Step 4: Calculate layout
       let layout;
       try {
-        layout = this.layoutEngine.layout(graph);
+        layout = layoutEngine.layout(graph);
       } catch (layoutError: any) {
         // Layout failed - likely due to subgraph issues
         errors.push({
@@ -94,7 +103,7 @@ export class MermaidRenderer {
           code: 'LAYOUT_ERROR'
         });
 
-        // Return empty SVG with error
+        // Return empty output with error
         return {
           svg: this.generateErrorSvg(layoutError.message || 'Layout calculation failed'),
           graph,
@@ -102,8 +111,8 @@ export class MermaidRenderer {
         };
       }
 
-      // Step 5: Generate SVG
-      let svg = this.svgGenerator.generate(layout);
+      // Step 5: Generate output
+      let svg = renderer.render(layout);
 
       // Add error overlays if requested
       if (options.showErrors && errors.length > 0) {
@@ -235,6 +244,13 @@ export class MermaidRenderer {
 
 // Export main render function for convenience
 export function renderMermaid(text: string, options: RenderOptions = {}): RenderResult {
-  const renderer = new MermaidRenderer();
+  const renderer = new MermaidRenderer(options.layoutEngine, options.renderer);
   return renderer.renderAny(text, options);
 }
+
+// Export interfaces and implementations for pluggability
+export type { ILayoutEngine, IRenderer } from './interfaces.js';
+export type { Graph, Layout, Node, Edge, LayoutNode, LayoutEdge } from './types.js';
+export { DagreLayoutEngine } from './layout.js';
+export { SVGRenderer } from './svg-generator.js';
+export { DotRenderer } from './dot-renderer.js';

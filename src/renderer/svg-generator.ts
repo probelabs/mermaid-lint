@@ -1,14 +1,15 @@
 import type { Layout, LayoutNode, LayoutEdge, NodeShape, ArrowType } from './types.js';
+import type { IRenderer } from './interfaces.js';
 
 /**
  * Generates SVG from a laid-out graph
  */
-export class SVGGenerator {
+export class SVGRenderer implements IRenderer {
   private padding = 20;
   private fontSize = 14;
   private fontFamily = 'Arial, sans-serif';
 
-  generate(layout: Layout): string {
+  render(layout: Layout): string {
     const width = layout.width + this.padding * 2;
     const height = layout.height + this.padding * 2;
 
