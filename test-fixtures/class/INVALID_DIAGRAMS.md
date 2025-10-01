@@ -74,59 +74,6 @@ at test-fixtures/class/invalid/invalid-relation.mmd:2:5
     |     ^^
   3 | 
 hint: Example: Foo <|-- Bar
-
-error: Expecting: one of these possible Token sequences:
-  1. [DirectionKw]
-  2. [ClassKw]
-  3. [Identifier, QuotedString]
-  4. [Identifier, RelCompToAgg]
-  5. [Identifier, RelAggToComp]
-  6. [Identifier, RelCompBoth]
-  7. [Identifier, RelAggBoth]
-  8. [Identifier, LollipopLeft]
-  9. [Identifier, LollipopRight]
-  10. [Identifier, RelExtends]
-  11. [Identifier, RelComposition]
-  12. [Identifier, RelAggregation]
-  13. [Identifier, RelRealization]
-  14. [Identifier, RelDependency]
-  15. [Identifier, RelAssociation]
-  16. [QuotedString, QuotedString]
-  17. [QuotedString, RelCompToAgg]
-  18. [QuotedString, RelAggToComp]
-  19. [QuotedString, RelCompBoth]
-  20. [QuotedString, RelAggBoth]
-  21. [QuotedString, LollipopLeft]
-  22. [QuotedString, LollipopRight]
-  23. [QuotedString, RelExtends]
-  24. [QuotedString, RelComposition]
-  25. [QuotedString, RelAggregation]
-  26. [QuotedString, RelRealization]
-  27. [QuotedString, RelDependency]
-  28. [QuotedString, RelAssociation]
-  29. [BacktickName, QuotedString]
-  30. [BacktickName, RelCompToAgg]
-  31. [BacktickName, RelAggToComp]
-  32. [BacktickName, RelCompBoth]
-  33. [BacktickName, RelAggBoth]
-  34. [BacktickName, LollipopLeft]
-  35. [BacktickName, LollipopRight]
-  36. [BacktickName, RelExtends]
-  37. [BacktickName, RelComposition]
-  38. [BacktickName, RelAggregation]
-  39. [BacktickName, RelRealization]
-  40. [BacktickName, RelDependency]
-  41. [BacktickName, RelAssociation]
-  42. [Identifier, Colon]
-  43. [QuotedString, Colon]
-  44. [BacktickName, Colon]
-  45. [Newline]
-but found: 'Foo'
-at test-fixtures/class/invalid/invalid-relation.mmd:2:1
-  1 | classDiagram
-  2 | Foo -> Bar : wrong arrow
-    | ^^^
-  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -343,26 +290,6 @@ at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:7
     |       ^^^^^^^^^
   3 | 
 hint: Example: class `Logger "core"` as L  or  class L["Logger "core""]
-
-error: Expecting: one of these possible Token sequences:
-  1. [RelCompToAgg]
-  2. [RelAggToComp]
-  3. [RelCompBoth]
-  4. [RelAggBoth]
-  5. [LollipopLeft]
-  6. [LollipopRight]
-  7. [RelExtends]
-  8. [RelComposition]
-  9. [RelAggregation]
-  10. [RelRealization]
-  11. [RelDependency]
-  12. [RelAssociation]
-but found: 'as'
-at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:23
-  1 | classDiagram
-  2 | class "Logger "core"" as L
-    |                       ^^
-  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview

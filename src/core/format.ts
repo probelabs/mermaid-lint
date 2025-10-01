@@ -10,10 +10,14 @@ export function groupErrors(errors: ValidationError[]) {
 
 export function textReport(filename: string, content: string, errors: ValidationError[]): string {
   const { errs, warns } = groupErrors(errors);
-  // Suppress generic parser errors when a specific coded error exists at the same spot.
+  // Suppress generic parser errors when a coded error exists on the same line (or very close)
   const filteredErrs: ValidationError[] = [];
+  const codedLines = new Set(errs.filter(e => !!e.code).map(e => e.line));
   for (const e of errs) {
     if (!e.code) {
+      // Drop any uncoded error on a line that already has at least one coded error
+      if (codedLines.has(e.line)) continue;
+      // Also drop if a coded error is within a couple of columns (legacy proximity rule)
       const nearby = errs.find(o => o !== e && !!o.code && o.line === e.line && Math.abs((o.column || 1) - (e.column || 1)) <= 2);
       if (nearby) continue;
     }
