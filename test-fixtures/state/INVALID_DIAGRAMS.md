@@ -464,8 +464,8 @@ hint: Example: Note right of A: message
 
 ```mermaid
 stateDiagram-v2
-Note right of A : Missing colon
 A --> B : ok
+Note right of A : Missing colon
 
 
 ```
@@ -474,8 +474,8 @@ A --> B : ok
 
 ```mermaid
 stateDiagram-v2
-Note right of A : Missing colon
 A --> B : ok
+Note right of A : Missing colon
 
 
 ```
@@ -545,8 +545,8 @@ hint: Example: Note right of A: message
 
 ```mermaid
 stateDiagram-v2
-Note over A,B : Missing colon
 A --> B
+Note right of A : Missing colon
 
 
 ```
@@ -555,8 +555,8 @@ A --> B
 
 ```mermaid
 stateDiagram-v2
-Note over A,B : Missing colon
 A --> B
+Note right of A : Missing colon
 
 
 ```

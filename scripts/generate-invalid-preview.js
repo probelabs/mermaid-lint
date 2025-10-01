@@ -47,6 +47,14 @@ function runMermaidCli(filepath) {
   }
 }
 
+function runMermaidCliOnContent(content, suffix = 'fixed') {
+  const tmp = `/tmp/maid-${suffix}-${Date.now()}-${Math.random().toString(36).slice(2)}.mmd`;
+  fs.writeFileSync(tmp, content);
+  const res = runMermaidCli(tmp);
+  try { fs.unlinkSync(tmp); } catch {}
+  return res;
+}
+
 function sanitizeMermaidMessage(input) {
   if (!input) return input;
   let out = input;
@@ -140,7 +148,16 @@ This file contains invalid ${diagramType} test fixtures with:
     const ourRes = runOurLinter(relPath);
     const fixPreviewSafe = runOurAutofixPreview(relPath, 'safe');
     const fixPreviewAll = runOurAutofixPreview(relPath, 'all');
-    return { file, index, filePath: relPath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll };
+    const orig = fs.readFileSync(filePath, 'utf8');
+    const normalize = (s) => (s || '').toString().replace(/\r\n/g, '\n').trim();
+    const origN = normalize(orig);
+    const safeN = normalize(fixPreviewSafe.fixed);
+    const allN = normalize(fixPreviewAll.fixed);
+    const safeChanged = fixPreviewSafe.ok && safeN && safeN !== origN;
+    const allChanged = fixPreviewAll.ok && allN && allN !== origN;
+    const mmSafe = safeChanged ? runMermaidCliOnContent(fixPreviewSafe.fixed, 'safe-toc') : { valid: false };
+    const mmAll = allChanged ? runMermaidCliOnContent(fixPreviewAll.fixed, 'all-toc') : { valid: false };
+    return { file, index, filePath: relPath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll, safeChanged, allChanged, mmSafe, mmAll };
   });
 
   // Generate table of contents
@@ -156,25 +173,24 @@ This file contains invalid ${diagramType} test fixtures with:
   markdown += `## Summary\n\n`;
   markdown += `| # | Diagram | mermaid-cli | maid | Auto-fix? |\n|---:|---|:---:|:---:|:---:|\n`;
   const normalize = (s) => (s || '').toString().replace(/\r\n/g, '\n').trim();
-  results.forEach(({ file, index, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
+  results.forEach(({ file, index, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll, safeChanged, allChanged, mmSafe, mmAll }) => {
     const base = file.replace('.mmd', '');
     const name = base.replace(/-/g, ' ');
     const title = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     const anchor = `#${index + 1}-${base.toLowerCase()}`;
     const mm = mermaidRes.valid ? 'VALID' : 'INVALID';
     const us = ourRes.valid ? 'VALID' : 'INVALID';
-    const orig = fs.readFileSync(path.join(invalidDir, file), 'utf8');
-    const origN = normalize(orig);
-    const safeN = normalize(fixPreviewSafe.fixed);
-    const allN = normalize(fixPreviewAll.fixed);
-    const safeChanged = fixPreviewSafe.ok && safeN && safeN !== origN;
-    const allChanged = fixPreviewAll.ok && allN && allN !== origN;
-    const fixCol = safeChanged ? '✅ safe' : (allChanged ? '✅ all' : '—');
+    let fixCol = '—';
+    if (safeChanged) fixCol = (mmSafe.valid ? '✅ safe' : '❌ safe');
+    else if (allChanged) fixCol = (mmAll.valid ? '✅ all' : '❌ all');
     markdown += `| ${index + 1} | [${title}](${anchor}) | ${mm} | ${us} | ${fixCol} |\n`;
   });
   markdown += `\n---\n\n`;
   
   // Generate diagram sections
+  // Track fix validation failures (changed but still INVALID under mermaid-cli)
+  const fixFailures = [];
+
   results.forEach(({ file, index, filePath, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
     const content = fs.readFileSync(filePath, 'utf-8');
     const name = file.replace('.mmd', '').replace(/-/g, ' ');
@@ -225,6 +241,11 @@ This file contains invalid ${diagramType} test fixtures with:
     markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
     const orig = fs.readFileSync(filePath, 'utf-8');
     if (fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig.trim()) {
+      // Validate the fixed output with mermaid-cli; fail later if still invalid
+      const mmFixed = runMermaidCliOnContent(fixPreviewSafe.fixed, 'safe');
+      if (!mmFixed.valid) {
+        fixFailures.push({ file, level: 'safe', message: mmFixed.message });
+      }
       markdown += `\`\`\`mermaid\n${fixPreviewSafe.fixed}\n\`\`\`\n\n`;
     } else {
       markdown += `No auto-fix changes (safe level).\n\n`;
@@ -233,6 +254,10 @@ This file contains invalid ${diagramType} test fixtures with:
     // Auto-fix preview (all)
     markdown += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
     if (fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig.trim()) {
+      const mmFixedAll = runMermaidCliOnContent(fixPreviewAll.fixed, 'all');
+      if (!mmFixedAll.valid) {
+        fixFailures.push({ file, level: 'all', message: mmFixedAll.message });
+      }
       markdown += `\`\`\`mermaid\n${fixPreviewAll.fixed}\n\`\`\`\n\n`;
     } else {
       markdown += `No auto-fix changes (all level).\n\n`;
@@ -261,7 +286,7 @@ node scripts/generate-invalid-preview.js ${diagramType}
 \`\`\`
 `;
   
-  return markdown;
+  return { markdown, results, fixFailures };
 }
 
 // Remove ANSI color codes from strings for clean Markdown output
@@ -295,7 +320,7 @@ function main() {
     return { file, rel, mer };
   });
 
-  const markdown = generateInvalidMarkdown(diagramType);
+  const { markdown, fixFailures } = generateInvalidMarkdown(diagramType);
   
   fs.writeFileSync(outputPath, markdown);
   
@@ -310,6 +335,15 @@ function main() {
     mermaidMismatches.forEach((m) => {
       console.error(` - ${m.file}: expected INVALID, but mermaid-cli says VALID`);
     });
+    process.exit(1);
+  }
+
+  // Enforce: If our auto-fix changed the content, the fixed output must be VALID under mermaid-cli
+  if (fixFailures.length) {
+    console.error(`\n❌ Found ${fixFailures.length} auto-fix validation failure(s) in '${diagramType}/invalid':`);
+    for (const f of fixFailures) {
+      console.error(` - ${f.file}: '--fix${f.level === 'all' ? '=all' : ''}' produced output that is still INVALID per mermaid-cli — ${f.message.split('\n')[0]}`);
+    }
     process.exit(1);
   }
 }

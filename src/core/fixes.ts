@@ -555,26 +555,51 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('ST-NOTE-MALFORMED', e)) {
-      // Mirror SE note fix: insert ' : ' after the header
-      const lineText = lineTextAt(text, e.line);
-      const mLeft = /^(\s*)Note\s+(left|right)\s+of\s+(.+?)\s+(.+)$/.exec(lineText);
-      const mOver = /^(\s*)Note\s+over\s+(.+?)\s+(.+)$/.exec(lineText);
-      let insertCol = e.column;
+      // Normalize to: 'Note <left|right> of <target> : <text>' (convert 'over' to 'right')
+      // and ensure the target state exists before the note by inserting a stub if needed.
+      const lines = text.split(/\r?\n/);
+      const raw = lineTextAt(text, e.line);
+      const mLeft = /^(\s*)Note\s+(left|right)\s+of\s+([^:]+?)\s+(.+)$/.exec(raw);
+      const mOver = /^(\s*)Note\s+over\s+([^:]+?)\s+(.+)$/.exec(raw);
+      let indent = '';
+      let dir = 'right';
+      let target = '';
+      let rest = '';
       if (mLeft) {
-        const indent = mLeft[1] || '';
-        const beforeHeader = `${indent}Note ${mLeft[2]} of ${mLeft[3]}`;
-        insertCol = beforeHeader.length + 1;
+        indent = mLeft[1] || '';
+        dir = (mLeft[2] || 'right').toLowerCase();
+        target = (mLeft[3] || '').trim();
+        rest = (mLeft[4] || '').trim();
       } else if (mOver) {
-        const indent = mOver[1] || '';
-        const beforeHeader = `${indent}Note over ${mOver[2]}`;
-        insertCol = beforeHeader.length + 1;
+        indent = mOver[1] || '';
+        dir = 'right';
+        const targets = (mOver[2] || '').split(',').map(s => s.trim()).filter(Boolean);
+        target = targets[0] || '';
+        rest = (mOver[3] || '').trim();
       }
-      const idx0 = Math.max(0, insertCol - 1);
-      const nextCh = lineText[idx0] || '';
-      if (nextCh === ' ') {
-        edits.push(replaceRange(text, { line: e.line, column: insertCol }, 1, ' : '));
+      if (target) {
+        const newLine = `${indent}Note ${dir} of ${target} : ${rest}`;
+        const upper = lines.slice(0, Math.max(0, e.line - 1)).join('\n');
+        const seenEarlier = new RegExp(`(^|\n|\b)${target}(\b)`).test(upper);
+        if (seenEarlier) {
+          // Replace in place
+          edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: raw.length + 1 }, newText: newLine });
+        } else {
+          // Move note after the next line that mentions the target; else to EOF
+          let afterLine = lines.length + 1;
+          for (let i = e.line; i < lines.length; i++) {
+            const ln = lines[i] || '';
+            if (new RegExp(`(^|\\b)${target}(\\b)`).test(ln)) { afterLine = i + 2; break; }
+          }
+          // Delete current note line and insert new note after the found line
+          edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
+          edits.push(insertAt(text, { line: afterLine, column: 1 }, newLine + '\n'));
+        }
       } else {
-        edits.push(insertAt(text, { line: e.line, column: insertCol }, ' : '));
+        // Fallback: just insert the colon after detected header
+        const mHdr = /^(\s*Note\s+(?:left|right)\s+of\s+[^:]+|\s*Note\s+over\s+[^:]+)/i.exec(raw);
+        const col = (mHdr ? (mHdr[0] || '').length + 1 : e.column);
+        edits.push(insertAt(text, { line: e.line, column: col }, ' : '));
       }
       continue;
     }
