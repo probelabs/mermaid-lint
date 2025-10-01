@@ -10,8 +10,9 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 1. [Aliases And Descriptions](#1-aliases-and-descriptions)
 2. [Block And Notes](#2-block-and-notes)
 3. [Markers And Concurrency](#3-markers-and-concurrency)
-4. [Nested And Notes](#4-nested-and-notes)
-5. [Simple](#5-simple)
+4. [Markers Fork Join](#4-markers-fork-join)
+5. [Nested And Notes](#5-nested-and-notes)
+6. [Simple](#6-simple)
 
 ---
 
@@ -125,7 +126,45 @@ state Auth {
 
 ---
 
-## 4. Nested And Notes
+## 4. Markers Fork Join
+
+📄 **Source**: [`markers-fork-join.mmd`](./valid/markers-fork-join.mmd)
+
+```mermaid
+stateDiagram-v2
+state Split <<fork>>
+[*] --> Split
+Split --> A : path=/a
+Split --> B : path=/b
+state Join <<join>>
+A --> Join
+B --> Join
+Join --> [*]
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+state Split <<fork>>
+[*] --> Split
+Split --> A : path=/a
+Split --> B : path=/b
+state Join <<join>>
+A --> Join
+B --> Join
+Join --> [*]
+
+
+```
+</details>
+
+---
+
+## 5. Nested And Notes
 
 📄 **Source**: [`nested-and-notes.mmd`](./valid/nested-and-notes.mmd)
 
@@ -167,7 +206,7 @@ Note right of MFA: One-time code
 
 ---
 
-## 5. Simple
+## 6. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 

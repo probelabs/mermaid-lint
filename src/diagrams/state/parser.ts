@@ -24,8 +24,27 @@ export class StateParser extends CstParser {
       { ALT: () => this.SUBRULE(this.stateBlock) },
       { ALT: () => this.CONSUME(t.Dashes) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
+      { ALT: () => this.SUBRULE(this.styleStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
     ]);
+  });
+
+  private styleStmt = this.RULE('styleStmt', () => {
+    this.OR([
+      {
+        ALT: () => {
+          this.CONSUME(t.StyleClassDefKw);
+          this.OPTION(() => this.CONSUME(t.LabelChunk));
+        }
+      },
+      {
+        ALT: () => {
+          this.CONSUME(t.StyleClassKw);
+          this.OPTION1(() => this.CONSUME(t.LabelChunk));
+        }
+      }
+    ]);
+    this.OPTION2(() => this.CONSUME(t.Newline));
   });
 
   private directionStmt = this.RULE('directionStmt', () => {

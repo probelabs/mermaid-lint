@@ -123,6 +123,8 @@ IService ()-- Impl
 A "1" -- "many" B
 A "0..1" ..> "1" C
 
+# dotted realization both ways (via ..|>)
+Client ..|> IService
 
 ```
 
@@ -149,6 +151,8 @@ IService ()-- Impl
 A "1" -- "many" B
 A "0..1" ..> "1" C
 
+# dotted realization both ways (via ..|>)
+Client ..|> IService
 
 ```
 </details>

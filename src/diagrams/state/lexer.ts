@@ -19,6 +19,9 @@ export const AngleAngleOpen = createToken({ name: 'AngleAngleOpen', pattern: /<<
 export const AngleAngleClose = createToken({ name: 'AngleAngleClose', pattern: />>/ });
 // Concurrency separator inside composite states
 export const Dashes = createToken({ name: 'Dashes', pattern: /---+/ });
+// Accept style statements (pass-through)
+export const StyleClassDefKw = createToken({ name: 'StyleClassDefKw', pattern: /classDef/, longer_alt: Identifier });
+export const StyleClassKw = createToken({ name: 'StyleClassKw', pattern: /class(?!Diagram)/, longer_alt: Identifier });
 
 export const Start = createToken({ name: 'Start', pattern: /\[\*\]/ });
 export const Arrow = createToken({ name: 'Arrow', pattern: /-->/ });
@@ -50,6 +53,7 @@ export const allTokens = [
   Arrow,
   InvalidArrow,
   Dashes,
+  StyleClassDefKw, StyleClassKw,
   LCurly, RCurly,
   Colon, Comma,
   NumberLiteral,

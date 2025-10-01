@@ -1,0 +1,10 @@
+stateDiagram-v2
+state Split <<fork>>
+[*] --> Split
+Split --> A : path=/a
+Split --> B : path=/b
+state Join <<join>>
+A --> Join
+B --> Join
+Join --> [*]
+
