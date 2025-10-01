@@ -74,9 +74,15 @@ export class SVGRenderer implements IRenderer {
       elements.push(`<g class="subgraph-titles">${titles.map(t=>t.svg).join('')}</g>`);
     }
 
+    // Build a padded node lookup for geometry intersections
+    const nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}> = {};
+    for (const n of layout.nodes) {
+      nodeMap[n.id] = { x: n.x + padX, y: n.y + padY, width: n.width, height: n.height, shape: (n as any).shape };
+    }
+
     // Draw edges first (so they appear behind nodes)
     for (const edge of layout.edges) {
-      elements.push(this.generateEdge(edge, padX, padY));
+      elements.push(this.generateEdge(edge, padX, padY, nodeMap));
     }
 
     // Draw nodes
@@ -389,7 +395,7 @@ export class SVGRenderer implements IRenderer {
       .replace(/&#39;/g, "'");
   }
 
-  private generateEdge(edge: LayoutEdge, padX: number, padY: number): string {
+  private generateEdge(edge: LayoutEdge, padX: number, padY: number, nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}>): string {
     if (!edge.points || edge.points.length < 2) {
       return '';
     }
@@ -421,11 +427,21 @@ export class SVGRenderer implements IRenderer {
     }
 
     // Apply endpoint trimming for arrows (trim along Bezier end tangent)
-    const cut = Math.max(4, this.arrowMarkerSize);
     let finalSegs = segData;
     // Markers from model (markerStart/markerEnd) override defaults for special arrow types
     const mStart = (edge as any).markerStart as (undefined|string);
     const mEnd = (edge as any).markerEnd as (undefined|string);
+    // First try geometric intersection with source/target node boundary for precise joins
+    const sourceNode = nodeMap[(edge as any).source];
+    const targetNode = nodeMap[(edge as any).target];
+    if (sourceNode) {
+      finalSegs = this.intersectSegmentsStart(finalSegs, sourceNode);
+    }
+    if (targetNode) {
+      finalSegs = this.intersectSegmentsEnd(finalSegs, targetNode);
+    }
+    // Fallback tiny trim if markers exist (avoid overlay)
+    const cut = 1.5;
     if (mStart && mStart !== 'none') finalSegs = this.trimSegmentsStart(finalSegs, cut);
     if (mEnd && mEnd !== 'none') finalSegs = this.trimSegmentsEnd(finalSegs, cut);
     const pathData = this.pathFromSegments(finalSegs);
@@ -531,6 +547,93 @@ export class SVGRenderer implements IRenderer {
     const ny = vy / len;
     const newStart = { x: data.start.x + nx * cut, y: data.start.y + ny * cut };
     return { start: newStart, segs };
+  }
+
+  // ---- shape intersections ----
+  private intersectSegmentsEnd(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , node: {x:number;y:number;width:number;height:number;shape:string}) {
+    if (!data.segs.length) return data;
+    const last = data.segs[data.segs.length - 1];
+    const p1 = last.c2; const p2 = last.to;
+    const hit = this.intersectLineWithNode(p1, p2, node);
+    if (hit) {
+      const segs = data.segs.slice();
+      segs[segs.length - 1] = { ...last, to: hit };
+      return { start: data.start, segs };
+    }
+    return data;
+  }
+
+  private intersectSegmentsStart(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , node: {x:number;y:number;width:number;height:number;shape:string}) {
+    if (!data.segs.length) return data;
+    const first = data.segs[0];
+    const p1 = data.start; const p2 = first.c1;
+    const hit = this.intersectLineWithNode(p1, p2, node);
+    if (hit) {
+      return { start: hit, segs: data.segs };
+    }
+    return data;
+  }
+
+  private intersectLineWithNode(p1:{x:number;y:number}, p2:{x:number;y:number}, node:{x:number;y:number;width:number;height:number;shape:string}): {x:number;y:number} | null {
+    const shape = node.shape;
+    if (shape === 'circle') {
+      const cx = node.x + node.width/2; const cy = node.y + node.height/2; const r = Math.min(node.width, node.height)/2;
+      return this.lineCircleIntersection(p1, p2, {cx, cy, r});
+    } else if (shape === 'diamond') {
+      const cx = node.x + node.width/2; const cy = node.y + node.height/2;
+      const poly = [ {x:cx, y:node.y}, {x:node.x+node.width, y:cy}, {x:cx, y:node.y+node.height}, {x:node.x, y:cy} ];
+      return this.linePolygonIntersection(p1, p2, poly);
+    } else {
+      // default to rectangle
+      const poly = [
+        {x:node.x, y:node.y},
+        {x:node.x+node.width, y:node.y},
+        {x:node.x+node.width, y:node.y+node.height},
+        {x:node.x, y:node.y+node.height}
+      ];
+      return this.linePolygonIntersection(p1, p2, poly);
+    }
+  }
+
+  private lineCircleIntersection(p1:{x:number;y:number}, p2:{x:number;y:number}, c:{cx:number;cy:number;r:number}): {x:number;y:number} | null {
+    // parametric p = p1 + t*(p2-p1)
+    const dx = p2.x - p1.x; const dy = p2.y - p1.y;
+    const fx = p1.x - c.cx; const fy = p1.y - c.cy;
+    const a = dx*dx + dy*dy;
+    const b = 2*(fx*dx + fy*dy);
+    const cc = fx*fx + fy*fy - c.r*c.r;
+    const disc = b*b - 4*a*cc; if (disc < 0) return null;
+    const s = Math.sqrt(disc);
+    // we need t in (0,1), nearest to 1 (closest to p2)
+    const t1 = (-b - s) / (2*a);
+    const t2 = (-b + s) / (2*a);
+    const ts = [t1, t2].filter(t => t >= 0 && t <= 1);
+    if (!ts.length) return null;
+    const t = Math.max(...ts);
+    return { x: p1.x + dx*t, y: p1.y + dy*t };
+  }
+
+  private linePolygonIntersection(p1:{x:number;y:number}, p2:{x:number;y:number}, poly:Array<{x:number;y:number}>): {x:number;y:number} | null {
+    let bestT = -Infinity; let best=null as any;
+    for (let i=0;i<poly.length;i++){
+      const a = poly[i]; const b = poly[(i+1)%poly.length];
+      const hit = this.segmentIntersection(p1,p2,a,b);
+      if (hit && hit.t >= 0 && hit.t <= 1 && hit.u >=0 && hit.u <=1){
+        if (hit.t > bestT){ bestT = hit.t; best = {x: hit.x, y: hit.y}; }
+      }
+    }
+    return best;
+  }
+
+  private segmentIntersection(p:{x:number;y:number}, p2:{x:number;y:number}, q:{x:number;y:number}, q2:{x:number;y:number}): {x:number;y:number;t:number;u:number}|null {
+    const r = { x: p2.x - p.x, y: p2.y - p.y };
+    const s = { x: q2.x - q.x, y: q2.y - q.y };
+    const rxs = r.x*s.y - r.y*s.x; if (Math.abs(rxs) < 1e-6) return null;
+    const q_p = { x: q.x - p.x, y: q.y - p.y };
+    const t = (q_p.x*s.y - q_p.y*s.x)/rxs;
+    const u = (q_p.x*r.y - q_p.y*r.x)/rxs;
+    const x = p.x + t*r.x; const y = p.y + t*r.y;
+    return {x,y,t,u};
   }
 
   private pointAtRatio(points: Array<{x:number;y:number}>, ratio: number): {x:number;y:number} {
