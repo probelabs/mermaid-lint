@@ -8,7 +8,9 @@
       "Bash(wrangler deploy:*)",
       "Bash(git add:*)",
       "Bash(git log:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: update Maid website with comprehensive content and Google Analytics\n\n- Add Google Analytics tracking to index.html and demo.html\n- Restore comprehensive website design with all sections\n- Update fonts from Poppins/Inter to Space Grotesk/DM Sans\n- Add pink gradient background (#fef6f8) and hero background\n- Include complete sections: features, demo, getting started, AI integration, CI/CD, error comparison\n- Add interactive error comparison tabs with real examples\n- Update Probe ecosystem section with improved layout\n- Update Cloudflare worker to point to new deployment (4f8dd41c.maid-cp6.pages.dev)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: update Maid website with comprehensive content and Google Analytics\n\n- Add Google Analytics tracking to index.html and demo.html\n- Restore comprehensive website design with all sections\n- Update fonts from Poppins/Inter to Space Grotesk/DM Sans\n- Add pink gradient background (#fef6f8) and hero background\n- Include complete sections: features, demo, getting started, AI integration, CI/CD, error comparison\n- Add interactive error comparison tabs with real examples\n- Update Probe ecosystem section with improved layout\n- Update Cloudflare worker to point to new deployment (4f8dd41c.maid-cp6.pages.dev)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(wrangler whoami:*)",
+      "Bash(wrangler login:*)"
     ],
     "deny": [],
     "ask": []

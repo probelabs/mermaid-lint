@@ -539,8 +539,8 @@
                     const fixResult = fixText(input, { strict: false, level: 'all' });
                     fixedText = fixResult.fixed;
 
-                    // Update the textarea with fixed code
-                    inputEl.value = fixedText;
+                    // Keep the original input unchanged, only use fixed text for validation
+                    // inputEl.value = fixedText;  // Don't replace user's input
 
                     // Validate the fixed text
                     const finalValidation = validate(fixedText, { strict: false });
