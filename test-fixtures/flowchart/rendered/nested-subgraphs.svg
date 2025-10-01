@@ -12,22 +12,22 @@
   <path d="M375,140 L375,165 L375,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="90" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+    <text x="80" y="94.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
     <rect x="40" y="190" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="210" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+    <text x="80" y="214.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
     <rect x="170" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="210" y="90" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+    <text x="210" y="94.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <g id="D">
     <rect x="170" y="190" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="210" y="210" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <text x="210" y="214.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <g id="E">
     <rect x="335" y="190" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="375" y="210" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
+    <text x="375" y="214.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
   </g>
 </svg>

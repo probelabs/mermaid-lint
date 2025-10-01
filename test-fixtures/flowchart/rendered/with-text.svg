@@ -22,22 +22,22 @@
   <path d="M619,150 L644,150 L680.1111111111111,125" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="85" width="144" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="112" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start Process</text>
+    <text x="112" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start Process</text>
   </g>
   <g id="B">
     <polygon points="301.5,81 369,105 301.5,129 234,105" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="301.5" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
+    <text x="301.5" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
   </g>
   <g id="C">
     <rect x="463" y="40" width="136" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="531" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something</text>
+    <text x="531" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something</text>
   </g>
   <g id="D">
     <rect x="443" y="130" width="176" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="531" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something else</text>
+    <text x="531" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Do something else</text>
   </g>
   <g id="E">
     <rect x="669" y="85" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="709" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
+    <text x="709" y="109.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
   </g>
 </svg>

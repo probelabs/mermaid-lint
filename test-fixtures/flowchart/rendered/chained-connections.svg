@@ -16,34 +16,34 @@
   <path d="M349.44444444444446,80 L355,105 L352.22222222222223,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+    <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
     <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+    <text x="80" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
     <rect x="40" y="220" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="240" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+    <text x="80" y="244.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <g id="D">
     <rect x="40" y="310" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="330" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <text x="80" y="334.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <g id="E">
     <rect x="175" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="215" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
+    <text x="215" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
   </g>
   <g id="F">
     <rect x="305" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="345" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">F</text>
+    <text x="345" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">F</text>
   </g>
   <g id="G">
     <rect x="170" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="210" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">G</text>
+    <text x="210" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">G</text>
   </g>
   <g id="H">
     <rect x="310" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="350" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">H</text>
+    <text x="350" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">H</text>
   </g>
 </svg>

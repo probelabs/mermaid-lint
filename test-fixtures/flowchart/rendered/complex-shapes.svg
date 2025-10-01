@@ -28,19 +28,19 @@
   <path d="M183.75,816 L183.75,841 L183.75,866" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="127.75" y="40" width="112" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="183.75" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Rectangle</text>
+    <text x="183.75" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Rectangle</text>
   </g>
   <g id="B">
     <circle cx="183.75" cy="174" r="44" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="183.75" y="174" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Circle</text>
+    <text x="183.75" y="178.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Circle</text>
   </g>
   <g id="C">
     <polygon points="183.75,268 246.25,292 183.75,316 121.25,292" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="183.75" y="292" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Diamond</text>
+    <text x="183.75" y="296.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Diamond</text>
   </g>
   <g id="D">
     <rect x="40" y="391" width="115" height="40" rx="20" ry="20" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="97.5" y="411" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Stadium</text>
+    <text x="97.5" y="415.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Stadium</text>
   </g>
   <g id="E">
     <g>
@@ -48,7 +48,7 @@
           <line x1="210" y1="386" x2="210" y2="436" stroke="#9370db" stroke-width="1.5" />
           <line x1="330" y1="386" x2="330" y2="436" stroke="#9370db" stroke-width="1.5" />
         </g>
-    <text x="270" y="411" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Subroutine</text>
+    <text x="270" y="415.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Subroutine</text>
   </g>
   <g id="F">
     <g>
@@ -56,22 +56,22 @@
           <rect x="131.75" y="496" width="104" height="32" stroke="none" fill="#f9f9ff" />
           <path d="M131.75,496 L131.75,528 A52,10 0 0,0 235.75,528 L235.75,496" stroke="#9370db" stroke-width="1.5" fill="none" />
         </g>
-    <text x="183.75" y="512" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Database</text>
+    <text x="183.75" y="516.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Database</text>
   </g>
   <g id="H">
     <polygon points="118.75,678 248.75,678 313.75,702 248.75,726 118.75,726 53.75,702" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="183.75" y="702" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">\Parallelogram \ Alt</text>
+    <text x="183.75" y="706.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">\Parallelogram \ Alt</text>
   </g>
   <g id="G">
     <polygon points="180.05,588 339,588 310.95,628 152,628" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="245.5" y="608" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram</text>
+    <text x="245.5" y="612.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram</text>
   </g>
   <g id="I">
     <polygon points="132.65,776 234.85,776 256.75,816 110.75,816" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="183.75" y="796" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid</text>
+    <text x="183.75" y="800.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid</text>
   </g>
   <g id="J">
     <rect x="99.75" y="866" width="168" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="183.75" y="886" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">\Trapezoid / Alt</text>
+    <text x="183.75" y="890.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">\Trapezoid / Alt</text>
   </g>
 </svg>

@@ -11,14 +11,14 @@
   <path d="M298,60 L323,60 L348,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="104" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="92" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">世界 Hello</text>
+    <text x="92" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">世界 Hello</text>
   </g>
   <g id="B">
     <rect x="194" y="40" width="104" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="246" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">😀 Emoji</text>
+    <text x="246" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">😀 Emoji</text>
   </g>
   <g id="C">
     <rect x="348" y="40" width="136" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="416" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">★☆♦♠ Symbols</text>
+    <text x="416" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">★☆♦♠ Symbols</text>
   </g>
 </svg>
