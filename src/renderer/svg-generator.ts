@@ -479,13 +479,19 @@ export class SVGRenderer implements IRenderer {
     }
     const pts = [points[0], ...points, points[points.length - 1]]; // duplicate ends
     const segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}> = [];
+    const firstIdx = 1;
+    const lastIdx = pts.length - 3; // index i of the last produced segment
+    const midFactor = 1.0;          // keep mid segments as-is
+    const endFactor = 0.55;         // reduce handle magnitude near the ends
     for (let i = 1; i < pts.length - 2; i++) {
       const p0 = pts[i - 1];
       const p1 = pts[i];
       const p2 = pts[i + 1];
       const p3 = pts[i + 2];
-      const c1 = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 };
-      const c2 = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 };
+      const f1 = (i === firstIdx) ? endFactor : midFactor;
+      const f2 = (i === lastIdx)  ? endFactor : midFactor;
+      const c1 = { x: p1.x + ((p2.x - p0.x) / 6) * f1, y: p1.y + ((p2.y - p0.y) / 6) * f1 };
+      const c2 = { x: p2.x - ((p3.x - p1.x) / 6) * f2, y: p2.y - ((p3.y - p1.y) / 6) * f2 };
       segs.push({ c1, c2, to: { x: p2.x, y: p2.y } });
     }
     return { start: pts[1], segs };
