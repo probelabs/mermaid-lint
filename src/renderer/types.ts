@@ -23,6 +23,8 @@ export interface Edge {
   target: string;
   label?: string;
   type: ArrowType;
+  markerStart?: 'none' | 'arrow' | 'circle' | 'cross';
+  markerEnd?: 'none' | 'arrow' | 'circle' | 'cross';
 }
 
 export interface Graph {

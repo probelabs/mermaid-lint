@@ -104,6 +104,9 @@ export class SVGRenderer implements IRenderer {
     <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
       <circle cx="3" cy="3" r="3" fill="${this.arrowStroke}" />
     </marker>
+    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L7,7 M7,1 L1,7" stroke="${this.arrowStroke}" stroke-width="1.5" />
+    </marker>
   </defs>`;
   }
 
@@ -399,6 +402,7 @@ export class SVGRenderer implements IRenderer {
     let strokeDasharray = '';
     let strokeWidth = 1.5;
     let markerEnd = 'url(#arrow)';
+    let markerStart = '';
 
     switch (edge.type) {
       case 'open':
@@ -418,16 +422,23 @@ export class SVGRenderer implements IRenderer {
 
     // Apply endpoint trimming for arrows (trim along Bezier end tangent)
     const cut = Math.max(4, this.arrowMarkerSize);
-    const finalSegs = markerEnd ? this.trimSegmentsEnd(segData, cut) : segData;
+    let finalSegs = segData;
+    // Markers from model (markerStart/markerEnd) override defaults for special arrow types
+    const mStart = (edge as any).markerStart as (undefined|string);
+    const mEnd = (edge as any).markerEnd as (undefined|string);
+    if (mStart && mStart !== 'none') finalSegs = this.trimSegmentsStart(finalSegs, cut);
+    if (mEnd && mEnd !== 'none') finalSegs = this.trimSegmentsEnd(finalSegs, cut);
     const pathData = this.pathFromSegments(finalSegs);
 
     let edgeElement = `<path d="${pathData}" stroke="${this.arrowStroke}" stroke-width="${strokeWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
     }
-    if (markerEnd) {
-      edgeElement += ` marker-end="${markerEnd}"`;
-    }
+    // Apply explicit markers from edge if present
+    const startMark = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
+    const endMark = mEnd === 'arrow' ? 'url(#arrow)' : mEnd === 'circle' ? 'url(#circle-marker)' : mEnd === 'cross' ? 'url(#cross-marker)' : (markerEnd || '');
+    if (startMark) edgeElement += ` marker-start="${startMark}"`;
+    if (endMark) edgeElement += ` marker-end="${endMark}"`;
     edgeElement += ' />';
 
     // Add edge label if present
@@ -501,6 +512,19 @@ export class SVGRenderer implements IRenderer {
     last.to = newTo;
     segs[segs.length - 1] = last;
     return { start: data.start, segs };
+  }
+
+  private trimSegmentsStart(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , cut: number) {
+    const segs = data.segs.slice();
+    if (!segs.length) return data;
+    const first = { ...segs[0] };
+    const vx = first.c1.x - data.start.x;
+    const vy = first.c1.y - data.start.y;
+    const len = Math.hypot(vx, vy) || 1;
+    const nx = vx / len;
+    const ny = vy / len;
+    const newStart = { x: data.start.x + nx * cut, y: data.start.y + ny * cut };
+    return { start: newStart, segs };
   }
 
   private pointAtRatio(points: Array<{x:number;y:number}>, ratio: number): {x:number;y:number} {

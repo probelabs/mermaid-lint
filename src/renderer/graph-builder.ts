@@ -108,7 +108,9 @@ export class GraphBuilder {
             source,
             target,
             label: linkInfo.label,
-            type: linkInfo.type
+            type: linkInfo.type,
+            markerStart: linkInfo.markerStart,
+            markerEnd: linkInfo.markerEnd
           });
         }
       }
@@ -125,7 +127,9 @@ export class GraphBuilder {
               source,
               target,
               label: nextLink.label,
-              type: nextLink.type
+              type: nextLink.type,
+              markerStart: nextLink.markerStart,
+              markerEnd: nextLink.markerEnd
             });
           }
         }
@@ -352,7 +356,7 @@ export class GraphBuilder {
     return parts.join(' ').trim();
   }
 
-  private extractLinkInfo(link: CstNode): { type: ArrowType; label?: string } {
+  private extractLinkInfo(link: CstNode): { type: ArrowType; label?: string; markerStart?: 'none'|'arrow'|'circle'|'cross'; markerEnd?: 'none'|'arrow'|'circle'|'cross' } {
     const children = link.children;
     let type: ArrowType = 'arrow';
     let label: string | undefined;
