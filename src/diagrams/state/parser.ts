@@ -69,20 +69,25 @@ export class StateParser extends CstParser {
     this.SUBRULE2(this.actorRef);
     this.OPTION(() => {
       this.CONSUME(t.Colon);
-      this.OR([
-        { ALT: () => this.AT_LEAST_ONE(() => this.SUBRULE(this.labelText)) },
-        { ALT: () => this.CONSUME(t.LabelChunk) },
-      ]);
+      this.AT_LEAST_ONE(() => {
+        this.OR([
+          { ALT: () => this.CONSUME(t.QuotedString) },
+          { ALT: () => this.CONSUME(t.Identifier) },
+          { ALT: () => this.CONSUME(t.NumberLiteral) },
+          { ALT: () => this.CONSUME(t.LabelChunk) },
+        ]);
+      });
     });
     this.OPTION2(() => this.CONSUME(t.Newline));
   });
 
   // state "desc" as s2   |   s2 : description
   private stateDecl = this.RULE('stateDecl', () => {
+    this.CONSUME(t.StateKw);
     this.OR([
       {
+        GATE: () => this.LA(1).tokenType === t.QuotedString,
         ALT: () => {
-          this.CONSUME(t.StateKw);
           this.CONSUME(t.QuotedString);
           this.CONSUME(t.AsKw);
           this.CONSUME(t.Identifier);
@@ -90,20 +95,12 @@ export class StateParser extends CstParser {
       },
       {
         ALT: () => {
-          this.CONSUME2(t.StateKw);
           this.CONSUME2(t.Identifier);
           this.OPTION(() => {
             this.CONSUME(t.AngleAngleOpen);
             this.CONSUME3(t.Identifier);
             this.CONSUME(t.AngleAngleClose);
           });
-        }
-      },
-      {
-        ALT: () => {
-          this.CONSUME2(t.Identifier);
-          this.CONSUME(t.Colon);
-          this.AT_LEAST_ONE(() => this.SUBRULE(this.labelText));
         }
       }
     ]);

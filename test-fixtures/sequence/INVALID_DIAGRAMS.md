@@ -98,12 +98,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -116,8 +111,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -195,12 +190,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -213,8 +203,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -289,12 +279,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -307,8 +292,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -384,12 +369,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -402,8 +382,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -481,12 +461,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -499,8 +474,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -577,12 +552,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -595,8 +565,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -670,12 +640,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -688,8 +653,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -766,12 +731,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -784,8 +744,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -862,12 +822,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -880,8 +835,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -958,12 +913,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -976,8 +926,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -1053,12 +1003,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -1071,8 +1016,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -1148,12 +1093,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -1166,8 +1106,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -1244,12 +1184,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -1262,8 +1197,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -1339,12 +1274,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -1357,8 +1287,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -1435,12 +1365,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -1453,8 +1378,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
@@ -1530,12 +1455,7 @@ file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
                       ^
 
 Error: Parser Definition Errors detected:
- ->CONSUME2<- with argument: ->Identifier<-
-appears more than once (2 times) in the top level rule: ->stateDecl<-.
-For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
-
--------------------------------
-->OPTION<-
+ ->OPTION<-
 appears more than once (2 times) in the top level rule: ->stateDecl<-.
 For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
 
@@ -1548,8 +1468,8 @@ For Further details.
     at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
     at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
     at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new StateParser (file://out/diagrams/state/parser.js:143:14)
-    at file://out/diagrams/state/parser.js:146:31
+    at new StateParser (file://out/diagrams/state/parser.js:140:14)
+    at file://out/diagrams/state/parser.js:143:31
     at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
