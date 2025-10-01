@@ -1,3 +1,5 @@
+![Maid Illustration](./maid_info_illustration_white.png)
+
 # Maid
 
 Fast, accurate Mermaid diagram validator with clear, actionable diagnostics. Built for the AI age where Mermaid has become essential—but validation shouldn't require a browser.
