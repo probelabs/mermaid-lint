@@ -167,8 +167,9 @@ export class SVGGenerator {
     const maxCharsPerLine = Math.floor(maxWidth / charWidth);
 
     if (maxCharsPerLine <= 0 || text.length <= maxCharsPerLine) {
-      // Single line
-      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${this.escapeXml(text)}</text>`;
+      // Single line - use dy offset for better vertical centering
+      const dyOffset = this.fontSize * 0.35; // Empirical value for vertical centering
+      return `<text x="${x}" y="${y + dyOffset}" text-anchor="middle" font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${this.escapeXml(text)}</text>`;
     }
 
     // Split text into words
@@ -195,11 +196,13 @@ export class SVGGenerator {
 
     // Generate SVG text with tspans for each line
     const lineHeight = this.fontSize * 1.2;
-    const startY = y - ((lines.length - 1) * lineHeight) / 2;
+    const totalHeight = (lines.length - 1) * lineHeight;
+    const startY = y - totalHeight / 2 + this.fontSize * 0.35; // Add dy offset for centering
 
     const tspans = lines.map((line, i) => {
       const lineY = startY + i * lineHeight;
-      return `<tspan x="${x}" y="${lineY}" text-anchor="middle" dominant-baseline="middle">${this.escapeXml(line)}</tspan>`;
+      // Remove dominant-baseline and use explicit y positioning
+      return `<tspan x="${x}" y="${lineY}" text-anchor="middle">${this.escapeXml(line)}</tspan>`;
     }).join('\n    ');
 
     return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">
