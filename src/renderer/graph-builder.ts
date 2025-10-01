@@ -258,11 +258,11 @@ export class GraphBuilder {
     const children = contentNode.children;
     if (!children) return '';
 
-    const parts: string[] = [];
-
-    // Collect all text tokens
+    // Collect all text tokens with their positions
     const tokenTypes = ['Text', 'Identifier', 'QuotedString', 'NumberLiteral', 'Ampersand',
                        'Comma', 'Colon', 'Semicolon', 'Dot', 'Underscore', 'Dash'];
+
+    const tokenWithPositions: Array<{ text: string; startOffset: number }> = [];
 
     for (const type of tokenTypes) {
       const tokens = children[type] as IToken[] | undefined;
@@ -273,10 +273,19 @@ export class GraphBuilder {
           if (type === 'QuotedString' && text.startsWith('"') && text.endsWith('"')) {
             text = text.slice(1, -1);
           }
-          parts.push(text);
+          tokenWithPositions.push({
+            text,
+            startOffset: token.startOffset ?? 0
+          });
         }
       }
     }
+
+    // Sort by position to preserve original order
+    tokenWithPositions.sort((a, b) => a.startOffset - b.startOffset);
+
+    // Extract just the text in correct order
+    const parts = tokenWithPositions.map(t => t.text);
 
     // Handle spaces
     if (children.Space) {
