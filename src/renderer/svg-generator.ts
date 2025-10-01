@@ -272,7 +272,7 @@ export class SVGRenderer implements IRenderer {
     }
 
     // Generate SVG text with tspans for each line
-    const lineHeight = 16; // px
+    const lineHeight = 18; // px - add a bit more vertical space
     const totalHeight = (lines.length - 1) * lineHeight;
     const startY = y - totalHeight / 2 + this.fontSize * 0.35; // Add dy offset for centering
 
@@ -346,7 +346,7 @@ export class SVGRenderer implements IRenderer {
     flush();
 
     // Emit SVG tspans
-    const lineHeight = 16;
+    const lineHeight = 18; // richer text lines spacing up slightly
     const totalHeight = (lines.length - 1) * lineHeight;
     const startY = y - totalHeight / 2 + this.fontSize * 0.35;
     const tspans: string[] = [];

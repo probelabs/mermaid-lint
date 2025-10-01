@@ -183,7 +183,7 @@ export class DagreLayoutEngine implements ILayoutEngine {
     const minWidth = 80;
     const minHeight = 40;
     const maxWidth = 240;    // allow a bit wider boxes
-    const lineHeight = 16;   // tighter line spacing
+    const lineHeight = 18;   // a bit more vertical space for readability
 
     // Calculate width (capped at maxWidth)
     let width = Math.min(
