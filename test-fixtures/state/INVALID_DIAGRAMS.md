@@ -133,6 +133,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
+error[ST-ARROW-INVALID]: Invalid arrow '->'. Use '-->' in state transitions.
+at test-fixtures/state/invalid/invalid-arrow.mmd:2:6
+  1 | stateDiagram-v2
+  2 | Idle -> Running : start
+    |      ^^
+  3 | 
+hint: Example: A --> B : event
+
 error: Expecting: one of these possible Token sequences:
   1. [DirectionKw]
   2. [Start]
@@ -149,15 +157,7 @@ at test-fixtures/state/invalid/invalid-arrow.mmd:2:1
   1 | stateDiagram-v2
   2 | Idle -> Running : start
     | ^^^^
-  3 | 
-
-error[ST-ARROW-INVALID]: Invalid arrow '->'. Use '-->' in state transitions.
-at test-fixtures/state/invalid/invalid-arrow.mmd:2:6
-  1 | stateDiagram-v2
-  2 | Idle -> Running : start
-    |      ^^
-  3 | 
-hint: Example: A --> B : event
+  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview

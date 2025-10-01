@@ -67,6 +67,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
+error[CL-REL-INVALID]: Invalid relationship operator '->'. Use <|--, *--, o--, --, ..> or ..|>.
+at test-fixtures/class/invalid/invalid-relation.mmd:2:5
+  1 | classDiagram
+  2 | Foo -> Bar : wrong arrow
+    |     ^^
+  3 | 
+hint: Example: Foo <|-- Bar
+
 error: Expecting: one of these possible Token sequences:
   1. [DirectionKw]
   2. [ClassKw]
@@ -85,20 +93,12 @@ error: Expecting: one of these possible Token sequences:
   15. [Identifier, Colon]
   16. [QuotedString, Colon]
   17. [Newline]
-but found: 'arrow'
-at test-fixtures/class/invalid/invalid-relation.mmd:2:20
+but found: 'Foo'
+at test-fixtures/class/invalid/invalid-relation.mmd:2:1
   1 | classDiagram
   2 | Foo -> Bar : wrong arrow
-    |                    ^^^^^
-  3 | 
-
-error[CL-REL-INVALID]: Invalid relationship operator '->'. Use <|--, *--, o--, --, ..> or ..|>.
-at test-fixtures/class/invalid/invalid-relation.mmd:2:5
-  1 | classDiagram
-  2 | Foo -> Bar : wrong arrow
-    |     ^^
-  3 | 
-hint: Example: Foo <|-- Bar
+    | ^^^
+  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -391,6 +391,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
+error[CL-REL-MALFORMED]: Malformed relationship. Provide a target class before the label.
+at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
+  1 | classDiagram
+  2 | Foo <|-- : extends
+    |          ^
+  3 | 
+hint: Use: A <|-- B : label
+
 error: Expecting: one of these possible Token sequences:
   1. [Identifier]
   2. [QuotedString]
@@ -399,15 +407,7 @@ at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
   1 | classDiagram
   2 | Foo <|-- : extends
     |          ^
-  3 | 
-
-error[CL-REL-MALFORMED]: Malformed relationship. Provide a target class before the label.
-at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
-  1 | classDiagram
-  2 | Foo <|-- : extends
-    |          ^
-  3 | 
-hint: Use: A <|-- B : label
+  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview
