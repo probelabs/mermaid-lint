@@ -62,7 +62,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -113,7 +121,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -160,7 +176,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -208,7 +232,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -262,7 +294,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -314,7 +354,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -370,7 +418,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -438,7 +494,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -504,7 +568,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -567,7 +639,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -625,7 +705,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -676,7 +764,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -729,7 +825,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -782,7 +886,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -830,7 +942,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -875,7 +995,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>
@@ -920,7 +1048,15 @@ sequenceDiagram
 </td>
 <td>
 
-<sub>❌ Rendering failed: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object</sub>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
+  </text>
+</svg>
 
 </td>
 </tr>

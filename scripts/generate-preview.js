@@ -102,22 +102,10 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
 
     // Our renderer output
     try {
-      const svg = renderMermaid(content);
-      if (svg) {
-        // Create rendered directory if it doesn't exist
-        const renderedDir = path.join(fixturesDir, 'rendered');
-        if (!fs.existsSync(renderedDir)) {
-          fs.mkdirSync(renderedDir, { recursive: true });
-        }
-
-        // Save SVG file
-        const svgFile = file.replace('.mmd', '.svg');
-        const svgPath = path.join(renderedDir, svgFile);
-        fs.writeFileSync(svgPath, svg);
-
-        // Link to the SVG file in markdown
-        markdown += `![Maid Rendered](./rendered/${svgFile})\n\n`;
-        markdown += `<sub>[View SVG](./rendered/${svgFile})</sub>\n\n`;
+      const result = renderMermaid(content);
+      if (result && result.svg) {
+        // Embed SVG directly in markdown
+        markdown += `${result.svg}\n\n`;
       } else {
         markdown += `<sub>⚠️ Rendering not yet implemented for this diagram type</sub>\n\n`;
       }
