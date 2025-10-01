@@ -16,6 +16,21 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
     postLex: (_text, tokens) => {
       const errs: ValidationError[] = [];
       const tokList = tokens as IToken[];
+      // CL-NAME-DOUBLE-QUOTED: class followed by QuotedString
+      for (let i = 0; i < tokList.length - 1; i++) {
+        const a = tokList[i], b = tokList[i + 1];
+        if (a.tokenType === t.ClassKw && b.tokenType === t.QuotedString) {
+          errs.push({
+            line: b.startLine ?? 1,
+            column: b.startColumn ?? 1,
+            severity: 'error',
+            code: 'CL-NAME-DOUBLE-QUOTED',
+            message: 'Double-quoted class name is not supported. Use backticks for names with spaces/punctuation, or use a label.',
+            hint: 'Example: class `Logger "core"` as L  or  class L["Logger \"core\""]',
+            length: (b.image?.length ?? 1)
+          });
+        }
+      }
       // CL-REL-INVALID via InvalidRelArrow token
       for (const tk of tokList) {
         if (tk.tokenType === t.InvalidRelArrow) {
@@ -60,8 +75,9 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
       }
       return errs;
     },
-    postParse: (src) => {
+    postParse: (src, _tokens, _cst, prev) => {
       const errors: ValidationError[] = [];
+      const has = (code: string, line: number) => (prev || []).some(e => e.code === code && e.line === line && e.severity === 'error');
       const lines = src.split(/\r?\n/);
       const classDeclOpen: number[] = [];
       for (let i = 0; i < lines.length; i++) {
@@ -71,7 +87,7 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
       // Unclosed class blocks (best-effort): any opener without a later closing brace
       if (classDeclOpen.length > 0) {
         const hasClose = lines.some(l => /\}/.test(l));
-        if (!hasClose) {
+        if (!hasClose && !has('CL-BLOCK-MISSING-RBRACE', Math.max(1, lines.length))) {
           const last = classDeclOpen[classDeclOpen.length - 1];
           errors.push({ line: Math.max(1, lines.length), column: 1, severity: 'error', code: 'CL-BLOCK-MISSING-RBRACE', message: "Missing '}' to close class block.", hint: "Close the block: class Foo { ... }" });
         }

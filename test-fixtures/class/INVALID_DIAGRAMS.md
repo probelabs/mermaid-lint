@@ -90,9 +90,16 @@ error: Expecting: one of these possible Token sequences:
   12. [QuotedString, RelRealization]
   13. [QuotedString, RelDependency]
   14. [QuotedString, RelAssociation]
-  15. [Identifier, Colon]
-  16. [QuotedString, Colon]
-  17. [Newline]
+  15. [BacktickName, RelExtends]
+  16. [BacktickName, RelComposition]
+  17. [BacktickName, RelAggregation]
+  18. [BacktickName, RelRealization]
+  19. [BacktickName, RelDependency]
+  20. [BacktickName, RelAssociation]
+  21. [Identifier, Colon]
+  22. [QuotedString, Colon]
+  23. [BacktickName, Colon]
+  24. [Newline]
 but found: 'Foo'
 at test-fixtures/class/invalid/invalid-relation.mmd:2:1
   1 | classDiagram
@@ -225,17 +232,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-error: Expecting token of type --> RCurly <-- but found --> '' <--
-at test-fixtures/class/invalid/missing-rbrace.mmd:5:1
-  4 | 
-  5 | 
-    | ^
-
 error[CL-BLOCK-MISSING-RBRACE]: Missing '}' to close class block.
 at test-fixtures/class/invalid/missing-rbrace.mmd:5:1
-  4 | 
+  2 | class Foo {  ← start of 'class'
+    | …
   5 | 
-    | ^
+  6 | }  ← insert '}' here
 hint: Close the block: class Foo { ... }
 ```
 
@@ -313,20 +315,52 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-error[CL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
-at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:20
+error[CL-NAME-DOUBLE-QUOTED]: Double-quoted class name is not supported. Use backticks for names with spaces/punctuation, or use a label.
+at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:7
   1 | classDiagram
   2 | class "Logger "core"" as L
-    |                    ^
+    |       ^^^^^^^^^
   3 | 
-hint: Example: class "Logger &quot;core&quot;" as L
+hint: Example: class `Logger "core"` as L  or  class L["Logger "core""]
+
+error: Expecting: one of these possible Token sequences:
+  1. [DirectionKw]
+  2. [ClassKw]
+  3. [Identifier, RelExtends]
+  4. [Identifier, RelComposition]
+  5. [Identifier, RelAggregation]
+  6. [Identifier, RelRealization]
+  7. [Identifier, RelDependency]
+  8. [Identifier, RelAssociation]
+  9. [QuotedString, RelExtends]
+  10. [QuotedString, RelComposition]
+  11. [QuotedString, RelAggregation]
+  12. [QuotedString, RelRealization]
+  13. [QuotedString, RelDependency]
+  14. [QuotedString, RelAssociation]
+  15. [BacktickName, RelExtends]
+  16. [BacktickName, RelComposition]
+  17. [BacktickName, RelAggregation]
+  18. [BacktickName, RelRealization]
+  19. [BacktickName, RelDependency]
+  20. [BacktickName, RelAssociation]
+  21. [Identifier, Colon]
+  22. [QuotedString, Colon]
+  23. [BacktickName, Colon]
+  24. [Newline]
+but found: 'core'
+at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:16
+  1 | classDiagram
+  2 | class "Logger "core"" as L
+    |                ^^^^
+  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
 ```mermaid
 classDiagram
-class "Logger &quot;core&quot;" as L
+class `Logger "core"` as L
 
 
 ```
@@ -335,7 +369,7 @@ class "Logger &quot;core&quot;" as L
 
 ```mermaid
 classDiagram
-class "Logger &quot;core&quot;" as L
+class `Logger "core"` as L
 
 
 ```
@@ -402,6 +436,7 @@ hint: Use: A <|-- B : label
 error: Expecting: one of these possible Token sequences:
   1. [Identifier]
   2. [QuotedString]
+  3. [BacktickName]
 but found: ':'
 at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
   1 | classDiagram

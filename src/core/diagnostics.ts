@@ -660,8 +660,8 @@ export function mapClassParserError(err: IRecognitionException, text: string): V
     return { line, column, severity: 'error', code: 'CL-REL-INVALID', message: 'Invalid relationship operator. Use <|--, *--, o--, --, ..> or ..|>.', hint: 'Example: Foo <|-- Bar', length: len };
   }
 
-  // Class block missing closing brace
-  if (isInRule(err, 'classBlock') && err.name === 'MismatchedTokenException' && expecting(err, 'RCurly')) {
+  // Class block missing closing brace (can surface under classBlock or classLine)
+  if ((isInRule(err, 'classBlock') || isInRule(err, 'classLine')) && err.name === 'MismatchedTokenException' && expecting(err, 'RCurly')) {
     return { line, column, severity: 'error', code: 'CL-BLOCK-MISSING-RBRACE', message: "Missing '}' to close class block.", hint: "Close the block: class Foo { ... }", length: len };
   }
 
@@ -675,15 +675,7 @@ export function mapClassParserError(err: IRecognitionException, text: string): V
     return { line, column, severity: 'error', code: 'CL-REL-MALFORMED', message: 'Malformed relationship. Use: A <op> B [: label]', hint: 'Example: Foo <|-- Bar : extends', length: len };
   }
 
-  // Double quotes inside double-quoted label/name
-  const dblEsc = (ltxt.match(/\\\"/g) || []).length;
-  const dq = (ltxt.match(/\"/g) || []).length - dblEsc;
-  if (dq >= 3) {
-    const qPos: number[] = [];
-    for (let i = 0; i < ltxt.length; i++) if (ltxt[i] === '"') qPos.push(i);
-    const col3 = (qPos[2] ?? (column - 1)) + 1;
-    return { line, column: col3, severity: 'error', code: 'CL-LABEL-DOUBLE-IN-DOUBLE', message: 'Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.', hint: 'Example: class "Logger &quot;core&quot;" as L', length: 1 };
-  }
+  // For class diagrams we prefer token-based detection for quoted names; no generic double-in-double fallback here.
 
   return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
 }

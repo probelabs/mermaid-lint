@@ -130,6 +130,7 @@ export class ClassParser extends CstParser {
     this.OR([
       { ALT: () => this.CONSUME(t.Identifier) },
       { ALT: () => this.CONSUME(t.QuotedString) },
+      { ALT: () => this.CONSUME(t.BacktickName) },
     ]);
   });
 

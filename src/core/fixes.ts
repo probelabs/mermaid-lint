@@ -20,6 +20,23 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
       continue;
     }
+    if (is('CL-NAME-DOUBLE-QUOTED', e)) {
+      // Convert outer double quotes around class name to backticks: class "Name" -> class `Name`
+      const lineText = lineTextAt(text, e.line);
+      const kwIdx = lineText.indexOf('class');
+      const startSearch = kwIdx >= 0 ? kwIdx + 5 : 0;
+      const q1 = lineText.indexOf('"', startSearch);
+      if (q1 !== -1) {
+        // close before ' as ' if present, else last quote on line
+        const asIdx = lineText.indexOf(' as ', q1 + 1);
+        const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+        if (q2 > q1) {
+          edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, 1, '`'));
+          edits.push(replaceRange(text, { line: e.line, column: q2 + 1 }, 1, '`'));
+        }
+      }
+      continue;
+    }
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);

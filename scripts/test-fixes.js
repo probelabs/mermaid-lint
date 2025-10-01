@@ -159,7 +159,7 @@ const cases = [
   // Class (safe)
   { name: 'CL-REL-INVALID', before: 'classDiagram\nA -> B : rel\n', after: 'classDiagram\nA -- B : rel\n' },
   { name: 'CL-BLOCK-MISSING-RBRACE', before: 'classDiagram\nclass Foo {\n  +bar()\n', afterLevel: 'safe' },
-  { name: 'CL-LABEL-DOUBLE-IN-DOUBLE', before: 'classDiagram\nclass "Logger "core"" as L\n', after: 'classDiagram\nclass "Logger &quot;core&quot;" as L\n' },
+  { name: 'CL-NAME-DOUBLE-QUOTED', before: 'classDiagram\nclass "Logger "core"" as L\n', after: 'classDiagram\nclass `Logger "core"` as L\n' },
 ];
 
 let passed = 0;

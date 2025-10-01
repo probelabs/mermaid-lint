@@ -233,9 +233,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ```
 error[ST-BLOCK-MISSING-RBRACE]: Missing '}' to close a state block.
 at test-fixtures/state/invalid/missing-rbrace.mmd:6:1
-  5 | 
+  2 | state Foo {  ← start of 'state'
+    | …
   6 | 
-    | ^
+  7 | }  ← insert '}' here
 hint: Close the block: state Foo { ... }
 ```
 
