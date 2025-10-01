@@ -123,6 +123,12 @@ export class ClassParser extends CstParser {
 
   private relationOp = this.RULE('relationOp', () => {
     this.OR([
+      { ALT: () => this.CONSUME(t.RelCompToAgg) },
+      { ALT: () => this.CONSUME(t.RelAggToComp) },
+      { ALT: () => this.CONSUME(t.RelCompBoth) },
+      { ALT: () => this.CONSUME(t.RelAggBoth) },
+      { ALT: () => this.CONSUME(t.LollipopLeft) },
+      { ALT: () => this.CONSUME(t.LollipopRight) },
       { ALT: () => this.CONSUME(t.RelExtends) },
       { ALT: () => this.CONSUME(t.RelComposition) },
       { ALT: () => this.CONSUME(t.RelAggregation) },
@@ -148,10 +154,12 @@ export class ClassParser extends CstParser {
     ]);
   });
 
-  // Foo <|-- Bar [: Label]
+  // Foo ["1..*"] <op> ["0..1"] Bar [: Label]
   private relationStmt = this.RULE('relationStmt', () => {
     this.SUBRULE(this.classRef);
+    this.OPTION(() => this.CONSUME(t.QuotedString));
     this.SUBRULE(this.relationOp);
+    this.OPTION2(() => this.CONSUME2(t.QuotedString));
     this.SUBRULE2(this.classRef);
     this.OPTION(() => {
       this.CONSUME(t.Colon);

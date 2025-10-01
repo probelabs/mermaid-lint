@@ -10,9 +10,10 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 1. [Alias And Stereotype](#1-alias-and-stereotype)
 2. [Inline Members And Attrs](#2-inline-members-and-attrs)
 3. [Members Inline](#3-members-inline)
-4. [Relations All](#4-relations-all)
-5. [Simple](#5-simple)
-6. [Stereotype And Alias](#6-stereotype-and-alias)
+4. [Relations Advanced](#4-relations-advanced)
+5. [Relations All](#5-relations-all)
+6. [Simple](#6-simple)
+7. [Stereotype And Alias](#7-stereotype-and-alias)
 
 ---
 
@@ -98,7 +99,63 @@ User: -id: int
 
 ---
 
-## 4. Relations All
+## 4. Relations Advanced
+
+📄 **Source**: [`relations-advanced.mmd`](./valid/relations-advanced.mmd)
+
+```mermaid
+classDiagram
+class A
+class B
+class C
+class D
+class Client
+class IService
+class Impl
+
+A *--o B
+A o--* C
+A o--o D
+A *--* C
+Client --() IService
+IService ()-- Impl
+
+A "1" -- "many" B
+A "0..1" ..> "1" C
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class A
+class B
+class C
+class D
+class Client
+class IService
+class Impl
+
+A *--o B
+A o--* C
+A o--o D
+A *--* C
+Client --() IService
+IService ()-- Impl
+
+A "1" -- "many" B
+A "0..1" ..> "1" C
+
+
+```
+</details>
+
+---
+
+## 5. Relations All
 
 📄 **Source**: [`relations-all.mmd`](./valid/relations-all.mmd)
 
@@ -140,7 +197,7 @@ A ..|> B : realizes
 
 ---
 
-## 5. Simple
+## 6. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -174,7 +231,7 @@ class Bar
 
 ---
 
-## 6. Stereotype And Alias
+## 7. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 

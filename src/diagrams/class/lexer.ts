@@ -13,6 +13,12 @@ export const AsKw = createToken({ name: 'AsKw', pattern: /as/, longer_alt: Ident
 export const NoteKw = createToken({ name: 'NoteKw', pattern: /note/, longer_alt: Identifier });
 
 // Relationship operators (order matters: longest first)
+export const RelCompToAgg = createToken({ name: 'RelCompToAgg', pattern: /\*--o/ });
+export const RelAggToComp = createToken({ name: 'RelAggToComp', pattern: /o--\*/ });
+export const RelCompBoth = createToken({ name: 'RelCompBoth', pattern: /\*--\*/ });
+export const RelAggBoth = createToken({ name: 'RelAggBoth', pattern: /o--o/ });
+export const LollipopLeft = createToken({ name: 'LollipopLeft', pattern: /\(\)--/ });
+export const LollipopRight = createToken({ name: 'LollipopRight', pattern: /--\(\)/ });
 export const RelExtends = createToken({ name: 'RelExtends', pattern: /<\|--/ });
 export const RelComposition = createToken({ name: 'RelComposition', pattern: /\*--/ });
 export const RelAggregation = createToken({ name: 'RelAggregation', pattern: /o--/ });
@@ -52,6 +58,12 @@ export const allTokens = [
   NoteKw,
   Direction,
   // Relationship ops
+  RelCompToAgg,
+  RelAggToComp,
+  RelCompBoth,
+  RelAggBoth,
+  LollipopLeft,
+  LollipopRight,
   RelRealization,
   RelDependency,
   RelExtends,
