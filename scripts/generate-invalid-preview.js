@@ -298,6 +298,7 @@ function stripAnsi(input) {
 }
 
 function main() {
+  const t0 = Date.now();
   const diagramType = process.argv[2] || 'flowchart';
   const outputPath = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'INVALID_DIAGRAMS.md');
   const invalidDir = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'invalid');
@@ -329,6 +330,8 @@ function main() {
   
   console.log(`✅ Generated invalid preview at: ${outputPath}`);
   console.log(`📊 Total invalid diagrams: ${invalidFiles.length}`);
+  const dt = ((Date.now() - t0) / 1000).toFixed(2);
+  console.log(`⏱  Time: ${dt}s (${diagramType} invalid)`);
 
   // Enforce: Every file in invalid/ must be INVALID by mermaid-cli
   if (mermaidMismatches.length) {

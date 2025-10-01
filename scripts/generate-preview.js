@@ -221,6 +221,7 @@ node scripts/generate-preview.js ${diagramType}
 }
 
 function main() {
+  const t0 = Date.now();
   const diagramType = process.argv[2] || 'flowchart';
   const outputPath = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'VALID_DIAGRAMS.md');
   
@@ -237,6 +238,8 @@ function main() {
   
   console.log(`✅ Generated preview at: ${outputPath}`);
   console.log(`📊 Total valid diagrams: ${markdown.match(/```mermaid/g).length}`);
+  const dt = ((Date.now() - t0) / 1000).toFixed(2);
+  console.log(`⏱  Time: ${dt}s (${diagramType})`);
   if (mismatches.length) {
     console.error(`\n❌ Found ${mismatches.length} classification mismatch(es) in '${diagramType}/valid':`);
     mismatches.forEach((m) => {
