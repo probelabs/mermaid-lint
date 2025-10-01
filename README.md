@@ -687,6 +687,31 @@ npm run build
 npm test
 ```
 
+### Experimental Renderer
+
+Maid includes an experimental lightweight renderer for flowchart diagrams. This renderer serves as a visual validation tool for our parser implementation.
+
+**Purpose:**
+- Validate parser correctness by visually rendering diagrams
+- Identify parsing issues that are difficult to detect through other testing methods
+- Provide a lightweight alternative for basic diagram rendering (294KB vs Mermaid.js's 2.6MB)
+
+**Status:**
+- ⚠️ **Experimental** - Not intended for production use
+- Currently supports only flowchart diagrams
+- Primary goal is parser validation, not feature parity with Mermaid.js
+
+**Building the Browser Bundle:**
+```bash
+npm run build:browser
+# Generates site/maid/maid.bundle.js (294KB, 87KB gzipped)
+```
+
+**Architecture:**
+- Chevrotain parser for CST generation
+- Dagre.js for automatic graph layout
+- Custom SVG generation for shapes and edges
+
 ### Extending the Linter
 
 1. Add a new module: `src/diagrams/<type>/{lexer.ts,parser.ts,validate.ts}`

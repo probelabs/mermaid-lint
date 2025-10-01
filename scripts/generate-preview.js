@@ -33,7 +33,7 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
 | Renderer | Description |
 |----------|-------------|
 | **Mermaid** | Official Mermaid.js renderer (GitHub/mermaid-cli) |
-| **Maid** | Our lightweight renderer using Chevrotain + Dagre |
+| **Maid** | Our experimental lightweight renderer (Chevrotain + Dagre) - for parser validation |
 
 ## Table of Contents
 
@@ -93,7 +93,7 @@ This file contains all valid ${diagramType} test fixtures rendered with both Mer
     markdown += `### Rendered Output\n\n`;
     markdown += `<table>\n<tr>\n`;
     markdown += `<th width="50%">Mermaid (Official)</th>\n`;
-    markdown += `<th width="50%">Maid (Our Renderer)</th>\n`;
+    markdown += `<th width="50%">Maid (Experimental)</th>\n`;
     markdown += `</tr>\n<tr>\n<td>\n\n`;
 
     // Mermaid diagram (GitHub will render this)

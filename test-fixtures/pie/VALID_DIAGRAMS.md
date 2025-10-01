@@ -9,7 +9,7 @@ This file contains all valid pie test fixtures rendered with both Mermaid and ou
 | Renderer | Description |
 |----------|-------------|
 | **Mermaid** | Official Mermaid.js renderer (GitHub/mermaid-cli) |
-| **Maid** | Our lightweight renderer using Chevrotain + Dagre |
+| **Maid** | Our experimental lightweight renderer (Chevrotain + Dagre) - for parser validation |
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ This file contains all valid pie test fixtures rendered with both Mermaid and ou
 <table>
 <tr>
 <th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Our Renderer)</th>
+<th width="50%">Maid (Experimental)</th>
 </tr>
 <tr>
 <td>
@@ -76,7 +76,7 @@ pie title Pets adopted by volunteers
 <table>
 <tr>
 <th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Our Renderer)</th>
+<th width="50%">Maid (Experimental)</th>
 </tr>
 <tr>
 <td>
@@ -127,7 +127,7 @@ pie
 <table>
 <tr>
 <th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Our Renderer)</th>
+<th width="50%">Maid (Experimental)</th>
 </tr>
 <tr>
 <td>
@@ -178,7 +178,7 @@ pie showData
 <table>
 <tr>
 <th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Our Renderer)</th>
+<th width="50%">Maid (Experimental)</th>
 </tr>
 <tr>
 <td>
