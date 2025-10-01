@@ -155,6 +155,7 @@ This file contains invalid ${diagramType} test fixtures with:
   // Summary matrix (add Auto-fix column: shows if safe/all would change the file)
   markdown += `## Summary\n\n`;
   markdown += `| # | Diagram | mermaid-cli | maid | Auto-fix? |\n|---:|---|:---:|:---:|:---:|\n`;
+  const normalize = (s) => (s || '').toString().replace(/\r\n/g, '\n').trim();
   results.forEach(({ file, index, mermaidRes, ourRes, fixPreviewSafe, fixPreviewAll }) => {
     const base = file.replace('.mmd', '');
     const name = base.replace(/-/g, ' ');
@@ -162,9 +163,12 @@ This file contains invalid ${diagramType} test fixtures with:
     const anchor = `#${index + 1}-${base.toLowerCase()}`;
     const mm = mermaidRes.valid ? 'VALID' : 'INVALID';
     const us = ourRes.valid ? 'VALID' : 'INVALID';
-    const orig = fs.readFileSync(path.join(invalidDir, file), 'utf8').trim();
-    const safeChanged = fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig;
-    const allChanged = fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig;
+    const orig = fs.readFileSync(path.join(invalidDir, file), 'utf8');
+    const origN = normalize(orig);
+    const safeN = normalize(fixPreviewSafe.fixed);
+    const allN = normalize(fixPreviewAll.fixed);
+    const safeChanged = fixPreviewSafe.ok && safeN && safeN !== origN;
+    const allChanged = fixPreviewAll.ok && allN && allN !== origN;
     const fixCol = safeChanged ? '✅ safe' : (allChanged ? '✅ all' : '—');
     markdown += `| ${index + 1} | [${title}](${anchor}) | ${mm} | ${us} | ${fixCol} |\n`;
   });
