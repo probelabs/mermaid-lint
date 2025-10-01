@@ -9,11 +9,12 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 1. [Alias And Stereotype](#1-alias-and-stereotype)
 2. [Inline Members And Attrs](#2-inline-members-and-attrs)
-3. [Members Inline](#3-members-inline)
-4. [Relations Advanced](#4-relations-advanced)
-5. [Relations All](#5-relations-all)
-6. [Simple](#6-simple)
-7. [Stereotype And Alias](#7-stereotype-and-alias)
+3. [Member Without Name](#3-member-without-name)
+4. [Members Inline](#4-members-inline)
+5. [Relations Advanced](#5-relations-advanced)
+6. [Relations All](#6-relations-all)
+7. [Simple](#7-simple)
+8. [Stereotype And Alias](#8-stereotype-and-alias)
 
 ---
 
@@ -73,7 +74,35 @@ class User {
 
 ---
 
-## 3. Members Inline
+## 3. Member Without Name
+
+📄 **Source**: [`member-without-name.mmd`](./valid/member-without-name.mmd)
+
+```mermaid
+classDiagram
+class Foo {
+  + () : void
+}
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class Foo {
+  + () : void
+}
+
+
+```
+</details>
+
+---
+
+## 4. Members Inline
 
 📄 **Source**: [`members-inline.mmd`](./valid/members-inline.mmd)
 
@@ -99,7 +128,7 @@ User: -id: int
 
 ---
 
-## 4. Relations Advanced
+## 5. Relations Advanced
 
 📄 **Source**: [`relations-advanced.mmd`](./valid/relations-advanced.mmd)
 
@@ -159,7 +188,7 @@ Client ..|> IService
 
 ---
 
-## 5. Relations All
+## 6. Relations All
 
 📄 **Source**: [`relations-all.mmd`](./valid/relations-all.mmd)
 
@@ -201,7 +230,7 @@ A ..|> B : realizes
 
 ---
 
-## 6. Simple
+## 7. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -235,7 +264,7 @@ class Bar
 
 ---
 
-## 7. Stereotype And Alias
+## 8. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 

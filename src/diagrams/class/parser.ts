@@ -39,8 +39,8 @@ export class ClassParser extends CstParser {
           this.CONSUME(t.LCurly);
           this.MANY(() => {
             this.OR2([
-              { ALT: () => this.SUBRULE(this.memberLineStmt) },
               { ALT: () => this.CONSUME3(t.Newline) },
+              { ALT: () => this.SUBRULE(this.memberLineStmt) },
             ]);
           });
           this.CONSUME(t.RCurly);
@@ -80,13 +80,15 @@ export class ClassParser extends CstParser {
 
   private memberLineStmt = this.RULE('memberLineStmt', () => {
     this.SUBRULE(this.memberLine);
-    this.OPTION(() => this.CONSUME(t.Newline));
   });
 
   private memberLine = this.RULE('memberLine', () => {
     this.OPTION(() => this.CONSUME(t.Visibility));
-    // name [ '(' args ')' ] [ ':' type ]
-    this.SUBRULE(this.memberName);
+    // Optional name before params unless next token is '('
+    this.OPTION1({
+      GATE: () => this.LA(1).tokenType !== t.LParen,
+      DEF: () => this.SUBRULE(this.memberName)
+    });
     this.OPTION2(() => {
       this.CONSUME(t.LParen);
       this.OPTION3(() => this.SUBRULE(this.argList));

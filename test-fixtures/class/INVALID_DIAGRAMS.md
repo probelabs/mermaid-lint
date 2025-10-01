@@ -10,10 +10,9 @@ This file contains invalid class test fixtures with:
 ## Table of Contents
 
 1. [Invalid Relation](#1-invalid-relation)
-2. [Member Malformed](#2-member-malformed)
-3. [Missing Rbrace](#3-missing-rbrace)
-4. [Quoted Name Double In Double](#4-quoted-name-double-in-double)
-5. [Relation Missing Target](#5-relation-missing-target)
+2. [Missing Rbrace](#2-missing-rbrace)
+3. [Quoted Name Double In Double](#3-quoted-name-double-in-double)
+4. [Relation Missing Target](#4-relation-missing-target)
 
 ---
 
@@ -22,10 +21,9 @@ This file contains invalid class test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [Invalid Relation](#1-invalid-relation) | INVALID | INVALID | ✅ safe |
-| 2 | [Member Malformed](#2-member-malformed) | VALID | INVALID | — |
-| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 4 | [Quoted Name Double In Double](#4-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
-| 5 | [Relation Missing Target](#5-relation-missing-target) | INVALID | INVALID | — |
+| 2 | [Missing Rbrace](#2-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 3 | [Quoted Name Double In Double](#3-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
+| 4 | [Relation Missing Target](#4-relation-missing-target) | INVALID | INVALID | — |
 
 ---
 
@@ -107,61 +105,7 @@ Foo -> Bar : wrong arrow
 
 ---
 
-## 2. Member Malformed
-
-📄 **Source**: [`member-malformed.mmd`](./invalid/member-malformed.mmd)
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-classDiagram
-class Foo {
-  + () : void
-}
-
-
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: INVALID
-
-```
-error[CL-MEMBER-MALFORMED]: Malformed class member. Use visibility + name [()][: type].
-at test-fixtures/class/invalid/member-malformed.mmd:3:5
-  2 | class Foo {
-  3 |   + () : void
-    |     ^
-  4 | }
-hint: Examples: +foo() : void  |  -bar: int
-```
-
-### maid Auto-fix (`--fix`) Preview
-
-No auto-fix changes (safe level).
-
-### maid Auto-fix (`--fix=all`) Preview
-
-No auto-fix changes (all level).
-
-<details>
-<summary>View source code</summary>
-
-```
-classDiagram
-class Foo {
-  + () : void
-}
-
-
-```
-</details>
-
----
-
-## 3. Missing Rbrace
+## 2. Missing Rbrace
 
 📄 **Source**: [`missing-rbrace.mmd`](./invalid/missing-rbrace.mmd)
 
@@ -245,7 +189,7 @@ class Foo {
 
 ---
 
-## 4. Quoted Name Double In Double
+## 3. Quoted Name Double In Double
 
 📄 **Source**: [`quoted-name-double-in-double.mmd`](./invalid/quoted-name-double-in-double.mmd)
 
@@ -323,7 +267,7 @@ class "Logger "core"" as L
 
 ---
 
-## 5. Relation Missing Target
+## 4. Relation Missing Target
 
 📄 **Source**: [`relation-missing-target.mmd`](./invalid/relation-missing-target.mmd)
 
