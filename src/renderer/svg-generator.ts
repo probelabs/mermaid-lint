@@ -202,6 +202,10 @@ export class SVGRenderer implements IRenderer {
   }
 
   private generateWrappedText(text: string, x: number, y: number, maxWidth: number): string {
+    // If the label contains basic HTML, use the rich renderer
+    if (text.includes('<')) {
+      return this.generateRichText(text, x, y, maxWidth);
+    }
     // Estimate character width (tuned to Mermaid)
     const charWidth = 7; // px per character
     const maxCharsPerLine = Math.floor(maxWidth / charWidth);
@@ -248,6 +252,108 @@ export class SVGRenderer implements IRenderer {
     return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">
     ${tspans}
   </text>`;
+  }
+
+  // Basic HTML-aware text renderer supporting <br>, <b>/<strong>, <i>/<em>, <u>
+  private generateRichText(html: string, x: number, y: number, maxWidth: number): string {
+    type Seg = { text: string; bold?: boolean; italic?: boolean; underline?: boolean; br?: boolean };
+    const segments: Seg[] = [];
+    // Normalize <br> variants to a unique token and tokenize tags
+    const re = /<\/?(br|b|strong|i|em|u)\s*\/?\s*>/gi;
+    let lastIndex = 0;
+    const state = { bold: false, italic: false, underline: false };
+    const pushText = (t: string) => {
+      if (!t) return;
+      segments.push({ text: this.htmlDecode(t), bold: state.bold, italic: state.italic, underline: state.underline });
+    };
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(html))) {
+      // text before tag
+      pushText(html.slice(lastIndex, m.index));
+      const tag = m[0].toLowerCase();
+      const name = m[1].toLowerCase();
+      const isClose = tag.startsWith('</');
+      if (name === 'br') {
+        segments.push({ text: '', br: true });
+      } else if (name === 'b' || name === 'strong') {
+        state.bold = !isClose ? true : false;
+      } else if (name === 'i' || name === 'em') {
+        state.italic = !isClose ? true : false;
+      } else if (name === 'u') {
+        state.underline = !isClose ? true : false;
+      }
+      lastIndex = re.lastIndex;
+    }
+    pushText(html.slice(lastIndex));
+
+    // Wrap into lines with forced breaks
+    const lines: Seg[][] = [];
+    const charWidth = 7;
+    const maxCharsPerLine = Math.max(1, Math.floor(maxWidth / charWidth));
+    let current: Seg[] = [];
+    let currentLen = 0;
+    const flush = () => { if (current.length) { lines.push(current); current = []; currentLen = 0; } };
+    const splitWords = (s: Seg): Seg[] => {
+      if (!s.text) return [s];
+      const words = s.text.split(/(\s+)/); // keep spaces
+      return words.map(w => ({ ...s, text: w }));
+    };
+
+    for (const seg of segments) {
+      if (seg.br) { flush(); continue; }
+      for (const w of splitWords(seg)) {
+        const wlen = w.text.length;
+        if (currentLen + wlen > maxCharsPerLine && currentLen > 0) {
+          flush();
+        }
+        current.push(w);
+        currentLen += wlen;
+      }
+    }
+    flush();
+
+    // Emit SVG tspans
+    const lineHeight = 16;
+    const totalHeight = (lines.length - 1) * lineHeight;
+    const startY = y - totalHeight / 2 + this.fontSize * 0.35;
+    const tspans: string[] = [];
+    for (let i = 0; i < lines.length; i++) {
+      const lineY = startY + i * lineHeight;
+      // Build inline tspans for style changes
+      let acc = '';
+      let cursorX = x;
+      // Use a grouping <tspan> to align the full line by x/y, and nest inline tspans
+      const inner: string[] = [];
+      let buffer = '';
+      let style = { bold: false, italic: false, underline: false };
+      const flushInline = () => {
+        if (!buffer) return;
+        const styleAttr = `${style.bold ? 'font-weight="bold" ' : ''}${style.italic ? 'font-style="italic" ' : ''}${style.underline ? 'text-decoration="underline" ' : ''}`;
+        inner.push(`<tspan ${styleAttr}>${this.escapeXml(buffer)}</tspan>`);
+        buffer = '';
+      };
+      for (const w of lines[i]) {
+        const wStyle = { bold: !!w.bold, italic: !!w.italic, underline: !!w.underline };
+        if (wStyle.bold !== style.bold || wStyle.italic !== style.italic || wStyle.underline !== style.underline) {
+          flushInline();
+          style = wStyle;
+        }
+        buffer += w.text;
+      }
+      flushInline();
+      tspans.push(`<tspan x="${x}" y="${lineY}" text-anchor="middle">${inner.join('')}</tspan>`);
+    }
+
+    return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${tspans.join('\n    ')}</text>`;
+  }
+
+  private htmlDecode(s: string): string {
+    return s
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
   }
 
   private generateEdge(edge: LayoutEdge): string {
@@ -303,7 +409,7 @@ export class SVGRenderer implements IRenderer {
       const text = this.escapeXml(edge.label);
       const padding = 6;
       const fontSize = this.fontSize - 2;
-      const width = Math.max(20, Math.min(200, text.length * 7 + padding * 2));
+      const width = Math.max(20, Math.min(240, text.length * 7 + padding * 2));
       const height = 18;
       const x = pos.x - width / 2;
       const y = pos.y - height / 2;
