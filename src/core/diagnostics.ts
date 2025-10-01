@@ -705,6 +705,20 @@ export function mapStateParserError(err: IRecognitionException, text: string): V
   if (isInRule(err, 'noteStmt') && (err.name === 'MismatchedTokenException' && expecting(err, 'Colon'))) {
     return { line, column, severity: 'error', code: 'ST-NOTE-MALFORMED', message: 'Malformed note: missing colon before note text.', hint: 'Example: Note right of A: message', length: len };
   }
+  // Friendlier message when using unsupported 'Note over' (we only allow left/right of)
+  if (tokType === 'OverKw') {
+    // No code on purpose to keep tests that expect no code for this case
+    const glued = /[^\s]Note\b/.test(ltxt);
+    const extra = glued ? " Also place 'Note' on its own line (not glued to the previous statement)." : '';
+    return {
+      line,
+      column,
+      severity: 'error',
+      message: "Unsupported note header 'over'. Use 'Note left of <state> : …' or 'Note right of <state> : …'." + extra,
+      hint: 'Example: Note right of Auth: Handles user auth',
+      length: len
+    };
+  }
 
   // state block missing closing brace
   if (isInRule(err, 'stateBlock') && err.name === 'MismatchedTokenException' && expecting(err, 'RCurly')) {

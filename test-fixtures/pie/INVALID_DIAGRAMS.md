@@ -24,7 +24,7 @@ This file contains invalid pie test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [Colon Only](#1-colon-only) | INVALID | INVALID | — |
-| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | ❌ safe |
+| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | ✅ safe |
 | 3 | [Invalid Header](#3-invalid-header) | INVALID | INVALID | — |
 | 4 | [Missing Colon](#4-missing-colon) | INVALID | INVALID | ✅ safe |
 | 5 | [Missing Label](#5-missing-label) | INVALID | INVALID | — |
@@ -132,19 +132,14 @@ hint: Use: "Label" : 10
 
 ```mermaid
 pie
-  "He said " : Hi"" : 1
+  "He said &quot;Hi&quot;Hi&quot; : " : 1
 
 
 ```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-pie
-  "He said " : Hi"" : 1
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -256,12 +251,7 @@ pie
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-pie
-  title "Pets"
-  "Dogs"  : 10
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>

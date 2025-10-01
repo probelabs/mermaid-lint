@@ -157,12 +157,7 @@ Idle --> Running : start
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-Idle --> Running : start
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -315,15 +310,7 @@ state Foo {
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-state Foo {
-  [*] --> A
-  A --> [*]
-
-}
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -379,15 +366,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error: Expecting: one of these possible Token sequences:
-  1. [LeftKw]
-  2. [RightKw]
-but found: 'over'
+error: Unsupported note header 'over'. Use 'Note left of <state> : …' or 'Note right of <state> : …'. Also place 'Note' on its own line (not glued to the previous statement).
 at test-fixtures/state/invalid/note-glued-to-previous.mmd:4:18
   3 | [*] --> Auth
   4 | Auth --> [*]Note over Auth: Handles user auth
     |                  ^^^^
-  5 |
+  5 | 
+hint: Example: Note right of Auth: Handles user auth
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -472,13 +457,7 @@ Note right of A : Missing colon
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-A --> B : ok
-Note right of A : Missing colon
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -553,13 +532,7 @@ Note right of A : Missing colon
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-A --> B
-Note right of A : Missing colon
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>

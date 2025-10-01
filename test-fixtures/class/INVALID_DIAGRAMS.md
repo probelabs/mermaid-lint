@@ -85,12 +85,7 @@ Foo -- Bar : wrong arrow
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-classDiagram
-Foo -- Bar : wrong arrow
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -166,14 +161,7 @@ class Foo {
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-classDiagram
-class Foo {
-  +bar()
-
-}
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -247,12 +235,7 @@ class L["Logger &quot;core&quot;"]
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-classDiagram
-class L["Logger &quot;core&quot;"]
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>

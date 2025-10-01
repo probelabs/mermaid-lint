@@ -124,11 +124,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A --> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -218,17 +214,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    subgraph API_Loader_Custom_Authentication_Processing[API Loader: Custom Authentication Processing]
-        direction TB
-        A[Start processing API definition] --> B{Custom Auth Enabled?}
-        B -- No --> C[Continue with other auth methods]
-        B -- Yes --> D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
-        B -- Yes --> E{"Is &quot;Driver&quot; configured?"}
-    end
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -306,11 +292,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A --> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -449,11 +431,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A(( ))--> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -668,15 +646,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-    A[Text] --> B[Text]
-    B --> C
-    X{{Hexagon}}
-    S([Stadium])
-    Y[(Cylinder)]
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -815,12 +785,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-  A['She said &quot;Hello&quot;'] --> B
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -899,14 +864,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
-    B --> C[Node with #35; special &amp; chars]
-    C --> D["Multi
-    line
-    text"]
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -981,11 +939,7 @@ flowchart LR
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart LR
-    A[Start ]--> B
-    B --> C
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -1135,13 +1089,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A[Start] --> B{Custom Auth Enabled?}
-    B -- Yes --> C{"Is &quot;Driver&quot; configured?"}
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -1312,26 +1260,7 @@ flowchart TD
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-flowchart TD
-    A[Application Start] --> B{Check for --debug flag or VISOR_DEBUG env var};
-    B -- Yes --> C[Configure Logger: Level = DEBUG];
-    B -- No --> D[Configure Logger: Level = INFO];
-    
-    subgraph "Runtime Execution"
-        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
-        F --> G{Logger: Is current level DEBUG?};
-        G -- Yes --> H[Format and write message to stderr];
-        G -- No --> I[Discard message];
-    end
-
-    C --> E;
-    D --> E;
-    H --> J[End];
-    I --> J[End];
-
-
-```
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>

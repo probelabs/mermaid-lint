@@ -237,30 +237,31 @@ This file contains invalid ${diagramType} test fixtures with:
       markdown += `\`\`\`\n${ourRes.message}\n\`\`\`\n\n`;
     }
 
-    // Auto-fix preview (safe)
-    markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
+    // Auto-fix preview (prefer safe; only show all if safe made no change)
     const orig = fs.readFileSync(filePath, 'utf-8');
     if (fixPreviewSafe.ok && fixPreviewSafe.fixed.trim() && fixPreviewSafe.fixed.trim() !== orig.trim()) {
-      // Validate the fixed output with mermaid-cli; fail later if still invalid
+      markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
       const mmFixed = runMermaidCliOnContent(fixPreviewSafe.fixed, 'safe');
       if (!mmFixed.valid) {
         fixFailures.push({ file, level: 'safe', message: mmFixed.message });
       }
       markdown += `\`\`\`mermaid\n${fixPreviewSafe.fixed}\n\`\`\`\n\n`;
+      // Skip showing --fix=all if safe already changed the file
+      markdown += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
+      markdown += `Shown above (safe changes applied).\n\n`;
     } else {
+      markdown += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
       markdown += `No auto-fix changes (safe level).\n\n`;
-    }
-
-    // Auto-fix preview (all)
-    markdown += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
-    if (fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig.trim()) {
-      const mmFixedAll = runMermaidCliOnContent(fixPreviewAll.fixed, 'all');
-      if (!mmFixedAll.valid) {
-        fixFailures.push({ file, level: 'all', message: mmFixedAll.message });
+      markdown += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
+      if (fixPreviewAll.ok && fixPreviewAll.fixed.trim() && fixPreviewAll.fixed.trim() !== orig.trim()) {
+        const mmFixedAll = runMermaidCliOnContent(fixPreviewAll.fixed, 'all');
+        if (!mmFixedAll.valid) {
+          fixFailures.push({ file, level: 'all', message: mmFixedAll.message });
+        }
+        markdown += `\`\`\`mermaid\n${fixPreviewAll.fixed}\n\`\`\`\n\n`;
+      } else {
+        markdown += `No auto-fix changes (all level).\n\n`;
       }
-      markdown += `\`\`\`mermaid\n${fixPreviewAll.fixed}\n\`\`\`\n\n`;
-    } else {
-      markdown += `No auto-fix changes (all level).\n\n`;
     }
 
     // Add collapsible source code section

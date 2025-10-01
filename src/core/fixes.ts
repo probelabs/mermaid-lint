@@ -353,6 +353,21 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(insertAt(text, at(e), ' : '));
       continue;
     }
+    if (is('PI-LABEL-DOUBLE-IN-DOUBLE', e)) {
+      // Replace inner double quotes inside a double-quoted label (before the colon)
+      const lineText = lineTextAt(text, e.line);
+      const q1 = lineText.indexOf('"');
+      const colon = lineText.indexOf(':');
+      const q2 = colon !== -1 ? lineText.lastIndexOf('"', colon - 1) : lineText.lastIndexOf('"');
+      if (q1 !== -1 && q2 !== -1 && q2 > q1) {
+        const inner = lineText.slice(q1 + 1, q2);
+        const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+        if (replaced !== inner) {
+          edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
+        }
+      }
+      continue;
+    }
     if (is('PI-LABEL-REQUIRES-QUOTES', e)) {
       // Wrap label before colon
       const lineText = lineTextAt(text, e.line);
