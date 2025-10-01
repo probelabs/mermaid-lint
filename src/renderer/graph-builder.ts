@@ -207,9 +207,30 @@ export class GraphBuilder {
     let shape: NodeShape = 'rectangle';
     let label = '';
 
+    // Extract label from nodeContent first to check for special patterns
+    const contentNodes = children?.nodeContent as CstNode[] | undefined;
+    if (contentNodes && contentNodes.length > 0) {
+      label = this.extractTextContent(contentNodes[0]);
+    }
+
     // Detect shape based on opening token
     if (children?.SquareOpen) {
-      shape = 'rectangle';
+      // Check for special bracket patterns for parallelogram and trapezoid variants
+      if (label.startsWith('/') && label.endsWith('/')) {
+        shape = 'parallelogram';
+        label = label.slice(1, -1).trim(); // Remove slashes
+      } else if (label.startsWith('\\') && label.endsWith('\\')) {
+        shape = 'parallelogram';
+        label = label.slice(1, -1).trim(); // Remove backslashes
+      } else if (label.startsWith('/') && label.endsWith('\\')) {
+        shape = 'trapezoid';
+        label = label.slice(1, -1).trim(); // Remove slashes
+      } else if (label.startsWith('\\') && label.endsWith('/')) {
+        shape = 'trapezoid';
+        label = label.slice(1, -1).trim(); // Remove slashes
+      } else {
+        shape = 'rectangle';
+      }
     } else if (children?.RoundOpen) {
       shape = 'round';
     } else if (children?.DiamondOpen) {
@@ -230,12 +251,6 @@ export class GraphBuilder {
       shape = 'parallelogram';
     }
 
-    // Extract label from nodeContent
-    const contentNodes = children?.nodeContent as CstNode[] | undefined;
-    if (contentNodes && contentNodes.length > 0) {
-      label = this.extractTextContent(contentNodes[0]);
-    }
-
     return { shape, label };
   }
 
@@ -246,7 +261,7 @@ export class GraphBuilder {
     const parts: string[] = [];
 
     // Collect all text tokens
-    const tokenTypes = ['Identifier', 'QuotedString', 'NumberLiteral', 'Ampersand',
+    const tokenTypes = ['Text', 'Identifier', 'QuotedString', 'NumberLiteral', 'Ampersand',
                        'Comma', 'Colon', 'Semicolon', 'Dot', 'Underscore', 'Dash'];
 
     for (const type of tokenTypes) {

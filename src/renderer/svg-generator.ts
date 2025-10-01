@@ -50,9 +50,9 @@ export class SVGGenerator {
     const cy = y + node.height / 2;
 
     let shape = '';
-    const strokeWidth = 2;
-    const stroke = '#333';
-    const fill = '#fff';
+    const strokeWidth = 1.5;  // Thinner stroke to match Mermaid
+    const stroke = '#9370db';  // Purple stroke similar to Mermaid
+    const fill = '#f9f9ff';    // Light purple fill similar to Mermaid
 
     switch (node.shape) {
       case 'rectangle':
@@ -198,7 +198,7 @@ export class SVGGenerator {
         break;
     }
 
-    let edgeElement = `<path d="${pathData}" stroke="#333" stroke-width="${strokeWidth}" fill="none"`;
+    let edgeElement = `<path d="${pathData}" stroke="#666" stroke-width="${strokeWidth}" fill="none"`;
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
     }
