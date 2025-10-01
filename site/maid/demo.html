@@ -382,7 +382,7 @@
     </div>
 
     <script type="module">
-        import { validate, fixText } from './maid.bundle.js';
+        import { validate, fixText, renderMermaid } from './maid.bundle.js';
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
         mermaid.initialize({ startOnLoad: false, theme: 'default' });
@@ -489,10 +489,22 @@
             try {
                 const input = inputEl.value;
 
-                // LEFT PANEL: Standard Mermaid.js - Try to render with original input
+                // LEFT PANEL: Try both Mermaid.js and our renderer
+                let mermaidSuccess = false;
+                let ourRendererResult = null;
+
+                // Try our renderer first
+                try {
+                    ourRendererResult = renderMermaid(input);
+                } catch (e) {
+                    // Renderer failed
+                }
+
+                // Try standard Mermaid.js
                 try {
                     const uniqueId = 'standard-mermaid-' + Date.now();
                     const { svg } = await mermaid.render(uniqueId, input);
+                    mermaidSuccess = true;
 
                     outputWithoutEl.innerHTML = `
                         <div style="color: #16a34a; font-weight: 600; margin-bottom: 16px;">✅ Mermaid.js rendered successfully</div>
@@ -580,11 +592,15 @@ ${formatOutput(validationResult, input)}
                     copyFixedBtn.style.display = 'block';
                 }
 
-                // TOP RIGHT PANEL: Render the fixed diagram
+                // TOP RIGHT PANEL: Render the fixed diagram with our renderer
                 try {
-                    const uniqueId = 'render-preview-' + Date.now();
-                    const { svg } = await mermaid.render(uniqueId, fixedText);
-                    renderPreviewEl.innerHTML = svg;
+                    const renderResult = renderMermaid(fixedText);
+                    renderPreviewEl.innerHTML = `
+                        <div style="margin-bottom: 12px; padding: 8px; background: linear-gradient(135deg, #ff6b9d, #a855f7); color: white; border-radius: 6px; font-size: 0.85rem;">
+                            🎨 Rendered with Maid's built-in renderer (no external dependencies!)
+                        </div>
+                        ${renderResult.svg}
+                    `;
                 } catch (e) {
                     renderPreviewEl.innerHTML = `<div class="render-error">⚠️ Cannot render diagram<br><br>${e.message}</div>`;
                 }

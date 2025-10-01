@@ -26,6 +26,11 @@ export { applyEdits, posToOffset, lineTextAt, inferIndentFromLine } from './core
 // Auto-fixes
 export { computeFixes } from './core/fixes.js';
 
+// Renderer - NEW!
+export { MermaidRenderer, renderMermaid } from './renderer/index.js';
+export type { RenderOptions, RenderResult } from './renderer/index.js';
+export type { Graph, Node, Edge, NodeShape, ArrowType, Direction } from './renderer/types.js';
+
 // Convenience: multi-pass fix for a single diagram string
 import type { FixLevel, ValidateOptions as Opts, ValidationError } from './core/types.js';
 import { validate as _validate } from './core/router.js';
