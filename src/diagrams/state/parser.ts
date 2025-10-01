@@ -160,10 +160,19 @@ export class StateParser extends CstParser {
           this.SUBRULE2(this.actorRef);
         }
       },
+      {
+        ALT: () => {
+          // Support 'Note over X[: text]' (and optionally 'Note over X,Y') like sequence syntax.
+          // Mermaid state diagrams may not render this, but we accept it and let semantics/autofix normalize.
+          this.CONSUME(t.OverKw);
+          this.SUBRULE3(this.actorRef);
+          this.OPTION1(() => { this.CONSUME(t.Comma); this.SUBRULE4(this.actorRef); });
+        }
+      }
     ]);
     this.CONSUME(t.Colon);
     this.AT_LEAST_ONE(() => this.SUBRULE(this.labelText));
-    this.OPTION(() => this.CONSUME(t.Newline));
+    this.OPTION2(() => this.CONSUME(t.Newline));
   });
 
   // S1 : description

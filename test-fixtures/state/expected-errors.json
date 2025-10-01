@@ -14,7 +14,9 @@
   "header-missing.mmd": [
     "GEN-HEADER-INVALID"
   ],
-  "note-glued-to-previous.mmd": [],
+  "note-glued-to-previous.mmd": [
+    "ST-NOTE-GLUED"
+  ],
   "markers-and-concurrency.mmd": [
     "ST-CONCURRENCY-UNSUPPORTED"
   ]

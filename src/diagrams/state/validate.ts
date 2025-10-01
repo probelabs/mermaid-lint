@@ -15,7 +15,9 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
     mapParserError: mapStateParserError,
     postLex: (_text, tokens) => {
       const errs: ValidationError[] = [];
-      for (const tk of tokens as IToken[]) {
+      const toks = tokens as IToken[];
+      for (let i=0;i<toks.length;i++) {
+        const tk = toks[i];
         if (tk.tokenType === t.InvalidArrow) {
           errs.push({
             line: tk.startLine ?? 1,
@@ -26,6 +28,24 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
             hint: 'Example: A --> B : event',
             length: (tk.image?.length ?? 2)
           });
+        }
+      }
+      // Detect 'glued' notes: '... ]Note ...' without a newline before Note
+      for (let i=0;i<toks.length;i++) {
+        const tk = toks[i];
+        if (tk.tokenType === t.NoteKw) {
+          const prev = toks[i-1];
+          if (prev && prev.tokenType !== t.Newline && (prev.startLine === tk.startLine)) {
+            errs.push({
+              line: tk.startLine ?? 1,
+              column: tk.startColumn ?? 1,
+              severity: 'error',
+              code: 'ST-NOTE-GLUED',
+              message: "'Note' must start on a new line (not glued to the previous statement).",
+              hint: "Put 'Note …' on its own line: Note right of Auth: …",
+              length: (tk.image?.length ?? 4)
+            });
+          }
         }
       }
       return errs;

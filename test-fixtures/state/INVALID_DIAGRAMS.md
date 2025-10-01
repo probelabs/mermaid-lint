@@ -366,13 +366,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error: Unsupported note header 'over'. Use 'Note left of <state> : …' or 'Note right of <state> : …'. Also place 'Note' on its own line (not glued to the previous statement).
-at test-fixtures/state/invalid/note-glued-to-previous.mmd:4:18
+error[ST-NOTE-GLUED]: 'Note' must start on a new line (not glued to the previous statement).
+at test-fixtures/state/invalid/note-glued-to-previous.mmd:4:13
   3 | [*] --> Auth
   4 | Auth --> [*]Note over Auth: Handles user auth
-    |                  ^^^^
+    |             ^^^^
   5 | 
-hint: Example: Note right of Auth: Handles user auth
+hint: Put 'Note …' on its own line: Note right of Auth: …
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -512,10 +512,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 
 ```
 error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
-at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:28
+at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:15
   1 | stateDiagram-v2
   2 | Note over A,B Missing colon
-    |                            ^
+    |               ^^^^^^^
   3 | A --> B
 hint: Example: Note right of A: message
 ```
