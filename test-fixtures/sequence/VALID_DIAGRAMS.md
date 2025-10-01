@@ -62,15 +62,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/activation-suffix.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -121,15 +113,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/actors-and-aliases.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -176,15 +160,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/alias-unclosed-quote.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -232,15 +208,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/alt-minimal.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -294,15 +262,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/autonumber-variants.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -354,15 +314,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/basic.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -418,15 +370,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/bidir-and-async-arrows.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -494,15 +438,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/blocks-alt-opt-loop.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -568,15 +504,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/box-groups.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -639,15 +567,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/critical-break-rect.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -705,15 +625,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/links-and-menus.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -764,15 +676,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/notes.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -825,15 +729,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/par-and.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -886,15 +782,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/par-minimal.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -942,15 +830,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/participant-double-in-double.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -995,15 +875,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/participant-escaped-quotes.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
@@ -1048,15 +920,7 @@ sequenceDiagram
 </td>
 <td>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
-</svg>
+<img src="./rendered/participant-unclosed-quote.svg" alt="Maid Rendered Diagram" />
 
 </td>
 </tr>
