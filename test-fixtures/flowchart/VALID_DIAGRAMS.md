@@ -13,32 +13,58 @@ This file contains all valid flowchart test fixtures rendered with both Mermaid 
 
 ## Table of Contents
 
-1. [Chained Connections](#1-chained-connections)
-2. [Comments](#2-comments)
-3. [Complex Shapes](#3-complex-shapes)
-4. [Custom Auth Subgraph](#4-custom-auth-subgraph)
-5. [Duplicate Subgraph](#5-duplicate-subgraph)
-6. [Empty Diagram](#6-empty-diagram)
-7. [Link Styles](#7-link-styles)
-8. [Long Text](#8-long-text)
-9. [Mismatched Quotes](#9-mismatched-quotes)
-10. [Multidirectional Arrows](#10-multidirectional-arrows)
-11. [Nested Subgraphs](#11-nested-subgraphs)
-12. [Node Ids Special](#12-node-ids-special)
-13. [Only Nodes](#13-only-nodes)
-14. [Quotes Single Inside Double](#14-quotes-single-inside-double)
-15. [Simple Flow](#15-simple-flow)
-16. [Special Arrows](#16-special-arrows)
-17. [Styling Classes](#17-styling-classes)
-18. [Subgraph Quoted Title](#18-subgraph-quoted-title)
-19. [Subgraphs](#19-subgraphs)
-20. [Undefined Node](#20-undefined-node)
-21. [Unicode Text](#21-unicode-text)
-22. [With Text](#22-with-text)
+1. [Br In Label](#1-br-in-label)
+2. [Chained Connections](#2-chained-connections)
+3. [Comments](#3-comments)
+4. [Complex Shapes](#4-complex-shapes)
+5. [Custom Auth Subgraph](#5-custom-auth-subgraph)
+6. [Duplicate Subgraph](#6-duplicate-subgraph)
+7. [Empty Diagram](#7-empty-diagram)
+8. [Link Styles](#8-link-styles)
+9. [Long Text](#9-long-text)
+10. [Mismatched Quotes](#10-mismatched-quotes)
+11. [Multidirectional Arrows](#11-multidirectional-arrows)
+12. [Nested Subgraphs](#12-nested-subgraphs)
+13. [Node Ids Special](#13-node-ids-special)
+14. [Only Nodes](#14-only-nodes)
+15. [Quotes Single Inside Double](#15-quotes-single-inside-double)
+16. [Simple Flow](#16-simple-flow)
+17. [Special Arrows](#17-special-arrows)
+18. [Special Chars](#18-special-chars)
+19. [Styling Classes](#19-styling-classes)
+20. [Subgraph Quoted Title](#20-subgraph-quoted-title)
+21. [Subgraphs](#21-subgraphs)
+22. [Undefined Node](#22-undefined-node)
+23. [Unicode Text](#23-unicode-text)
+24. [With Text](#24-with-text)
 
 ---
 
-## 1. Chained Connections
+## 1. Br In Label
+
+📄 **Source**: [`br-in-label.mmd`](./valid/br-in-label.mmd)
+
+```mermaid
+flowchart TD
+    A[Load Prompt<br/>from file] --> B[End]
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A[Load Prompt<br/>from file] --> B[End]
+
+
+```
+</details>
+
+---
+
+## 2. Chained Connections
 
 📄 **Source**: [`chained-connections.mmd`](./valid/chained-connections.mmd)
 
@@ -62,7 +88,7 @@ flowchart TD
 
 ---
 
-## 2. Comments
+## 3. Comments
 
 📄 **Source**: [`comments.mmd`](./valid/comments.mmd)
 
@@ -90,7 +116,7 @@ flowchart TD
 
 ---
 
-## 3. Complex Shapes
+## 4. Complex Shapes
 
 📄 **Source**: [`complex-shapes.mmd`](./valid/complex-shapes.mmd)
 
@@ -134,7 +160,7 @@ flowchart TB
 
 ---
 
-## 4. Custom Auth Subgraph
+## 5. Custom Auth Subgraph
 
 📄 **Source**: [`custom-auth-subgraph.mmd`](./valid/custom-auth-subgraph.mmd)
 
@@ -176,7 +202,7 @@ flowchart TD
 
 ---
 
-## 5. Duplicate Subgraph
+## 6. Duplicate Subgraph
 
 📄 **Source**: [`duplicate-subgraph.mmd`](./valid/duplicate-subgraph.mmd)
 
@@ -208,7 +234,7 @@ flowchart TD
 
 ---
 
-## 6. Empty Diagram
+## 7. Empty Diagram
 
 📄 **Source**: [`empty-diagram.mmd`](./valid/empty-diagram.mmd)
 
@@ -230,7 +256,7 @@ flowchart TD
 
 ---
 
-## 7. Link Styles
+## 8. Link Styles
 
 📄 **Source**: [`link-styles.mmd`](./valid/link-styles.mmd)
 
@@ -264,7 +290,7 @@ flowchart LR
 
 ---
 
-## 8. Long Text
+## 9. Long Text
 
 📄 **Source**: [`long-text.mmd`](./valid/long-text.mmd)
 
@@ -286,7 +312,7 @@ flowchart TD
 
 ---
 
-## 9. Mismatched Quotes
+## 10. Mismatched Quotes
 
 📄 **Source**: [`mismatched-quotes.mmd`](./valid/mismatched-quotes.mmd)
 
@@ -312,7 +338,7 @@ flowchart TD
 
 ---
 
-## 10. Multidirectional Arrows
+## 11. Multidirectional Arrows
 
 📄 **Source**: [`multidirectional-arrows.mmd`](./valid/multidirectional-arrows.mmd)
 
@@ -338,7 +364,7 @@ flowchart LR
 
 ---
 
-## 11. Nested Subgraphs
+## 12. Nested Subgraphs
 
 📄 **Source**: [`nested-subgraphs.mmd`](./valid/nested-subgraphs.mmd)
 
@@ -372,7 +398,7 @@ flowchart TD
 
 ---
 
-## 12. Node Ids Special
+## 13. Node Ids Special
 
 📄 **Source**: [`node-ids-special.mmd`](./valid/node-ids-special.mmd)
 
@@ -410,7 +436,7 @@ flowchart TD
 
 ---
 
-## 13. Only Nodes
+## 14. Only Nodes
 
 📄 **Source**: [`only-nodes.mmd`](./valid/only-nodes.mmd)
 
@@ -436,7 +462,7 @@ flowchart TD
 
 ---
 
-## 14. Quotes Single Inside Double
+## 15. Quotes Single Inside Double
 
 📄 **Source**: [`quotes-single-inside-double.mmd`](./valid/quotes-single-inside-double.mmd)
 
@@ -460,7 +486,7 @@ flowchart LR
 
 ---
 
-## 15. Simple Flow
+## 16. Simple Flow
 
 📄 **Source**: [`simple-flow.mmd`](./valid/simple-flow.mmd)
 
@@ -482,7 +508,7 @@ flowchart TD
 
 ---
 
-## 16. Special Arrows
+## 17. Special Arrows
 
 📄 **Source**: [`special-arrows.mmd`](./valid/special-arrows.mmd)
 
@@ -510,7 +536,31 @@ flowchart LR
 
 ---
 
-## 17. Styling Classes
+## 18. Special Chars
+
+📄 **Source**: [`special-chars.mmd`](./valid/special-chars.mmd)
+
+```mermaid
+flowchart LR
+    A["Node with &quot;quotes&quot; and &amp; ampersand"] --> B["OK"]
+    B --> C[Plain text]
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart LR
+    A["Node with &quot;quotes&quot; and &amp; ampersand"] --> B["OK"]
+    B --> C[Plain text]
+
+```
+</details>
+
+---
+
+## 19. Styling Classes
 
 📄 **Source**: [`styling-classes.mmd`](./valid/styling-classes.mmd)
 
@@ -536,7 +586,7 @@ flowchart TD
 
 ---
 
-## 18. Subgraph Quoted Title
+## 20. Subgraph Quoted Title
 
 📄 **Source**: [`subgraph-quoted-title.mmd`](./valid/subgraph-quoted-title.mmd)
 
@@ -566,7 +616,7 @@ flowchart TD
 
 ---
 
-## 19. Subgraphs
+## 21. Subgraphs
 
 📄 **Source**: [`subgraphs.mmd`](./valid/subgraphs.mmd)
 
@@ -600,7 +650,7 @@ flowchart TD
 
 ---
 
-## 20. Undefined Node
+## 22. Undefined Node
 
 📄 **Source**: [`undefined-node.mmd`](./valid/undefined-node.mmd)
 
@@ -626,7 +676,7 @@ flowchart TD
 
 ---
 
-## 21. Unicode Text
+## 23. Unicode Text
 
 📄 **Source**: [`unicode-text.mmd`](./valid/unicode-text.mmd)
 
@@ -656,7 +706,7 @@ flowchart LR
 
 ---
 
-## 22. With Text
+## 24. With Text
 
 📄 **Source**: [`with-text.mmd`](./valid/with-text.mmd)
 

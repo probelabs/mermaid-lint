@@ -9,17 +9,17 @@ This file contains invalid flowchart test fixtures with:
 
 ## Table of Contents
 
-1. [Empty Nodes](#1-empty-nodes)
-2. [Escaped Quotes In Decision](#2-escaped-quotes-in-decision)
-3. [Invalid Arrow](#3-invalid-arrow)
-4. [Invalid Class](#4-invalid-class)
-5. [Invalid Node Syntax](#5-invalid-node-syntax)
-6. [Invalid Subgraph](#6-invalid-subgraph)
-7. [Missing Arrow](#7-missing-arrow)
-8. [Mixed Brackets](#8-mixed-brackets)
-9. [No Diagram Type](#9-no-diagram-type)
-10. [Quotes Double Inside Single](#10-quotes-double-inside-single)
-11. [Special Chars](#11-special-chars)
+1. [Edge Label Parens](#1-edge-label-parens)
+2. [Empty Nodes](#2-empty-nodes)
+3. [Escaped Quotes In Decision](#3-escaped-quotes-in-decision)
+4. [Invalid Arrow](#4-invalid-arrow)
+5. [Invalid Class](#5-invalid-class)
+6. [Invalid Node Syntax](#6-invalid-node-syntax)
+7. [Invalid Subgraph](#7-invalid-subgraph)
+8. [Missing Arrow](#8-missing-arrow)
+9. [Mixed Brackets](#9-mixed-brackets)
+10. [No Diagram Type](#10-no-diagram-type)
+11. [Quotes Double Inside Single](#11-quotes-double-inside-single)
 12. [Unclosed Bracket](#12-unclosed-bracket)
 13. [Unclosed Quote In Label](#13-unclosed-quote-in-label)
 14. [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision)
@@ -33,17 +33,17 @@ This file contains invalid flowchart test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [Empty Nodes](#1-empty-nodes) | INVALID | INVALID | ✅ safe |
-| 2 | [Escaped Quotes In Decision](#2-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 3 | [Invalid Arrow](#3-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 4 | [Invalid Class](#4-invalid-class) | INVALID | INVALID | — |
-| 5 | [Invalid Node Syntax](#5-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
-| 6 | [Invalid Subgraph](#6-invalid-subgraph) | INVALID | INVALID | — |
-| 7 | [Missing Arrow](#7-missing-arrow) | INVALID | INVALID | ✅ all |
-| 8 | [Mixed Brackets](#8-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 9 | [No Diagram Type](#9-no-diagram-type) | INVALID | INVALID | — |
-| 10 | [Quotes Double Inside Single](#10-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 11 | [Special Chars](#11-special-chars) | INVALID | INVALID | ✅ safe |
+| 1 | [Edge Label Parens](#1-edge-label-parens) | INVALID | INVALID | — |
+| 2 | [Empty Nodes](#2-empty-nodes) | INVALID | INVALID | ✅ safe |
+| 3 | [Escaped Quotes In Decision](#3-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 4 | [Invalid Arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 5 | [Invalid Class](#5-invalid-class) | INVALID | INVALID | — |
+| 6 | [Invalid Node Syntax](#6-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
+| 7 | [Invalid Subgraph](#7-invalid-subgraph) | INVALID | INVALID | — |
+| 8 | [Missing Arrow](#8-missing-arrow) | INVALID | INVALID | ✅ all |
+| 9 | [Mixed Brackets](#9-mixed-brackets) | INVALID | INVALID | ✅ safe |
+| 10 | [No Diagram Type](#10-no-diagram-type) | INVALID | INVALID | — |
+| 11 | [Quotes Double Inside Single](#11-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 12 | [Unclosed Bracket](#12-unclosed-bracket) | INVALID | INVALID | ✅ safe |
 | 13 | [Unclosed Quote In Label](#13-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
 | 14 | [Unescaped Quotes In Decision](#14-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
@@ -53,7 +53,74 @@ This file contains invalid flowchart test fixtures with:
 
 ---
 
-## 1. Empty Nodes
+## 1. Edge Label Parens
+
+📄 **Source**: [`edge-label-parens.mmd`](./invalid/edge-label-parens.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    A -->|optional (external)| B
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+...    A -->|optional (external)| B
+----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PS'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error: Expecting token of type --> Pipe <-- but found --> '(' <--
+at test-fixtures/flowchart/invalid/edge-label-parens.mmd:2:20
+  1 | flowchart TD
+  2 |     A -->|optional (external)| B
+    |                    ^
+  3 |
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A -->|optional (external)| B
+
+
+```
+</details>
+
+---
+
+## 2. Empty Nodes
 
 📄 **Source**: [`empty-nodes.mmd`](./invalid/empty-nodes.mmd)
 
@@ -138,7 +205,7 @@ flowchart TD
 
 ---
 
-## 2. Escaped Quotes In Decision
+## 3. Escaped Quotes In Decision
 
 📄 **Source**: [`escaped-quotes-in-decision.mmd`](./invalid/escaped-quotes-in-decision.mmd)
 
@@ -181,21 +248,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
-at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
-  5 |         B -- No --> C[Continue with other auth methods]
-  6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
-    |                            ^^
-  7 |         B -- Yes --> E{"Is "Driver" configured?"}
-hint: Example: D{"Is &quot;Driver&quot; AND &quot;AuthCheck.Path&quot; configured?"}
-
-error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.
+error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.
 at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:7:35
   6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
   7 |         B -- Yes --> E{"Is "Driver" configured?"}
     |                                   ^
   8 |     end
-hint: Example: A["He said &quot;Hi&quot;"]
+hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
+
+warning[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
+  5 |         B -- No --> C[Continue with other auth methods]
+  6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
+    |                            ^^
+  7 |         B -- Yes --> E{"Is "Driver" configured?"}
+hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -234,7 +301,7 @@ flowchart TD
 
 ---
 
-## 3. Invalid Arrow
+## 4. Invalid Arrow
 
 📄 **Source**: [`invalid-arrow.mmd`](./invalid/invalid-arrow.mmd)
 
@@ -306,7 +373,7 @@ flowchart TD
 
 ---
 
-## 4. Invalid Class
+## 5. Invalid Class
 
 📄 **Source**: [`invalid-class.mmd`](./invalid/invalid-class.mmd)
 
@@ -373,7 +440,7 @@ flowchart TD
 
 ---
 
-## 5. Invalid Node Syntax
+## 6. Invalid Node Syntax
 
 📄 **Source**: [`invalid-node-syntax.mmd`](./invalid/invalid-node-syntax.mmd)
 
@@ -445,7 +512,7 @@ flowchart TD
 
 ---
 
-## 6. Invalid Subgraph
+## 7. Invalid Subgraph
 
 📄 **Source**: [`invalid-subgraph.mmd`](./invalid/invalid-subgraph.mmd)
 
@@ -512,7 +579,7 @@ flowchart TD
 
 ---
 
-## 7. Missing Arrow
+## 8. Missing Arrow
 
 📄 **Source**: [`missing-arrow.mmd`](./invalid/missing-arrow.mmd)
 
@@ -580,7 +647,7 @@ flowchart TD
 
 ---
 
-## 8. Mixed Brackets
+## 9. Mixed Brackets
 
 📄 **Source**: [`mixed-brackets.mmd`](./invalid/mixed-brackets.mmd)
 
@@ -664,7 +731,7 @@ flowchart LR
 
 ---
 
-## 9. No Diagram Type
+## 10. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -727,7 +794,7 @@ B --> C
 
 ---
 
-## 10. Quotes Double Inside Single
+## 11. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -795,87 +862,6 @@ flowchart LR
   A['She said "Hello"'] --> B
 
 
-```
-</details>
-
----
-
-## 11. Special Chars
-
-📄 **Source**: [`special-chars.mmd`](./invalid/special-chars.mmd)
-
-❌ **Error**: Escaped quotes with backslash not supported in node labels.
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-flowchart LR
-    A["Node with quotes"] --> B["Another \"quoted\" node"]
-    B --> C[Node with #35; special &amp; chars]
-    C --> D["Multi
-    line
-    text"]
-```
-
-### mermaid-cli Result: INVALID
-
-```
-Error: Parse error on line 2:
-...["Another \"quoted\" node"]    B --> C[
------------------------^
-Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
-```
-
-### maid Result: INVALID
-
-```
-error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are not supported by Mermaid. Use &quot; instead.
-at test-fixtures/flowchart/invalid/special-chars.mmd:2:42
-  1 | flowchart LR
-  2 |     A["Node with quotes"] --> B["Another \"quoted\" node"]
-    |                                          ^^
-  3 |     B --> C[Node with #35; special &amp; chars]
-hint: Prefer "He said &quot;Hi&quot;".
-```
-
-### maid Auto-fix (`--fix`) Preview
-
-```mermaid
-flowchart LR
-    A["Node with quotes"] --> B["Another &quot;quoted&quot; node"]
-    B --> C[Node with #35; special &amp; chars]
-    C --> D["Multi
-    line
-    text"]
-```
-
-### maid Auto-fix (`--fix=all`) Preview
-
-Shown above (safe changes applied).
-
-<details>
-<summary>View source code</summary>
-
-```
-flowchart LR
-    A["Node with quotes"] --> B["Another \"quoted\" node"]
-    B --> C[Node with #35; special &amp; chars]
-    C --> D["Multi
-    line
-    text"]
 ```
 </details>
 
