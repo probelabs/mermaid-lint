@@ -33,14 +33,13 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
         if (q2 > q1) {
           if (asIdx !== -1) {
-            // Extract label text and prefer single-quoted label to avoid escaping inner double quotes
+            // Extract label text and build a double-quoted label with &quot; for inner quotes
             const innerLbl = lineText.slice(q1 + 1, q2);
-            const singleQuoted = `'` + innerLbl.replace(/'/g, "\\'") + `'`;
-            // Remove the quoted segment and replace with alias label form
-            // Build: class <alias>[<label>]
+            const dblQuoted = '"' + innerLbl.replace(/\"/g, '"').replace(/"/g, '&quot;') + '"';
+            // Build: class <alias>["..."] (remove the quoted name and 'as')
             const alias = lineText.slice(asIdx + 4).trim();
             const before = lineText.slice(0, startSearch).trimEnd();
-            const newLine = `${before} ${alias}[${singleQuoted}]`;
+            const newLine = `${before} ${alias}[${dblQuoted}]`;
             edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
           } else {
             // No alias: switch to backticks around name

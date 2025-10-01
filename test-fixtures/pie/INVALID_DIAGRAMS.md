@@ -11,12 +11,11 @@ This file contains invalid pie test fixtures with:
 
 1. [Colon Only](#1-colon-only)
 2. [Double In Double](#2-double-in-double)
-3. [Escaped Quotes](#3-escaped-quotes)
-4. [Invalid Header](#4-invalid-header)
-5. [Missing Colon](#5-missing-colon)
-6. [Missing Label](#6-missing-label)
-7. [Missing Number](#7-missing-number)
-8. [Unclosed Quote](#8-unclosed-quote)
+3. [Invalid Header](#3-invalid-header)
+4. [Missing Colon](#4-missing-colon)
+5. [Missing Label](#5-missing-label)
+6. [Missing Number](#6-missing-number)
+7. [Unclosed Quote](#7-unclosed-quote)
 
 ---
 
@@ -26,12 +25,11 @@ This file contains invalid pie test fixtures with:
 |---:|---|:---:|:---:|:---:|
 | 1 | [Colon Only](#1-colon-only) | INVALID | INVALID | — |
 | 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | ✅ safe |
-| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | VALID | — |
-| 4 | [Invalid Header](#4-invalid-header) | INVALID | INVALID | — |
-| 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID | ✅ safe |
-| 6 | [Missing Label](#6-missing-label) | INVALID | INVALID | — |
-| 7 | [Missing Number](#7-missing-number) | INVALID | INVALID | — |
-| 8 | [Unclosed Quote](#8-unclosed-quote) | INVALID | INVALID | ✅ all |
+| 3 | [Invalid Header](#3-invalid-header) | INVALID | INVALID | — |
+| 4 | [Missing Colon](#4-missing-colon) | INVALID | INVALID | ✅ safe |
+| 5 | [Missing Label](#5-missing-label) | INVALID | INVALID | — |
+| 6 | [Missing Number](#6-missing-number) | INVALID | INVALID | — |
+| 7 | [Unclosed Quote](#7-unclosed-quote) | INVALID | INVALID | ✅ all |
 
 ---
 
@@ -161,47 +159,7 @@ pie
 
 ---
 
-## 3. Escaped Quotes
-
-📄 **Source**: [`escaped-quotes.mmd`](./invalid/escaped-quotes.mmd)
-
-### GitHub Render Attempt
-
-> **Note**: This invalid diagram may not render or may render incorrectly.
-
-```mermaid
-pie
-  "He said \"Hi\"" : 1
-
-
-```
-
-### mermaid-cli Result: VALID
-
-### maid Result: VALID
-
-### maid Auto-fix (`--fix`) Preview
-
-No auto-fix changes (safe level).
-
-### maid Auto-fix (`--fix=all`) Preview
-
-No auto-fix changes (all level).
-
-<details>
-<summary>View source code</summary>
-
-```
-pie
-  "He said \"Hi\"" : 1
-
-
-```
-</details>
-
----
-
-## 4. Invalid Header
+## 3. Invalid Header
 
 📄 **Source**: [`invalid-header.mmd`](./invalid/invalid-header.mmd)
 
@@ -254,7 +212,7 @@ piee
 
 ---
 
-## 5. Missing Colon
+## 4. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -318,7 +276,7 @@ pie
 
 ---
 
-## 6. Missing Label
+## 5. Missing Label
 
 📄 **Source**: [`missing-label.mmd`](./invalid/missing-label.mmd)
 
@@ -372,7 +330,7 @@ pie
 
 ---
 
-## 7. Missing Number
+## 6. Missing Number
 
 📄 **Source**: [`missing-number.mmd`](./invalid/missing-number.mmd)
 
@@ -426,7 +384,7 @@ pie
 
 ---
 
-## 8. Unclosed Quote
+## 7. Unclosed Quote
 
 📄 **Source**: [`unclosed-quote.mmd`](./invalid/unclosed-quote.mmd)
 

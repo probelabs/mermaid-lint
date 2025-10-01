@@ -26,6 +26,7 @@ export const StyleClassKw = createToken({ name: 'StyleClassKw', pattern: /class(
 export const Start = createToken({ name: 'Start', pattern: /\[\*\]/ });
 export const Arrow = createToken({ name: 'Arrow', pattern: /-->/ });
 export const InvalidArrow = createToken({ name: 'InvalidArrow', pattern: /->(?!>)/ });
+export const Hyphen = createToken({ name: 'Hyphen', pattern: /-/ });
 
 export const LCurly = createToken({ name: 'LCurly', pattern: /\{/ });
 export const RCurly = createToken({ name: 'RCurly', pattern: /\}/ });
@@ -53,6 +54,7 @@ export const allTokens = [
   Start,
   Arrow,
   InvalidArrow,
+  Hyphen,
   Dashes,
   StyleClassDefKw, StyleClassKw,
   LCurly, RCurly,

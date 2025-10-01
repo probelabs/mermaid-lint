@@ -27,6 +27,17 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
             length: (tk.image?.length ?? 2)
           });
         }
+        if (tk.tokenType === t.Dashes) {
+          errs.push({
+            line: tk.startLine ?? 1,
+            column: tk.startColumn ?? 1,
+            severity: 'error',
+            code: 'ST-CONCURRENCY-UNSUPPORTED',
+            message: "Concurrency separator '---' is not supported in Mermaid state diagrams.",
+            hint: "Use separate states or regions without '---'.",
+            length: (tk.image?.length ?? 3)
+          });
+        }
       }
       return errs;
     },

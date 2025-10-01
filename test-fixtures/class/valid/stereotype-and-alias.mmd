@@ -1,8 +1,10 @@
 classDiagram
 direction LR
-class "IService" <<Interface>> as IService
+class IService as ServiceInterface
+class ServiceInterface {
+  <<Interface>>
+}
 class Service {
   +doWork(task: string): void
 }
-IService ..|> Service : implements
-
+ServiceInterface ..|> Service : implements

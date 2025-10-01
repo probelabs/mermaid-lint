@@ -1,8 +1,21 @@
 {
-  "invalid-arrow.mmd": ["ST-ARROW-INVALID"],
-  "missing-rbrace.mmd": ["ST-BLOCK-MISSING-RBRACE"],
-  "note-missing-colon.mmd": ["ST-NOTE-MALFORMED"],
-  "note-over-missing-colon.mmd": ["ST-NOTE-MALFORMED"],
-  "header-missing.mmd": ["GEN-HEADER-INVALID"],
-  "note-glued-to-previous.mmd": []
+  "invalid-arrow.mmd": [
+    "ST-ARROW-INVALID"
+  ],
+  "missing-rbrace.mmd": [
+    "ST-BLOCK-MISSING-RBRACE"
+  ],
+  "note-missing-colon.mmd": [
+    "ST-NOTE-MALFORMED"
+  ],
+  "note-over-missing-colon.mmd": [
+    "ST-NOTE-MALFORMED"
+  ],
+  "header-missing.mmd": [
+    "GEN-HEADER-INVALID"
+  ],
+  "note-glued-to-previous.mmd": [],
+  "markers-and-concurrency.mmd": [
+    "ST-CONCURRENCY-UNSUPPORTED"
+  ]
 }

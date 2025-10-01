@@ -22,7 +22,9 @@ export class StateParser extends CstParser {
       { ALT: () => this.SUBRULE(this.transitionStmt) },
       { ALT: () => this.SUBRULE(this.stateBlock) },
       { ALT: () => this.SUBRULE(this.stateDecl) },
-      { ALT: () => this.CONSUME(t.Dashes) },
+      // Concurrency separator (---) is not supported by mermaid-cli v11; treat as invalid (handled in postLex)
+      // { ALT: () => this.CONSUME(t.Dashes) },
+      { ALT: () => this.SUBRULE(this.stateDescriptionStmt) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.SUBRULE(this.styleStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
@@ -78,6 +80,8 @@ export class StateParser extends CstParser {
       { ALT: () => this.CONSUME(t.QuotedString) },
       { ALT: () => this.CONSUME(t.Identifier) },
       { ALT: () => this.CONSUME(t.NumberLiteral) },
+      { ALT: () => this.CONSUME(t.Hyphen) },
+      { ALT: () => this.CONSUME(t.LabelChunk) },
     ]);
   });
 
@@ -156,17 +160,28 @@ export class StateParser extends CstParser {
           this.SUBRULE2(this.actorRef);
         }
       },
-      {
-        ALT: () => {
-          this.CONSUME(t.OverKw);
-          this.SUBRULE3(this.actorRef);
-          this.OPTION(() => { this.CONSUME(t.Comma); this.SUBRULE4(this.actorRef); });
-        }
-      }
     ]);
     this.CONSUME(t.Colon);
     this.AT_LEAST_ONE(() => this.SUBRULE(this.labelText));
-    this.OPTION2(() => this.CONSUME(t.Newline));
+    this.OPTION(() => this.CONSUME(t.Newline));
+  });
+
+  // S1 : description
+  private stateDescriptionStmt = this.RULE('stateDescriptionStmt', () => {
+    this.OR1([
+      { ALT: () => this.CONSUME1(t.Identifier) },
+      { ALT: () => this.CONSUME1(t.QuotedString) },
+    ]);
+    this.CONSUME(t.Colon);
+    this.AT_LEAST_ONE(() => {
+      this.OR2([
+        { ALT: () => this.CONSUME2(t.QuotedString) },
+        { ALT: () => this.CONSUME2(t.Identifier) },
+        { ALT: () => this.CONSUME1(t.NumberLiteral) },
+        { ALT: () => this.CONSUME1(t.LabelChunk) },
+      ]);
+    });
+    this.OPTION(() => this.CONSUME(t.Newline));
   });
 }
 

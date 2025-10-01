@@ -83,21 +83,31 @@ export class ClassParser extends CstParser {
   });
 
   private memberLine = this.RULE('memberLine', () => {
-    this.OPTION(() => this.CONSUME(t.Visibility));
-    // Optional name before params unless next token is '('
-    this.OPTION1({
-      GATE: () => this.LA(1).tokenType !== t.LParen,
-      DEF: () => this.SUBRULE(this.memberName)
-    });
-    this.OPTION2(() => {
-      this.CONSUME(t.LParen);
-      this.OPTION3(() => this.SUBRULE(this.argList));
-      this.CONSUME(t.RParen);
-    });
-    this.OPTION4(() => {
-      this.CONSUME(t.Colon);
-      this.SUBRULE(this.typeRef);
-    });
+    this.OR([
+      {
+        GATE: () => this.LA(1).tokenType === t.LTlt,
+        ALT: () => { this.CONSUME(t.LTlt); this.CONSUME(t.Identifier); this.CONSUME(t.GTgt); }
+      },
+      {
+        ALT: () => {
+          this.OPTION(() => this.CONSUME(t.Visibility));
+          // Optional name before params unless next token is '('
+          this.OPTION1({
+            GATE: () => this.LA(1).tokenType !== t.LParen,
+            DEF: () => this.SUBRULE(this.memberName)
+          });
+          this.OPTION2(() => {
+            this.CONSUME(t.LParen);
+            this.OPTION3(() => this.SUBRULE(this.argList));
+            this.CONSUME(t.RParen);
+          });
+          this.OPTION4(() => {
+            this.CONSUME(t.Colon);
+            this.SUBRULE(this.typeRef);
+          });
+        }
+      }
+    ]);
   });
 
   private memberName = this.RULE('memberName', () => {
@@ -107,11 +117,16 @@ export class ClassParser extends CstParser {
     ]);
   });
 
-  private argList = this.RULE('argList', () => {
+  private param = this.RULE('param', () => {
+    this.OPTION(() => { this.CONSUME(t.Identifier); this.CONSUME(t.Colon); });
     this.SUBRULE(this.typeRef);
+  });
+
+  private argList = this.RULE('argList', () => {
+    this.SUBRULE(this.param);
     this.MANY(() => {
       this.CONSUME(t.Comma);
-      this.SUBRULE2(this.typeRef);
+      this.SUBRULE2(this.param);
     });
   });
 

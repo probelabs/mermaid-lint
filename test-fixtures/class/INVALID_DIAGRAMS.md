@@ -240,7 +240,7 @@ hint: Example: class `Logger "core"` as L  or  class L["Logger "core""]
 
 ```mermaid
 classDiagram
-class L['Logger "core"']
+class L["Logger &quot;core&quot;"]
 
 
 ```
@@ -249,7 +249,7 @@ class L['Logger "core"']
 
 ```mermaid
 classDiagram
-class L['Logger "core"']
+class L["Logger &quot;core&quot;"]
 
 
 ```

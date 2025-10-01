@@ -278,6 +278,23 @@ function main() {
   
   console.log(`Generating invalid preview for ${diagramType} diagrams...`);
   
+  // Build results once so we can also enforce classification consistency
+  const fixturesDir = path.resolve(__dirname, '..', 'test-fixtures', diagramType, 'invalid');
+  const repoRoot = path.resolve(__dirname, '..');
+  const files = fs.readdirSync(fixturesDir).filter(f => f.endsWith('.mmd')).sort();
+  const mermaidMismatches = [];
+
+  // Probe mermaid-cli on each invalid file
+  const tmpResults = files.map((file) => {
+    const abs = path.join(fixturesDir, file);
+    const rel = path.relative(repoRoot, abs);
+    const mer = runMermaidCli(rel);
+    if (mer.valid) {
+      mermaidMismatches.push({ file, message: mer.message });
+    }
+    return { file, rel, mer };
+  });
+
   const markdown = generateInvalidMarkdown(diagramType);
   
   fs.writeFileSync(outputPath, markdown);
@@ -286,6 +303,15 @@ function main() {
   
   console.log(`✅ Generated invalid preview at: ${outputPath}`);
   console.log(`📊 Total invalid diagrams: ${invalidFiles.length}`);
+
+  // Enforce: Every file in invalid/ must be INVALID by mermaid-cli
+  if (mermaidMismatches.length) {
+    console.error(`\n❌ Found ${mermaidMismatches.length} classification mismatch(es) in '${diagramType}/invalid':`);
+    mermaidMismatches.forEach((m) => {
+      console.error(` - ${m.file}: expected INVALID, but mermaid-cli says VALID`);
+    });
+    process.exit(1);
+  }
 }
 
 main();

@@ -11,10 +11,11 @@ This file contains invalid state test fixtures with:
 
 1. [Header Missing](#1-header-missing)
 2. [Invalid Arrow](#2-invalid-arrow)
-3. [Missing Rbrace](#3-missing-rbrace)
-4. [Note Glued To Previous](#4-note-glued-to-previous)
-5. [Note Missing Colon](#5-note-missing-colon)
-6. [Note Over Missing Colon](#6-note-over-missing-colon)
+3. [Markers And Concurrency](#3-markers-and-concurrency)
+4. [Missing Rbrace](#4-missing-rbrace)
+5. [Note Glued To Previous](#5-note-glued-to-previous)
+6. [Note Missing Colon](#6-note-missing-colon)
+7. [Note Over Missing Colon](#7-note-over-missing-colon)
 
 ---
 
@@ -24,10 +25,11 @@ This file contains invalid state test fixtures with:
 |---:|---|:---:|:---:|:---:|
 | 1 | [Header Missing](#1-header-missing) | INVALID | INVALID | — |
 | 2 | [Invalid Arrow](#2-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 4 | [Note Glued To Previous](#4-note-glued-to-previous) | INVALID | VALID | — |
-| 5 | [Note Missing Colon](#5-note-missing-colon) | INVALID | INVALID | ✅ safe |
-| 6 | [Note Over Missing Colon](#6-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
+| 3 | [Markers And Concurrency](#3-markers-and-concurrency) | INVALID | INVALID | ✅ safe |
+| 4 | [Missing Rbrace](#4-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 5 | [Note Glued To Previous](#5-note-glued-to-previous) | INVALID | INVALID | — |
+| 6 | [Note Missing Colon](#6-note-missing-colon) | INVALID | INVALID | ✅ safe |
+| 7 | [Note Over Missing Colon](#7-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
 
 ---
 
@@ -175,7 +177,110 @@ Idle -> Running : start
 
 ---
 
-## 3. Missing Rbrace
+## 3. Markers And Concurrency
+
+📄 **Source**: [`markers-and-concurrency.mmd`](./invalid/markers-and-concurrency.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+stateDiagram-v2
+state Auth {
+  [*] --> Stage1
+  ---
+  Stage2 --> [*]
+}
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Lexical error on line 4. Unrecognized text.
+... [*] --> Stage1  ---  Stage2 --> [*]}
+----------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[ST-BLOCK-MISSING-RBRACE]: Missing '}' to close a state block.
+at test-fixtures/state/invalid/markers-and-concurrency.mmd:4:3
+  2 | state Auth {  ← start of 'state'
+    | …
+  4 |   ---
+  5 |   }  ← insert '}' here
+hint: Close the block: state Foo { ... }
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+stateDiagram-v2
+state Auth {
+  [*] --> Stage1
+  ---
+  Stage2 --> [*]
+}
+}
+}
+}
+}
+}
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+stateDiagram-v2
+state Auth {
+  [*] --> Stage1
+  ---
+  Stage2 --> [*]
+}
+}
+}
+}
+}
+}
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+state Auth {
+  [*] --> Stage1
+  ---
+  Stage2 --> [*]
+}
+
+
+```
+</details>
+
+---
+
+## 4. Missing Rbrace
 
 📄 **Source**: [`missing-rbrace.mmd`](./invalid/missing-rbrace.mmd)
 
@@ -263,7 +368,7 @@ state Foo {
 
 ---
 
-## 4. Note Glued To Previous
+## 5. Note Glued To Previous
 
 📄 **Source**: [`note-glued-to-previous.mmd`](./invalid/note-glued-to-previous.mmd)
 
@@ -299,7 +404,19 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: VALID
+### maid Result: INVALID
+
+```
+error: Expecting: one of these possible Token sequences:
+  1. [LeftKw]
+  2. [RightKw]
+but found: 'over'
+at test-fixtures/state/invalid/note-glued-to-previous.mmd:4:18
+  3 | [*] --> Auth
+  4 | Auth --> [*]Note over Auth: Handles user auth
+    |                  ^^^^
+  5 |
+```
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -324,7 +441,7 @@ Auth --> [*]Note over Auth: Handles user auth
 
 ---
 
-## 5. Note Missing Colon
+## 6. Note Missing Colon
 
 📄 **Source**: [`note-missing-colon.mmd`](./invalid/note-missing-colon.mmd)
 
@@ -405,7 +522,7 @@ A --> B : ok
 
 ---
 
-## 6. Note Over Missing Colon
+## 7. Note Over Missing Colon
 
 📄 **Source**: [`note-over-missing-colon.mmd`](./invalid/note-over-missing-colon.mmd)
 
@@ -444,10 +561,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 
 ```
 error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
-at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:15
+at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:28
   1 | stateDiagram-v2
   2 | Note over A,B Missing colon
-    |               ^^^^^^^
+    |                            ^
   3 | A --> B
 hint: Example: Note right of A: message
 ```

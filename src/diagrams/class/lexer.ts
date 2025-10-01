@@ -1,7 +1,7 @@
 import { createToken, Lexer } from 'chevrotain';
 
 // Identifiers and basic tokens
-export const Identifier = createToken({ name: 'Identifier', pattern: /[A-Za-z_][A-Za-z0-9_<>$]*/ });
+export const Identifier = createToken({ name: 'Identifier', pattern: /[A-Za-z_][A-Za-z0-9_$]*/ });
 export const NumberLiteral = createToken({ name: 'NumberLiteral', pattern: /[0-9]+/ });
 
 // Header and keywords
