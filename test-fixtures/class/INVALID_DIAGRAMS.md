@@ -344,13 +344,25 @@ at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:7
   3 | 
 hint: Example: class `Logger "core"` as L  or  class L["Logger "core""]
 
-error[CL-REL-INVALID]: Invalid relationship operator. Use <|--, *--, o--, --, ..> or ..|>.
+error: Expecting: one of these possible Token sequences:
+  1. [RelCompToAgg]
+  2. [RelAggToComp]
+  3. [RelCompBoth]
+  4. [RelAggBoth]
+  5. [LollipopLeft]
+  6. [LollipopRight]
+  7. [RelExtends]
+  8. [RelComposition]
+  9. [RelAggregation]
+  10. [RelRealization]
+  11. [RelDependency]
+  12. [RelAssociation]
+but found: 'as'
 at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:23
   1 | classDiagram
   2 | class "Logger "core"" as L
     |                       ^^
-  3 | 
-hint: Example: Foo <|-- Bar
+  3 |
 ```
 
 ### maid Auto-fix (`--fix`) Preview

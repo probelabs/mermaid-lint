@@ -657,6 +657,10 @@ export function mapClassParserError(err: IRecognitionException, text: string): V
 
   // Invalid relation operator
   if (isInRule(err, 'relationOp')) {
+    // On class lines, let postLex handle the quoted-name diagnostic; return a generic parser error here to avoid duplicate codes.
+    if (/^\s*class\b/.test(ltxt)) {
+      return { line, column, severity: 'error', message: err.message || 'Parser error', length: len };
+    }
     return { line, column, severity: 'error', code: 'CL-REL-INVALID', message: 'Invalid relationship operator. Use <|--, *--, o--, --, ..> or ..|>.', hint: 'Example: Foo <|-- Bar', length: len };
   }
 
