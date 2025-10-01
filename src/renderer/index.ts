@@ -81,7 +81,26 @@ export class MermaidRenderer {
       const graph = this.graphBuilder.build(cst);
 
       // Step 4: Calculate layout
-      const layout = this.layoutEngine.layout(graph);
+      let layout;
+      try {
+        layout = this.layoutEngine.layout(graph);
+      } catch (layoutError: any) {
+        // Layout failed - likely due to subgraph issues
+        errors.push({
+          line: 1,
+          column: 1,
+          message: layoutError.message || 'Layout calculation failed',
+          severity: 'error',
+          code: 'LAYOUT_ERROR'
+        });
+
+        // Return empty SVG with error
+        return {
+          svg: this.generateErrorSvg(layoutError.message || 'Layout calculation failed'),
+          graph,
+          errors
+        };
+      }
 
       // Step 5: Generate SVG
       let svg = this.svgGenerator.generate(layout);

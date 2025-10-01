@@ -15,15 +15,22 @@ export class LayoutEngine {
     // Create dagre graph
     const g = new dagre.graphlib.Graph();
 
-    // Configure graph
-    g.setGraph({
+    // Configure graph - set compound if there are subgraphs
+    const graphConfig: any = {
       rankdir: this.mapDirection(graph.direction),
       ranksep: this.rankSep,
       nodesep: this.nodeSep,
       edgesep: this.edgeSep,
       marginx: 20,
       marginy: 20
-    });
+    };
+
+    // Enable compound mode if there are subgraphs
+    if (graph.subgraphs && graph.subgraphs.length > 0) {
+      graphConfig.compound = true;
+    }
+
+    g.setGraph(graphConfig);
 
     // Default edge label (needed for dagre)
     g.setDefaultEdgeLabel(() => ({}));
@@ -50,25 +57,38 @@ export class LayoutEngine {
 
     // Handle subgraphs as compound nodes (if any)
     if (graph.subgraphs && graph.subgraphs.length > 0) {
-      g.setGraph({ ...g.graph(), compound: true });
-
+      // First, add all subgraphs as nodes
       for (const subgraph of graph.subgraphs) {
-        // Add subgraph as a parent node
         g.setNode(subgraph.id, {
           label: subgraph.label || subgraph.id,
-          clusterLabelPos: 'top'
+          clusterLabelPos: 'top',
+          width: 150, // Default width for subgraph
+          height: 100  // Default height for subgraph
         });
+      }
 
-        // Set parent relationships
+      // Then set parent relationships
+      for (const subgraph of graph.subgraphs) {
+        // Set parent relationships for nodes in this subgraph
         for (const nodeId of subgraph.nodes) {
           if (g.hasNode(nodeId)) {
-            g.setParent(nodeId, subgraph.id);
+            try {
+              g.setParent(nodeId, subgraph.id);
+            } catch (e) {
+              // Skip if parent can't be set
+              console.warn(`Cannot set parent ${subgraph.id} for node ${nodeId}`);
+            }
           }
         }
 
         // Set subgraph's parent if nested
         if (subgraph.parent && g.hasNode(subgraph.parent)) {
-          g.setParent(subgraph.id, subgraph.parent);
+          try {
+            g.setParent(subgraph.id, subgraph.parent);
+          } catch (e) {
+            // Skip if parent can't be set
+            console.warn(`Cannot set parent ${subgraph.parent} for subgraph ${subgraph.id}`);
+          }
         }
       }
     }

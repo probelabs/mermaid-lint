@@ -230,9 +230,9 @@ flowchart TD
 </td>
 <td>
 
-⚠️ **Rendering errors:**
+![Maid Renderer Output](./rendered/custom-auth-subgraph.svg)
 
-- Line 1:1 - Cannot set parent in a non-compound graph
+<sub>✅ Rendered successfully<br>Nodes: 8, Edges: 7</sub>
 
 </td>
 </tr>
@@ -288,9 +288,9 @@ flowchart TD
 </td>
 <td>
 
-⚠️ **Rendering errors:**
+![Maid Renderer Output](./rendered/duplicate-subgraph.svg)
 
-- Line 1:1 - Cannot set parent in a non-compound graph
+<sub>✅ Rendered successfully<br>Nodes: 4, Edges: 2</sub>
 
 </td>
 </tr>
@@ -534,9 +534,9 @@ flowchart TD
 </td>
 <td>
 
-⚠️ **Rendering errors:**
+![Maid Renderer Output](./rendered/nested-subgraphs.svg)
 
-- Line 1:1 - Cannot set parent in a non-compound graph
+<sub>✅ Rendered successfully<br>Nodes: 5, Edges: 3</sub>
 
 </td>
 </tr>
@@ -876,9 +876,9 @@ flowchart TD
 </td>
 <td>
 
-⚠️ **Rendering errors:**
+![Maid Renderer Output](./rendered/subgraph-quoted-title.svg)
 
-- Line 1:1 - Cannot set parent in a non-compound graph
+<sub>✅ Rendered successfully<br>Nodes: 3, Edges: 2</sub>
 
 </td>
 </tr>
@@ -930,9 +930,9 @@ flowchart TD
 </td>
 <td>
 
-⚠️ **Rendering errors:**
+![Maid Renderer Output](./rendered/subgraphs.svg)
 
-- Line 1:1 - Cannot set parent in a non-compound graph
+<sub>✅ Rendered successfully<br>Nodes: 4, Edges: 3</sub>
 
 </td>
 </tr>

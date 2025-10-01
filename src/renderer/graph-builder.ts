@@ -131,25 +131,31 @@ export class GraphBuilder {
     for (const node of nodes) {
       const nodeInfo = this.extractNodeInfo(node);
       if (nodeInfo) {
-        // Add or update node
-        if (!this.nodes.has(nodeInfo.id)) {
-          this.nodes.set(nodeInfo.id, nodeInfo);
-        } else if (nodeInfo.label || nodeInfo.shape !== 'rectangle') {
-          // Update existing node if it has more info
-          const existing = this.nodes.get(nodeInfo.id)!;
-          if (nodeInfo.label) existing.label = nodeInfo.label;
-          if (nodeInfo.shape !== 'rectangle') existing.shape = nodeInfo.shape;
-        }
+        // Check if this ID is a subgraph - if so, don't add as a node
+        const isSubgraph = this.subgraphs.some(sg => sg.id === nodeInfo.id);
 
-        nodeIds.push(nodeInfo.id);
+        if (!isSubgraph) {
+          // Add or update node only if it's not a subgraph
+          if (!this.nodes.has(nodeInfo.id)) {
+            this.nodes.set(nodeInfo.id, nodeInfo);
+          } else if (nodeInfo.label || nodeInfo.shape !== 'rectangle') {
+            // Update existing node if it has more info
+            const existing = this.nodes.get(nodeInfo.id)!;
+            if (nodeInfo.label) existing.label = nodeInfo.label;
+            if (nodeInfo.shape !== 'rectangle') existing.shape = nodeInfo.shape;
+          }
 
-        // Track subgraph membership
-        if (this.currentSubgraph) {
-          const subgraph = this.subgraphs.find(s => s.id === this.currentSubgraph);
-          if (subgraph && !subgraph.nodes.includes(nodeInfo.id)) {
-            subgraph.nodes.push(nodeInfo.id);
+          // Track subgraph membership
+          if (this.currentSubgraph) {
+            const subgraph = this.subgraphs.find(s => s.id === this.currentSubgraph);
+            if (subgraph && !subgraph.nodes.includes(nodeInfo.id)) {
+              subgraph.nodes.push(nodeInfo.id);
+            }
           }
         }
+
+        // Always add to nodeIds for edge creation (subgraph edges are valid)
+        nodeIds.push(nodeInfo.id);
       }
     }
 
@@ -294,14 +300,24 @@ export class GraphBuilder {
     let id = `subgraph_${this.subgraphs.length}`;
     let label: string | undefined;
 
-    const idToken = children?.Identifier?.[0] as IToken | undefined;
+    // Check for subgraphId token
+    const idToken = (children?.subgraphId?.[0] || children?.Identifier?.[0]) as IToken | undefined;
     if (idToken) {
       id = idToken.image;
     }
 
-    const labelNode = children?.subgraphLabel?.[0] as CstNode | undefined;
-    if (labelNode) {
-      label = this.extractTextContent(labelNode);
+    // Label can be in square brackets (like node shape) or in subgraphLabel
+    if (children?.SquareOpen && children?.nodeContent) {
+      // Format: subgraph id[Label]
+      label = this.extractTextContent(children.nodeContent[0] as CstNode);
+    } else if (children?.subgraphLabel) {
+      // Format: subgraph id Label (without brackets)
+      label = this.extractTextContent(children.subgraphLabel[0] as CstNode);
+    }
+
+    // If no explicit label was found, use the ID as the label
+    if (!label && id !== `subgraph_${this.subgraphs.length}`) {
+      label = id;
     }
 
     // Create subgraph
