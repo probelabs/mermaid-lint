@@ -9,7 +9,7 @@ export const StateKw = createToken({ name: 'StateKw', pattern: /state/, longer_a
 export const AsKw = createToken({ name: 'AsKw', pattern: /as/, longer_alt: Identifier });
 export const DirectionKw = createToken({ name: 'DirectionKw', pattern: /direction/, longer_alt: Identifier });
 export const Direction = createToken({ name: 'Direction', pattern: /LR|RL|TB|BT|TD/, longer_alt: Identifier });
-export const NoteKw = createToken({ name: 'NoteKw', pattern: /note/, longer_alt: Identifier });
+export const NoteKw = createToken({ name: 'NoteKw', pattern: /note/i, longer_alt: Identifier });
 export const LeftKw = createToken({ name: 'LeftKw', pattern: /left/, longer_alt: Identifier });
 export const RightKw = createToken({ name: 'RightKw', pattern: /right/, longer_alt: Identifier });
 export const OfKw = createToken({ name: 'OfKw', pattern: /of/, longer_alt: Identifier });
@@ -52,4 +52,3 @@ export const allTokens = [
 
 export const StateLexer = new Lexer(allTokens);
 export function tokenize(text: string) { return StateLexer.tokenize(text); }
-

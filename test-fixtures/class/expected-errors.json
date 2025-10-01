@@ -1,0 +1,8 @@
+{
+  "invalid-relation.mmd": ["CL-REL-INVALID"],
+  "missing-rbrace.mmd": ["CL-BLOCK-MISSING-RBRACE"],
+  "member-malformed.mmd": ["CL-MEMBER-MALFORMED"],
+  "relation-missing-target.mmd": ["CL-REL-MALFORMED"],
+  "quoted-name-double-in-double.mmd": ["CL-LABEL-DOUBLE-IN-DOUBLE"]
+}
+

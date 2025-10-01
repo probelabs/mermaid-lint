@@ -20,7 +20,6 @@ export class ClassParser extends CstParser {
       { ALT: () => this.SUBRULE(this.relationStmt) },
       { ALT: () => this.SUBRULE(this.memberAssignStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
-      { ALT: () => this.CONSUME(EOF as any) },
     ]);
   });
 

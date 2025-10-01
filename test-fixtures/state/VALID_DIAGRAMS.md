@@ -7,12 +7,44 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 ## Table of Contents
 
-1. [Block And Notes](#1-block-and-notes)
-2. [Simple](#2-simple)
+1. [Aliases And Descriptions](#1-aliases-and-descriptions)
+2. [Block And Notes](#2-block-and-notes)
+3. [Nested And Notes](#3-nested-and-notes)
+4. [Simple](#4-simple)
 
 ---
 
-## 1. Block And Notes
+## 1. Aliases And Descriptions
+
+📄 **Source**: [`aliases-and-descriptions.mmd`](./valid/aliases-and-descriptions.mmd)
+
+```mermaid
+stateDiagram-v2
+state "Logged In" as S1
+S1 : User authenticated
+[*] --> S1 : login
+S1 --> [*] : logout
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+state "Logged In" as S1
+S1 : User authenticated
+[*] --> S1 : login
+S1 --> [*] : logout
+
+
+```
+</details>
+
+---
+
+## 2. Block And Notes
 
 📄 **Source**: [`block-and-notes.mmd`](./valid/block-and-notes.mmd)
 
@@ -50,7 +82,49 @@ Note right of Auth: Handles user authentication
 
 ---
 
-## 2. Simple
+## 3. Nested And Notes
+
+📄 **Source**: [`nested-and-notes.mmd`](./valid/nested-and-notes.mmd)
+
+```mermaid
+stateDiagram-v2
+direction LR
+state Auth {
+  [*] --> Login
+  Login --> MFA : code
+  MFA --> Success
+}
+[*] --> Auth
+Auth --> [*]
+Note over Auth: Handles user auth
+Note right of MFA: One-time code
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+direction LR
+state Auth {
+  [*] --> Login
+  Login --> MFA : code
+  MFA --> Success
+}
+[*] --> Auth
+Auth --> [*]
+Note over Auth: Handles user auth
+Note right of MFA: One-time code
+
+
+```
+</details>
+
+---
+
+## 4. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 

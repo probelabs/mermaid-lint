@@ -81,7 +81,7 @@ function runType(type, root) {
 function main() {
   const arg = process.argv[2] || 'all';
   const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-  const types = arg === 'all' ? ['flowchart', 'pie', 'sequence'] : [arg];
+  const types = arg === 'all' ? ['flowchart', 'pie', 'sequence', 'class', 'state'] : [arg];
   let totalP = 0, totalF = 0;
   for (const t of types) {
     const { passed, failed } = runType(t, root);

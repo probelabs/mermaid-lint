@@ -25,13 +25,13 @@ This file contains invalid pie test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [Colon Only](#1-colon-only) | INVALID | INVALID | — |
-| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | — |
-| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | INVALID | — |
+| 2 | [Double In Double](#2-double-in-double) | INVALID | INVALID | ✅ safe |
+| 3 | [Escaped Quotes](#3-escaped-quotes) | VALID | VALID | — |
 | 4 | [Invalid Header](#4-invalid-header) | INVALID | INVALID | — |
-| 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID | — |
+| 5 | [Missing Colon](#5-missing-colon) | INVALID | INVALID | ✅ safe |
 | 6 | [Missing Label](#6-missing-label) | INVALID | INVALID | — |
 | 7 | [Missing Number](#7-missing-number) | INVALID | INVALID | — |
-| 8 | [Unclosed Quote](#8-unclosed-quote) | INVALID | INVALID | — |
+| 8 | [Unclosed Quote](#8-unclosed-quote) | INVALID | INVALID | ✅ all |
 
 ---
 
@@ -59,32 +59,13 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
+at test-fixtures/pie/invalid/colon-only.mmd:2:3
+  1 | pie
+  2 |   :
+    |   ^
+  3 | 
+hint: Example: "Dogs" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -132,41 +113,40 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error[PI-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted slice label are not supported. Use &quot; for inner quotes.
+at test-fixtures/pie/invalid/double-in-double.mmd:2:15
+  1 | pie
+  2 |   "He said "Hi"" : 1
+    |               ^
+  3 | 
+hint: Example: "He said &quot;Hi&quot;" : 1
 
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[PI-MISSING-COLON]: Missing colon between slice label and value.
+at test-fixtures/pie/invalid/double-in-double.mmd:2:13
+  1 | pie
+  2 |   "He said "Hi"" : 1
+    |             ^^^^^
+  3 | 
+hint: Use: "Label" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+pie
+  "He said " : Hi"" : 1
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+pie
+  "He said " : Hi"" : 1
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -198,36 +178,7 @@ pie
 
 ### mermaid-cli Result: VALID
 
-### maid Result: INVALID
-
-```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
-```
+### maid Result: VALID
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -274,32 +225,12 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", "sequenceDiagram", "classDiagram" or "stateDiagram[-v2]"
+at test-fixtures/pie/invalid/invalid-header.mmd:1:1
+  1 | piee
+    | ^
+  2 |   "Dogs" : 10
+hint: Start with: flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2.
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -347,41 +278,32 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[PI-MISSING-COLON]: Missing colon between slice label and value.
+at test-fixtures/pie/invalid/missing-colon.mmd:3:10
+  2 |   title "Pets"
+  3 |   "Dogs" 10
+    |          ^^
+  4 | 
+hint: Use: "Label" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+pie
+  title "Pets"
+  "Dogs"  : 10
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+pie
+  title "Pets"
+  "Dogs"  : 10
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -420,32 +342,13 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[PI-LABEL-REQUIRES-QUOTES]: Slice labels must be quoted (single or double quotes).
+at test-fixtures/pie/invalid/missing-label.mmd:2:3
+  1 | pie
+  2 |   : 10
+    |   ^
+  3 | 
+hint: Example: "Dogs" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -493,32 +396,13 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[PI-MISSING-NUMBER]: Missing numeric value after colon.
+at test-fixtures/pie/invalid/missing-number.mmd:2:11
+  1 | pie
+  2 |   "Dogs" :
+    |           ^
+  3 |   "Cats" : 
+hint: Use a number like 10 or 42.5
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -565,32 +449,21 @@ Syntax error in text
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
+at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
+  1 | pie
+  2 |   "Dogs : 10
+    |   ^
+  3 | 
+hint: Close the quote: "Dogs" : 10
 
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[PI-QUOTE-UNCLOSED]: Unclosed quote in slice label.
+at test-fixtures/pie/invalid/unclosed-quote.mmd:2:3
+  1 | pie
+  2 |   "Dogs : 10
+    |   ^^^^^^
+  3 | 
+hint: Close the quote: "Dogs" : 10
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -599,7 +472,11 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+pie
+  "Dogs ": 10
+
+```
 
 <details>
 <summary>View source code</summary>

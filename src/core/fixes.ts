@@ -518,6 +518,117 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
 
+    // State fixes
+    if (is('ST-ARROW-INVALID', e)) {
+      // Replace '->' with '-->' at caret
+      edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
+      continue;
+    }
+    if (is('ST-NOTE-MALFORMED', e)) {
+      // Mirror SE note fix: insert ' : ' after the header
+      const lineText = lineTextAt(text, e.line);
+      const mLeft = /^(\s*)Note\s+(left|right)\s+of\s+(.+?)\s+(.+)$/.exec(lineText);
+      const mOver = /^(\s*)Note\s+over\s+(.+?)\s+(.+)$/.exec(lineText);
+      let insertCol = e.column;
+      if (mLeft) {
+        const indent = mLeft[1] || '';
+        const beforeHeader = `${indent}Note ${mLeft[2]} of ${mLeft[3]}`;
+        insertCol = beforeHeader.length + 1;
+      } else if (mOver) {
+        const indent = mOver[1] || '';
+        const beforeHeader = `${indent}Note over ${mOver[2]}`;
+        insertCol = beforeHeader.length + 1;
+      }
+      const idx0 = Math.max(0, insertCol - 1);
+      const nextCh = lineText[idx0] || '';
+      if (nextCh === ' ') {
+        edits.push(replaceRange(text, { line: e.line, column: insertCol }, 1, ' : '));
+      } else {
+        edits.push(insertAt(text, { line: e.line, column: insertCol }, ' : '));
+      }
+      continue;
+    }
+    if (is('ST-BLOCK-MISSING-RBRACE', e)) {
+      // Insert '}' aligned with the opening 'state' and before next outdented line
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      const openerRe = /^(\s*)state\b/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}}\n`));
+        continue;
+      }
+      let insIdx = lines.length;
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      edits.push(insertAt(text, { line: insIdx + 1, column: 1 }, `${openIndent}}\n`));
+      continue;
+    }
+
+    // Class fixes
+    if (is('CL-REL-INVALID', e)) {
+      // Replace first occurrence of '->' on the line with '--'
+      const lineText = lineTextAt(text, e.line);
+      const idx = lineText.indexOf('->');
+      if (idx >= 0) {
+        edits.push({ start: { line: e.line, column: idx + 1 }, end: { line: e.line, column: idx + 3 }, newText: '--' });
+      }
+      continue;
+    }
+    if (is('CL-BLOCK-MISSING-RBRACE', e)) {
+      // Insert '}' aligned with 'class X {'
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      const openerRe = /^(\s*)class\b.*\{\s*$/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}}\n`));
+        continue;
+      }
+      let insIdx = lines.length;
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      edits.push(insertAt(text, { line: insIdx + 1, column: 1 }, `${openIndent}}\n`));
+      continue;
+    }
+    if (is('CL-LABEL-DOUBLE-IN-DOUBLE', e)) {
+      // Replace inner quotes within the quoted class name (before optional ' as ')
+      const lineText = lineTextAt(text, e.line);
+      const q1 = lineText.indexOf('"');
+      if (q1 !== -1) {
+        const asIdx = lineText.indexOf(' as ', q1 + 1);
+        const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+        if (q2 > q1) {
+          const inner = lineText.slice(q1 + 1, q2);
+          const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+          if (replaced !== inner) {
+            edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
+          }
+        }
+      } else {
+        edits.push(replaceRange(text, at(e), e.length ?? 1, '&quot;'));
+      }
+      continue;
+    }
+
     // Strict mode quote requirement (apply only in 'all' to stay conservative)
     if (is('FL-STRICT-LABEL-QUOTES-REQUIRED', e)) {
       if (level === 'all') {

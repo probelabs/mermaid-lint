@@ -7,13 +7,72 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 ## Table of Contents
 
-1. [Members Inline](#1-members-inline)
-2. [Simple](#2-simple)
-3. [Stereotype And Alias](#3-stereotype-and-alias)
+1. [Alias And Stereotype](#1-alias-and-stereotype)
+2. [Inline Members And Attrs](#2-inline-members-and-attrs)
+3. [Members Inline](#3-members-inline)
+4. [Relations All](#4-relations-all)
+5. [Simple](#5-simple)
+6. [Stereotype And Alias](#6-stereotype-and-alias)
 
 ---
 
-## 1. Members Inline
+## 1. Alias And Stereotype
+
+📄 **Source**: [`alias-and-stereotype.mmd`](./valid/alias-and-stereotype.mmd)
+
+```mermaid
+classDiagram
+class "IService" <<Interface>> as IService
+class Service
+IService ..|> Service : implements
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class "IService" <<Interface>> as IService
+class Service
+IService ..|> Service : implements
+
+
+```
+</details>
+
+---
+
+## 2. Inline Members And Attrs
+
+📄 **Source**: [`inline-members-and-attrs.mmd`](./valid/inline-members-and-attrs.mmd)
+
+```mermaid
+classDiagram
+User: +login(username: string, password: string) : bool
+User: -id: int
+User: -name: string
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+User: +login(username: string, password: string) : bool
+User: -id: int
+User: -name: string
+
+
+```
+</details>
+
+---
+
+## 3. Members Inline
 
 📄 **Source**: [`members-inline.mmd`](./valid/members-inline.mmd)
 
@@ -39,7 +98,49 @@ User: -id: int
 
 ---
 
-## 2. Simple
+## 4. Relations All
+
+📄 **Source**: [`relations-all.mmd`](./valid/relations-all.mmd)
+
+```mermaid
+classDiagram
+direction LR
+class A
+class B
+class C
+class D
+A <|-- B : extends
+A *-- C : has
+A o-- D : owns
+A ..> B : uses
+A ..|> B : realizes
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+direction LR
+class A
+class B
+class C
+class D
+A <|-- B : extends
+A *-- C : has
+A o-- D : owns
+A ..> B : uses
+A ..|> B : realizes
+
+
+```
+</details>
+
+---
+
+## 5. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -73,7 +174,7 @@ class Bar
 
 ---
 
-## 3. Stereotype And Alias
+## 6. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 

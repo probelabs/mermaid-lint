@@ -12,6 +12,8 @@ This file contains invalid class test fixtures with:
 1. [Invalid Relation](#1-invalid-relation)
 2. [Member Malformed](#2-member-malformed)
 3. [Missing Rbrace](#3-missing-rbrace)
+4. [Quoted Name Double In Double](#4-quoted-name-double-in-double)
+5. [Relation Missing Target](#5-relation-missing-target)
 
 ---
 
@@ -19,9 +21,11 @@ This file contains invalid class test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [Invalid Relation](#1-invalid-relation) | INVALID | INVALID | — |
+| 1 | [Invalid Relation](#1-invalid-relation) | INVALID | INVALID | ✅ safe |
 | 2 | [Member Malformed](#2-member-malformed) | VALID | INVALID | — |
-| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | — |
+| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 4 | [Quoted Name Double In Double](#4-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
+| 5 | [Relation Missing Target](#5-relation-missing-target) | INVALID | INVALID | — |
 
 ---
 
@@ -63,41 +67,57 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error: Expecting: one of these possible Token sequences:
+  1. [DirectionKw]
+  2. [ClassKw]
+  3. [Identifier, RelExtends]
+  4. [Identifier, RelComposition]
+  5. [Identifier, RelAggregation]
+  6. [Identifier, RelRealization]
+  7. [Identifier, RelDependency]
+  8. [Identifier, RelAssociation]
+  9. [QuotedString, RelExtends]
+  10. [QuotedString, RelComposition]
+  11. [QuotedString, RelAggregation]
+  12. [QuotedString, RelRealization]
+  13. [QuotedString, RelDependency]
+  14. [QuotedString, RelAssociation]
+  15. [Identifier, Colon]
+  16. [QuotedString, Colon]
+  17. [Newline]
+but found: 'arrow'
+at test-fixtures/class/invalid/invalid-relation.mmd:2:20
+  1 | classDiagram
+  2 | Foo -> Bar : wrong arrow
+    |                    ^^^^^
+  3 | 
 
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[CL-REL-INVALID]: Invalid relationship operator '->'. Use <|--, *--, o--, --, ..> or ..|>.
+at test-fixtures/class/invalid/invalid-relation.mmd:2:5
+  1 | classDiagram
+  2 | Foo -> Bar : wrong arrow
+    |     ^^
+  3 | 
+hint: Example: Foo <|-- Bar
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+classDiagram
+Foo -- Bar : wrong arrow
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+classDiagram
+Foo -- Bar : wrong arrow
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -134,32 +154,13 @@ class Foo {
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[CL-MEMBER-MALFORMED]: Malformed class member. Use visibility + name [()][: type].
+at test-fixtures/class/invalid/member-malformed.mmd:3:5
+  2 | class Foo {
+  3 |   + () : void
+    |     ^
+  4 | }
+hint: Examples: +foo() : void  |  -bar: int
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -224,32 +225,189 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error: Expecting token of type --> RCurly <-- but found --> '' <--
+at test-fixtures/class/invalid/missing-rbrace.mmd:5:1
+  4 | 
+  5 | 
+    | ^
 
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+error[CL-BLOCK-MISSING-RBRACE]: Missing '}' to close class block.
+at test-fixtures/class/invalid/missing-rbrace.mmd:5:1
+  4 | 
+  5 | 
+    | ^
+hint: Close the block: class Foo { ... }
+```
 
-Node.js v24.7.0
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+class Foo {
+  +bar()
+
+}
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+classDiagram
+class Foo {
+  +bar()
+
+}
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class Foo {
+  +bar()
+
+
+```
+</details>
+
+---
+
+## 4. Quoted Name Double In Double
+
+📄 **Source**: [`quoted-name-double-in-double.mmd`](./invalid/quoted-name-double-in-double.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+class "Logger "core"" as L
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+classDiagramclass "Logger "core"" as L
+-------------------^
+Expecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[CL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted name/label are not supported. Use &quot; for inner quotes.
+at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:20
+  1 | classDiagram
+  2 | class "Logger "core"" as L
+    |                    ^
+  3 | 
+hint: Example: class "Logger &quot;core&quot;" as L
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+class "Logger &quot;core&quot;" as L
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+classDiagram
+class "Logger &quot;core&quot;" as L
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class "Logger "core"" as L
+
+
+```
+</details>
+
+---
+
+## 5. Relation Missing Target
+
+📄 **Source**: [`relation-missing-target.mmd`](./invalid/relation-missing-target.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+Foo <|-- : extends
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+...assDiagramFoo <|-- : extends
+----------------------^
+Expecting 'STR', 'ALPHA', 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'LABEL'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error: Expecting: one of these possible Token sequences:
+  1. [Identifier]
+  2. [QuotedString]
+but found: ':'
+at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
+  1 | classDiagram
+  2 | Foo <|-- : extends
+    |          ^
+  3 | 
+
+error[CL-REL-MALFORMED]: Malformed relationship. Provide a target class before the label.
+at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
+  1 | classDiagram
+  2 | Foo <|-- : extends
+    |          ^
+  3 | 
+hint: Use: A <|-- B : label
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -265,8 +423,7 @@ No auto-fix changes (all level).
 
 ```
 classDiagram
-class Foo {
-  +bar()
+Foo <|-- : extends
 
 
 ```

@@ -9,9 +9,11 @@ This file contains invalid state test fixtures with:
 
 ## Table of Contents
 
-1. [Invalid Arrow](#1-invalid-arrow)
-2. [Missing Rbrace](#2-missing-rbrace)
-3. [Note Missing Colon](#3-note-missing-colon)
+1. [Header Missing](#1-header-missing)
+2. [Invalid Arrow](#2-invalid-arrow)
+3. [Missing Rbrace](#3-missing-rbrace)
+4. [Note Missing Colon](#4-note-missing-colon)
+5. [Note Over Missing Colon](#5-note-over-missing-colon)
 
 ---
 
@@ -19,13 +21,79 @@ This file contains invalid state test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [Invalid Arrow](#1-invalid-arrow) | INVALID | INVALID | — |
-| 2 | [Missing Rbrace](#2-missing-rbrace) | INVALID | INVALID | — |
-| 3 | [Note Missing Colon](#3-note-missing-colon) | INVALID | INVALID | — |
+| 1 | [Header Missing](#1-header-missing) | INVALID | INVALID | — |
+| 2 | [Invalid Arrow](#2-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 4 | [Note Missing Colon](#4-note-missing-colon) | INVALID | INVALID | ✅ safe |
+| 5 | [Note Over Missing Colon](#5-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
 
 ---
 
-## 1. Invalid Arrow
+## 1. Header Missing
+
+📄 **Source**: [`header-missing.mmd`](./invalid/header-missing.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+A --> B
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+UnknownDiagramError: No diagram type detected matching given configuration for text: A --> B
+
+
+detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
+    at $eval ($eval at renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:33), <anonymous>:48:45)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+```
+
+### maid Result: INVALID
+
+```
+error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", "sequenceDiagram", "classDiagram" or "stateDiagram[-v2]"
+at test-fixtures/state/invalid/header-missing.mmd:1:1
+  1 | A --> B
+    | ^
+  2 | 
+hint: Start with: flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2.
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+A --> B
+
+
+```
+</details>
+
+---
+
+## 2. Invalid Arrow
 
 📄 **Source**: [`invalid-arrow.mmd`](./invalid/invalid-arrow.mmd)
 
@@ -65,41 +133,50 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
+error: Expecting: one of these possible Token sequences:
+  1. [DirectionKw]
+  2. [Start]
+  3. [QuotedString]
+  4. [Identifier, Arrow]
+  5. [Identifier, Colon]
+  6. [StateKw, QuotedString, AsKw]
+  7. [StateKw, Identifier]
+  8. [StateKw, QuotedString, LCurly]
+  9. [NoteKw]
+  10. [Newline]
+but found: 'Idle'
+at test-fixtures/state/invalid/invalid-arrow.mmd:2:1
+  1 | stateDiagram-v2
+  2 | Idle -> Running : start
+    | ^^^^
+  3 | 
 
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[ST-ARROW-INVALID]: Invalid arrow '->'. Use '-->' in state transitions.
+at test-fixtures/state/invalid/invalid-arrow.mmd:2:6
+  1 | stateDiagram-v2
+  2 | Idle -> Running : start
+    |      ^^
+  3 | 
+hint: Example: A --> B : event
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+stateDiagram-v2
+Idle --> Running : start
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+stateDiagram-v2
+Idle --> Running : start
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -114,7 +191,7 @@ Idle -> Running : start
 
 ---
 
-## 2. Missing Rbrace
+## 3. Missing Rbrace
 
 📄 **Source**: [`missing-rbrace.mmd`](./invalid/missing-rbrace.mmd)
 
@@ -154,41 +231,37 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[ST-BLOCK-MISSING-RBRACE]: Missing '}' to close a state block.
+at test-fixtures/state/invalid/missing-rbrace.mmd:6:1
+  5 | 
+  6 | 
+    | ^
+hint: Close the block: state Foo { ... }
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+stateDiagram-v2
+state Foo {
+  [*] --> A
+  A --> [*]
+
+}
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+stateDiagram-v2
+state Foo {
+  [*] --> A
+  A --> [*]
+
+}
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -205,7 +278,7 @@ state Foo {
 
 ---
 
-## 3. Note Missing Colon
+## 4. Note Missing Colon
 
 📄 **Source**: [`note-missing-colon.mmd`](./invalid/note-missing-colon.mmd)
 
@@ -243,41 +316,34 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
-                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
-                      ^
-
-Error: Parser Definition Errors detected:
- Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, Identifier> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
--------------------------------
-Ambiguous alternatives: <2 ,5> due to common lookahead prefix
-in <OR> inside <statement> Rule,
-<ClassKw, QuotedString> may appears as a prefix path in all these alternatives.
-See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
-For Further details.
-    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
-    at ClassParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
-    at ClassParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
-    at new ClassParser (file://out/diagrams/class/parser.js:133:14)
-    at file://out/diagrams/class/parser.js:136:31
-    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
-
-Node.js v24.7.0
+error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
+at test-fixtures/state/invalid/note-missing-colon.mmd:2:17
+  1 | stateDiagram-v2
+  2 | Note right of A Missing colon
+    |                 ^^^^^^^
+  3 | A --> B : ok
+hint: Example: Note right of A: message
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+stateDiagram-v2
+Note right of A : Missing colon
+A --> B : ok
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+stateDiagram-v2
+Note right of A : Missing colon
+A --> B : ok
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -286,6 +352,87 @@ No auto-fix changes (all level).
 stateDiagram-v2
 Note right of A Missing colon
 A --> B : ok
+
+
+```
+</details>
+
+---
+
+## 5. Note Over Missing Colon
+
+📄 **Source**: [`note-over-missing-colon.mmd`](./invalid/note-over-missing-colon.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+stateDiagram-v2
+Note over A,B Missing colon
+A --> B
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Lexical error on line 2. Unrecognized text.
+...tateDiagram-v2Note over A,B Missing col
+----------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
+at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:15
+  1 | stateDiagram-v2
+  2 | Note over A,B Missing colon
+    |               ^^^^^^^
+  3 | A --> B
+hint: Example: Note right of A: message
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+stateDiagram-v2
+Note over A,B : Missing colon
+A --> B
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+```mermaid
+stateDiagram-v2
+Note over A,B : Missing colon
+A --> B
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+Note over A,B Missing colon
+A --> B
 
 
 ```

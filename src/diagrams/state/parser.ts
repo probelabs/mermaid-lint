@@ -24,7 +24,6 @@ export class StateParser extends CstParser {
       { ALT: () => this.SUBRULE(this.stateBlock) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
-      { ALT: () => this.CONSUME(EOF as any) },
     ]);
   });
 
@@ -53,10 +52,7 @@ export class StateParser extends CstParser {
   // A --> B [: label]
   private transitionStmt = this.RULE('transitionStmt', () => {
     this.SUBRULE(this.actorRef);
-    this.OR([
-      { ALT: () => this.CONSUME(t.Arrow) },
-      { ALT: () => this.CONSUME(t.InvalidArrow) },
-    ]);
+    this.CONSUME(t.Arrow);
     this.SUBRULE2(this.actorRef);
     this.OPTION(() => {
       this.CONSUME(t.Colon);
