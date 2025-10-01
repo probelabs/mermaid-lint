@@ -12,8 +12,9 @@ This file contains invalid state test fixtures with:
 1. [Header Missing](#1-header-missing)
 2. [Invalid Arrow](#2-invalid-arrow)
 3. [Missing Rbrace](#3-missing-rbrace)
-4. [Note Missing Colon](#4-note-missing-colon)
-5. [Note Over Missing Colon](#5-note-over-missing-colon)
+4. [Note Glued To Previous](#4-note-glued-to-previous)
+5. [Note Missing Colon](#5-note-missing-colon)
+6. [Note Over Missing Colon](#6-note-over-missing-colon)
 
 ---
 
@@ -24,8 +25,9 @@ This file contains invalid state test fixtures with:
 | 1 | [Header Missing](#1-header-missing) | INVALID | INVALID | — |
 | 2 | [Invalid Arrow](#2-invalid-arrow) | INVALID | INVALID | ✅ safe |
 | 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 4 | [Note Missing Colon](#4-note-missing-colon) | INVALID | INVALID | ✅ safe |
-| 5 | [Note Over Missing Colon](#5-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
+| 4 | [Note Glued To Previous](#4-note-glued-to-previous) | INVALID | VALID | — |
+| 5 | [Note Missing Colon](#5-note-missing-colon) | INVALID | INVALID | ✅ safe |
+| 6 | [Note Over Missing Colon](#6-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
 
 ---
 
@@ -279,7 +281,68 @@ state Foo {
 
 ---
 
-## 4. Note Missing Colon
+## 4. Note Glued To Previous
+
+📄 **Source**: [`note-glued-to-previous.mmd`](./invalid/note-glued-to-previous.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+stateDiagram-v2
+direction LR
+[*] --> Auth
+Auth --> [*]Note over Auth: Handles user auth
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Lexical error on line 4. Unrecognized text.
+...thAuth --> [*]Note over Auth: Handles u
+----------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: VALID
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+direction LR
+[*] --> Auth
+Auth --> [*]Note over Auth: Handles user auth
+
+
+```
+</details>
+
+---
+
+## 5. Note Missing Colon
 
 📄 **Source**: [`note-missing-colon.mmd`](./invalid/note-missing-colon.mmd)
 
@@ -360,7 +423,7 @@ A --> B : ok
 
 ---
 
-## 5. Note Over Missing Colon
+## 6. Note Over Missing Colon
 
 📄 **Source**: [`note-over-missing-colon.mmd`](./invalid/note-over-missing-colon.mmd)
 
