@@ -138,11 +138,18 @@ export class GraphBuilder {
           // Add or update node only if it's not a subgraph
           if (!this.nodes.has(nodeInfo.id)) {
             this.nodes.set(nodeInfo.id, nodeInfo);
-          } else if (nodeInfo.label || nodeInfo.shape !== 'rectangle') {
-            // Update existing node if it has more info
+          } else {
+            // Update existing node only if new info has actual shape/label definition
             const existing = this.nodes.get(nodeInfo.id)!;
-            if (nodeInfo.label) existing.label = nodeInfo.label;
-            if (nodeInfo.shape !== 'rectangle') existing.shape = nodeInfo.shape;
+            // Only update label if the new node has explicit shape definition (not just ID reference)
+            if (nodeInfo.shape !== 'rectangle' || nodeInfo.label !== nodeInfo.id) {
+              if (nodeInfo.label !== nodeInfo.id) {
+                existing.label = nodeInfo.label;
+              }
+              if (nodeInfo.shape !== 'rectangle') {
+                existing.shape = nodeInfo.shape;
+              }
+            }
           }
 
           // Track subgraph membership
@@ -223,7 +230,7 @@ export class GraphBuilder {
       shape = 'parallelogram';
     }
 
-    // Extract label from content
+    // Extract label from nodeContent
     const contentNodes = children?.nodeContent as CstNode[] | undefined;
     if (contentNodes && contentNodes.length > 0) {
       label = this.extractTextContent(contentNodes[0]);

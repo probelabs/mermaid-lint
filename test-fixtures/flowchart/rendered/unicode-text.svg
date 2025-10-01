@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="120" viewBox="0 0 420 120">
+<svg xmlns="http://www.w3.org/2000/svg" width="436" height="120" viewBox="0 0 436 120">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#333" />
@@ -11,14 +11,14 @@
   <path d="M250,60 L275,60 L300,60" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
-    <text x="80" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+    <text x="80" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Hello</text>
   </g>
   <g id="B">
     <rect x="170" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
-    <text x="210" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+    <text x="210" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Emoji</text>
   </g>
   <g id="C">
-    <rect x="300" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
-    <text x="340" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+    <rect x="300" y="40" width="96" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="348" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Symbols</text>
   </g>
 </svg>

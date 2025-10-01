@@ -21,3 +21,6 @@ syntaxes/
 /debug-tokens.js
 /meta.json
 /size-badge.json
+
+# Temporary PNG exports
+temp/
