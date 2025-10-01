@@ -14,6 +14,11 @@ export const LeftKw = createToken({ name: 'LeftKw', pattern: /left/, longer_alt:
 export const RightKw = createToken({ name: 'RightKw', pattern: /right/, longer_alt: Identifier });
 export const OfKw = createToken({ name: 'OfKw', pattern: /of/, longer_alt: Identifier });
 export const OverKw = createToken({ name: 'OverKw', pattern: /over/, longer_alt: Identifier });
+// Markers like <<choice>>, <<fork>>, <<join>>
+export const AngleAngleOpen = createToken({ name: 'AngleAngleOpen', pattern: /<</ });
+export const AngleAngleClose = createToken({ name: 'AngleAngleClose', pattern: />>/ });
+// Concurrency separator inside composite states
+export const Dashes = createToken({ name: 'Dashes', pattern: /---+/ });
 
 export const Start = createToken({ name: 'Start', pattern: /\[\*\]/ });
 export const Arrow = createToken({ name: 'Arrow', pattern: /-->/ });
@@ -28,6 +33,7 @@ export const QuotedString = createToken({ name: 'QuotedString', pattern: /"(?:\\
 export const Comment = createToken({ name: 'Comment', pattern: /%%[^\n\r]*/, group: Lexer.SKIPPED });
 export const WhiteSpace = createToken({ name: 'WhiteSpace', pattern: /[ \t]+/, group: Lexer.SKIPPED });
 export const Newline = createToken({ name: 'Newline', pattern: /[\n\r]+/, line_breaks: true });
+export const LabelChunk = createToken({ name: 'LabelChunk', pattern: /[^\n\r]+/ });
 
 export const allTokens = [
   Comment,
@@ -39,13 +45,16 @@ export const allTokens = [
   DirectionKw,
   Direction,
   NoteKw, LeftKw, RightKw, OfKw, OverKw,
+  AngleAngleOpen, AngleAngleClose,
   Start,
   Arrow,
   InvalidArrow,
+  Dashes,
   LCurly, RCurly,
   Colon, Comma,
   NumberLiteral,
   Identifier,
+  LabelChunk,
   WhiteSpace,
   Newline,
 ];

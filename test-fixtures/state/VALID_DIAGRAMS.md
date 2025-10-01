@@ -9,8 +9,9 @@ These diagrams are validated to be 100% compatible with mermaid-cli.
 
 1. [Aliases And Descriptions](#1-aliases-and-descriptions)
 2. [Block And Notes](#2-block-and-notes)
-3. [Nested And Notes](#3-nested-and-notes)
-4. [Simple](#4-simple)
+3. [Markers And Concurrency](#3-markers-and-concurrency)
+4. [Nested And Notes](#4-nested-and-notes)
+5. [Simple](#5-simple)
 
 ---
 
@@ -82,7 +83,49 @@ Note right of Auth: Handles user authentication
 
 ---
 
-## 3. Nested And Notes
+## 3. Markers And Concurrency
+
+📄 **Source**: [`markers-and-concurrency.mmd`](./valid/markers-and-concurrency.mmd)
+
+```mermaid
+stateDiagram-v2
+state Router <<choice>>
+[*] --> Router
+Router --> A : path=/a
+Router --> B : path=/b
+
+state Auth {
+  [*] --> Stage1
+  ---
+  Stage2 --> [*]
+}
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+state Router <<choice>>
+[*] --> Router
+Router --> A : path=/a
+Router --> B : path=/b
+
+state Auth {
+  [*] --> Stage1
+  ---
+  Stage2 --> [*]
+}
+
+
+```
+</details>
+
+---
+
+## 4. Nested And Notes
 
 📄 **Source**: [`nested-and-notes.mmd`](./valid/nested-and-notes.mmd)
 
@@ -124,7 +167,7 @@ Note right of MFA: One-time code
 
 ---
 
-## 4. Simple
+## 5. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 

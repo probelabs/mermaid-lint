@@ -23,11 +23,11 @@ This file contains invalid state test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [Header Missing](#1-header-missing) | INVALID | INVALID | — |
-| 2 | [Invalid Arrow](#2-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 4 | [Note Glued To Previous](#4-note-glued-to-previous) | INVALID | VALID | — |
-| 5 | [Note Missing Colon](#5-note-missing-colon) | INVALID | INVALID | ✅ safe |
-| 6 | [Note Over Missing Colon](#6-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
+| 2 | [Invalid Arrow](#2-invalid-arrow) | INVALID | INVALID | — |
+| 3 | [Missing Rbrace](#3-missing-rbrace) | INVALID | INVALID | — |
+| 4 | [Note Glued To Previous](#4-note-glued-to-previous) | INVALID | INVALID | — |
+| 5 | [Note Missing Colon](#5-note-missing-colon) | INVALID | INVALID | — |
+| 6 | [Note Over Missing Colon](#6-note-over-missing-colon) | INVALID | INVALID | — |
 
 ---
 
@@ -67,12 +67,36 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
 ### maid Result: INVALID
 
 ```
-error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", "sequenceDiagram", "classDiagram" or "stateDiagram[-v2]"
-at test-fixtures/state/invalid/header-missing.mmd:1:1
-  1 | A --> B
-    | ^
-  2 | 
-hint: Start with: flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2.
+file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
+                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
+                      ^
+
+Error: Parser Definition Errors detected:
+ ->CONSUME2<- with argument: ->Identifier<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+->OPTION<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+Ambiguous alternatives: <3 ,4> due to common lookahead prefix
+in <OR> inside <statement> Rule,
+<StateKw, Identifier> may appears as a prefix path in all these alternatives.
+See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
+For Further details.
+    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
+    at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
+    at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
+    at new StateParser (file://out/diagrams/state/parser.js:143:14)
+    at file://out/diagrams/state/parser.js:146:31
+    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -135,50 +159,45 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error[ST-ARROW-INVALID]: Invalid arrow '->'. Use '-->' in state transitions.
-at test-fixtures/state/invalid/invalid-arrow.mmd:2:6
-  1 | stateDiagram-v2
-  2 | Idle -> Running : start
-    |      ^^
-  3 | 
-hint: Example: A --> B : event
+file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
+                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
+                      ^
 
-error: Expecting: one of these possible Token sequences:
-  1. [DirectionKw]
-  2. [Start]
-  3. [QuotedString]
-  4. [Identifier, Arrow]
-  5. [Identifier, Colon]
-  6. [StateKw, QuotedString, AsKw]
-  7. [StateKw, Identifier]
-  8. [StateKw, QuotedString, LCurly]
-  9. [NoteKw]
-  10. [Newline]
-but found: 'Idle'
-at test-fixtures/state/invalid/invalid-arrow.mmd:2:1
-  1 | stateDiagram-v2
-  2 | Idle -> Running : start
-    | ^^^^
-  3 |
+Error: Parser Definition Errors detected:
+ ->CONSUME2<- with argument: ->Identifier<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+->OPTION<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+Ambiguous alternatives: <3 ,4> due to common lookahead prefix
+in <OR> inside <statement> Rule,
+<StateKw, Identifier> may appears as a prefix path in all these alternatives.
+See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
+For Further details.
+    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
+    at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
+    at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
+    at new StateParser (file://out/diagrams/state/parser.js:143:14)
+    at file://out/diagrams/state/parser.js:146:31
+    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-stateDiagram-v2
-Idle --> Running : start
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-Idle --> Running : start
-
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -233,38 +252,45 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error[ST-BLOCK-MISSING-RBRACE]: Missing '}' to close a state block.
-at test-fixtures/state/invalid/missing-rbrace.mmd:6:1
-  2 | state Foo {  ← start of 'state'
-    | …
-  6 | 
-  7 | }  ← insert '}' here
-hint: Close the block: state Foo { ... }
+file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
+                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
+                      ^
+
+Error: Parser Definition Errors detected:
+ ->CONSUME2<- with argument: ->Identifier<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+->OPTION<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+Ambiguous alternatives: <3 ,4> due to common lookahead prefix
+in <OR> inside <statement> Rule,
+<StateKw, Identifier> may appears as a prefix path in all these alternatives.
+See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
+For Further details.
+    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
+    at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
+    at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
+    at new StateParser (file://out/diagrams/state/parser.js:143:14)
+    at file://out/diagrams/state/parser.js:146:31
+    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-stateDiagram-v2
-state Foo {
-  [*] --> A
-  A --> [*]
-
-}
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-state Foo {
-  [*] --> A
-  A --> [*]
-
-}
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -317,7 +343,40 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: VALID
+### maid Result: INVALID
+
+```
+file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
+                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
+                      ^
+
+Error: Parser Definition Errors detected:
+ ->CONSUME2<- with argument: ->Identifier<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+->OPTION<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+Ambiguous alternatives: <3 ,4> due to common lookahead prefix
+in <OR> inside <statement> Rule,
+<StateKw, Identifier> may appears as a prefix path in all these alternatives.
+See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
+For Further details.
+    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
+    at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
+    at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
+    at new StateParser (file://out/diagrams/state/parser.js:143:14)
+    at file://out/diagrams/state/parser.js:146:31
+    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.7.0
+```
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -380,34 +439,45 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
-at test-fixtures/state/invalid/note-missing-colon.mmd:2:17
-  1 | stateDiagram-v2
-  2 | Note right of A Missing colon
-    |                 ^^^^^^^
-  3 | A --> B : ok
-hint: Example: Note right of A: message
+file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
+                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
+                      ^
+
+Error: Parser Definition Errors detected:
+ ->CONSUME2<- with argument: ->Identifier<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+->OPTION<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+Ambiguous alternatives: <3 ,4> due to common lookahead prefix
+in <OR> inside <statement> Rule,
+<StateKw, Identifier> may appears as a prefix path in all these alternatives.
+See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
+For Further details.
+    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
+    at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
+    at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
+    at new StateParser (file://out/diagrams/state/parser.js:143:14)
+    at file://out/diagrams/state/parser.js:146:31
+    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-stateDiagram-v2
-Note right of A : Missing colon
-A --> B : ok
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-Note right of A : Missing colon
-A --> B : ok
-
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -461,34 +531,45 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
-at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:15
-  1 | stateDiagram-v2
-  2 | Note over A,B Missing colon
-    |               ^^^^^^^
-  3 | A --> B
-hint: Example: Note right of A: message
+file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140
+                throw new Error(`Parser Definition Errors detected:\n ${defErrorsMsgs.join("\n-------------------------------\n")}`);
+                      ^
+
+Error: Parser Definition Errors detected:
+ ->CONSUME2<- with argument: ->Identifier<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+->OPTION<-
+appears more than once (2 times) in the top level rule: ->stateDecl<-.
+For further details see: https://chevrotain.io/docs/FAQ.html#NUMERICAL_SUFFIXES
+
+-------------------------------
+Ambiguous alternatives: <3 ,4> due to common lookahead prefix
+in <OR> inside <statement> Rule,
+<StateKw, Identifier> may appears as a prefix path in all these alternatives.
+See: https://chevrotain.io/docs/guide/resolving_grammar_errors.html#COMMON_PREFIX
+For Further details.
+    at file://node_modules/chevrotain/lib/src/parse/parser/parser.js:140:23
+    at StateParser.TRACE_INIT (file://node_modules/chevrotain/lib/src/parse/parser/traits/perf_tracer.js:44:20)
+    at StateParser.performSelfAnalysis (file://node_modules/chevrotain/lib/src/parse/parser/parser.js:66:14)
+    at new StateParser (file://out/diagrams/state/parser.js:143:14)
+    at file://out/diagrams/state/parser.js:146:31
+    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:683:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-stateDiagram-v2
-Note over A,B : Missing colon
-A --> B
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-Note over A,B : Missing colon
-A --> B
-
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>

@@ -22,6 +22,7 @@ export class StateParser extends CstParser {
       { ALT: () => this.SUBRULE(this.transitionStmt) },
       { ALT: () => this.SUBRULE(this.stateDecl) },
       { ALT: () => this.SUBRULE(this.stateBlock) },
+      { ALT: () => this.CONSUME(t.Dashes) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
     ]);
@@ -36,8 +37,20 @@ export class StateParser extends CstParser {
   private actorRef = this.RULE('actorRef', () => {
     this.OR([
       { ALT: () => this.CONSUME(t.Start) },
-      { ALT: () => this.CONSUME(t.Identifier) },
-      { ALT: () => this.CONSUME(t.QuotedString) },
+      {
+        ALT: () => {
+          this.OR2([
+            { ALT: () => this.CONSUME(t.Identifier) },
+            { ALT: () => this.CONSUME(t.QuotedString) },
+          ]);
+          // Optional marker like <<choice>> / <<fork>> / <<join>>
+          this.OPTION(() => {
+            this.CONSUME(t.AngleAngleOpen);
+            this.CONSUME2(t.Identifier);
+            this.CONSUME(t.AngleAngleClose);
+          });
+        }
+      }
     ]);
   });
 
@@ -56,7 +69,10 @@ export class StateParser extends CstParser {
     this.SUBRULE2(this.actorRef);
     this.OPTION(() => {
       this.CONSUME(t.Colon);
-      this.AT_LEAST_ONE(() => this.SUBRULE(this.labelText));
+      this.OR([
+        { ALT: () => this.AT_LEAST_ONE(() => this.SUBRULE(this.labelText)) },
+        { ALT: () => this.CONSUME(t.LabelChunk) },
+      ]);
     });
     this.OPTION2(() => this.CONSUME(t.Newline));
   });
@@ -70,6 +86,17 @@ export class StateParser extends CstParser {
           this.CONSUME(t.QuotedString);
           this.CONSUME(t.AsKw);
           this.CONSUME(t.Identifier);
+        }
+      },
+      {
+        ALT: () => {
+          this.CONSUME2(t.StateKw);
+          this.CONSUME2(t.Identifier);
+          this.OPTION(() => {
+            this.CONSUME(t.AngleAngleOpen);
+            this.CONSUME3(t.Identifier);
+            this.CONSUME(t.AngleAngleClose);
+          });
         }
       },
       {
