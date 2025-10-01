@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="480" viewBox="0 0 160 480">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+      <circle cx="3" cy="3" r="3" fill="#333" />
+    </marker>
+  </defs>
+  <path d="M80,80 L80,105 L80,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M80,170 L80,195 L80,220" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M80,260 L80,285 L80,310" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M80,350 L80,375 L80,400" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g id="id1">
+    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">id1</text>
+  </g>
+  <g id="id-2">
+    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">id-2</text>
+  </g>
+  <g id="id_3">
+    <rect x="40" y="220" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="240" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">id_3</text>
+  </g>
+  <g id="ID4">
+    <rect x="40" y="310" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="330" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">ID4</text>
+  </g>
+  <g id="_id5">
+    <rect x="40" y="400" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="420" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">_id5</text>
+  </g>
+</svg>

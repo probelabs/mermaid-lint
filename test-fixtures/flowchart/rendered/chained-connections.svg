@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="390" viewBox="0 0 430 390">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+      <circle cx="3" cy="3" r="3" fill="#333" />
+    </marker>
+  </defs>
+  <path d="M80,80 L80,105 L80,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M80,170 L80,195 L80,220" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M80,260 L80,285 L80,310" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M186.11111111111111,80 L150,105 L183.33333333333334,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M246.11111111111111,80 L285,105 L321.1111111111111,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M313.8888888888889,80 L275,105 L238.88888888888889,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M349.44444444444446,80 L355,105 L352.22222222222223,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g id="A">
+    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+  </g>
+  <g id="B">
+    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+  </g>
+  <g id="C">
+    <rect x="40" y="220" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="240" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+  </g>
+  <g id="D">
+    <rect x="40" y="310" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="80" y="330" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+  </g>
+  <g id="E">
+    <rect x="175" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="215" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
+  </g>
+  <g id="F">
+    <rect x="305" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="345" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">F</text>
+  </g>
+  <g id="G">
+    <rect x="170" y="130" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="210" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">G</text>
+  </g>
+  <g id="H">
+    <rect x="310" y="130" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <text x="350" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">H</text>
+  </g>
+</svg>

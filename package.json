@@ -57,6 +57,7 @@
     "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.js \"$file\" || exit 1; done",
     "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
     "generate:previews": "node scripts/generate-preview.js flowchart && node scripts/generate-invalid-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-invalid-preview.js pie && node scripts/generate-preview.js sequence && node scripts/generate-invalid-preview.js sequence",
+    "generate:previews:with-renderer": "npm run build && node scripts/generate-preview-with-renderer.js flowchart && node scripts/generate-preview-with-renderer.js pie && node scripts/generate-preview-with-renderer.js sequence",
     "generate:valid": "node scripts/generate-preview.js flowchart && node scripts/generate-preview.js pie && node scripts/generate-preview.js sequence",
     "generate:invalid": "node scripts/generate-invalid-preview.js flowchart && node scripts/generate-invalid-preview.js pie && node scripts/generate-invalid-preview.js sequence",
     "ci:previews": "npm run build && npm run generate:previews && git update-index -q --refresh && git diff --exit-code || (echo '\nPreview files are outdated. Run: npm run generate:previews' && exit 1)",
