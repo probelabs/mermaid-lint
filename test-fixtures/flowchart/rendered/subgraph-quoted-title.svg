@@ -7,18 +7,18 @@
       <circle cx="3" cy="3" r="3" fill="#333" />
     </marker>
   </defs>
-  <path d="M107.5,110 L107.5,165 L107.5,190" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M107.5,238 L107.5,263 L107.5,288" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M107.5,110 L107.5,165 L107.5,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M107.5,238 L107.5,263 L107.5,288" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="67.5" y="70" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="67.5" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="107.5" y="90" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start</text>
   </g>
   <g id="B">
-    <polygon points="107.5,190 175,214 107.5,238 40,214" stroke="#333" stroke-width="2" fill="#fff" />
+    <polygon points="107.5,190 175,214 107.5,238 40,214" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="107.5" y="214" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
   </g>
   <g id="C">
-    <rect x="67.5" y="288" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="67.5" y="288" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="107.5" y="308" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Done</text>
   </g>
 </svg>

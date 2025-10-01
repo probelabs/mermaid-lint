@@ -8,15 +8,15 @@
     </marker>
   </defs>
   <g id="A">
-    <rect x="40" y="40" width="88" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="40" y="40" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="84" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node A</text>
   </g>
   <g id="B">
-    <rect x="178" y="40" width="88" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="178" y="40" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="222" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node B</text>
   </g>
   <g id="C">
-    <rect x="316" y="40" width="88" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="316" y="40" width="88" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="360" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node C</text>
   </g>
 </svg>

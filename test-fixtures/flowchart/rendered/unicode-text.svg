@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="436" height="120" viewBox="0 0 436 120">
+<svg xmlns="http://www.w3.org/2000/svg" width="524" height="120" viewBox="0 0 524 120">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#333" />
@@ -7,18 +7,18 @@
       <circle cx="3" cy="3" r="3" fill="#333" />
     </marker>
   </defs>
-  <path d="M120,60 L145,60 L170,60" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M250,60 L275,60 L300,60" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M144,60 L169,60 L194,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M298,60 L323,60 L348,60" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
-    <text x="80" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Hello</text>
+    <rect x="40" y="40" width="104" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="92" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">世界 Hello</text>
   </g>
   <g id="B">
-    <rect x="170" y="40" width="80" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
-    <text x="210" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Emoji</text>
+    <rect x="194" y="40" width="104" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="246" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">😀 Emoji</text>
   </g>
   <g id="C">
-    <rect x="300" y="40" width="96" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
-    <text x="348" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Symbols</text>
+    <rect x="348" y="40" width="136" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <text x="416" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">★☆♦♠ Symbols</text>
   </g>
 </svg>

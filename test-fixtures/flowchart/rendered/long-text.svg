@@ -7,13 +7,13 @@
       <circle cx="3" cy="3" r="3" fill="#333" />
     </marker>
   </defs>
-  <path d="M332,80 L332,105 L332,130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M332,80 L332,105 L332,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="584" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="40" y="40" width="584" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="332" y="60" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">This is a very long text that spans quite a bit of space in the node</text>
   </g>
   <g id="B">
-    <rect x="188" y="130" width="288" height="40" rx="0" ry="0" stroke="#333" stroke-width="2" fill="#fff" />
+    <rect x="188" y="130" width="288" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
     <text x="332" y="150" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Another long piece of text here</text>
   </g>
 </svg>
