@@ -25,7 +25,7 @@ This file contains invalid state test fixtures with:
 |---:|---|:---:|:---:|:---:|
 | 1 | [Header Missing](#1-header-missing) | INVALID | INVALID | — |
 | 2 | [Invalid Arrow](#2-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 3 | [Markers And Concurrency](#3-markers-and-concurrency) | INVALID | INVALID | ✅ safe |
+| 3 | [Markers And Concurrency](#3-markers-and-concurrency) | INVALID | INVALID | — |
 | 4 | [Missing Rbrace](#4-missing-rbrace) | INVALID | INVALID | ✅ safe |
 | 5 | [Note Glued To Previous](#5-note-glued-to-previous) | INVALID | INVALID | — |
 | 6 | [Note Missing Colon](#6-note-missing-colon) | INVALID | INVALID | ✅ safe |
@@ -218,50 +218,22 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
 ### maid Result: INVALID
 
 ```
-error[ST-BLOCK-MISSING-RBRACE]: Missing '}' to close a state block.
+error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported in Mermaid state diagrams.
 at test-fixtures/state/invalid/markers-and-concurrency.mmd:4:3
-  2 | state Auth {  ← start of 'state'
-    | …
+  3 |   [*] --> Stage1
   4 |   ---
-  5 |   }  ← insert '}' here
-hint: Close the block: state Foo { ... }
+    |   ^^^
+  5 |   Stage2 --> [*]
+hint: Use separate states or regions without '---'.
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-stateDiagram-v2
-state Auth {
-  [*] --> Stage1
-  ---
-  Stage2 --> [*]
-}
-}
-}
-}
-}
-}
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-stateDiagram-v2
-state Auth {
-  [*] --> Stage1
-  ---
-  Stage2 --> [*]
-}
-}
-}
-}
-}
-}
-
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
