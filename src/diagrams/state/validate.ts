@@ -4,6 +4,8 @@ import { tokenize } from './lexer.js';
 import { parse } from './parser.js';
 import { analyzeState } from './semantics.js';
 import { mapStateParserError } from '../../core/diagnostics.js';
+import type { IToken } from 'chevrotain';
+import * as t from './lexer.js';
 
 export function validateState(text: string, _options: ValidateOptions = {}): ValidationError[] {
   return lintWithChevrotain(text, {
@@ -11,6 +13,23 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
     parse,
     analyze: analyzeState,
     mapParserError: mapStateParserError,
+    postLex: (_text, tokens) => {
+      const errs: ValidationError[] = [];
+      for (const tk of tokens as IToken[]) {
+        if (tk.tokenType === t.InvalidArrow) {
+          errs.push({
+            line: tk.startLine ?? 1,
+            column: tk.startColumn ?? 1,
+            severity: 'error',
+            code: 'ST-ARROW-INVALID',
+            message: "Invalid arrow '->'. Use '-->' in state transitions.",
+            hint: 'Example: A --> B : event',
+            length: (tk.image?.length ?? 2)
+          });
+        }
+      }
+      return errs;
+    },
     postParse: (src, _tokens, _cst, prev) => {
       const errors: ValidationError[] = [];
       const has = (code: string, line: number) => (prev || []).some(e => e.code === code && e.line === line && e.severity === 'error') || errors.some(e => e.code === code && e.line === line);
@@ -20,15 +39,6 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
         const raw = lines[i] || '';
         const ln = i + 1;
         if (/^\s*state\b.*\{\s*$/.test(raw)) stateOpen.push(ln);
-        const mArrow = /(^|[^-])->(?!>)/.exec(raw);
-        if (mArrow && !has('ST-ARROW-INVALID', ln)) {
-          const arrowIdx = mArrow.index + (mArrow[1] ? mArrow[1].length : 0);
-          const left = raw.slice(0, arrowIdx).trimEnd();
-          const right = raw.slice(arrowIdx + 2).trimStart();
-          if (left.length > 0 && right.length > 0) {
-            errors.push({ line: ln, column: arrowIdx + 1, severity: 'error', code: 'ST-ARROW-INVALID', message: "Invalid arrow '->'. Use '-->' in state transitions.", hint: 'Example: A --> B : event', length: 2 });
-          }
-        }
         // Note missing colon fallback (case-insensitive 'Note')
         if (/^\s*Note\b/i.test(raw) && !/:/.test(raw)) {
           const idx = raw.length - (raw.trimStart().length);

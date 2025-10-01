@@ -16,9 +16,11 @@ export const NoteKw = createToken({ name: 'NoteKw', pattern: /note/, longer_alt:
 export const RelExtends = createToken({ name: 'RelExtends', pattern: /<\|--/ });
 export const RelComposition = createToken({ name: 'RelComposition', pattern: /\*--/ });
 export const RelAggregation = createToken({ name: 'RelAggregation', pattern: /o--/ });
-export const RelDependency = createToken({ name: 'RelDependency', pattern: /..>/ });
-export const RelRealization = createToken({ name: 'RelRealization', pattern: /..\|>/ });
+export const RelDependency = createToken({ name: 'RelDependency', pattern: /\.\.>/ });
+export const RelRealization = createToken({ name: 'RelRealization', pattern: /\.\.\|>/ });
 export const RelAssociation = createToken({ name: 'RelAssociation', pattern: /--/ });
+// Invalid short arrow used by mistake in relations
+export const InvalidRelArrow = createToken({ name: 'InvalidRelArrow', pattern: /->(?!>)/ });
 
 // Punctuation and misc
 export const LCurly = createToken({ name: 'LCurly', pattern: /\{/ });
@@ -53,6 +55,7 @@ export const allTokens = [
   RelComposition,
   RelAggregation,
   RelAssociation,
+  InvalidRelArrow,
   // Punct
   LTlt,
   GTgt,
@@ -70,4 +73,3 @@ export const allTokens = [
 
 export const ClassLexer = new Lexer(allTokens);
 export function tokenize(text: string) { return ClassLexer.tokenize(text); }
-
