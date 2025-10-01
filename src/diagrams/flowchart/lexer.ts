@@ -198,6 +198,8 @@ export const RoundClose = createToken({ name: "RoundClose", pattern: /\)/ });
 export const DiamondOpen = createToken({ name: "DiamondOpen", pattern: /\{/ });
 export const DiamondClose = createToken({ name: "DiamondClose", pattern: /\}/ });
 export const AngleOpen = createToken({ name: "AngleOpen", pattern: />/ });
+// Support '<' inside labels (e.g., <br/>) when not part of an arrow token
+export const AngleLess = createToken({ name: "AngleLess", pattern: /</ });
 
 // Link text delimiter
 export const Pipe = createToken({ name: "Pipe", pattern: /\|/ });
@@ -205,7 +207,8 @@ export const Pipe = createToken({ name: "Pipe", pattern: /\|/ });
 // Text content patterns
 export const QuotedString = createToken({
     name: "QuotedString",
-    pattern: /"[^"]*"|'[^']*'/
+    // Allow escaped characters within quotes (Mermaid accepts \" inside "...")
+    pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/
 });
 
 export const MultilineText = createToken({
@@ -302,6 +305,7 @@ export const allTokens = [
     DiamondOpen,
     DiamondClose,
     AngleOpen,
+    AngleLess,
     Pipe,
     TripleColon,
     Ampersand,

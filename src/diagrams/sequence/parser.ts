@@ -63,7 +63,10 @@ export class SequenceParser extends CstParser {
       this.CONSUME(t.AsKeyword);
       this.SUBRULE2(this.actorRef);
     });
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private autonumberStmt = this.RULE('autonumberStmt', () => {
@@ -77,7 +80,10 @@ export class SequenceParser extends CstParser {
         } },
       ]);
     });
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private noteStmt = this.RULE('noteStmt', () => {
@@ -102,19 +108,28 @@ export class SequenceParser extends CstParser {
     ]);
     this.CONSUME(t.Colon);
     this.OPTION2(() => this.SUBRULE(this.lineRemainder));
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR3([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private activateStmt = this.RULE('activateStmt', () => {
     this.CONSUME(t.ActivateKeyword);
     this.SUBRULE(this.actorRef);
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private deactivateStmt = this.RULE('deactivateStmt', () => {
     this.CONSUME(t.DeactivateKeyword);
     this.SUBRULE(this.actorRef);
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private createStmt = this.RULE('createStmt', () => {
@@ -128,7 +143,10 @@ export class SequenceParser extends CstParser {
       this.CONSUME(t.AsKeyword);
       this.OPTION2(() => this.SUBRULE(this.lineRemainder));
     });
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private destroyStmt = this.RULE('destroyStmt', () => {
@@ -140,7 +158,10 @@ export class SequenceParser extends CstParser {
       ]);
     });
     this.SUBRULE(this.actorRef);
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private linkStmt = this.RULE('linkStmt', () => {
@@ -151,7 +172,10 @@ export class SequenceParser extends CstParser {
     this.SUBRULE(this.actorRef);
     this.CONSUME(t.Colon);
     this.OPTION(() => this.SUBRULE(this.lineRemainder));
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private messageStmt = this.RULE('messageStmt', () => {
@@ -164,7 +188,10 @@ export class SequenceParser extends CstParser {
     this.SUBRULE2(this.actorRef);
     this.CONSUME(t.Colon);
     this.OPTION2(() => this.SUBRULE(this.lineRemainder));
-    this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
   });
 
   private arrow = this.RULE('arrow', () => {
@@ -195,7 +222,10 @@ export class SequenceParser extends CstParser {
       this.MANY3(() => this.SUBRULE2(this.line));
     });
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE3(() => this.CONSUME3(t.Newline));
+    this.OR3([
+      { ALT: () => this.AT_LEAST_ONE3(() => this.CONSUME3(t.Newline)) },
+      { ALT: () => this.CONSUME3(EOF) }
+    ]);
   });
 
   private optBlock = this.RULE('optBlock', () => {
@@ -204,7 +234,10 @@ export class SequenceParser extends CstParser {
     this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
     this.MANY(() => this.SUBRULE(this.line));
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline)) },
+      { ALT: () => this.CONSUME2(EOF) }
+    ]);
   });
 
   private loopBlock = this.RULE('loopBlock', () => {
@@ -213,7 +246,10 @@ export class SequenceParser extends CstParser {
     this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
     this.MANY(() => this.SUBRULE(this.line));
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline)) },
+      { ALT: () => this.CONSUME2(EOF) }
+    ]);
   });
 
   private parBlock = this.RULE('parBlock', () => {
@@ -228,7 +264,10 @@ export class SequenceParser extends CstParser {
       this.MANY3(() => this.SUBRULE2(this.line));
     });
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE3(() => this.CONSUME3(t.Newline));
+    this.OR3([
+      { ALT: () => this.AT_LEAST_ONE3(() => this.CONSUME3(t.Newline)) },
+      { ALT: () => this.CONSUME3(EOF) }
+    ]);
   });
 
   private criticalBlock = this.RULE('criticalBlock', () => {
@@ -252,7 +291,10 @@ export class SequenceParser extends CstParser {
     this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
     this.MANY(() => this.SUBRULE(this.line));
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline)) },
+      { ALT: () => this.CONSUME2(EOF) }
+    ]);
   });
 
   private rectBlock = this.RULE('rectBlock', () => {
@@ -261,7 +303,10 @@ export class SequenceParser extends CstParser {
     this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
     this.MANY(() => this.SUBRULE(this.line));
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline)) },
+      { ALT: () => this.CONSUME2(EOF) }
+    ]);
   });
 
   private boxBlock = this.RULE('boxBlock', () => {
