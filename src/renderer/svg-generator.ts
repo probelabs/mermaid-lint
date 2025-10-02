@@ -307,6 +307,8 @@ export class SVGRenderer implements IRenderer {
 
   // Basic HTML-aware text renderer supporting <br>, <b>/<strong>, <i>/<em>, <u>
   private generateRichText(html: string, x: number, y: number, maxWidth: number): string {
+    // Normalize tag spacing so tokens like "< br / >" become "<br/>"
+    html = this.normalizeHtml(html);
     type Seg = { text: string; bold?: boolean; italic?: boolean; underline?: boolean; br?: boolean };
     const segments: Seg[] = [];
     // Normalize <br> variants to a unique token and tokenize tags
@@ -396,6 +398,16 @@ export class SVGRenderer implements IRenderer {
     }
 
     return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${tspans.join('\n    ')}</text>`;
+  }
+
+  private normalizeHtml(s: string): string {
+    // collapse spaces between < and tag name, around '/', and before >
+    let out = s.replace(/<\s+/g, '<')
+               .replace(/\s+>/g, '>')
+               .replace(/<\s*\//g, '</')
+               .replace(/\s*\/\s*>/g, '/>')
+               .replace(/<\s*(br)\s*>/gi, '<$1/>'); // turn <br> into <br/>
+    return out;
   }
 
   private htmlDecode(s: string): string {
