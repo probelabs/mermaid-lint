@@ -189,6 +189,8 @@ export class DagreLayoutEngine implements ILayoutEngine {
         const end = dstSg ? this.clusterAnchor(dstSg, rankdir, 'in') : this.nodeAnchor(getNode(edge.target), rankdir, 'in');
         if (start && end) {
           const PAD = 20;
+          // Detect if subgraphs are horizontally adjacent (both are subgraphs + horizontal layout)
+          const horizontalSubgraphs = srcSg && dstSg && Math.abs(start.x - end.x) > Math.abs(start.y - end.y);
           if (rankdir === 'LR' || rankdir === 'RL') {
             // Step out to the right from source clusters, and step in from left to target clusters
             const outX = start.x + (rankdir === 'LR' ? PAD : -PAD);
@@ -203,16 +205,28 @@ export class DagreLayoutEngine implements ILayoutEngine {
             pts = dstSg ? [start, startOut, m1, m2, endPre] : [start, startOut, m1, m2, endPre, end];
           } else {
             // TD/BT: step below/above clusters by PAD
-            const outY = start.y + (rankdir === 'TD' ? PAD : -PAD);
-            const inY = end.y + (rankdir === 'TD' ? -PAD : PAD);
-            const startOut = { x: start.x, y: srcSg ? outY : start.y };
-            const endPre = { x: end.x, y: dstSg ? inY : end.y };
-            const alpha = 0.68;
-            const midY = startOut.y + (endPre.y - startOut.y) * alpha;
-            const m1 = { x: startOut.x, y: midY };
-            const m2 = { x: endPre.x, y: midY };
-            // Only include final 'end' point if it's not a subgraph target (arrows should stop at border)
-            pts = dstSg ? [start, startOut, m1, m2, endPre] : [start, startOut, m1, m2, endPre, end];
+            // For horizontally-adjacent subgraphs, route above them to avoid internal nodes
+            if (horizontalSubgraphs && srcSg && dstSg) {
+              // Route above both subgraphs
+              const routeY = Math.min(srcSg.y, dstSg.y) - PAD;
+              const outX = srcSg.x + srcSg.width;
+              const inX = dstSg.x;
+              const m1 = { x: outX, y: routeY };
+              const m2 = { x: inX, y: routeY };
+              pts = [{ x: outX, y: start.y }, m1, m2, { x: inX, y: end.y }];
+            } else {
+              // Normal vertical routing
+              const outY = start.y + (rankdir === 'TD' ? PAD : -PAD);
+              const inY = end.y + (rankdir === 'TD' ? -PAD : PAD);
+              const startOut = { x: start.x, y: srcSg ? outY : start.y };
+              const endPre = { x: end.x, y: dstSg ? inY : end.y };
+              const alpha = 0.68;
+              const midY = startOut.y + (endPre.y - startOut.y) * alpha;
+              const m1 = { x: startOut.x, y: midY };
+              const m2 = { x: endPre.x, y: midY };
+              // Only include final 'end' point if it's not a subgraph target (arrows should stop at border)
+              pts = dstSg ? [start, startOut, m1, m2, endPre] : [start, startOut, m1, m2, endPre, end];
+            }
           }
           synthesized = true;
         }
