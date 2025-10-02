@@ -4,16 +4,26 @@
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
     .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>
-  <text class="pie-title" x="320" y="32" text-anchor="middle">Key elements in Product X</text>
+  <text class="pie-title" x="244" y="32" text-anchor="middle">Key elements in Product X</text>
   <g class="pie" aria-label="pie">
-    <path d="M 320 222 L 320.00 60.00 A 162 162 0 0 1 417.10 351.67 Z" fill="#1f77b4" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="415.30" y="190.27" text-anchor="start">Calcium 42.96</text>
-    <path d="M 320 222 L 417.10 351.67 A 162 162 0 0 1 195.86 117.92 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="247.05" y="291.04" text-anchor="end">Potassium 50.05</text>
-    <path d="M 320 222 L 195.86 117.92 A 162 162 0 0 1 273.55 66.80 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="264.79" y="138.09" text-anchor="end">Magnesium 10.01</text>
-    <path d="M 320 222 L 273.55 66.80 A 162 162 0 0 1 320.00 60.00 Z" fill="#d62728" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <path class="leader" d="M 298.87 77.74 L 295.12 52.09 L 283.12 52.09" />
-    <text class="slice-label" x="281.12" y="52.09" text-anchor="end">Iron 5</text>
+    <path d="M 244 222 L 244.00 60.00 A 162 162 0 0 1 341.10 351.67 Z" fill="#1f77b4" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <text class="slice-label" x="339.30" y="190.27" text-anchor="start">40%</text>
+    <path d="M 244 222 L 341.10 351.67 A 162 162 0 0 1 119.86 117.92 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <text class="slice-label" x="171.05" y="291.04" text-anchor="end">46%</text>
+    <path d="M 244 222 L 119.86 117.92 A 162 162 0 0 1 197.55 66.80 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <text class="slice-label" x="188.79" y="138.09" text-anchor="end">9%</text>
+    <path d="M 244 222 L 197.55 66.80 A 162 162 0 0 1 244.00 60.00 Z" fill="#d62728" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path class="leader" d="M 222.87 77.74 L 219.12 52.09 L 207.12 52.09" />
+    <text class="slice-label" x="205.12" y="52.09" text-anchor="end">5%</text>
+  </g>
+  <g class="legend">
+    <rect x="418" y="52" width="12" height="12" fill="#1f77b4" stroke="#fff" stroke-width="1" />
+    <text class="slice-label legend-text" x="438" y="58" text-anchor="start">Calcium 42.96</text>
+    <rect x="418" y="70" width="12" height="12" fill="#ff7f0e" stroke="#fff" stroke-width="1" />
+    <text class="slice-label legend-text" x="438" y="76" text-anchor="start">Potassium 50.05</text>
+    <rect x="418" y="88" width="12" height="12" fill="#2ca02c" stroke="#fff" stroke-width="1" />
+    <text class="slice-label legend-text" x="438" y="94" text-anchor="start">Magnesium 10.01</text>
+    <rect x="418" y="106" width="12" height="12" fill="#d62728" stroke="#fff" stroke-width="1" />
+    <text class="slice-label legend-text" x="438" y="112" text-anchor="start">Iron 5</text>
   </g>
 </svg>
