@@ -2,6 +2,7 @@
   <style>
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>
   <text class="pie-title" x="320" y="32" text-anchor="middle">Sales Q1</text>
   <g class="pie" aria-label="pie">
@@ -12,8 +13,8 @@
     <path d="M 320 222 L 194.51 324.46 A 162 162 0 0 1 173.64 152.55 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="220.29" y="234.11" text-anchor="end">Cherries</text>
     <path d="M 320 222 L 173.64 152.55 A 162 162 0 0 1 222.68 92.49 Z" fill="#d62728" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="242.20" y="158.48" text-anchor="end">He said &apos;Hi&apos;</text>
+    <text class="slice-label" x="242.20" y="158.48" text-anchor="middle">He said &apos;Hi&apos;</text>
     <path d="M 320 222 L 222.68 92.49 A 162 162 0 0 1 320.00 60.00 Z" fill="#9467bd" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="288.19" y="126.73" text-anchor="end">She said &quot;Yo&quot;</text>
+    <text class="slice-label" x="288.19" y="126.73" text-anchor="middle">She said &quot;Yo&quot;</text>
   </g>
 </svg>

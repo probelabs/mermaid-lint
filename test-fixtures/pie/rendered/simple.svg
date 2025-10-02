@@ -2,6 +2,7 @@
   <style>
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>
   <text class="pie-title" x="320" y="32" text-anchor="middle">Pets</text>
   <g class="pie" aria-label="pie">

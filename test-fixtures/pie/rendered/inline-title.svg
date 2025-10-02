@@ -2,6 +2,7 @@
   <style>
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>
   <text class="pie-title" x="320" y="32" text-anchor="middle">Pets adopted by volunteers</text>
   <g class="pie" aria-label="pie">
@@ -10,6 +11,7 @@
     <path d="M 320 222 L 164.22 177.55 A 162 162 0 0 1 288.78 63.04 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="252.02" y="148.06" text-anchor="end">Cats</text>
     <path d="M 320 222 L 288.78 63.04 A 162 162 0 0 1 320.00 60.00 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="310.28" y="122.03" text-anchor="middle">Rats</text>
+    <path class="leader" d="M 305.88 76.88 L 303.38 51.09 L 291.38 51.09" />
+    <text class="slice-label" x="289.38" y="51.09" text-anchor="end">Rats</text>
   </g>
 </svg>

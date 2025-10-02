@@ -2,6 +2,7 @@
   <style>
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>
   <text class="pie-title" x="320" y="32" text-anchor="middle">Key elements in Product X</text>
   <g class="pie" aria-label="pie">
@@ -12,6 +13,7 @@
     <path d="M 320 222 L 195.86 117.92 A 162 162 0 0 1 273.55 66.80 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="264.79" y="138.09" text-anchor="end">Magnesium 10.01</text>
     <path d="M 320 222 L 273.55 66.80 A 162 162 0 0 1 320.00 60.00 Z" fill="#d62728" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="305.45" y="122.62" text-anchor="middle">Iron 5</text>
+    <path class="leader" d="M 298.87 77.74 L 295.12 52.09 L 283.12 52.09" />
+    <text class="slice-label" x="281.12" y="52.09" text-anchor="end">Iron 5</text>
   </g>
 </svg>

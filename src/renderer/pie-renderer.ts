@@ -1,27 +1,15 @@
 import type { PieChartModel, PieRenderOptions } from './pie-types.js';
-
-function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-}
+import { escapeXml, measureText, palette, formatNumber, formatPercent } from './utils.js';
 
 function polarToCartesian(cx: number, cy: number, r: number, angleRad: number) {
-  return {
-    x: cx + r * Math.cos(angleRad),
-    y: cy + r * Math.sin(angleRad),
-  };
+  return { x: cx + r * Math.cos(angleRad), y: cy + r * Math.sin(angleRad) };
 }
 
-const DEFAULT_COLORS = [
-  '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-  '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
-];
+interface InternalOptions extends PieRenderOptions {
+  showPercent?: boolean; // optional: keep default off for parity
+}
 
-export function renderPie(model: PieChartModel, opts: PieRenderOptions = {}): string {
+export function renderPie(model: PieChartModel, opts: InternalOptions = {}): string {
   const width = Math.max(320, Math.floor(opts.width ?? 640));
   const height = Math.max(240, Math.floor(opts.height ?? 400));
 
@@ -42,6 +30,7 @@ export function renderPie(model: PieChartModel, opts: PieRenderOptions = {}): st
   svg += `\n  <style>
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>`;
 
   if (model.title) {
@@ -50,6 +39,7 @@ export function renderPie(model: PieChartModel, opts: PieRenderOptions = {}): st
 
   svg += `\n  <g class="pie" aria-label="pie">`;
 
+  const minOutsideAngle = 0.35; // ~20 degrees
   slices.forEach((s, i) => {
     const pct = total > 0 ? Math.max(0, s.value) / total : 0;
     const angle = 2 * Math.PI * pct;
@@ -63,20 +53,42 @@ export function renderPie(model: PieChartModel, opts: PieRenderOptions = {}): st
       `A ${radius} ${radius} 0 ${large} 1 ${c1.x.toFixed(2)} ${c1.y.toFixed(2)}`,
       'Z'
     ].join(' ');
-    const fill = s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+    const fill = s.color || palette(i);
     svg += `\n    <path d="${d}" fill="${fill}" fill-opacity="0.9" stroke="#fff" stroke-width="1" />`;
 
-    // Label at arc midpoint
+    // Label rendering
     const mid = (start + end) / 2;
-    const lr = radius * 0.62;
-    const lp = polarToCartesian(cx, cy, lr, mid);
-    const labelBase = s.label;
-    const dataText = model.showData ? ` ${Number(s.value).toString()}` : '';
-    const text = escapeXml(labelBase + dataText);
-    // Auto flip anchor based on quadrant for readability
     const cos = Math.cos(mid);
-    const anchor = Math.abs(cos) < 0.2 ? 'middle' : (cos > 0 ? 'start' : 'end');
-    svg += `\n    <text class="slice-label" x="${lp.x.toFixed(2)}" y="${lp.y.toFixed(2)}" text-anchor="${anchor}">${text}</text>`;
+    const sin = Math.sin(mid);
+    const labelBase = s.label;
+    const numeric = model.showData ? ` ${formatNumber(Number(s.value))}` : '';
+    const pctText = opts.showPercent ? ` (${formatPercent(s.value, total)})` : '';
+    const labelText = escapeXml(labelBase + numeric + pctText);
+
+    if (angle < minOutsideAngle) {
+      // Draw leader line and place label outside
+      const r1 = radius * 0.9;
+      const r2 = radius * 1.06;
+      const p1 = polarToCartesian(cx, cy, r1, mid);
+      const p2 = polarToCartesian(cx, cy, r2, mid);
+      const hlen = 12;
+      const anchorLeft = cos < 0;
+      const hx = anchorLeft ? p2.x - hlen : p2.x + hlen;
+      const hy = p2.y;
+      svg += `\n    <path class="leader" d="M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} L ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} L ${hx.toFixed(2)} ${hy.toFixed(2)}" />`;
+      const tx = anchorLeft ? hx - 2 : hx + 2;
+      const tAnchor = anchorLeft ? 'end' : 'start';
+      svg += `\n    <text class="slice-label" x="${tx.toFixed(2)}" y="${hy.toFixed(2)}" text-anchor="${tAnchor}">${labelText}</text>`;
+    } else {
+      // Place label inside near arc midpoint
+      const lr = radius * 0.62;
+      const lp = { x: cx + lr * cos, y: cy + lr * sin };
+      const tAnchor = Math.abs(cos) < 0.2 ? 'middle' : (cos > 0 ? 'start' : 'end');
+      const avail = lr;
+      const textW = measureText(labelText, 12);
+      const anchor = textW > avail * 1.2 ? 'middle' : tAnchor;
+      svg += `\n    <text class="slice-label" x="${lp.x.toFixed(2)}" y="${lp.y.toFixed(2)}" text-anchor="${anchor}">${labelText}</text>`;
+    }
 
     start = end;
   });

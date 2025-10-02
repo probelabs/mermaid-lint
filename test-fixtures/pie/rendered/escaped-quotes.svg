@@ -2,12 +2,13 @@
   <style>
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
   </style>
   <text class="pie-title" x="320" y="32" text-anchor="middle">Quotes</text>
   <g class="pie" aria-label="pie">
     <path d="M 320 222 L 320.00 60.00 A 162 162 0 1 1 179.70 303.00 Z" fill="#1f77b4" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="406.98" y="272.22" text-anchor="start">He said &quot;Hi&quot;</text>
+    <text class="slice-label" x="406.98" y="272.22" text-anchor="middle">He said &quot;Hi&quot;</text>
     <path d="M 320 222 L 179.70 303.00 A 162 162 0 0 1 320.00 60.00 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
-    <text class="slice-label" x="233.02" y="171.78" text-anchor="end">She said &apos;ok&apos;</text>
+    <text class="slice-label" x="233.02" y="171.78" text-anchor="middle">She said &apos;ok&apos;</text>
   </g>
 </svg>
