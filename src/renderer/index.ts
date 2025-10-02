@@ -186,8 +186,8 @@ export class MermaidRenderer {
         const svg = renderPie(model, {
           width: options.width,
           height: options.height,
-          // Optional parity configs
-          // showPercent: Boolean(cfg?.showPercent), // keep default off
+          rimStroke: theme?.pieStrokeColor,
+          rimStrokeWidth: theme?.pieOuterStrokeWidth,
         });
         // Inject simple theme variable overrides by string replacement when possible
         const themedSvg = applyPieTheme(svg, theme);
@@ -290,15 +290,15 @@ export class MermaidRenderer {
 function applyPieTheme(svg: string, theme?: Record<string, any>): string {
   if (!theme) return svg;
   let out = svg;
-  // pieOuterStrokeWidth: adjust all arc stroke widths
+  // Apply rim styles (outer circle) when provided
   if (theme.pieOuterStrokeWidth != null) {
     const w = String(theme.pieOuterStrokeWidth);
-    out = out.replace(/stroke-width="1"/g, `stroke-width="${w}"`);
+    // Insert or replace stroke-width on the rim circle tag
+    out = out.replace(/(<circle class="pie-rim"[^>]*)(stroke-width="[^"]*" )?/g, (_m, p1) => `${p1}stroke-width="${w}" `);
   }
-  // pieStrokeColor
   if (theme.pieStrokeColor) {
     const c = String(theme.pieStrokeColor);
-    out = out.replace(/stroke="#fff"/g, `stroke="${c}"`);
+    out = out.replace(/(<circle class="pie-rim"[^>]*)(stroke="[^"]*" )?/g, (_m, p1) => `${p1}stroke="${c}" `);
   }
   // pieSectionTextColor
   if (theme.pieSectionTextColor) {

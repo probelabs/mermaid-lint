@@ -15,8 +15,8 @@ async function main() {
   const file = path.resolve(__dirname, '..', 'test-fixtures/pie/valid/frontmatter-theme.mmd');
   const text = fs.readFileSync(file, 'utf8');
   const { svg } = renderMermaid(text);
-  // Expect arc stroke width overridden
-  assert(/stroke-width="3px"/.test(svg), 'Expected stroke-width="3px" for pie arcs');
+  // Expect outer rim stroke width overridden via theme
+  if(!(/<circle class=\"pie-rim\"[^>]*stroke-width=\"3px\"/.test(svg))) throw new Error('Expected pie-rim stroke-width=\"3px\"');
   // Expect label color and size applied
   assert(/class="slice-label"[^>]*fill="#333333"/.test(svg), 'Expected slice-label fill #333333');
   assert(/class="slice-label"[^>]*font-size="13px"/.test(svg), 'Expected slice-label font-size 13px');

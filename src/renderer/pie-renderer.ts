@@ -72,7 +72,8 @@ export function renderPie(model: PieChartModel, opts: InternalOptions = {}): str
       'Z'
     ].join(' ');
     const fill = s.color || palette(i);
-    svg += `\n    <path d="${d}" fill="${fill}" fill-opacity="0.9" stroke="#fff" stroke-width="1" />`;
+    // Mermaid default does not draw per-slice strokes; avoid white outlines between slices
+    svg += `\n    <path d="${d}" fill="${fill}" fill-opacity="0.9" stroke="none" />`;
 
     // Percent labels on slices (Mermaid parity)
     const mid = (start + end) / 2;
@@ -108,7 +109,10 @@ export function renderPie(model: PieChartModel, opts: InternalOptions = {}): str
     start = end;
   });
 
-  svg += `\n  </g>`;
+  // Optional outer rim; allow theming via options
+  const rimStroke = opts.rimStroke ?? 'none';
+  const rimWidth = opts.rimStrokeWidth != null ? String(opts.rimStrokeWidth) : '';
+  svg += `\n  </g>\n  <circle class="pie-rim" cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="${rimStroke}"${rimWidth ? ` stroke-width="${rimWidth}"` : ''} />`;
 
   // Legend to the right: label and optional value (with showData)
   if (legendItems.length) {

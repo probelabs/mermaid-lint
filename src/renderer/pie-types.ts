@@ -15,5 +15,6 @@ export interface PieChartModel {
 export interface PieRenderOptions {
   width?: number;
   height?: number;
+  rimStroke?: string;
+  rimStrokeWidth?: string | number;
 }
-
