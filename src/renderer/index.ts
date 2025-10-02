@@ -8,6 +8,7 @@ import type { ValidationError } from '../core/types.js';
 import type { ILayoutEngine, IRenderer } from './interfaces.js';
 import { buildPieModel } from './pie-builder.js';
 import { renderPie } from './pie-renderer.js';
+import { parseFrontmatter } from '../core/frontmatter.js';
 
 export interface RenderOptions {
   /** Include validation errors as overlays on the diagram */
@@ -156,12 +157,41 @@ export class MermaidRenderer {
     if (firstLine.match(/^(flowchart|graph)\s+/i)) {
       return this.render(text, options);
     }
-    if (firstLine.match(/^pie\b/i)) {
+    if (firstLine.match(/^pie\b/i) || text.trimStart().startsWith('---')) {
       // Render a pie chart via dedicated pipeline (no Dagre layout)
-      const { model, errors } = buildPieModel(text);
+      // Support Mermaid frontmatter (--- ... ---) possibly preceding the pie header
+      let body = text;
+      let theme: Record<string, string> | undefined;
+      let cfg: any | undefined;
+      const fm = parseFrontmatter(text);
+      if (fm) {
+        body = fm.body;
+        theme = fm.themeVariables || (fm.config && fm.config.themeVariables) || undefined;
+        cfg = fm.config && fm.config.pie ? fm.config.pie : undefined;
+      }
+
+      // If after stripping frontmatter the first line is not pie, bail as unsupported
+      const bodyFirst = body.trim().split('\n')[0];
+      if (!/^pie\b/i.test(bodyFirst)) {
+        const errorSvg = this.generateErrorSvg('Unsupported diagram type. Rendering supports flowchart and pie for now.');
+        return {
+          svg: errorSvg,
+          graph: { nodes: [], edges: [], direction: 'TD' },
+          errors: [{ line: 1, column: 1, message: 'Unsupported diagram type', severity: 'error', code: 'UNSUPPORTED_TYPE' }]
+        };
+      }
+
+      const { model, errors } = buildPieModel(body);
       try {
-        const svg = renderPie(model, { width: options.width, height: options.height });
-        return { svg, graph: { nodes: [], edges: [], direction: 'TD' }, errors };
+        const svg = renderPie(model, {
+          width: options.width,
+          height: options.height,
+          // Optional parity configs
+          // showPercent: Boolean(cfg?.showPercent), // keep default off
+        });
+        // Inject simple theme variable overrides by string replacement when possible
+        const themedSvg = applyPieTheme(svg, theme);
+        return { svg: themedSvg, graph: { nodes: [], edges: [], direction: 'TD' }, errors };
       } catch (e: any) {
         const msg = e?.message || 'Pie render error';
         const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'PIE_RENDER' } as ValidationError];
@@ -254,6 +284,60 @@ export class MermaidRenderer {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;');
   }
+}
+
+// Apply basic pie theme variables to the generated SVG.
+function applyPieTheme(svg: string, theme?: Record<string, any>): string {
+  if (!theme) return svg;
+  let out = svg;
+  // pieOuterStrokeWidth: adjust all arc stroke widths
+  if (theme.pieOuterStrokeWidth != null) {
+    const w = String(theme.pieOuterStrokeWidth);
+    out = out.replace(/stroke-width="1"/g, `stroke-width="${w}"`);
+  }
+  // pieStrokeColor
+  if (theme.pieStrokeColor) {
+    const c = String(theme.pieStrokeColor);
+    out = out.replace(/stroke="#fff"/g, `stroke="${c}"`);
+  }
+  // pieSectionTextColor
+  if (theme.pieSectionTextColor) {
+    const c = String(theme.pieSectionTextColor);
+    // Replace the default style color for labels, and also add fill on <text> nodes
+    out = out.replace(/\.slice-label \{[^}]*\}/, (m) => m.replace(/fill:\s*#[0-9A-Fa-f]{3,8}|fill:\s*rgb\([^)]*\)/, `fill: ${c}`));
+    out = out.replace(/<text class="slice-label"([^>]*)>/g, `<text class="slice-label"$1 fill="${c}">`);
+  }
+  // pieTitleTextColor
+  if (theme.pieTitleTextColor) {
+    const c = String(theme.pieTitleTextColor);
+    out = out.replace(/<text class="pie-title"([^>]*)>/g, `<text class="pie-title"$1 fill="${c}">`);
+  }
+  // pieSectionTextSize
+  if (theme.pieSectionTextSize) {
+    const size = String(theme.pieSectionTextSize);
+    out = out.replace(/<text class="slice-label"([^>]*)>/g, `<text class="slice-label"$1 font-size="${size}">`);
+  }
+  // pieTitleTextSize
+  if (theme.pieTitleTextSize) {
+    const size = String(theme.pieTitleTextSize);
+    out = out.replace(/<text class="pie-title"([^>]*)>/g, `<text class="pie-title"$1 font-size="${size}">`);
+  }
+  // pie1..pie12 color overrides: replace fill of path slices in order
+  const colors: string[] = [];
+  for (let i = 1; i <= 24; i++) {
+    const key = 'pie' + i;
+    if (theme[key]) colors.push(String(theme[key]));
+  }
+  if (colors.length) {
+    let idx = 0;
+    out = out.replace(/<path d="M [^"]+" fill="([^"]+)"/g, (_m) => {
+      const color = colors[idx] ?? null;
+      idx++;
+      if (color) return _m.replace(/fill="([^"]+)"/, `fill="${color}"`);
+      return _m;
+    });
+  }
+  return out;
 }
 
 // Export main render function for convenience

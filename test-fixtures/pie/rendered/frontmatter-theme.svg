@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <style>
+    .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
+    .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #333333; dominant-baseline: middle; }
+    .leader { stroke: #444; stroke-width: 1; fill: none; }
+  </style>
+  <text class="pie-title" x="320" y="32" text-anchor="middle" fill="#111111" font-size="18px">Themed Pets</text>
+  <g class="pie" aria-label="pie">
+    <path d="M 320 222 L 320.00 60.00 A 162 162 0 1 1 224.78 353.06 Z" fill="#00AAFF" fill-opacity="0.9" stroke="#fff" stroke-width="3px" />
+    <text class="slice-label" x="415.52" y="253.04" text-anchor="start" fill="#333333" font-size="13px">Dogs 30</text>
+    <path d="M 320 222 L 224.78 353.06 A 162 162 0 0 1 224.78 90.94 Z" fill="#FFAA00" fill-opacity="0.9" stroke="#fff" stroke-width="3px" />
+    <text class="slice-label" x="219.56" y="222.00" text-anchor="end" fill="#333333" font-size="13px">Cats 15</text>
+    <path d="M 320 222 L 224.78 90.94 A 162 162 0 0 1 320.00 60.00 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="3px" />
+    <text class="slice-label" x="288.96" y="126.48" text-anchor="end" fill="#333333" font-size="13px">Rats 5</text>
+  </g>
+</svg>

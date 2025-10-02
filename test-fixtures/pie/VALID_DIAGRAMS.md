@@ -14,10 +14,11 @@ This file contains all valid pie test fixtures rendered with both Mermaid and ou
 ## Table of Contents
 
 1. [escaped quotes](#1-escaped-quotes)
-2. [inline title](#2-inline-title)
-3. [labels and formats](#3-labels-and-formats)
-4. [showdata header](#4-showdata-header)
-5. [simple](#5-simple)
+2. [frontmatter theme](#2-frontmatter-theme)
+3. [inline title](#3-inline-title)
+4. [labels and formats](#4-labels-and-formats)
+5. [showdata header](#5-showdata-header)
+6. [simple](#6-simple)
 
 ---
 
@@ -66,7 +67,82 @@ pie title Quotes
 
 ---
 
-## 2. Inline Title
+## 2. Frontmatter Theme
+
+📄 **Source**: [`frontmatter-theme.mmd`](./valid/frontmatter-theme.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+---
+config:
+  pie:
+    textPosition: 0.58
+  themeVariables:
+    pieOuterStrokeWidth: "3px"
+    pieSectionTextColor: "#333333"
+    pieTitleTextColor: "#111111"
+    pieSectionTextSize: "13px"
+    pieTitleTextSize: "18px"
+    pie1: "#00AAFF"
+    pie2: "#FFAA00"
+---
+pie showData
+  title Themed Pets
+  "Dogs" : 30
+  "Cats" : 15
+  "Rats" : 5
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/frontmatter-theme.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+---
+config:
+  pie:
+    textPosition: 0.58
+  themeVariables:
+    pieOuterStrokeWidth: "3px"
+    pieSectionTextColor: "#333333"
+    pieTitleTextColor: "#111111"
+    pieSectionTextSize: "13px"
+    pieTitleTextSize: "18px"
+    pie1: "#00AAFF"
+    pie2: "#FFAA00"
+---
+pie showData
+  title Themed Pets
+  "Dogs" : 30
+  "Cats" : 15
+  "Rats" : 5
+
+
+```
+</details>
+
+---
+
+## 3. Inline Title
 
 📄 **Source**: [`inline-title.mmd`](./valid/inline-title.mmd)
 
@@ -113,7 +189,7 @@ pie title Pets adopted by volunteers
 
 ---
 
-## 3. Labels And Formats
+## 4. Labels And Formats
 
 📄 **Source**: [`labels-and-formats.mmd`](./valid/labels-and-formats.mmd)
 
@@ -164,7 +240,7 @@ pie
 
 ---
 
-## 4. Showdata Header
+## 5. Showdata Header
 
 📄 **Source**: [`showdata-header.mmd`](./valid/showdata-header.mmd)
 
@@ -215,7 +291,7 @@ pie showData
 
 ---
 
-## 5. Simple
+## 6. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
