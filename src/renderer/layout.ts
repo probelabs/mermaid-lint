@@ -57,6 +57,14 @@ export class DagreLayoutEngine implements ILayoutEngine {
     // Default edge label (needed for dagre)
     g.setDefaultEdgeLabel(() => ({}));
 
+    // Add subgraphs FIRST (before nodes and edges) so Dagre knows they exist
+    if (graph.subgraphs && graph.subgraphs.length > 0) {
+      // Register subgraphs as clusters for layout grouping
+      for (const subgraph of graph.subgraphs) {
+        g.setNode(subgraph.id, { label: subgraph.label || subgraph.id, clusterLabelPos: 'top' });
+      }
+    }
+
     // Add nodes
     for (const node of graph.nodes) {
       const dimensions = this.calculateNodeDimensions(node.label, node.shape);
@@ -68,21 +76,8 @@ export class DagreLayoutEngine implements ILayoutEngine {
       });
     }
 
-    // Add edges
-    for (const edge of graph.edges) {
-      g.setEdge(edge.source, edge.target, {
-        label: edge.label,
-        width: edge.label ? edge.label.length * 8 : 0,
-        height: edge.label ? 20 : 0
-      });
-    }
-
-    // Handle subgraphs as compound nodes (if any)
+    // Set parent relationships for nodes in subgraphs
     if (graph.subgraphs && graph.subgraphs.length > 0) {
-      // Register subgraphs as clusters for layout grouping
-      for (const subgraph of graph.subgraphs) {
-        g.setNode(subgraph.id, { label: subgraph.label || subgraph.id, clusterLabelPos: 'top' });
-      }
       for (const subgraph of graph.subgraphs) {
         for (const nodeId of subgraph.nodes) {
           if (g.hasNode(nodeId)) {
@@ -93,6 +88,15 @@ export class DagreLayoutEngine implements ILayoutEngine {
           try { g.setParent(subgraph.id, subgraph.parent); } catch {}
         }
       }
+    }
+
+    // Add edges AFTER subgraphs and nodes are registered
+    for (const edge of graph.edges) {
+      g.setEdge(edge.source, edge.target, {
+        label: edge.label,
+        width: edge.label ? edge.label.length * 8 : 0,
+        height: edge.label ? 20 : 0
+      });
     }
 
     // Run layout
