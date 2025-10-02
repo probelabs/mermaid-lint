@@ -6,6 +6,8 @@ import { SVGRenderer } from './svg-generator.js';
 import type { Graph } from './types.js';
 import type { ValidationError } from '../core/types.js';
 import type { ILayoutEngine, IRenderer } from './interfaces.js';
+import { buildPieModel } from './pie-builder.js';
+import { renderPie } from './pie-renderer.js';
 
 export interface RenderOptions {
   /** Include validation errors as overlays on the diagram */
@@ -145,7 +147,7 @@ export class MermaidRenderer {
   }
 
   /**
-   * Renders only supported diagram types (for now just flowchart)
+   * Renders supported diagram types (flowchart + pie for now)
    */
   renderAny(text: string, options: RenderOptions = {}): RenderResult {
     // Detect diagram type
@@ -154,9 +156,21 @@ export class MermaidRenderer {
     if (firstLine.match(/^(flowchart|graph)\s+/i)) {
       return this.render(text, options);
     }
+    if (firstLine.match(/^pie\b/i)) {
+      // Render a pie chart via dedicated pipeline (no Dagre layout)
+      const { model, errors } = buildPieModel(text);
+      try {
+        const svg = renderPie(model, { width: options.width, height: options.height });
+        return { svg, graph: { nodes: [], edges: [], direction: 'TD' }, errors };
+      } catch (e: any) {
+        const msg = e?.message || 'Pie render error';
+        const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'PIE_RENDER' } as ValidationError];
+        return { svg: this.generateErrorSvg(msg), graph: { nodes: [], edges: [], direction: 'TD' }, errors: err };
+      }
+    }
 
     // Unsupported diagram type
-    const errorSvg = this.generateErrorSvg('Unsupported diagram type. Currently only flowchart diagrams are supported for rendering.');
+    const errorSvg = this.generateErrorSvg('Unsupported diagram type. Rendering supports flowchart and pie for now.');
 
     return {
       svg: errorSvg,

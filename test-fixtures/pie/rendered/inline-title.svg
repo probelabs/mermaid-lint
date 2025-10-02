@@ -1,9 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <style>
+    .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
+    .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
+  </style>
+  <text class="pie-title" x="320" y="32" text-anchor="middle">Pets adopted by volunteers</text>
+  <g class="pie" aria-label="pie">
+    <path d="M 320 222 L 320.00 60.00 A 162 162 0 1 1 164.22 177.55 Z" fill="#1f77b4" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <text class="slice-label" x="380.50" y="302.18" text-anchor="start">Dogs</text>
+    <path d="M 320 222 L 164.22 177.55 A 162 162 0 0 1 288.78 63.04 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <text class="slice-label" x="252.02" y="148.06" text-anchor="end">Cats</text>
+    <path d="M 320 222 L 288.78 63.04 A 162 162 0 0 1 320.00 60.00 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <text class="slice-label" x="310.28" y="122.03" text-anchor="middle">Rats</text>
+  </g>
 </svg>
