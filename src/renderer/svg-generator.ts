@@ -43,6 +43,7 @@ export class SVGRenderer implements IRenderer {
     const height = layout.height + this.padding * 2 + extraPadY;
 
     const elements: string[] = [];
+    const overlays: string[] = [];
 
     // Add defs for markers (arrowheads)
     elements.push(this.generateDefs());
@@ -80,9 +81,11 @@ export class SVGRenderer implements IRenderer {
       nodeMap[n.id] = { x: n.x + padX, y: n.y + padY, width: n.width, height: n.height, shape: (n as any).shape };
     }
 
-    // Draw edges first (so they appear behind nodes)
+    // Draw edges first (behind nodes). Arrowhead overlays are collected separately and drawn last.
     for (const edge of layout.edges) {
-      elements.push(this.generateEdge(edge, padX, padY, nodeMap));
+      const { path, overlay } = this.generateEdge(edge, padX, padY, nodeMap);
+      elements.push(path);
+      if (overlay) overlays.push(overlay);
     }
 
     // Draw nodes
@@ -95,6 +98,7 @@ export class SVGRenderer implements IRenderer {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   ${bg}
   ${elements.join('\n  ')}
+  ${overlays.join('\n  ')}
 </svg>`;
   }
 
@@ -424,9 +428,9 @@ export class SVGRenderer implements IRenderer {
       .replace(/&#39;/g, "'");
   }
 
-  private generateEdge(edge: LayoutEdge, padX: number, padY: number, nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}>): string {
+  private generateEdge(edge: LayoutEdge, padX: number, padY: number, nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}>): { path: string; overlay?: string } {
     if (!edge.points || edge.points.length < 2) {
-      return '';
+      return { path: '' };
     }
 
     // Build smoothed path (Catmull-Rom to Bezier) from dagre points
@@ -471,9 +475,11 @@ export class SVGRenderer implements IRenderer {
       finalSegs = this.intersectSegmentsEnd(finalSegs, targetNode);
     }
     // Fallback tiny trim if markers exist (avoid overlay)
-    const cut = 1.5;
-    if (mStart && mStart !== 'none') finalSegs = this.trimSegmentsStart(finalSegs, cut);
-    if (mEnd && mEnd !== 'none') finalSegs = this.trimSegmentsEnd(finalSegs, cut);
+    const triLen = 8; // arrow overlay length in px
+    const cutStart = (mStart && mStart !== 'none') ? triLen : 1.5;
+    const cutEnd = (mEnd && mEnd !== 'none') ? triLen : 1.5;
+    if (mStart && mStart !== 'none') finalSegs = this.trimSegmentsStart(finalSegs, cutStart);
+    if (mEnd && mEnd !== 'none') finalSegs = this.trimSegmentsEnd(finalSegs, cutEnd);
     const pathData = this.pathFromSegments(finalSegs);
 
     let edgeElement = `<path d="${pathData}" stroke="${this.arrowStroke}" stroke-width="${strokeWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
@@ -511,14 +517,51 @@ export class SVGRenderer implements IRenderer {
       const labelBg = `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />`;
       const labelText = `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${fontSize}" fill="#444">${text}</text>`;
 
-      return `<g>
+      const pathGroup = `<g>
     ${edgeElement}
     ${labelBg}
     ${labelText}
   </g>`;
+      return { path: pathGroup };
     }
 
-    return edgeElement;
+    // Build optional overlay arrowheads for viewers with limited marker support (triangles only)
+    let overlay = '';
+    const last = finalSegs.segs[finalSegs.segs.length - 1];
+    const prevEnd = last ? last.c2 : finalSegs.start;
+    const end = last ? last.to : finalSegs.start;
+    const vx = end.x - prevEnd.x; const vy = end.y - prevEnd.y;
+    const vlen = Math.hypot(vx, vy) || 1;
+    const ux = vx / vlen; const uy = vy / vlen;
+    const nx = -uy; const ny = ux;
+    // reuse triLen from above (8px)
+    const triW = 6;   // px base width
+    const baseX = end.x - ux * triLen;
+    const baseY = end.y - uy * triLen;
+    const p1x = end.x, p1y = end.y; // tip
+    const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
+    const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
+    const triangle = `<path d="M${p1x},${p1y} L${p2x},${p2y} L${p3x},${p3y} Z" fill="${this.arrowStroke}" />`;
+
+    // reuse mStart/mEnd from above
+    if (mEnd === 'arrow') {
+      overlay += triangle;
+    }
+    // Optional: support start arrow overlay if needed
+    if (mStart === 'arrow' && finalSegs.segs.length) {
+      const first = finalSegs.segs[0];
+      const start = finalSegs.start; const c1 = first.c1;
+      const svx = start.x - c1.x; const svy = start.y - c1.y;
+      const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
+      const snx = -suy; const sny = sux;
+      const sbaseX = start.x - sux * triLen; const sbaseY = start.y - suy * triLen;
+      const sp1x = start.x, sp1y = start.y;
+      const sp2x = sbaseX + snx * (triW/2), sp2y = sbaseY + sny * (triW/2);
+      const sp3x = sbaseX - snx * (triW/2), sp3y = sbaseY - sny * (triW/2);
+      overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
+    }
+
+    return { path: edgeElement, overlay: overlay || undefined };
   }
 
   // --- helpers ---
