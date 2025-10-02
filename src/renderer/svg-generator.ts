@@ -117,16 +117,16 @@ export class SVGRenderer implements IRenderer {
       }
     }
 
-    // Draw edges first (behind nodes). Arrowhead overlays are collected separately and drawn last.
+    // Draw nodes first so edges can connect visibly without being hidden by node borders
+    for (const node of layout.nodes) {
+      elements.push(this.generateNodeWithPad(node, padX, padY));
+    }
+
+    // Draw edges on top of nodes; arrowhead overlays still collected for final top-most draw
     for (const edge of layout.edges) {
       const { path, overlay } = this.generateEdge(edge, padX, padY, nodeMap);
       elements.push(path);
       if (overlay) overlays.push(overlay);
-    }
-
-    // Draw nodes
-    for (const node of layout.nodes) {
-      elements.push(this.generateNodeWithPad(node, padX, padY));
     }
 
     // White background rect to match Mermaid output

@@ -11,27 +11,6 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M175.25,80 L175.25,90 C175.25,102 175.25,114 175.25,120 L175.25,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M175.25,212 L175.25,222 C175.25,234 175.25,246 175.25,252 L175.25,262" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <g>
-    <path d="M125.83050847457628,369 L119.04512235200397,376.3456473620507 C110.90265900491718,385.1604241965116 93.5,428 93.5,434 L93.5,444" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="71.5" y="397.55873114551076" width="44" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="93.5" y="404.55873114551076" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Link 1</text>
-    <path d="M93.5,444 L90.5,436 L96.5,436 Z" fill="#555555" />
-  </g>
-  <g>
-    <path d="M224.66949152542372,369 L231.45487764799603,376.3456473620507 C239.59734099508282,385.1604241965116 257,423 257,429 L257,439" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="233.51313947239237" y="395.3903711719477" width="44" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="255.51313947239237" y="402.3903711719477" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Link 2</text>
-    <path d="M257,439 L254,431 L260,431 Z" fill="#555555" />
-  </g>
-  <path d="M93.5,484 L93.5,494 C93.5,506 117.38387900545622,530.068664774313 122.36208346931923,533.4179154839456 L130.6590909090909,539" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M257,489 L257,499 C257,511 233.11612099454376,530.068664774313 228.13791653068077,533.4179154839456 L219.8409090909091,539" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M143.88636363636363,599 L136.65994506488664,605.9122264596737 C139.53030303030303,603.1666666666666 122.10606060606061,612.3333333333334 117.75,624 C113.39393939393939,635.6666666666666 117.75,654 117.75,669 C117.75,684 112.42592592592592,702.3333333333334 117.75,714 L149.69444444444446,739" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M206.61363636363637,599 L213.84005493511336,605.9122264596737 C222.51175722088573,614.206898211282 232.75,633 232.75,639 L232.75,649" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M232.75,689 L232.75,699 C232.75,711 213.40563557167692,729.1390678134703 208.6806055656314,732.836917383419 L200.80555555555554,739" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M175.25,779 L175.25,789 C175.25,801 175.25,813 175.25,819 L175.25,829" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M175.25,869 L175.25,879 C175.25,891 175.25,903 175.25,909 L175.25,919" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="123.75" y="40" width="103" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="175.25" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Rectangle</text>
@@ -80,6 +59,27 @@
     <polygon points="109.75,919 240.75,919 221.1,959 129.4,959" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="175.25" y="943.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid Alt</text>
   </g>
+  <path d="M175.25,80 L175.25,90 C175.25,102 175.25,114 175.25,120 L175.25,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M175.25,212 L175.25,222 C175.25,234 175.25,246 175.25,252 L175.25,262" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <g>
+    <path d="M125.83050847457628,369 L119.04512235200397,376.3456473620507 C110.90265900491718,385.1604241965116 93.5,428 93.5,434 L93.5,444" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="71.5" y="397.55873114551076" width="44" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
+    <text x="93.5" y="404.55873114551076" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Link 1</text>
+    <path d="M93.5,444 L90.5,436 L96.5,436 Z" fill="#555555" />
+  </g>
+  <g>
+    <path d="M224.66949152542372,369 L231.45487764799603,376.3456473620507 C239.59734099508282,385.1604241965116 257,423 257,429 L257,439" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="233.51313947239237" y="395.3903711719477" width="44" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
+    <text x="255.51313947239237" y="402.3903711719477" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Link 2</text>
+    <path d="M257,439 L254,431 L260,431 Z" fill="#555555" />
+  </g>
+  <path d="M93.5,484 L93.5,494 C93.5,506 117.38387900545622,530.068664774313 122.36208346931923,533.4179154839456 L130.6590909090909,539" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M257,489 L257,499 C257,511 233.11612099454376,530.068664774313 228.13791653068077,533.4179154839456 L219.8409090909091,539" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M143.88636363636363,599 L136.65994506488664,605.9122264596737 C139.53030303030303,603.1666666666666 122.10606060606061,612.3333333333334 117.75,624 C113.39393939393939,635.6666666666666 117.75,654 117.75,669 C117.75,684 112.42592592592592,702.3333333333334 117.75,714 L149.69444444444446,739" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M206.61363636363637,599 L213.84005493511336,605.9122264596737 C222.51175722088573,614.206898211282 232.75,633 232.75,639 L232.75,649" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M232.75,689 L232.75,699 C232.75,711 213.40563557167692,729.1390678134703 208.6806055656314,732.836917383419 L200.80555555555554,739" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M175.25,779 L175.25,789 C175.25,801 175.25,813 175.25,819 L175.25,829" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M175.25,869 L175.25,879 C175.25,891 175.25,903 175.25,909 L175.25,919" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M175.25,130 L172.25,122 L178.25,122 Z" fill="#555555" />
   <path d="M175.25,262 L172.25,254 L178.25,254 Z" fill="#555555" />
   <path d="M130.6590909090909,539 L122.34685960245727,537.023434619088 L125.69611031208987,532.045230155225 Z" fill="#555555" />

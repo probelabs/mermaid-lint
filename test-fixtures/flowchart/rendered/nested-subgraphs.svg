@@ -12,9 +12,6 @@
     </marker>
   </defs>
   <g class="subgraph-bg"><rect x="21" y="21" width="290" height="278" rx="4" ry="4" fill="#fffbe6" stroke="none" /><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="#fffbe6" stroke="none" /></g>
-  <path d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M241,109 L241,119 C241,131 241,213 241,219 L241,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M166,299 L166,279 L166,258.6 L391,258.6 L391,249 L391,249" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="51" y="69" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="91" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
@@ -35,6 +32,9 @@
     <rect x="351" y="229" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="391" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
   </g>
+  <path d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M241,109 L241,119 C241,131 241,213 241,219 L241,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M166,299 L166,279 L166,258.6 L391,258.6 L391,249 L391,249" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g class="subgraph-borders"><rect x="21" y="21" width="290" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="142.5" y="29" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="67.5" y="41" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="166" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Outer</text><text x="91" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Inner</text></g>
