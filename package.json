@@ -74,6 +74,7 @@
   "author": "Probelabs",
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.12.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^24.5.2",
     "esbuild": "^0.25.10",
     "typescript": "^5.9.2"

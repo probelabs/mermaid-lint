@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="610" height="136" viewBox="0 0 610 136">
-  <rect x="0" y="0" width="610" height="136" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="590" height="116" viewBox="0 0 590 116">
+  <rect x="0" y="0" width="590" height="116" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
+    <marker id="arrow" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,8 L8,4 z" fill="#555555" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="circle-marker" viewBox="0 0 6 6" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="userSpaceOnUse">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
-    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+    <marker id="cross-marker" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M280,68 C281.4583333333333,68 296.6666666666667,68 305,68 C313.3333333333333,68 329.78125,68 328.5,68" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M410,68 C411.4583333333333,68 426.6666666666667,68 435,68 C443.3333333333333,68 459.78125,68 458.5,68" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M280,68 L290,68 C302,68 314,68 320,68 L330,68" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M410,68 L420,68 C432,68 444,68 450,68 L460,68" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="40" y="40" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333">
@@ -28,4 +28,6 @@
     <rect x="460" y="48" width="110" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="515" y="72.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Plain text</text>
   </g>
+  <path d="M330,68 L322,71 L322,65 Z" fill="#555555" />
+  <path d="M460,68 L452,71 L452,65 Z" fill="#555555" />
 </svg>

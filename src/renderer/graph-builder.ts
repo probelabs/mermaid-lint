@@ -389,6 +389,15 @@ export class GraphBuilder {
       if (children?.DottedLine) type = 'dotted'; else if (children?.ThickLine) type = 'thick'; else type = 'open';
     } else if (children?.InvisibleLink) { type = 'invisible'; }
 
+    // Fallbacks: handle patterns where style and arrow are split by a label
+    // e.g., "-.text.->" tokenizes as DottedLine + inlineCarrier + ArrowRight
+    if (markerEnd === 'none' && (children?.ArrowRight || (children as any).ThickArrowRight || (children as any).DottedArrowRight)) {
+      markerEnd = 'arrow';
+    }
+    if (markerStart === 'none' && (children?.ArrowLeft || (children as any).ThickArrowLeft || (children as any).DottedArrowLeft)) {
+      markerStart = 'arrow';
+    }
+
     // Extract link label (priority: |text|, then inline text, then inline carrier)
     const textNode = children?.linkText?.[0] as CstNode | undefined;
     if (textNode) {
@@ -397,16 +406,35 @@ export class GraphBuilder {
       label = this.extractTextContent((children as any).linkTextInline[0] as CstNode);
     } else if ((children as any).inlineCarrier?.[0]) {
       const token = (children as any).inlineCarrier[0] as IToken;
-      let s = token.image.trim();
-      // Strip common carriers like '-.text.-', '==text==', '--text--'
+      const raw = token.image.trim();
+      // Map carrier style to edge type. Examples:
+      //  - -.text.-    => dotted
+      //  - ==text==    => thick
+      //  - -- text --  => open (normal)
+      if (raw.startsWith('-.') && raw.endsWith('.-')) {
+        type = 'dotted';
+      } else if (raw.startsWith('==') && raw.endsWith('==')) {
+        type = 'thick';
+      } else if (raw.startsWith('--') && raw.endsWith('--')) {
+        // keep default/open
+      }
+      // Prefer to show an arrowhead when there is any arrow token to the right or left,
+      // but some syntaxes split the style and arrow (e.g., '-.text.->', '==text==>').
+      // Ensure markerEnd/Start are set when an arrow is present in the link.
+      if ((children as any).ArrowRight || (children as any).DottedArrowRight || (children as any).ThickArrowRight) {
+        markerEnd = 'arrow';
+      }
+      if ((children as any).ArrowLeft || (children as any).DottedArrowLeft || (children as any).ThickArrowLeft) {
+        markerStart = 'arrow';
+      }
+      // Strip the outer markers from the label text for rendering
       const strip = (str: string): string => {
         if ((str.startsWith('-.') && str.endsWith('.-')) || (str.startsWith('==') && str.endsWith('==')) || (str.startsWith('--') && str.endsWith('--'))) {
           return str.slice(2, -2).trim();
         }
         return str;
       };
-      s = strip(s);
-      label = s;
+      label = strip(raw);
     }
 
     return { type, label, markerStart, markerEnd };

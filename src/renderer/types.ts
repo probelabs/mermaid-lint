@@ -74,6 +74,8 @@ export interface LayoutNode extends Node {
 
 export interface LayoutEdge extends Edge {
   points: Array<{ x: number; y: number }>;
+  // Optional hint for renderer: draw as pure orthogonal segments (no smoothing)
+  pathMode?: 'orthogonal' | 'smooth';
 }
 
 export interface LayoutSubgraph {

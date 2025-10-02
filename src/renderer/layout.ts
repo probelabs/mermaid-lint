@@ -8,8 +8,8 @@ import type { ILayoutEngine } from './interfaces.js';
 export class DagreLayoutEngine implements ILayoutEngine {
   private nodeWidth = 120;
   private nodeHeight = 50;
-  private rankSep = 50;     // Vertical spacing between ranks
-  private nodeSep = 50;     // Horizontal spacing between nodes
+  private rankSep = 50;     // Base vertical spacing
+  private nodeSep = 50;     // Base horizontal spacing
   private edgeSep = 10;     // Spacing between edges
 
   layout(graph: Graph): Layout {
@@ -17,17 +17,38 @@ export class DagreLayoutEngine implements ILayoutEngine {
     const g = new dagre.graphlib.Graph();
 
     // Configure graph - set compound if there are subgraphs
+    // Increase spacing when clusters are present to better match Mermaid visuals
+    const hasClusters = !!(graph.subgraphs && graph.subgraphs.length > 0);
+    const dir = this.mapDirection(graph.direction);
+    let ranksep = this.rankSep;
+    let nodesep = this.nodeSep;
+    if (hasClusters) {
+      if (dir === 'LR' || dir === 'RL') {
+        // LR layouts: widen horizontally, keep vertical tighter
+        ranksep += 20;
+        nodesep += 70;
+      } else {
+        // TD/BT layouts: more vertical room, modest horizontal
+        ranksep += 70;
+        nodesep += 20;
+      }
+    }
     const graphConfig: any = {
-      rankdir: this.mapDirection(graph.direction),
-      ranksep: this.rankSep,
-      nodesep: this.nodeSep,
+      rankdir: dir,
+      ranksep,
+      nodesep,
       edgesep: this.edgeSep,
       marginx: 20,
       marginy: 20
     };
+    // With clusters + horizontal layouts, encourage wider graphs and fewer vertical ranks.
+    if (hasClusters && (dir === 'LR' || dir === 'RL')) {
+      graphConfig.ranker = 'longest-path';
+      graphConfig.acyclicer = 'greedy';
+    }
 
     // Enable compound mode if there are subgraphs
-    if (graph.subgraphs && graph.subgraphs.length > 0) {
+    if (hasClusters) {
       graphConfig.compound = true;
     }
 
@@ -96,18 +117,7 @@ export class DagreLayoutEngine implements ILayoutEngine {
       }
     }
 
-    // Process edges
-    for (const edge of graph.edges) {
-      const edgeLayout = g.edge(edge.source, edge.target);
-      if (edgeLayout && edgeLayout.points) {
-        layoutEdges.push({
-          ...edge,
-          points: edgeLayout.points
-        });
-      }
-    }
-
-    // Process subgraphs (clusters)
+    // Process subgraphs (clusters) first so we can use their anchors for edges
     const layoutSubgraphs: LayoutSubgraph[] = [];
     if (graph.subgraphs && graph.subgraphs.length > 0) {
       for (const sg of graph.subgraphs) {
@@ -118,7 +128,7 @@ export class DagreLayoutEngine implements ILayoutEngine {
           const minY = Math.min(...members.map(m => m.y));
           const maxX = Math.max(...members.map(m => m.x + m.width));
           const maxY = Math.max(...members.map(m => m.y + m.height));
-          const pad = 24; // tighter cluster padding
+          const pad = 30; // slightly roomier cluster padding to match Mermaid
           layoutSubgraphs.push({
             id: sg.id,
             label: sg.label || sg.id,
@@ -142,6 +152,57 @@ export class DagreLayoutEngine implements ILayoutEngine {
         const maxX = Math.max(p.x + p.width, sg.x + sg.width);
         const maxY = Math.max(p.y + p.height, sg.y + sg.height);
         p.x = minX; p.y = minY; p.width = maxX - minX; p.height = maxY - minY;
+      }
+    }
+
+    // Process edges (after subgraphs are available)
+    const subgraphById: Record<string, LayoutSubgraph> = Object.fromEntries(layoutSubgraphs.map(sg => [sg.id, sg]));
+    for (const edge of graph.edges) {
+      const edgeLayout = g.edge(edge.source, edge.target);
+      let pts = edgeLayout && Array.isArray(edgeLayout.points) ? edgeLayout.points.slice() : [];
+      const hasNaN = pts.some(p => !Number.isFinite(p.x) || !Number.isFinite(p.y));
+      const srcSg = subgraphById[edge.source];
+      const dstSg = subgraphById[edge.target];
+      // Build orthogonal two‑elbow route when any endpoint is a cluster or dagre points are invalid/missing
+      let synthesized = false;
+      if (!pts.length || hasNaN || srcSg || dstSg) {
+        const rankdir = this.mapDirection(graph.direction);
+        const nodeCenter = (id: string) => {
+          const n = g.node(id);
+          return n ? { x: n.x, y: n.y } : undefined;
+        };
+        const start = srcSg ? this.clusterAnchor(srcSg, rankdir, 'out') : nodeCenter(edge.source);
+        const end = dstSg ? this.clusterAnchor(dstSg, rankdir, 'in') : nodeCenter(edge.target);
+        if (start && end) {
+          const PAD = 20;
+          if (rankdir === 'LR' || rankdir === 'RL') {
+            // Step out to the right from source clusters, and step in from left to target clusters
+            const outX = start.x + (rankdir === 'LR' ? PAD : -PAD);
+            const inX = end.x + (rankdir === 'LR' ? -PAD : PAD);
+            const startOut = { x: srcSg ? outX : start.x, y: start.y };
+            const endPre = { x: dstSg ? inX : end.x, y: end.y };
+            const alpha = 0.68;
+            const midX = startOut.x + (endPre.x - startOut.x) * alpha;
+            const m1 = { x: midX, y: startOut.y };
+            const m2 = { x: midX, y: endPre.y };
+            pts = [start, startOut, m1, m2, endPre, end];
+          } else {
+            // TD/BT: step below/above clusters by PAD
+            const outY = start.y + (rankdir === 'TD' ? PAD : -PAD);
+            const inY = end.y + (rankdir === 'TD' ? -PAD : PAD);
+            const startOut = { x: start.x, y: srcSg ? outY : start.y };
+            const endPre = { x: end.x, y: dstSg ? inY : end.y };
+            const alpha = 0.68;
+            const midY = startOut.y + (endPre.y - startOut.y) * alpha;
+            const m1 = { x: startOut.x, y: midY };
+            const m2 = { x: endPre.x, y: midY };
+            pts = [start, startOut, m1, m2, endPre, end];
+          }
+          synthesized = true;
+        }
+      }
+      if (pts.length) {
+        layoutEdges.push({ ...edge, points: pts, pathMode: synthesized ? 'orthogonal' : 'smooth' });
       }
     }
 

@@ -32,8 +32,8 @@
     <text x="241" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <g class="subgraph-borders"><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="171" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
-  <g class="subgraph-title-bg"><rect x="71" y="29" width="40" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="221" y="29" width="40" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
-  <g class="subgraph-titles"><text x="91" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">One</text><text x="241" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Two</text></g>
+  <g class="subgraph-title-bg"><rect x="60.5" y="29" width="61" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="210.5" y="29" width="61" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
+  <g class="subgraph-titles"><text x="91" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group A</text><text x="241" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group B</text></g>
   <path d="M91,229 L88,221 L94,221 Z" fill="#555555" />
   <path d="M241,229 L238,221 L244,221 Z" fill="#555555" />
   <path d="M241,21 L244,29 L238,29 Z" fill="#555555" />

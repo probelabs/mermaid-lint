@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="841" height="641" viewBox="0 0 841 641">
   <rect x="0" y="0" width="841" height="641" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
+    <marker id="arrow" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,8 L8,4 z" fill="#555555" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="circle-marker" viewBox="0 0 6 6" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="userSpaceOnUse">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
-    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+    <marker id="cross-marker" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
+  
 </svg>

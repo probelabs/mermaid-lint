@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="341" height="347" viewBox="0 0 341 347">
-  <rect x="0" y="0" width="341" height="347" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="311" height="347" viewBox="0 0 311 347">
+  <rect x="0" y="0" width="311" height="347" fill="#ffffff" />
   <defs>
     <marker id="arrow" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,8 L8,4 z" fill="#555555" />
@@ -11,9 +11,9 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <g class="subgraph-bg"><rect x="21" y="21" width="290" height="278" rx="4" ry="4" fill="#fffbe6" stroke="none" /></g>
+  <g class="subgraph-bg"><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="#fffbe6" stroke="none" /></g>
   <path d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M241,109 L241,119 C241,131 241,213 241,219 L241,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M91,299 L91,279 L91,258.6 L241,258.6 L241,249 L241,249" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="51" y="69" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="91" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
@@ -23,16 +23,12 @@
     <text x="91" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
-    <rect x="201" y="69" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="241" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
-  </g>
-  <g id="D">
     <rect x="201" y="229" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="241" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <text x="241" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
-  <g class="subgraph-borders"><rect x="21" y="21" width="290" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
-  <g class="subgraph-title-bg"><rect x="142.5" y="29" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
-  <g class="subgraph-titles"><text x="166" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">First</text></g>
+  <g class="subgraph-borders"><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
+  <g class="subgraph-title-bg"><rect x="67.5" y="29" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
+  <g class="subgraph-titles"><text x="91" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Outer</text></g>
   <path d="M91,229 L88,221 L94,221 Z" fill="#555555" />
-  <path d="M241,229 L238,221 L244,221 Z" fill="#555555" />
+  <path d="M241,249 L241,249 L241,249 Z" fill="#555555" />
 </svg>

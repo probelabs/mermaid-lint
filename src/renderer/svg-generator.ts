@@ -15,32 +15,47 @@ export class SVGRenderer implements IRenderer {
   private arrowMarkerSize = 6; // px
 
   render(layout: Layout): string {
-    // Compute extra padding when some items (notably subgraph titles) extend above/left of (0,0)
+    // Compute dynamic bounds across nodes, subgraphs, and edge points
     let minX = Infinity;
     let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
     for (const n of layout.nodes) {
       minX = Math.min(minX, n.x);
       minY = Math.min(minY, n.y);
+      maxX = Math.max(maxX, n.x + n.width);
+      maxY = Math.max(maxY, n.y + n.height);
     }
     if ((layout as any).subgraphs) {
-      for (const sg of (layout as any).subgraphs as Array<{x:number;y:number}>) {
+      for (const sg of (layout as any).subgraphs as Array<{x:number;y:number;width:number;height:number}>) {
         minX = Math.min(minX, sg.x);
         minY = Math.min(minY, sg.y);
+        maxX = Math.max(maxX, sg.x + sg.width);
+        maxY = Math.max(maxY, sg.y + sg.height);
       }
     }
     for (const e of layout.edges) {
-      if (e.points) for (const p of e.points) { minX = Math.min(minX, p.x); minY = Math.min(minY, p.y); }
+      if (e.points) for (const p of e.points) {
+        minX = Math.min(minX, p.x);
+        minY = Math.min(minY, p.y);
+        maxX = Math.max(maxX, p.x);
+        maxY = Math.max(maxY, p.y);
+      }
     }
     if (!isFinite(minX)) { minX = 0; }
     if (!isFinite(minY)) { minY = 0; }
+    if (!isFinite(maxX)) { maxX = layout.width; }
+    if (!isFinite(maxY)) { maxY = layout.height; }
     const extraPadX = Math.max(0, -Math.floor(minX) + 1);
     const extraPadY = Math.max(0, -Math.floor(minY) + 1);
 
     const padX = this.padding + extraPadX;
     const padY = this.padding + extraPadY;
 
-    const width = layout.width + this.padding * 2 + extraPadX;
-    const height = layout.height + this.padding * 2 + extraPadY;
+    const bboxWidth = Math.ceil(maxX) - Math.min(0, Math.floor(minX));
+    const bboxHeight = Math.ceil(maxY) - Math.min(0, Math.floor(minY));
+    const width = bboxWidth + this.padding * 2 + extraPadX;
+    const height = bboxHeight + this.padding * 2 + extraPadY;
 
     const elements: string[] = [];
     const overlays: string[] = [];
@@ -48,11 +63,13 @@ export class SVGRenderer implements IRenderer {
     // Add defs for markers (arrowheads)
     elements.push(this.generateDefs());
 
-    // Draw subgraphs (cluster boxes) behind edges and nodes
+    // Draw subgraphs (cluster backgrounds) behind edges and nodes
     if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
       const sgs = (layout as any).subgraphs as Array<{id:string;label?:string;x:number;y:number;width:number;height:number;parent?:string}>;
       const order = sgs.slice().sort((a,b) => (a.parent ? 1 : 0) - (b.parent ? 1 : 0));
-      const boxes: string[] = [];
+      const bgRects: string[] = [];
+      const borderRects: string[] = [];
+      const titleBgRects: string[] = [];
       const titles: Array<{depth:number, svg:string}> = [];
       const depthOf = (sg:any) => {
         let d=0; let p=sg.parent; const map = new Map(order.map(o=>[o.id,o]));
@@ -64,21 +81,40 @@ export class SVGRenderer implements IRenderer {
         const y = sg.y + padY;
         const w = sg.width;
         const h = sg.height;
-        boxes.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" />`);
+        bgRects.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="#fffbe6" stroke="none" />`);
+        borderRects.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" />`);
         if (sg.label) {
-          titles.push({ depth: depthOf(sg), svg: `<text x="${x + w/2}" y="${y + 18}" text-anchor="middle" font-family="${this.fontFamily}" font-size="12" fill="#333">${this.escapeXml(sg.label)}</text>` });
+          const depth = depthOf(sg);
+          const dy = 18 + depth * 12; // push nested titles slightly lower to avoid overlap
+          const text = this.escapeXml(sg.label);
+          const est = Math.max(40, Math.min(220, text.length * 7 + 12));
+          const tx = x + w/2 - est/2;
+          const ty = y + dy - 10;
+          titleBgRects.push(`<rect x="${tx}" y="${ty}" width="${est}" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" />`);
+          titles.push({ depth, svg: `<text x="${x + w/2}" y="${y + dy}" text-anchor="middle" font-family="${this.fontFamily}" font-size="12" fill="#333">${text}</text>` });
         }
       }
-      elements.push(`<g class="subgraph-boxes">${boxes.join('')}</g>`);
-      // Draw parent titles on top of children titles
-      titles.sort((a,b)=> a.depth - b.depth);
-      elements.push(`<g class="subgraph-titles">${titles.map(t=>t.svg).join('')}</g>`);
+      // Backgrounds behind everything
+      elements.push(`<g class="subgraph-bg">${bgRects.join('')}</g>`);
+      // Keep borders and titles to draw on top later
+      const borderGroup = `<g class="subgraph-borders">${borderRects.join('')}</g>`;
+      const titleBgs = `<g class="subgraph-title-bg">${titleBgRects.join('')}</g>`;
+      const titleGroup = `<g class="subgraph-titles">${titles.sort((a,b)=> a.depth - b.depth).map(t=>t.svg).join('')}</g>`;
+      // Stash overlay to draw after edges/nodes
+      overlays.push(borderGroup);
+      overlays.push(titleBgs);
+      overlays.push(titleGroup);
     }
 
-    // Build a padded node lookup for geometry intersections
+    // Build a padded node lookup for geometry intersections (include clusters)
     const nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}> = {};
     for (const n of layout.nodes) {
       nodeMap[n.id] = { x: n.x + padX, y: n.y + padY, width: n.width, height: n.height, shape: (n as any).shape };
+    }
+    if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
+      for (const sg of (layout as any).subgraphs as Array<{id:string;x:number;y:number;width:number;height:number}>) {
+        nodeMap[sg.id] = { x: sg.x + padX, y: sg.y + padY, width: sg.width, height: sg.height, shape: 'rectangle' };
+      }
     }
 
     // Draw edges first (behind nodes). Arrowhead overlays are collected separately and drawn last.
@@ -460,48 +496,98 @@ export class SVGRenderer implements IRenderer {
         break;
     }
 
-    // Apply endpoint trimming for arrows (trim along Bezier end tangent)
-    let finalSegs = segData;
-    // Markers from model (markerStart/markerEnd) override defaults for special arrow types
+    // Build Mermaid-like path
     const mStart = (edge as any).markerStart as (undefined|string);
     const mEnd = (edge as any).markerEnd as (undefined|string);
-    // First try geometric intersection with source/target node boundary for precise joins
     const sourceNode = nodeMap[(edge as any).source];
     const targetNode = nodeMap[(edge as any).target];
-    if (sourceNode) {
-      finalSegs = this.intersectSegmentsStart(finalSegs, sourceNode);
+    // Compute boundary tips by intersecting first/last polyline legs
+    let boundaryStart = points[0];
+    let boundaryEnd = points[points.length - 1];
+    if (sourceNode && points.length >= 2) {
+      const pseudo = { start: points[0], segs: [{ c1: points[1], c2: points[Math.max(0, points.length - 2)], to: points[points.length - 1] }] } as any;
+      boundaryStart = this.intersectSegmentsStart(pseudo, sourceNode).start;
     }
-    if (targetNode) {
-      finalSegs = this.intersectSegmentsEnd(finalSegs, targetNode);
+    if (targetNode && points.length >= 2) {
+      const pseudo = { start: points[0], segs: [{ c1: points[1], c2: points[Math.max(0, points.length - 2)], to: points[points.length - 1] }] } as any;
+      const after = this.intersectSegmentsEnd(pseudo, targetNode) as any;
+      boundaryEnd = after.segs.length ? after.segs[after.segs.length - 1].to : boundaryEnd;
     }
-    // Fallback tiny trim if markers exist (avoid overlay)
-    const triLen = 8; // arrow overlay length in px
-    const cutStart = (mStart && mStart !== 'none') ? triLen : 1.5;
-    const cutEnd = (mEnd && mEnd !== 'none') ? triLen : 1.5;
-    if (mStart && mStart !== 'none') finalSegs = this.trimSegmentsStart(finalSegs, cutStart);
-    if (mEnd && mEnd !== 'none') finalSegs = this.trimSegmentsEnd(finalSegs, cutEnd);
-    const pathData = this.pathFromSegments(finalSegs);
+    const pathParts: string[] = [];
+    pathParts.push(`M${boundaryStart.x},${boundaryStart.y}`);
+    // Short, straight lead-out segment from the source boundary
+    let startFlat = points.length >= 2 ? points[1] : boundaryStart;
+    if (points.length >= 2) {
+      const svx = points[1].x - boundaryStart.x;
+      const svy = points[1].y - boundaryStart.y;
+      const slen = Math.hypot(svx, svy) || 1;
+      const SFLAT = Math.min(22, Math.max(10, slen * 0.15));
+      startFlat = { x: boundaryStart.x + (svx / slen) * SFLAT, y: boundaryStart.y + (svy / slen) * SFLAT };
+      pathParts.push(`L${startFlat.x},${startFlat.y}`);
+    }
+    const orthogonal = (edge as any).pathMode === 'orthogonal';
+    if (points.length >= 4 && !orthogonal) {
+      // Multiple interior points: C segments for interior, then L into boundary
+      const pts = [points[0], ...points, points[points.length - 1]]; // duplicate ends
+      for (let i = 1; i < pts.length - 3; i++) {
+        const p0 = pts[i - 1];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[i + 2];
+        const c1x = p1.x + (p2.x - p0.x) / 6; const c1y = p1.y + (p2.y - p0.y) / 6;
+        const c2x = p2.x - (p3.x - p1.x) / 6; const c2y = p2.y - (p3.y - p1.y) / 6;
+        pathParts.push(`C${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`);
+      }
+      // Final straight into boundary
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    } else if (points.length === 3 && !orthogonal) {
+      // One interior point: end with a short flat segment into boundary like Mermaid
+      const p0 = boundaryStart, p1 = points[1], p2 = boundaryEnd;
+      // Approach point: a bit before the boundary along the last leg
+      const ax = boundaryEnd.x - p1.x;
+      const ay = boundaryEnd.y - p1.y;
+      const alen = Math.hypot(ax, ay) || 1;
+      const FLAT_IN = Math.min(20, Math.max(10, alen * 0.15));
+      const preEnd = { x: boundaryEnd.x - (ax/alen) * FLAT_IN, y: boundaryEnd.y - (ay/alen) * FLAT_IN };
+      // Control points: CR-like near start, and align the last control along the final leg into preEnd
+      // First control oriented along the initial leg from boundaryStart → points[1]
+      const sdx = startFlat.x - boundaryStart.x; const sdy = startFlat.y - boundaryStart.y;
+      const sdirx = (sdx === 0 && sdy === 0) ? (p1.x - p0.x) : sdx; // fallback if startFlat==start
+      const sdiry = (sdx === 0 && sdy === 0) ? (p1.y - p0.y) : sdy;
+      const sdlen = Math.hypot(sdirx, sdiry) || 1;
+      const c1len = Math.min(40, Math.max(12, sdlen * 1.2));
+      const c1x = startFlat.x + (sdirx / sdlen) * c1len;
+      const c1y = startFlat.y + (sdiry / sdlen) * c1len;
+      // Second control aligned with the last leg towards boundaryEnd
+      const dirx = (boundaryEnd.x - p1.x) / alen; const diry = (boundaryEnd.y - p1.y) / alen;
+      const c2x = preEnd.x - dirx * (FLAT_IN * 0.6);
+      const c2y = preEnd.y - diry * (FLAT_IN * 0.6);
+      pathParts.push(`C${c1x},${c1y} ${c2x},${c2y} ${preEnd.x},${preEnd.y}`);
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    } else {
+      // Only two points: straight line
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    }
+    // If orthogonal path is requested, emit pure L segments across all interior points
+    if (orthogonal) {
+      pathParts.length = 0;
+      pathParts.push(`M${boundaryStart.x},${boundaryStart.y}`);
+      for (const p of points.slice(1, -1)) pathParts.push(`L${p.x},${p.y}`);
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    }
+    const pathData = pathParts.join(' ');
 
     let edgeElement = `<path d="${pathData}" stroke="${this.arrowStroke}" stroke-width="${strokeWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
     }
     // Apply explicit markers from edge if present
-    const startMark = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
-    const endMark = mEnd === 'arrow' ? 'url(#arrow)' : mEnd === 'circle' ? 'url(#circle-marker)' : mEnd === 'cross' ? 'url(#cross-marker)' : (markerEnd || '');
-    // Ensure the last segment has a non-zero tangent so marker rotates properly
-    if (finalSegs.segs.length) {
-      const last = finalSegs.segs[finalSegs.segs.length - 1];
-      const d2 = Math.hypot(last.to.x - last.c2.x, last.to.y - last.c2.y);
-      if (d2 < 0.1) {
-        const prev = finalSegs.segs.length > 1 ? finalSegs.segs[finalSegs.segs.length - 2].to : finalSegs.start;
-        const dx = last.to.x - prev.x; const dy = last.to.y - prev.y; const len = Math.hypot(dx, dy) || 1;
-        const c2x = last.to.x - (dx/len) * 0.2; const c2y = last.to.y - (dy/len) * 0.2;
-        finalSegs.segs[finalSegs.segs.length - 1] = { ...last, c2: { x: c2x, y: c2y } } as any;
-      }
-    }
-    if (startMark) edgeElement += ` marker-start="${startMark}"`;
-    if (endMark) edgeElement += ` marker-end="${endMark}"`;
+    const startMarkUrl = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
+    const endMarkUrl = mEnd === 'arrow' ? 'url(#arrow)' : mEnd === 'circle' ? 'url(#circle-marker)' : mEnd === 'cross' ? 'url(#cross-marker)' : (markerEnd || '');
+    // No tangent fix needed: last command is a straight L into the node boundary
+    // Prefer overlay triangles for arrowheads; keep circle/cross as markers
+    if (startMarkUrl && mStart !== 'arrow') edgeElement += ` marker-start="${startMarkUrl}"`;
+    if (endMarkUrl && mEnd !== 'arrow') edgeElement += ` marker-end="${endMarkUrl}"`;
     edgeElement += ' />';
 
     // Add edge label if present
@@ -517,28 +603,55 @@ export class SVGRenderer implements IRenderer {
       const labelBg = `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />`;
       const labelText = `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${fontSize}" fill="#444">${text}</text>`;
 
+      // Overlay arrowheads (same logic as unlabeled case), drawn last for visibility
+      let overlay = '';
+      const prevEndL = points.length >= 2 ? points[points.length - 2] : boundaryEnd;
+      const vxl = boundaryEnd.x - prevEndL.x; const vyl = boundaryEnd.y - prevEndL.y;
+      const vlenl = Math.hypot(vxl, vyl) || 1;
+      const uxl = vxl / vlenl; const uyl = vyl / vlenl;
+      const nxl = -uyl; const nyl = uxl;
+      const triLenL = 8; const triWL = 6;
+      const baseXL = boundaryEnd.x - uxl * triLenL; const baseYL = boundaryEnd.y - uyl * triLenL;
+      const p1xL = boundaryEnd.x, p1yL = boundaryEnd.y;
+      const p2xL = baseXL + nxl * (triWL/2), p2yL = baseYL + nyl * (triWL/2);
+      const p3xL = baseXL - nxl * (triWL/2), p3yL = baseYL - nyl * (triWL/2);
+      const triEnd = `<path d="M${p1xL},${p1yL} L${p2xL},${p2yL} L${p3xL},${p3yL} Z" fill="${this.arrowStroke}" />`;
+      overlay += triEnd;
+      if (mStart === 'arrow' && points.length >= 2) {
+        const firstLeg = points[1];
+        const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
+        const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
+        const snx = -suy; const sny = sux;
+        const sbaseX = boundaryStart.x - sux * triLenL; const sbaseY = boundaryStart.y - suy * triLenL;
+        const sp1x = boundaryStart.x, sp1y = boundaryStart.y;
+        const sp2x = sbaseX + snx * (triWL/2), sp2y = sbaseY + sny * (triWL/2);
+        const sp3x = sbaseX - snx * (triWL/2), sp3y = sbaseY - sny * (triWL/2);
+        overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
+      }
+
       const pathGroup = `<g>
     ${edgeElement}
     ${labelBg}
     ${labelText}
+    ${overlay}
   </g>`;
       return { path: pathGroup };
     }
 
     // Build optional overlay arrowheads for viewers with limited marker support (triangles only)
     let overlay = '';
-    const last = finalSegs.segs[finalSegs.segs.length - 1];
-    const prevEnd = last ? last.c2 : finalSegs.start;
-    const end = last ? last.to : finalSegs.start;
-    const vx = end.x - prevEnd.x; const vy = end.y - prevEnd.y;
+    // For direction, use last polyline leg (points.length-2 -> boundaryEnd)
+    const prevEnd = points.length >= 2 ? points[points.length - 2] : boundaryEnd;
+    const vx = boundaryEnd.x - prevEnd.x; const vy = boundaryEnd.y - prevEnd.y;
     const vlen = Math.hypot(vx, vy) || 1;
     const ux = vx / vlen; const uy = vy / vlen;
     const nx = -uy; const ny = ux;
     // reuse triLen from above (8px)
+    const triLen = 8; // px overlay triangle length
     const triW = 6;   // px base width
-    const baseX = end.x - ux * triLen;
-    const baseY = end.y - uy * triLen;
-    const p1x = end.x, p1y = end.y; // tip
+    const baseX = boundaryEnd.x - ux * triLen;
+    const baseY = boundaryEnd.y - uy * triLen;
+    const p1x = boundaryEnd.x, p1y = boundaryEnd.y; // tip
     const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
     const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
     const triangle = `<path d="M${p1x},${p1y} L${p2x},${p2y} L${p3x},${p3y} Z" fill="${this.arrowStroke}" />`;
@@ -548,14 +661,13 @@ export class SVGRenderer implements IRenderer {
       overlay += triangle;
     }
     // Optional: support start arrow overlay if needed
-    if (mStart === 'arrow' && finalSegs.segs.length) {
-      const first = finalSegs.segs[0];
-      const start = finalSegs.start; const c1 = first.c1;
-      const svx = start.x - c1.x; const svy = start.y - c1.y;
+    if (mStart === 'arrow' && points.length >= 2) {
+      const firstLeg = points[1];
+      const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
       const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
       const snx = -suy; const sny = sux;
-      const sbaseX = start.x - sux * triLen; const sbaseY = start.y - suy * triLen;
-      const sp1x = start.x, sp1y = start.y;
+      const sbaseX = boundaryStart.x - sux * triLen; const sbaseY = boundaryStart.y - suy * triLen;
+      const sp1x = boundaryStart.x, sp1y = boundaryStart.y;
       const sp2x = sbaseX + snx * (triW/2), sp2y = sbaseY + sny * (triW/2);
       const sp3x = sbaseX - snx * (triW/2), sp3y = sbaseY - sny * (triW/2);
       overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
@@ -583,6 +695,7 @@ export class SVGRenderer implements IRenderer {
     const lastIdx = pts.length - 3; // index i of the last produced segment
     const midFactor = 1.0;          // keep mid segments as-is
     const endFactor = 0.35;         // reduce handle magnitude near the ends more
+    const FLAT_LEN = 28;            // ~28px straight approach near node boundaries (closer to Mermaid)
     for (let i = 1; i < pts.length - 2; i++) {
       const p0 = pts[i - 1];
       const p1 = pts[i];
@@ -590,10 +703,20 @@ export class SVGRenderer implements IRenderer {
       const p3 = pts[i + 2];
       const f1 = (i === firstIdx) ? endFactor : midFactor;
       const f2 = (i === lastIdx)  ? endFactor : midFactor;
-      const c1 = { x: p1.x + ((p2.x - p0.x) / 6) * f1, y: p1.y + ((p2.y - p0.y) / 6) * f1 };
+      // Initial CR->Bezier handles
+      let c1 = { x: p1.x + ((p2.x - p0.x) / 6) * f1, y: p1.y + ((p2.y - p0.y) / 6) * f1 };
       let c2 = { x: p2.x - ((p3.x - p1.x) / 6) * f2, y: p2.y - ((p3.y - p1.y) / 6) * f2 };
+
+      // Flatten start/end approach to nodes by aligning the endpoint handle along the chord
+      if (i === firstIdx) {
+        const dx = p2.x - p1.x, dy = p2.y - p1.y; const len = Math.hypot(dx, dy) || 1;
+        const t = Math.min(FLAT_LEN, len * 0.5);
+        c1 = { x: p1.x + (dx/len) * t, y: p1.y + (dy/len) * t };
+      }
       if (i === lastIdx) {
-        const flat = 0.15; c2 = { x: p2.x + (c2.x - p2.x) * flat, y: p2.y + (c2.y - p2.y) * flat };
+        const dx = p2.x - p1.x, dy = p2.y - p1.y; const len = Math.hypot(dx, dy) || 1;
+        const t = Math.min(FLAT_LEN, len * 0.5);
+        c2 = { x: p2.x - (dx/len) * t, y: p2.y - (dy/len) * t };
       }
       segs.push({ c1, c2, to: { x: p2.x, y: p2.y } });
     }
@@ -615,9 +738,11 @@ export class SVGRenderer implements IRenderer {
     const vx = last.to.x - last.c2.x;
     const vy = last.to.y - last.c2.y;
     const len = Math.hypot(vx, vy) || 1;
+    // Clamp cut to avoid crossing the control point which would invert direction
+    const eff = Math.max(0.1, Math.min(cut, Math.max(0, len - 0.2)));
     const nx = vx / len;
     const ny = vy / len;
-    const newTo = { x: last.to.x - nx * cut, y: last.to.y - ny * cut };
+    const newTo = { x: last.to.x - nx * eff, y: last.to.y - ny * eff };
     last.to = newTo;
     segs[segs.length - 1] = last;
     return { start: data.start, segs };
@@ -630,9 +755,10 @@ export class SVGRenderer implements IRenderer {
     const vx = first.c1.x - data.start.x;
     const vy = first.c1.y - data.start.y;
     const len = Math.hypot(vx, vy) || 1;
+    const eff = Math.max(0.1, Math.min(cut, Math.max(0, len - 0.2)));
     const nx = vx / len;
     const ny = vy / len;
-    const newStart = { x: data.start.x + nx * cut, y: data.start.y + ny * cut };
+    const newStart = { x: data.start.x + nx * eff, y: data.start.y + ny * eff };
     return { start: newStart, segs };
   }
 

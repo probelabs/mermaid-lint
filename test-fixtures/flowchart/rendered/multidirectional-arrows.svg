@@ -1,19 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="290" height="300" viewBox="0 0 290 300">
-  <rect x="0" y="0" width="290" height="300" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="270" height="280" viewBox="0 0 270 280">
+  <rect x="0" y="0" width="270" height="280" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L6,3 z" fill="#555555" />
+    <marker id="arrow" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,8 L8,4 z" fill="#555555" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="circle-marker" viewBox="0 0 6 6" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="userSpaceOnUse">
       <circle cx="3" cy="3" r="3" fill="#555555" />
     </marker>
-    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+    <marker id="cross-marker" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M121.5,60 C121.45833333333333,60 136.66666666666666,60 145,60 C153.33333333333334,60 169.78125,60 168.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#arrow)" marker-end="url(#arrow)" />
-  <path d="M121.5,150 C121.45833333333333,150 136.66666666666666,150 145,150 C153.33333333333334,150 169.78125,150 168.5,150" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
-  <path d="M121.5,240 C121.45833333333333,240 136.66666666666666,240 145,240 C153.33333333333334,240 169.78125,240 168.5,240" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
+  <path d="M120,60 L130,60 C142,60 154,60 160,60 L170,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M120,150 L130,150 C142,150 154,150 160,150 L170,150" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
+  <path d="M120,240 L130,240 C142,240 154,240 160,240 L170,240" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
   <g id="A">
     <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
@@ -38,4 +38,5 @@
     <rect x="170" y="220" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="210" y="244.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">F</text>
   </g>
+  <path d="M170,60 L162,63 L162,57 Z" fill="#555555" /><path d="M120,60 L128,57 L128,63 Z" fill="#555555" />
 </svg>
