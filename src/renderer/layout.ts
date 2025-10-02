@@ -246,15 +246,31 @@ export class DagreLayoutEngine implements ILayoutEngine {
     const maxWidth = 240;    // allow a bit wider boxes
     const lineHeight = 18;   // a bit more vertical space for readability
 
-    // Calculate width (capped at maxWidth)
-    let width = Math.min(
-      Math.max(label.length * charWidth + padding * 2, minWidth),
-      maxWidth
-    );
+    // Handle explicit line breaks with <br/> or <br> (with optional spaces around tag and slash)
+    const explicitLines = label.split(/<\s*br\s*\/?\s*>/i);
+    const hasExplicitBreaks = explicitLines.length > 1;
 
-    // Calculate number of lines needed
-    const charsPerLine = Math.max(1, Math.floor((width - padding * 2) / charWidth));
-    const lines = Math.ceil(label.length / charsPerLine);
+    let width: number;
+    let lines: number;
+
+    if (hasExplicitBreaks) {
+      // Calculate width based on the longest line
+      const maxLineLength = Math.max(...explicitLines.map(line => line.length));
+      width = Math.min(
+        Math.max(maxLineLength * charWidth + padding * 2, minWidth),
+        maxWidth
+      );
+      lines = explicitLines.length;
+    } else {
+      // Calculate width (capped at maxWidth)
+      width = Math.min(
+        Math.max(label.length * charWidth + padding * 2, minWidth),
+        maxWidth
+      );
+      // Calculate number of lines needed for wrapping
+      const charsPerLine = Math.max(1, Math.floor((width - padding * 2) / charWidth));
+      lines = Math.ceil(label.length / charsPerLine);
+    }
 
     // Calculate height based on lines
     let height = Math.max(lines * lineHeight + padding, minHeight);
