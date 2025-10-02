@@ -210,18 +210,17 @@ export class DagreLayoutEngine implements ILayoutEngine {
             if (horizontalSubgraphs && srcSg && dstSg) {
               // Simple horizontal line at vertical center between subgraphs
               const midY = (srcSg.y + srcSg.height / 2 + dstSg.y + dstSg.height / 2) / 2;
-              const GAP = 30; // Gap between subgraph border and arrow
 
-              // Determine if source is left or right of target
+              // Create horizontal line from source border to target border
               if (srcSg.x < dstSg.x) {
                 // Source on left, target on right (normal left-to-right flow)
-                const startX = srcSg.x + srcSg.width + GAP;
-                const endX = dstSg.x - GAP;
+                const startX = srcSg.x + srcSg.width;
+                const endX = dstSg.x;
                 pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
               } else {
                 // Source on right, target on left (right-to-left flow)
-                const startX = srcSg.x - GAP;
-                const endX = dstSg.x + dstSg.width + GAP;
+                const startX = srcSg.x;
+                const endX = dstSg.x + dstSg.width;
                 pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
               }
             } else {

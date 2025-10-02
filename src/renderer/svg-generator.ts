@@ -656,6 +656,7 @@ export class SVGRenderer implements IRenderer {
     const baseY = boundaryEnd.y;
     const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
     const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
+
     const triangle = `<path d="M${p1x},${p1y} L${p2x},${p2y} L${p3x},${p3y} Z" fill="${this.arrowStroke}" />`;
 
     // reuse mStart/mEnd from above
@@ -668,8 +669,9 @@ export class SVGRenderer implements IRenderer {
       const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
       const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
       const snx = -suy; const sny = sux;
-      const sbaseX = boundaryStart.x - sux * triLen; const sbaseY = boundaryStart.y - suy * triLen;
-      const sp1x = boundaryStart.x, sp1y = boundaryStart.y;
+      // Arrow points backward from boundaryStart toward firstLeg (start arrow points back toward source)
+      const sp1x = boundaryStart.x - sux * triLen, sp1y = boundaryStart.y - suy * triLen;
+      const sbaseX = boundaryStart.x; const sbaseY = boundaryStart.y;
       const sp2x = sbaseX + snx * (triW/2), sp2y = sbaseY + sny * (triW/2);
       const sp3x = sbaseX - snx * (triW/2), sp3y = sbaseY - sny * (triW/2);
       overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;

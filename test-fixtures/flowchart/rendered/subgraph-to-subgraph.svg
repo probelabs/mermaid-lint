@@ -36,5 +36,5 @@
   <g class="subgraph-titles"><text x="150" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group A</text><text x="300" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group B</text></g>
   <path d="M150,237 L147,229 L153,229 Z" fill="#555555" />
   <path d="M300,237 L297,229 L303,229 Z" fill="#555555" />
-  <path d="M222,160 L230,157 L230,163 Z" fill="#555555" />
+  <path d="M238,160 L230,163 L230,157 Z" fill="#555555" />
 </svg>
