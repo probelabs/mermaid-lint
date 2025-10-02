@@ -500,14 +500,14 @@ export class SVGRenderer implements IRenderer {
     if (edge.label) {
       const pos = this.pointAtRatio(points, 0.55);
       const text = this.escapeXml(edge.label);
-      const padding = 6;
-      const fontSize = this.fontSize - 2;
-      const width = Math.max(20, Math.min(240, text.length * 7 + padding * 2));
-      const height = 18;
+      const padding = 4;
+      const fontSize = this.fontSize - 3; // slightly smaller than node labels
+      const width = Math.max(18, Math.min(220, text.length * 6 + padding * 2));
+      const height = 14;
       const x = pos.x - width / 2;
       const y = pos.y - height / 2;
-      const labelBg = `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" fill-opacity="0.65" stroke="#999" stroke-opacity="0.4" stroke-width="1" rx="4" />`;
-      const labelText = `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${fontSize}" fill="#333">${text}</text>`;
+      const labelBg = `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />`;
+      const labelText = `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${fontSize}" fill="#444">${text}</text>`;
 
       return `<g>
     ${edgeElement}
@@ -537,7 +537,7 @@ export class SVGRenderer implements IRenderer {
     const firstIdx = 1;
     const lastIdx = pts.length - 3; // index i of the last produced segment
     const midFactor = 1.0;          // keep mid segments as-is
-    const endFactor = 0.45;         // reduce handle magnitude near the ends a bit more
+    const endFactor = 0.35;         // reduce handle magnitude near the ends more
     for (let i = 1; i < pts.length - 2; i++) {
       const p0 = pts[i - 1];
       const p1 = pts[i];
@@ -548,7 +548,7 @@ export class SVGRenderer implements IRenderer {
       const c1 = { x: p1.x + ((p2.x - p0.x) / 6) * f1, y: p1.y + ((p2.y - p0.y) / 6) * f1 };
       let c2 = { x: p2.x - ((p3.x - p1.x) / 6) * f2, y: p2.y - ((p3.y - p1.y) / 6) * f2 };
       if (i === lastIdx) {
-        const flat = 0.3; c2 = { x: p2.x + (c2.x - p2.x) * flat, y: p2.y + (c2.y - p2.y) * flat };
+        const flat = 0.15; c2 = { x: p2.x + (c2.x - p2.x) * flat, y: p2.y + (c2.y - p2.y) * flat };
       }
       segs.push({ c1, c2, to: { x: p2.x, y: p2.y } });
     }
