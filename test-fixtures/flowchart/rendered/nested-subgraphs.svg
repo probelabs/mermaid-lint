@@ -13,9 +13,9 @@
   </defs>
   <g class="subgraph-boxes"><rect x="21" y="-1" width="258" height="196" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /><rect x="21" y="-1" width="128" height="196" rx="4" ry="4" fill="#fffbe6" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-titles"><text x="150" y="17" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Outer</text><text x="85" y="17" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Inner</text></g>
-  <path d="M85,81 C85,83.29166666666667 85,97.66666666666667 85,106 C85,114.33333333333333 85,128.70833333333334 85,129.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M215,81 C215,83.29166666666667 215,97.66666666666667 215,106 C215,114.33333333333333 215,128.70833333333334 215,129.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M345,NaN C345,NaN 345,NaN 345,106 C345,NaN 345,128.70833333333334 345,129.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M85,81 C85,82.875 85,97.66666666666667 85,106 C85,114.33333333333333 85,130.4375 85,129.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M215,81 C215,82.875 215,97.66666666666667 215,106 C215,114.33333333333333 215,130.4375 215,129.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M345,NaN C345,NaN 345,NaN 345,106 C345,NaN 345,130.4375 345,129.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="45" y="41" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="85" y="65.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>

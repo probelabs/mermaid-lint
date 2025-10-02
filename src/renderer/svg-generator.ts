@@ -465,6 +465,17 @@ export class SVGRenderer implements IRenderer {
     // Apply explicit markers from edge if present
     const startMark = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
     const endMark = mEnd === 'arrow' ? 'url(#arrow)' : mEnd === 'circle' ? 'url(#circle-marker)' : mEnd === 'cross' ? 'url(#cross-marker)' : (markerEnd || '');
+    // Ensure the last segment has a non-zero tangent so marker rotates properly
+    if (finalSegs.segs.length) {
+      const last = finalSegs.segs[finalSegs.segs.length - 1];
+      const d2 = Math.hypot(last.to.x - last.c2.x, last.to.y - last.c2.y);
+      if (d2 < 0.1) {
+        const prev = finalSegs.segs.length > 1 ? finalSegs.segs[finalSegs.segs.length - 2].to : finalSegs.start;
+        const dx = last.to.x - prev.x; const dy = last.to.y - prev.y; const len = Math.hypot(dx, dy) || 1;
+        const c2x = last.to.x - (dx/len) * 0.2; const c2y = last.to.y - (dy/len) * 0.2;
+        finalSegs.segs[finalSegs.segs.length - 1] = { ...last, c2: { x: c2x, y: c2y } } as any;
+      }
+    }
     if (startMark) edgeElement += ` marker-start="${startMark}"`;
     if (endMark) edgeElement += ` marker-end="${endMark}"`;
     edgeElement += ' />';
@@ -510,7 +521,7 @@ export class SVGRenderer implements IRenderer {
     const firstIdx = 1;
     const lastIdx = pts.length - 3; // index i of the last produced segment
     const midFactor = 1.0;          // keep mid segments as-is
-    const endFactor = 0.55;         // reduce handle magnitude near the ends
+    const endFactor = 0.45;         // reduce handle magnitude near the ends a bit more
     for (let i = 1; i < pts.length - 2; i++) {
       const p0 = pts[i - 1];
       const p1 = pts[i];
@@ -519,7 +530,10 @@ export class SVGRenderer implements IRenderer {
       const f1 = (i === firstIdx) ? endFactor : midFactor;
       const f2 = (i === lastIdx)  ? endFactor : midFactor;
       const c1 = { x: p1.x + ((p2.x - p0.x) / 6) * f1, y: p1.y + ((p2.y - p0.y) / 6) * f1 };
-      const c2 = { x: p2.x - ((p3.x - p1.x) / 6) * f2, y: p2.y - ((p3.y - p1.y) / 6) * f2 };
+      let c2 = { x: p2.x - ((p3.x - p1.x) / 6) * f2, y: p2.y - ((p3.y - p1.y) / 6) * f2 };
+      if (i === lastIdx) {
+        const flat = 0.3; c2 = { x: p2.x + (c2.x - p2.x) * flat, y: p2.y + (c2.y - p2.y) * flat };
+      }
       segs.push({ c1, c2, to: { x: p2.x, y: p2.y } });
     }
     return { start: pts[1], segs };

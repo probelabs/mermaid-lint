@@ -11,10 +11,10 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M81,80 C81,82.29166666666667 81,96.66666666666667 81,105 C81,113.33333333333333 81,127.70833333333333 81,128.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M81,170 C81,172.29166666666666 81,186.66666666666666 81,195 C81,203.33333333333334 81,217.70833333333334 81,218.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M81,260 C81,262.2916666666667 81,276.6666666666667 81,285 C81,293.3333333333333 81,307.7083333333333 81,308.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-  <path d="M81,350 C81,352.2916666666667 81,366.6666666666667 81,375 C81,383.3333333333333 81,397.7083333333333 81,398.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,80 C81,81.875 81,96.66666666666667 81,105 C81,113.33333333333333 81,129.4375 81,128.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,170 C81,171.875 81,186.66666666666666 81,195 C81,203.33333333333334 81,219.4375 81,218.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,260 C81,261.875 81,276.6666666666667 81,285 C81,293.3333333333333 81,309.4375 81,308.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M81,350 C81,351.875 81,366.6666666666667 81,375 C81,383.3333333333333 81,399.4375 81,398.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="id1">
     <rect x="40" y="40" width="82" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="81" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Node 1</text>
