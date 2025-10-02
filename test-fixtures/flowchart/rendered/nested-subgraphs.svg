@@ -34,11 +34,11 @@
   </g>
   <path d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M241,109 L241,119 C241,131 241,213 241,219 L241,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M166,299 L166,279 L166,258.6 L391,258.6 L391,249 L391,249" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M166,299 L166,279 L166,245 L391,245 L391,229 L391,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g class="subgraph-borders"><rect x="21" y="21" width="290" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="142.5" y="29" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="67.5" y="41" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="166" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Outer</text><text x="91" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Inner</text></g>
   <path d="M91,229 L88,221 L94,221 Z" fill="#555555" />
   <path d="M241,229 L238,221 L244,221 Z" fill="#555555" />
-  <path d="M391,249 L391,249 L391,249 Z" fill="#555555" />
+  <path d="M391,229 L391,229 L391,229 Z" fill="#555555" />
 </svg>

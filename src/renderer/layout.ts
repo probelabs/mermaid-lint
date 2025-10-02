@@ -1,5 +1,5 @@
 import dagre from 'dagre';
-import type { Graph, Layout, LayoutNode, LayoutEdge, Direction, LayoutSubgraph } from './types.js';
+import type { Graph, Layout, LayoutNode, LayoutEdge, Direction, LayoutSubgraph, NodeShape } from './types.js';
 import type { ILayoutEngine } from './interfaces.js';
 
 /**
@@ -167,12 +167,22 @@ export class DagreLayoutEngine implements ILayoutEngine {
       let synthesized = false;
       if (!pts.length || hasNaN || srcSg || dstSg) {
         const rankdir = this.mapDirection(graph.direction);
-        const nodeCenter = (id: string) => {
+        const getNode = (id: string): LayoutNode | undefined => {
           const n = g.node(id);
-          return n ? { x: n.x, y: n.y } : undefined;
+          if (!n) return undefined;
+          return {
+            id,
+            label: n.label || id,
+            shape: (n.shape || 'rectangle') as NodeShape,
+            x: n.x - n.width / 2,
+            y: n.y - n.height / 2,
+            width: n.width,
+            height: n.height,
+            style: {}
+          };
         };
-        const start = srcSg ? this.clusterAnchor(srcSg, rankdir, 'out') : nodeCenter(edge.source);
-        const end = dstSg ? this.clusterAnchor(dstSg, rankdir, 'in') : nodeCenter(edge.target);
+        const start = srcSg ? this.clusterAnchor(srcSg, rankdir, 'out') : this.nodeAnchor(getNode(edge.source), rankdir, 'out');
+        const end = dstSg ? this.clusterAnchor(dstSg, rankdir, 'in') : this.nodeAnchor(getNode(edge.target), rankdir, 'in');
         if (start && end) {
           const PAD = 20;
           if (rankdir === 'LR' || rankdir === 'RL') {
@@ -185,7 +195,8 @@ export class DagreLayoutEngine implements ILayoutEngine {
             const midX = startOut.x + (endPre.x - startOut.x) * alpha;
             const m1 = { x: midX, y: startOut.y };
             const m2 = { x: midX, y: endPre.y };
-            pts = [start, startOut, m1, m2, endPre, end];
+            // Only include final 'end' point if it's not a subgraph target (arrows should stop at border)
+            pts = dstSg ? [start, startOut, m1, m2, endPre] : [start, startOut, m1, m2, endPre, end];
           } else {
             // TD/BT: step below/above clusters by PAD
             const outY = start.y + (rankdir === 'TD' ? PAD : -PAD);
@@ -196,7 +207,8 @@ export class DagreLayoutEngine implements ILayoutEngine {
             const midY = startOut.y + (endPre.y - startOut.y) * alpha;
             const m1 = { x: startOut.x, y: midY };
             const m2 = { x: endPre.x, y: midY };
-            pts = [start, startOut, m1, m2, endPre, end];
+            // Only include final 'end' point if it's not a subgraph target (arrows should stop at border)
+            pts = dstSg ? [start, startOut, m1, m2, endPre] : [start, startOut, m1, m2, endPre, end];
           }
           synthesized = true;
         }

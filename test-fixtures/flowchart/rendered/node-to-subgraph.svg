@@ -25,10 +25,10 @@
     <text x="241" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <path d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M241,89 L241,89 L241,56.36 L91,56.36 L91,41 L91,21" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M241,109 L241,109 L241,62.76 L91,62.76 L91,41" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g class="subgraph-borders"><rect x="21" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="67.5" y="29" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="91" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Inner</text></g>
   <path d="M91,229 L88,221 L94,221 Z" fill="#555555" />
-  <path d="M91,21 L94,29 L88,29 Z" fill="#555555" />
+  <path d="M91,41 L94,49 L88,49 Z" fill="#555555" />
 </svg>
