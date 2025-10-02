@@ -210,8 +210,9 @@ export class DagreLayoutEngine implements ILayoutEngine {
             if (horizontalSubgraphs && srcSg && dstSg) {
               // Simple horizontal line at vertical center between subgraphs
               const midY = (srcSg.y + srcSg.height / 2 + dstSg.y + dstSg.height / 2) / 2;
-              const startX = srcSg.x + srcSg.width;
-              const endX = dstSg.x;
+              const GAP = 30; // Gap between subgraph border and arrow
+              const startX = srcSg.x + srcSg.width + GAP;
+              const endX = dstSg.x - GAP;
               pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
             } else {
               // Normal vertical routing
