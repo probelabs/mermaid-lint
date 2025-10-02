@@ -11,7 +11,7 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M151,80 C151,81.875 151,96.66666666666667 151,105 C151,113.33333333333333 151,129.4375 151,128.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M151,80 C151,81.45833333333333 151,96.66666666666667 151,105 C151,113.33333333333333 151,129.78125 151,128.5" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="222" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="151" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Load Prompt br / from file</text>

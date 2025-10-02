@@ -11,7 +11,7 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M164,60 C165.875,60 180.66666666666666,60 189,60 C197.33333333333334,60 213.4375,60 212.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M164,60 C165.45833333333334,60 180.66666666666666,60 189,60 C197.33333333333334,60 213.78125,60 212.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="124" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="102" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">He said &apos;Hi&apos;</text>

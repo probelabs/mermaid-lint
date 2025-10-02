@@ -11,10 +11,10 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M121.5,60 C121.875,60 136.66666666666666,60 145,60 C153.33333333333334,60 169.4375,60 168.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
-  <path d="M251.5,60 C251.875,60 266.6666666666667,60 275,60 C283.3333333333333,60 299.4375,60 298.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
-  <path d="M381.5,60 C381.875,60 396.6666666666667,60 405,60 C413.3333333333333,60 429.4375,60 428.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#arrow)" marker-end="url(#arrow)" />
-  <path d="M510,60 C511.875,60 526.6666666666666,60 535,60 C543.3333333333334,60 559.4375,60 558.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" marker-end="url(#arrow)" />
+  <path d="M121.5,60 C121.45833333333333,60 136.66666666666666,60 145,60 C153.33333333333334,60 169.78125,60 168.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
+  <path d="M251.5,60 C251.45833333333334,60 266.6666666666667,60 275,60 C283.3333333333333,60 299.78125,60 298.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
+  <path d="M381.5,60 C381.4583333333333,60 396.6666666666667,60 405,60 C413.3333333333333,60 429.78125,60 428.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <path d="M510,60 C511.4583333333333,60 526.6666666666666,60 535,60 C543.3333333333334,60 559.78125,60 558.5,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" marker-end="url(#arrow)" />
   <g id="A">
     <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
