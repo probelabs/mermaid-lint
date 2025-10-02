@@ -73,21 +73,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 4:
-...ing    A->B: one  and    A->C: two  
----------------------^
-Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'end', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'else', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'and'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -161,21 +147,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 3:
-...m  participant A  and Also not allowed
----------------------^
-Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'and'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -232,21 +204,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 2:
-...  autonumber 10 10 participant A  A->B
-----------------------^
-Expecting 'NEWLINE', got 'participant'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -313,21 +271,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 2:
-...ram  autonumber 10 ten  participant A
-----------------------^
-Expecting 'NEWLINE', 'NUM', got 'ACTOR'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -395,21 +339,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 5:
-...    participant B  A->B: hi
-----------------------^
-Expecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'ACTOR'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -477,21 +407,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 2:
-...nceDiagram  create B  participant A  
-----------------------^
-Expecting 'participant', 'participant_actor', 'destroy', got 'ACTOR'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -550,20 +466,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Lexical error on line 2. Unrecognized text.
-...  create participant  A->B: hi
------------------------^
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -702,19 +605,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: The destroyed participant undefined does not have an associated destroying message after its declaration. Please check the sequence diagram.
-SequenceDB.apply (node_modules/mermaid/dist/mermaid.js:125083:27)
-node_modules/mermaid/dist/mermaid.js:125016:20
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -773,21 +664,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 3:
-...m  participant A  else Not allowed her
----------------------^
-Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'else'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -845,21 +722,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 4:
-...e text without colon
------------------------^
-Expecting 'TXT', got 'NEWLINE'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -924,21 +787,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 3:
-...t of A Missing colon  A->B: ok
------------------------^
-Expecting 'TXT', got 'NEWLINE'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -1004,21 +853,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 3:
-...ceDiagram  par    option Retry    A->
----------------------^
-Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'end', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'and', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'option'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -1082,21 +917,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 2:
-sequenceDiagram  option Retry  A->B:
------------------^
-Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'option'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -1158,21 +979,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 3:
-...m  participant A  end  A->B: hi
----------------------^
-Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got 'end'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
@@ -1230,21 +1037,7 @@ sequenceDiagram
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 4:
-... participant B  A==>>B: Unknown arrow
-----------------------^
-Expecting 'NEWLINE', 'AS', ',', 'SOLID_OPEN_ARROW', 'DOTTED_OPEN_ARROW', 'SOLID_ARROW', 'BIDIRECTIONAL_SOLID_ARROW', 'DOTTED_ARROW', 'BIDIRECTIONAL_DOTTED_ARROW', 'SOLID_CROSS', 'DOTTED_CROSS', 'SOLID_POINT', 'DOTTED_POINT', 'TXT', got 'INVALID'
-Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
-    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
-    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
-    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
-    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
-    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
-    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
-    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
-    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
-    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
-    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+Generating single mermaid chart
 ```
 
 ### maid Result: INVALID
