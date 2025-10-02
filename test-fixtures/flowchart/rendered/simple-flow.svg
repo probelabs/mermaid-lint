@@ -20,5 +20,5 @@
     <text x="80" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Stop</text>
   </g>
   <path d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M80,130 L77,122 L83,122 Z" fill="#555555" />
+  <path d="M80,138 L77,130 L83,130 Z" fill="#555555" />
 </svg>
