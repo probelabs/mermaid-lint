@@ -227,8 +227,8 @@ export class DagreLayoutEngine implements ILayoutEngine {
         break;
 
       case 'cylinder':
-        // Cylinder needs more height for the curved tops
-        height *= 1.3;
+        // Cylinder needs more height for the curved caps; give extra room for label
+        height *= 1.5;
         break;
 
       case 'subroutine':

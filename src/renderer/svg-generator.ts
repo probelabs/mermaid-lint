@@ -123,6 +123,7 @@ export class SVGRenderer implements IRenderer {
     const cy = y + node.height / 2;
 
     let shape = '';
+    let labelCenterY = cy;
     const strokeWidth = (node.style?.strokeWidth ?? 1.5);
     const stroke = (node.style?.stroke ?? this.defaultStroke);
     const fill = (node.style?.fill ?? this.defaultFill);
@@ -215,10 +216,12 @@ export class SVGRenderer implements IRenderer {
         const botCY = y + node.height - ry;
         const bodyH = Math.max(0, node.height - ry * 2);
         shape = `<g>
-          <rect x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
+          <rect x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" stroke="none" fill="${fill}" />
           <ellipse cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
           <path d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
         </g>`;
+        // Center label within the cylindrical body (between the caps)
+        labelCenterY = topCY + bodyH / 2;
         break;
       }
 
@@ -244,7 +247,7 @@ export class SVGRenderer implements IRenderer {
     }
 
     // Add text label with wrapping
-    const text = this.generateWrappedText(node.label, cx, cy, node.width - 20);
+    const text = this.generateWrappedText(node.label, cx, labelCenterY, node.width - 20);
 
     return `<g id="${node.id}">
     ${shape}
@@ -431,7 +434,8 @@ export class SVGRenderer implements IRenderer {
     // Style based on arrow type
     let strokeDasharray = '';
     let strokeWidth = 1.5;
-    let markerEnd = 'url(#arrow)';
+    // Do not assume a default arrowhead; rely on model markers
+    let markerEnd = '';
     let markerStart = '';
 
     switch (edge.type) {
