@@ -303,9 +303,14 @@ export class GraphBuilder {
     const children = contentNode.children;
     if (!children) return '';
 
-    // Collect all text tokens with their positions
-    const tokenTypes = ['Text', 'Identifier', 'QuotedString', 'NumberLiteral', 'Ampersand',
-                       'Comma', 'Colon', 'Semicolon', 'Dot', 'Underscore', 'Dash', 'ForwardSlash', 'Backslash'];
+    // Collect all text tokens with their positions.
+    // Important: include AngleLess ('<') and AngleOpen ('>') so inline HTML like <br/> survives
+    // extraction and can be rendered as line breaks/styled text by the SVG generator.
+    const tokenTypes = [
+      'Text', 'Identifier', 'QuotedString', 'NumberLiteral',
+      'Ampersand', 'Comma', 'Colon', 'Semicolon', 'Dot', 'Underscore', 'Dash',
+      'ForwardSlash', 'Backslash', 'AngleLess', 'AngleOpen'
+    ];
 
     const tokenWithPositions: Array<{ text: string; startOffset: number; type: string }> = [];
 

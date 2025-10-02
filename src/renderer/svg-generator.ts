@@ -99,18 +99,20 @@ export class SVGRenderer implements IRenderer {
   }
 
   private generateDefs(): string {
-    const w = this.arrowMarkerSize;
-    const h = this.arrowMarkerSize;
-    const refX = Math.max(1, this.arrowMarkerSize - 1);
-    const refY = Math.max(1, Math.round(this.arrowMarkerSize / 2));
+    // Use userSpaceOnUse so marker sizes are consistent across viewers.
+    // Provide explicit viewBox for reliable rendering.
+    const aw = Math.max(8, this.arrowMarkerSize + 2);
+    const ah = Math.max(8, this.arrowMarkerSize + 2);
+    const arefX = Math.max(6, aw);
+    const arefY = Math.max(4, Math.round(ah / 2));
     return `<defs>
-    <marker id="arrow" markerWidth="${w}" markerHeight="${h}" refX="${refX}" refY="${refY}" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,${h} L${w},${refY} z" fill="${this.arrowStroke}" />
+    <marker id="arrow" viewBox="0 0 ${aw} ${ah}" markerWidth="${aw}" markerHeight="${ah}" refX="${arefX}" refY="${arefY}" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,${ah} L${aw},${arefY} z" fill="${this.arrowStroke}" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="circle-marker" viewBox="0 0 6 6" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="userSpaceOnUse">
       <circle cx="3" cy="3" r="3" fill="${this.arrowStroke}" />
     </marker>
-    <marker id="cross-marker" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+    <marker id="cross-marker" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="${this.arrowStroke}" stroke-width="1.5" />
     </marker>
   </defs>`;
