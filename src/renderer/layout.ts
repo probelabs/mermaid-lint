@@ -205,15 +205,13 @@ export class DagreLayoutEngine implements ILayoutEngine {
             pts = dstSg ? [start, startOut, m1, m2, endPre] : [start, startOut, m1, m2, endPre, end];
           } else {
             // TD/BT: step below/above clusters by PAD
-            // For horizontally-adjacent subgraphs, route above them to avoid internal nodes
+            // For horizontally-adjacent subgraphs, use simple horizontal line
             if (horizontalSubgraphs && srcSg && dstSg) {
-              // Route above both subgraphs
-              const routeY = Math.min(srcSg.y, dstSg.y) - PAD;
-              const outX = srcSg.x + srcSg.width;
-              const inX = dstSg.x;
-              const m1 = { x: outX, y: routeY };
-              const m2 = { x: inX, y: routeY };
-              pts = [{ x: outX, y: start.y }, m1, m2, { x: inX, y: end.y }];
+              // Simple horizontal line at vertical center between subgraphs
+              const midY = (srcSg.y + srcSg.height / 2 + dstSg.y + dstSg.height / 2) / 2;
+              const startX = srcSg.x + srcSg.width;
+              const endX = dstSg.x;
+              pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
             } else {
               // Normal vertical routing
               const outY = start.y + (rankdir === 'TD' ? PAD : -PAD);
