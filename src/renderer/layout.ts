@@ -211,9 +211,19 @@ export class DagreLayoutEngine implements ILayoutEngine {
               // Simple horizontal line at vertical center between subgraphs
               const midY = (srcSg.y + srcSg.height / 2 + dstSg.y + dstSg.height / 2) / 2;
               const GAP = 30; // Gap between subgraph border and arrow
-              const startX = srcSg.x + srcSg.width + GAP;
-              const endX = dstSg.x - GAP;
-              pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
+
+              // Determine if source is left or right of target
+              if (srcSg.x < dstSg.x) {
+                // Source on left, target on right (normal left-to-right flow)
+                const startX = srcSg.x + srcSg.width + GAP;
+                const endX = dstSg.x - GAP;
+                pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
+              } else {
+                // Source on right, target on left (right-to-left flow)
+                const startX = srcSg.x - GAP;
+                const endX = dstSg.x + dstSg.width + GAP;
+                pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
+              }
             } else {
               // Normal vertical routing
               const outY = start.y + (rankdir === 'TD' ? PAD : -PAD);
