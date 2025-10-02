@@ -30,11 +30,11 @@
   </g>
   <path d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M300,109 L300,119 C300,131 300,213 300,219 L300,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M150,299 L150,279 L150,117.16 L300,117.16 L300,41" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M220,160 L230,160" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g class="subgraph-borders"><rect x="80" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="230" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="119.5" y="29" width="61" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="269.5" y="29" width="61" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="150" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group A</text><text x="300" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group B</text></g>
   <path d="M150,229 L147,221 L153,221 Z" fill="#555555" />
   <path d="M300,229 L297,221 L303,221 Z" fill="#555555" />
-  <path d="M300,41 L303,49 L297,49 Z" fill="#555555" />
+  <path d="M230,160 L222,163 L222,157 Z" fill="#555555" />
 </svg>

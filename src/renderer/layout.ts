@@ -189,8 +189,9 @@ export class DagreLayoutEngine implements ILayoutEngine {
         const end = dstSg ? this.clusterAnchor(dstSg, rankdir, 'in') : this.nodeAnchor(getNode(edge.target), rankdir, 'in');
         if (start && end) {
           const PAD = 20;
-          // Detect if subgraphs are horizontally adjacent (both are subgraphs + horizontal layout)
-          const horizontalSubgraphs = srcSg && dstSg && Math.abs(start.x - end.x) > Math.abs(start.y - end.y);
+          // Detect if subgraphs are horizontally adjacent (both are subgraphs + more horizontal than vertical separation)
+          const horizontallyAdjacent = srcSg && dstSg && Math.abs(srcSg.x - dstSg.x) > Math.abs(srcSg.y - dstSg.y);
+          const horizontalSubgraphs = horizontallyAdjacent;
           if (rankdir === 'LR' || rankdir === 'RL') {
             // Step out to the right from source clusters, and step in from left to target clusters
             const outX = start.x + (rankdir === 'LR' ? PAD : -PAD);
