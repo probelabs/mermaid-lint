@@ -12,7 +12,7 @@ export class SVGRenderer implements IRenderer {
   private defaultStroke = '#3f3f3f';
   private defaultFill = '#eef0ff'; // light violet-ish fill
   private arrowStroke = '#555555';
-  private arrowMarkerSize = 6; // px
+  private arrowMarkerSize = 9; // px (1.5x larger for better visibility)
 
   render(layout: Layout): string {
     // Compute dynamic bounds across nodes, subgraphs, and edge points
@@ -149,11 +149,11 @@ export class SVGRenderer implements IRenderer {
     <marker id="arrow" viewBox="0 0 ${aw} ${ah}" markerWidth="${aw}" markerHeight="${ah}" refX="${arefX}" refY="${arefY}" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,${ah} L${aw},${arefY} z" fill="${this.arrowStroke}" />
     </marker>
-    <marker id="circle-marker" viewBox="0 0 6 6" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-      <circle cx="3" cy="3" r="3" fill="${this.arrowStroke}" />
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="${this.arrowStroke}" />
     </marker>
-    <marker id="cross-marker" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M1,1 L7,7 M7,1 L1,7" stroke="${this.arrowStroke}" stroke-width="1.5" />
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="${this.arrowStroke}" stroke-width="2.25" />
     </marker>
   </defs>`;
   }
