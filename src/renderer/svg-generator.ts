@@ -789,22 +789,91 @@ export class SVGRenderer implements IRenderer {
 
   private intersectLineWithNode(p1:{x:number;y:number}, p2:{x:number;y:number}, node:{x:number;y:number;width:number;height:number;shape:string}): {x:number;y:number} | null {
     const shape = node.shape;
-    if (shape === 'circle') {
-      const cx = node.x + node.width/2; const cy = node.y + node.height/2; const r = Math.min(node.width, node.height)/2;
-      return this.lineCircleIntersection(p1, p2, {cx, cy, r});
-    } else if (shape === 'diamond') {
-      const cx = node.x + node.width/2; const cy = node.y + node.height/2;
-      const poly = [ {x:cx, y:node.y}, {x:node.x+node.width, y:cy}, {x:cx, y:node.y+node.height}, {x:node.x, y:cy} ];
-      return this.linePolygonIntersection(p1, p2, poly);
-    } else {
-      // default to rectangle
-      const poly = [
-        {x:node.x, y:node.y},
-        {x:node.x+node.width, y:node.y},
-        {x:node.x+node.width, y:node.y+node.height},
-        {x:node.x, y:node.y+node.height}
-      ];
-      return this.linePolygonIntersection(p1, p2, poly);
+    const rectPoly = () => ([
+      {x:node.x, y:node.y},
+      {x:node.x+node.width, y:node.y},
+      {x:node.x+node.width, y:node.y+node.height},
+      {x:node.x, y:node.y+node.height}
+    ]);
+    switch (shape) {
+      case 'circle': {
+        const cx = node.x + node.width/2; const cy = node.y + node.height/2; const r = Math.min(node.width, node.height)/2;
+        return this.lineCircleIntersection(p1, p2, {cx, cy, r});
+      }
+      case 'diamond': {
+        const cx = node.x + node.width/2; const cy = node.y + node.height/2;
+        const poly = [ {x:cx, y:node.y}, {x:node.x+node.width, y:cy}, {x:cx, y:node.y+node.height}, {x:node.x, y:cy} ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'hexagon': {
+        const s = Math.max(10, node.width * 0.2);
+        const poly = [
+          {x:node.x + s, y:node.y},
+          {x:node.x + node.width - s, y:node.y},
+          {x:node.x + node.width, y:node.y + node.height/2},
+          {x:node.x + node.width - s, y:node.y + node.height},
+          {x:node.x + s, y:node.y + node.height},
+          {x:node.x, y:node.y + node.height/2}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'parallelogram': {
+        const o = Math.min(node.width*0.25, node.height*0.6);
+        const poly = [
+          {x:node.x + o, y:node.y},
+          {x:node.x + node.width, y:node.y},
+          {x:node.x + node.width - o, y:node.y + node.height},
+          {x:node.x, y:node.y + node.height}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'trapezoid': { // top narrow
+        const o = Math.min(node.width*0.2, node.height*0.5);
+        const poly = [
+          {x:node.x + o, y:node.y},
+          {x:node.x + node.width - o, y:node.y},
+          {x:node.x + node.width, y:node.y + node.height},
+          {x:node.x, y:node.y + node.height}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'trapezoidAlt': { // bottom narrow
+        const o = Math.min(node.width*0.2, node.height*0.5);
+        const poly = [
+          {x:node.x, y:node.y},
+          {x:node.x + node.width, y:node.y},
+          {x:node.x + node.width - o, y:node.y + node.height},
+          {x:node.x + o, y:node.y + node.height}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'stadium': { // capsule: rectangle with semicircle caps left/right
+        const r = Math.min(node.height/2, node.width/2);
+        // First try rectangle middle
+        const rect = [
+          {x:node.x + r, y:node.y},
+          {x:node.x + node.width - r, y:node.y},
+          {x:node.x + node.width - r, y:node.y + node.height},
+          {x:node.x + r, y:node.y + node.height}
+        ];
+        const hitRect = this.linePolygonIntersection(p1, p2, rect);
+        if (hitRect) return hitRect;
+        // Left cap
+        const left = this.lineCircleIntersection(p1, p2, { cx: node.x + r, cy: node.y + node.height/2, r });
+        // Right cap
+        const right = this.lineCircleIntersection(p1, p2, { cx: node.x + node.width - r, cy: node.y + node.height/2, r });
+        // Choose the intersection closer to p2 (end)
+        const pick = (...pts: ({x:number;y:number}|null)[]) => {
+          let best=null as any; let bestd=-Infinity;
+          for (const pt of pts) if (pt) { const d = -( (pt.x - p2.x)**2 + (pt.y - p2.y)**2 ); if (d>bestd) { bestd=d; best=pt; } }
+          return best;
+        };
+        return pick(left, right);
+      }
+      default: {
+        // default to rectangle
+        return this.linePolygonIntersection(p1, p2, rectPoly());
+      }
     }
   }
 
