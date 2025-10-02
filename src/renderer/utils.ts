@@ -17,9 +17,20 @@ export function measureText(text: string, fontSize = 12): number {
 }
 
 // Default categorical palette (Mermaid-like). Fallback to HSL cycling if out of range.
+// Sourced via scripts/extract-mermaid-palette.js against mermaid-cli
 export const DEFAULT_PALETTE = [
-  '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-  '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
+  '#ECECFF',
+  '#ffffde',
+  'hsl(80, 100%, 56.2745098039%)',
+  'hsl(240, 100%, 86.2745098039%)',
+  'hsl(60, 100%, 63.5294117647%)',
+  'hsl(80, 100%, 76.2745098039%)',
+  'hsl(300, 100%, 76.2745098039%)',
+  'hsl(180, 100%, 56.2745098039%)',
+  'hsl(0, 100%, 56.2745098039%)',
+  'hsl(300, 100%, 56.2745098039%)',
+  'hsl(150, 100%, 56.2745098039%)',
+  'hsl(0, 100%, 66.2745098039%)'
 ];
 
 export function palette(index: number): string {
@@ -40,4 +51,3 @@ export function formatPercent(value: number, total: number): string {
   const p = (value / total) * 100;
   return `${Math.round(p)}%`;
 }
-

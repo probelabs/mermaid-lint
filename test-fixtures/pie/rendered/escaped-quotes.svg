@@ -6,15 +6,15 @@
   </style>
   <text class="pie-title" x="251" y="32" text-anchor="middle">Quotes</text>
   <g class="pie" aria-label="pie">
-    <path d="M 251 222 L 251.00 60.00 A 162 162 0 1 1 110.70 303.00 Z" fill="#1f77b4" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 251.00 60.00 A 162 162 0 1 1 110.70 303.00 Z" fill="#ECECFF" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="337.98" y="272.22" text-anchor="start">67%</text>
-    <path d="M 251 222 L 110.70 303.00 A 162 162 0 0 1 251.00 60.00 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 110.70 303.00 A 162 162 0 0 1 251.00 60.00 Z" fill="#ffffde" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="164.02" y="171.78" text-anchor="end">33%</text>
   </g>
   <g class="legend">
-    <rect x="425" y="52" width="12" height="12" fill="#1f77b4" stroke="#fff" stroke-width="1" />
+    <rect x="425" y="52" width="12" height="12" fill="#ECECFF" stroke="#fff" stroke-width="1" />
     <text class="slice-label legend-text" x="445" y="58" text-anchor="start">He said &quot;Hi&quot;</text>
-    <rect x="425" y="70" width="12" height="12" fill="#ff7f0e" stroke="#fff" stroke-width="1" />
+    <rect x="425" y="70" width="12" height="12" fill="#ffffde" stroke="#fff" stroke-width="1" />
     <text class="slice-label legend-text" x="445" y="76" text-anchor="start">She said &apos;ok&apos;</text>
   </g>
 </svg>

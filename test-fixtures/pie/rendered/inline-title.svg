@@ -6,20 +6,20 @@
   </style>
   <text class="pie-title" x="283.5" y="32" text-anchor="middle">Pets adopted by volunteers</text>
   <g class="pie" aria-label="pie">
-    <path d="M 283.5 222 L 283.50 60.00 A 162 162 0 1 1 127.72 177.55 Z" fill="#1f77b4" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 283.5 222 L 283.50 60.00 A 162 162 0 1 1 127.72 177.55 Z" fill="#ECECFF" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="344.00" y="302.18" text-anchor="start">79%</text>
-    <path d="M 283.5 222 L 127.72 177.55 A 162 162 0 0 1 252.28 63.04 Z" fill="#ff7f0e" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 283.5 222 L 127.72 177.55 A 162 162 0 0 1 252.28 63.04 Z" fill="#ffffde" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <text class="slice-label" x="215.52" y="148.06" text-anchor="end">17%</text>
-    <path d="M 283.5 222 L 252.28 63.04 A 162 162 0 0 1 283.50 60.00 Z" fill="#2ca02c" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 283.5 222 L 252.28 63.04 A 162 162 0 0 1 283.50 60.00 Z" fill="hsl(80, 100%, 56.2745098039%)" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
     <path class="leader" d="M 269.38 76.88 L 266.88 51.09 L 254.88 51.09" />
     <text class="slice-label" x="252.88" y="51.09" text-anchor="end">3%</text>
   </g>
   <g class="legend">
-    <rect x="457.5" y="52" width="12" height="12" fill="#1f77b4" stroke="#fff" stroke-width="1" />
+    <rect x="457.5" y="52" width="12" height="12" fill="#ECECFF" stroke="#fff" stroke-width="1" />
     <text class="slice-label legend-text" x="477.5" y="58" text-anchor="start">Dogs</text>
-    <rect x="457.5" y="70" width="12" height="12" fill="#ff7f0e" stroke="#fff" stroke-width="1" />
+    <rect x="457.5" y="70" width="12" height="12" fill="#ffffde" stroke="#fff" stroke-width="1" />
     <text class="slice-label legend-text" x="477.5" y="76" text-anchor="start">Cats</text>
-    <rect x="457.5" y="88" width="12" height="12" fill="#2ca02c" stroke="#fff" stroke-width="1" />
+    <rect x="457.5" y="88" width="12" height="12" fill="hsl(80, 100%, 56.2745098039%)" stroke="#fff" stroke-width="1" />
     <text class="slice-label legend-text" x="477.5" y="94" text-anchor="start">Rats</text>
   </g>
 </svg>
