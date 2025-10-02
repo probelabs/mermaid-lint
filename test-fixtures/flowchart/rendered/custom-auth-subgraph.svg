@@ -12,33 +12,6 @@
     </marker>
   </defs>
   <g class="subgraph-bg"><rect x="21" y="21" width="789" height="1296" rx="4" ry="4" fill="#fffbe6" stroke="none" /></g>
-  <path d="M338,125 L338,135 C338,147 338,229 338,235 L338,245" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <g>
-    <path d="M235.23076923076923,469 L225.59615384615384,479.5 C214.03461538461536,492.1 171,693 171,705 L171,725" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="161" y="591.5485985903947" width="20" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="171" y="598.5485985903947" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">No</text>
-    <path d="M171,725 L168,717 L174,717 Z" fill="#555555" />
-  </g>
-  <g>
-    <path d="M440.7692307692308,469 L450.40384615384613,479.5 C461.96538461538455,492.1 505,592.2 505,598.5 L505,609" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="489.1256649319134" y="528.8674911234026" width="26" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="502.1256649319134" y="535.8674911234026" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Yes</text>
-    <path d="M505,609 L502,601 L508,601 Z" fill="#555555" />
-  </g>
-  <g>
-    <path d="M400.70093457943926,897 L393.0957943925234,907.5 C383.9696261682243,920.1 350,1020.2 350,1026.5 L350,1037" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="340.23149699138474" y="959.6803847989913" width="20" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="350.23149699138474" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">No</text>
-    <path d="M350,1037 L347,1029 L353,1029 Z" fill="#555555" />
-  </g>
-  <path d="M350,1093 L350,1103 C350,1115 350,1197 350,1203 L350,1213" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <g>
-    <path d="M609.2990654205607,897 L616.9042056074766,907.5 C626.0303738317756,920.1 660,1020.2 660,1026.5 L660,1037" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="646.7685030086152" y="959.6803847989913" width="26" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="659.7685030086152" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Yes</text>
-    <path d="M660,1037 L657,1029 L663,1029 Z" fill="#555555" />
-  </g>
-  <path d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="218" y="69" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="338" y="101.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start processing API definition</text>
@@ -90,6 +63,33 @@
     <tspan x="660" y="1263.9" text-anchor="middle">middleware chain</tspan>
   </text>
   </g>
+  <path d="M338,125 L338,135 C338,147 338,229 338,235 L338,245" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <g>
+    <path d="M235.23076923076923,469 L225.59615384615384,479.5 C214.03461538461536,492.1 171,693 171,705 L171,725" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="161" y="591.5485985903947" width="20" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
+    <text x="171" y="598.5485985903947" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">No</text>
+    <path d="M171,725 L168,717 L174,717 Z" fill="#555555" />
+  </g>
+  <g>
+    <path d="M440.7692307692308,469 L450.40384615384613,479.5 C461.96538461538455,492.1 505,592.2 505,598.5 L505,609" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="489.1256649319134" y="528.8674911234026" width="26" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
+    <text x="502.1256649319134" y="535.8674911234026" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Yes</text>
+    <path d="M505,609 L502,601 L508,601 Z" fill="#555555" />
+  </g>
+  <g>
+    <path d="M400.70093457943926,897 L393.0957943925234,907.5 C383.9696261682243,920.1 350,1020.2 350,1026.5 L350,1037" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="340.23149699138474" y="959.6803847989913" width="20" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
+    <text x="350.23149699138474" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">No</text>
+    <path d="M350,1037 L347,1029 L353,1029 Z" fill="#555555" />
+  </g>
+  <path d="M350,1093 L350,1103 C350,1115 350,1197 350,1203 L350,1213" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <g>
+    <path d="M609.2990654205607,897 L616.9042056074766,907.5 C626.0303738317756,920.1 660,1020.2 660,1026.5 L660,1037" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="646.7685030086152" y="959.6803847989913" width="26" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
+    <text x="659.7685030086152" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Yes</text>
+    <path d="M660,1037 L657,1029 L663,1029 Z" fill="#555555" />
+  </g>
+  <path d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g class="subgraph-borders"><rect x="21" y="21" width="789" height="1296" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="305.5" y="29" width="220" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="415.5" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">API Loader : Custom Authentication Processing</text></g>

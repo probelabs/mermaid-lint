@@ -11,13 +11,6 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M80,170 L80,180 C80,192 80,204 80,210 L80,220" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M80,260 L80,270 C80,282 80,294 80,300 L80,310" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M186.11111111111111,80 L177.88918919467332,85.69209978830308 C168.02288289494797,92.52261953426678 170.53333333333333,120.4 175.33333333333334,124 L183.33333333333334,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M246.11111111111111,80 L254.52289586487666,85.40757591313499 C264.61703756939534,91.89666700889698 307.9560360448106,120.89264033871507 312.8891891946733,124.30790021169692 L321.1111111111111,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M313.8888888888889,80 L305.4771041351234,85.40757591313498 C295.3829624306048,91.89666700889697 252.04396395518935,120.89264033871507 247.11081080532668,124.30790021169692 L238.88888888888889,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M349.44444444444446,80 L351.613749022631,89.76187060183953 C354.21691451645484,101.47611532404697 353.9891266394198,114.0978602452221 353.3265374829707,120.0611626532638 L352.22222222222223,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
@@ -50,6 +43,13 @@
     <rect x="310" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="350" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">H</text>
   </g>
+  <path d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M80,170 L80,180 C80,192 80,204 80,210 L80,220" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M80,260 L80,270 C80,282 80,294 80,300 L80,310" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M186.11111111111111,80 L177.88918919467332,85.69209978830308 C168.02288289494797,92.52261953426678 170.53333333333333,120.4 175.33333333333334,124 L183.33333333333334,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M246.11111111111111,80 L254.52289586487666,85.40757591313499 C264.61703756939534,91.89666700889698 307.9560360448106,120.89264033871507 312.8891891946733,124.30790021169692 L321.1111111111111,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M313.8888888888889,80 L305.4771041351234,85.40757591313498 C295.3829624306048,91.89666700889697 252.04396395518935,120.89264033871507 247.11081080532668,124.30790021169692 L238.88888888888889,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M349.44444444444446,80 L351.613749022631,89.76187060183953 C354.21691451645484,101.47611532404697 353.9891266394198,114.0978602452221 353.3265374829707,120.0611626532638 L352.22222222222223,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M80,130 L77,122 L83,122 Z" fill="#555555" />
   <path d="M80,220 L77,212 L83,212 Z" fill="#555555" />
   <path d="M80,310 L77,302 L83,302 Z" fill="#555555" />

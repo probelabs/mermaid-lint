@@ -11,7 +11,6 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M164,60 L174,60 C186,60 198,60 204,60 L214,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="40" y="40" width="124" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="102" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">He said &apos;Hi&apos;</text>
@@ -20,5 +19,6 @@
     <rect x="214" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="254" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
+  <path d="M164,60 L174,60 C186,60 198,60 204,60 L214,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M214,60 L206,63 L206,57 Z" fill="#555555" />
 </svg>

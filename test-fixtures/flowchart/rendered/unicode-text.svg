@@ -11,8 +11,6 @@
       <path d="M1,1 L7,7 M7,1 L1,7" stroke="#555555" stroke-width="1.5" />
     </marker>
   </defs>
-  <path d="M136,60 L146,60 C158,60 170,60 176,60 L186,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M282,60 L292,60 C304,60 316,60 322,60 L332,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <g id="A">
     <rect x="40" y="40" width="96" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="88" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Hello 世界</text>
@@ -25,6 +23,8 @@
     <rect x="332" y="40" width="124" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="394" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Symbols ★☆♦♠</text>
   </g>
+  <path d="M136,60 L146,60 C158,60 170,60 176,60 L186,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M282,60 L292,60 C304,60 316,60 322,60 L332,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M186,60 L178,63 L178,57 Z" fill="#555555" />
   <path d="M332,60 L324,63 L324,57 Z" fill="#555555" />
 </svg>
