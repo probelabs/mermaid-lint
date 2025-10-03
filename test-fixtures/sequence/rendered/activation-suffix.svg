@@ -9,6 +9,8 @@
     .msg-line.thick { stroke-width: 3px; }
     .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+    .msg-badge { fill: #fff; stroke: #999; stroke-width: 1px; }
+    .msg-badge-text { font-family: Arial, sans-serif; font-size: 10px; fill: #333; dominant-baseline: middle; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
@@ -31,10 +33,12 @@
   <rect class="activation" x="209" y="62" width="8" height="72" />
   <path class="msg-line solid" d="M 79 80 L 213 80" />
   <path class="arrowhead" transform="translate(213,80) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
+  <path class="arrowhead" transform="translate(221,80) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
   <rect class="msg-label-bg" x="82.5" y="60" width="127" height="16" rx="3"/>
   <text class="msg-label" x="146" y="72" text-anchor="middle">call activates B</text>
   <path class="msg-line dotted" d="M 213 116 L 79 116" />
   <path class="arrowhead" transform="translate(79,116) rotate(180.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
+  <path class="arrowhead" transform="translate(87,116) rotate(180.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
   <rect class="msg-label-bg" x="50" y="96" width="192" height="16" rx="3"/>
   <text class="msg-label" x="146" y="108" text-anchor="middle">returns and deactivates A</text>
 </svg>

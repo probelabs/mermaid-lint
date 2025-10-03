@@ -26,6 +26,8 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     .msg-line.thick { stroke-width: 3px; }
     .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+    .msg-badge { fill: #fff; stroke: #999; stroke-width: 1px; }
+    .msg-badge-text { font-family: Arial, sans-serif; font-size: 10px; fill: #333; dominant-baseline: middle; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
@@ -49,7 +51,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   for (const m of layout.messages) {
     drawMessage(svgParts, m);
     const label = formatMessageLabel(m.text, counter);
-    if (label) drawMessageLabel(svgParts, m, label);
+    if (label) drawMessageLabel(svgParts, m, label, counter);
     if (counter != null) counter += step!;
   }
 
@@ -76,16 +78,24 @@ function drawMessage(out: string[], m: LayoutMessage) {
   const x1 = m.x1, x2 = m.x2, y = m.y;
   out.push(`  <path class="${cls}" d="M ${x1} ${y} L ${x2} ${y}" />`);
   // Markers: start/end
-  if (m.startMarker !== 'none') drawMarker(out, m.startMarker, x1, y, x2 < x1 ? 0 : Math.PI, 'start');
-  if (m.endMarker !== 'none') drawMarker(out, m.endMarker, x2, y, x2 < x1 ? Math.PI : 0, 'end');
+  if (m.startMarker !== 'none') drawMarker(out, m.startMarker, x1, y, x2 < x1 ? 0 : Math.PI, 'start', m.async);
+  if (m.endMarker !== 'none') drawMarker(out, m.endMarker, x2, y, x2 < x1 ? Math.PI : 0, 'end', m.async);
 }
 
-function drawMarker(out: string[], kind: 'arrow'|'open'|'cross', x: number, y: number, angle: number, which: 'start'|'end') {
+function drawMarker(out: string[], kind: 'arrow'|'open'|'cross', x: number, y: number, angle: number, which: 'start'|'end', async?: boolean) {
   const size = 6;
   const rot = (angle * 180 / Math.PI).toFixed(2);
   if (kind === 'arrow') {
     const dx = which === 'start' ? size : -size;
-    out.push(`  <path class="arrowhead" transform="translate(${x},${y}) rotate(${rot})" d="M 0 0 L 0 ${-size} L ${dx} 0 Z" />`);
+    // Draw one or two chevrons for async arrows
+    const drawOne = (ox: number) => `  <path class=\"arrowhead\" transform=\"translate(${ox},${y}) rotate(${rot})\" d=\"M 0 0 L 0 ${-size} L ${dx} 0 Z\" />`;
+    if (async) {
+      const offset = which === 'start' ? -8 : 8; // nudge second head along the line
+      out.push(drawOne(x));
+      out.push(drawOne(x + offset));
+    } else {
+      out.push(drawOne(x));
+    }
   } else if (kind === 'open') {
     out.push(`  <circle class="openhead" cx="${x}" cy="${y}" r="4" />`);
   } else if (kind === 'cross') {
@@ -104,7 +114,7 @@ function formatMessageLabel(text?: string, counter?: number): string | undefined
   return text;
 }
 
-function drawMessageLabel(out: string[], m: LayoutMessage, label: string) {
+function drawMessageLabel(out: string[], m: LayoutMessage, label: string, counter?: number) {
   const xMid = (m.x1 + m.x2) / 2;
   const h = 16;
   const w = Math.max(20, measureText(label, 12) + 12);
@@ -112,6 +122,13 @@ function drawMessageLabel(out: string[], m: LayoutMessage, label: string) {
   const y = m.y - h - 4; // draw above the line
   out.push(`  <rect class="msg-label-bg" x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/>`);
   out.push(`  <text class="msg-label" x="${xMid}" y="${y + h/2 + 4}" text-anchor="middle">${escapeXml(label)}</text>`);
+  // Optional autonumber badge when both number and text present
+  if (counter != null && /\D/.test(label)) {
+    const bx = x - 12; // left of pill
+    const by = y + h/2;
+    out.push(`  <circle class="msg-badge" cx="${bx}" cy="${by}" r="8"/>`);
+    out.push(`  <text class="msg-badge-text" x="${bx}" y="${by + 0.5}" text-anchor="middle">${counter}</text>`);
+  }
 }
 
 function drawNote(out: string[], n: LayoutNote) {

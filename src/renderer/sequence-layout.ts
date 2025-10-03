@@ -16,6 +16,7 @@ export interface LayoutMessage {
   line: 'solid'|'dotted'|'thick';
   startMarker: 'none'|'arrow'|'open'|'cross';
   endMarker: 'none'|'arrow'|'open'|'cross';
+  async?: boolean;
 }
 
 export interface LayoutNote {
@@ -160,7 +161,7 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
           const y = yForRow(r);
           const x1 = p1.x + p1.width / 2;
           const x2 = p2.x + p2.width / 2;
-          messages.push({ from: p1.id, to: p2.id, text: ev.msg.text, y, x1, x2, line: ev.msg.line, startMarker: ev.msg.startMarker, endMarker: ev.msg.endMarker });
+          messages.push({ from: p1.id, to: p2.id, text: ev.msg.text, y, x1, x2, line: ev.msg.line, startMarker: ev.msg.startMarker, endMarker: ev.msg.endMarker, async: ev.msg.async });
           if (ev.msg.activateTarget) startAct(ev.msg.to, r);
           if (ev.msg.deactivateTarget) endAct(ev.msg.to, r);
         }

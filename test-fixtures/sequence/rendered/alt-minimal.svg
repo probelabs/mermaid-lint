@@ -9,6 +9,8 @@
     .msg-line.thick { stroke-width: 3px; }
     .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+    .msg-badge { fill: #fff; stroke: #999; stroke-width: 1px; }
+    .msg-badge-text { font-family: Arial, sans-serif; font-size: 10px; fill: #333; dominant-baseline: middle; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
