@@ -65,7 +65,9 @@ Class
   - [x] Notes on classes (`note for/on X: …`).
   - [ ] Dual-end labels/cardinalities coverage (labels near both classes).
 - Renderer (new)
-  - [ ] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
+  - [x] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
+  - [ ] Dual-end label/cardinality placement polish; wrap long labels.
+  - [ ] Dependency chevron shape/size tuning for short segments.
 - Fixtures/Tests
   - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end label/cardinality cases.
 
@@ -73,25 +75,31 @@ State
 - Parser/Semantics
   - [x] Concurrency regions `---` inside composite states (with placement checks); fixtures invalid to mirror CLI.
   - [x] History states `H` / `H*` (shallow/deep); fixtures valid as per CLI.
-  - [ ] Additional markers parity (choice/fork/join done; verify others).
+  - [ ] Additional markers parity (choice/fork/join/end double circle visuals).
 - Renderer (new)
-  - [ ] Implement state diagram renderer: composite states, concurrency lanes, markers, notes, direction.
+  - [~] Implement state diagram renderer: nodes, transitions, composite states, notes, start/history markers.
+  - [ ] Concurrency lanes rendering inside composites (`---` dividers + per‑lane layout).
+  - [ ] Choice/fork/join markers; end as double circle overlay.
+  - [ ] Transition routing + boundary intersection polish (reuse flowchart helpers).
 - Fixtures/Tests
   - [ ] Nested concurrency, history states valid/invalid, marker edge cases.
   - [ ] Add invalid fixtures for misplaced concurrency at block start/end (multiple separators, empty regions).
 
 Cross-Cutting
-- [ ] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
+- [~] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
+  - [x] Class/state share CSS and applyFlowchartTheme (node/edge/cluster, edge-label text, notes).
+  - [x] Sequence theming applied via applySequenceTheme.
+  - [ ] Expand theme coverage where helpful (cluster title bg, arrowhead outlines).
 - [ ] Interactions rendering (flowchart first): reflect linkStyle stroke/width/opacity and click targets in rendered anchors.
-- [ ] PNG/SVG parity harness extended to class/state once renderers exist; keep structural + visual checks.
-- [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics.
+- [ ] PNG/SVG parity harness extended to class/state once renderers exist; keep structural + visual checks (add a couple of golden PNGs).
+- [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics and renderer coverage.
 - [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
 
 Progress Snapshot (auto-updating intent)
 - Flowchart: CLI parity 100%; interactions validated and rendered (style); arrowheads scale with stroke-width.
 - Sequence: CLI parity 100%; advanced headers/details parsed; fixtures kept invalid pending CLI acceptance.
-- State: CLI parity 100%; concurrency parsed but invalid in fixtures; history valid.
-- Class: CLI parity 100%; generics parsed but invalid in fixtures.
+- State: CLI parity 100%; renderer initial (nodes/transitions/composites/notes/start/history); concurrency lanes TODO.
+- Class: CLI parity 100%; renderer implemented; notes/labels polish pending; generics parsed but invalid in fixtures.
 
 Notes
 - Treat this as the single source of truth for spec gaps. Update checkboxes as features land; link PRs next to items when closed.
