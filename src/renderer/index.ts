@@ -151,45 +151,33 @@ export class MermaidRenderer {
    * Renders supported diagram types (flowchart + pie for now)
    */
   renderAny(text: string, options: RenderOptions = {}): RenderResult {
-    // Detect diagram type
-    const firstLine = text.trim().split('\n')[0];
-
-    if (firstLine.match(/^(flowchart|graph)\s+/i)) {
-      return this.render(text, options);
-    }
-    if (firstLine.match(/^pie\b/i) || text.trimStart().startsWith('---')) {
-      // Render a pie chart via dedicated pipeline (no Dagre layout)
-      // Support Mermaid frontmatter (--- ... ---) possibly preceding the pie header
-      let body = text;
-      let theme: Record<string, string> | undefined;
-      let cfg: any | undefined;
+    // Detect diagram type with optional Mermaid frontmatter
+    let content = text;
+    let theme: Record<string, any> | undefined;
+    if (text.trimStart().startsWith('---')) {
       const fm = parseFrontmatter(text);
       if (fm) {
-        body = fm.body;
+        content = fm.body;
         theme = fm.themeVariables || (fm.config && fm.config.themeVariables) || undefined;
-        cfg = fm.config && fm.config.pie ? fm.config.pie : undefined;
       }
+    }
+    const firstLine = content.trim().split('\n')[0];
 
-      // If after stripping frontmatter the first line is not pie, bail as unsupported
-      const bodyFirst = body.trim().split('\n')[0];
-      if (!/^pie\b/i.test(bodyFirst)) {
-        const errorSvg = this.generateErrorSvg('Unsupported diagram type. Rendering supports flowchart and pie for now.');
-        return {
-          svg: errorSvg,
-          graph: { nodes: [], edges: [], direction: 'TD' },
-          errors: [{ line: 1, column: 1, message: 'Unsupported diagram type', severity: 'error', code: 'UNSUPPORTED_TYPE' }]
-        };
-      }
-
-      const { model, errors } = buildPieModel(body);
+    if (/^(flowchart|graph)\s+/i.test(firstLine)) {
+      const res = this.render(content, options);
+      const svg2 = theme ? applyFlowchartTheme(res.svg, theme) : res.svg;
+      return { svg: svg2, graph: res.graph, errors: res.errors };
+    }
+    if (/^pie\b/i.test(firstLine)) {
+      // Render a pie chart via dedicated pipeline (no Dagre layout)
       try {
+        const { model, errors } = buildPieModel(content);
         const svg = renderPie(model, {
           width: options.width,
           height: options.height,
           rimStroke: theme?.pieStrokeColor,
           rimStrokeWidth: theme?.pieOuterStrokeWidth,
         });
-        // Inject simple theme variable overrides by string replacement when possible
         const themedSvg = applyPieTheme(svg, theme);
         return { svg: themedSvg, graph: { nodes: [], edges: [], direction: 'TD' }, errors };
       } catch (e: any) {
@@ -339,6 +327,42 @@ function applyPieTheme(svg: string, theme?: Record<string, any>): string {
       return _m;
     });
   }
+  return out;
+}
+
+function applyFlowchartTheme(svg: string, theme?: Record<string, any>): string {
+  if (!theme) return svg;
+  let out = svg;
+  // Node colors
+  if (theme.nodeBkg) {
+    out = out.replace(/fill=\"#eef0ff\"/g, `fill="${String(theme.nodeBkg)}"`);
+    out = out.replace(/fill=\"#f9f9ff\"/g, `fill="${String(theme.nodeBkg)}"`);
+    out = out.replace(/fill=\"#ECECFF\"/g, `fill="${String(theme.nodeBkg)}"`);
+  }
+  if (theme.nodeBorder) {
+    out = out.replace(/stroke=\"#3f3f3f\"/g, `stroke="${String(theme.nodeBorder)}"`);
+    out = out.replace(/stroke=\"#9370db\"/gi, `stroke="${String(theme.nodeBorder)}"`);
+  }
+  if (theme.nodeTextColor) {
+    out = out.replace(/(<text[^>]*)(fill=\"#333\")/g, (_m, p1) => `${p1}fill="${String(theme.nodeTextColor)}"`);
+  }
+  // Edge + arrow colors
+  if (theme.lineColor) {
+    out = out.replace(/(<path[^>]*class=\"edge-path\"[^>]*)(stroke=\"[^\"]*\")?/g, (_m, p1) => `${p1} stroke="${String(theme.lineColor)}"`);
+    out = out.replace(/stroke=\"#666\"/g, `stroke="${String(theme.lineColor)}"`);
+    out = out.replace(/stroke=\"#333333\"/g, `stroke="${String(theme.lineColor)}"`);
+  }
+  if (theme.arrowheadColor) {
+    out = out.replace(/(<path d=\"M0,0 L0,[0-9.]+ L[0-9.]+,[0-9.]+ z\"[^>]*)(fill=\"[^\"]*\")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
+    out = out.replace(/(<circle cx=\"4\.5\" cy=\"4\.5\" r=\"4\.5\"[^>]*)(fill=\"[^\"]*\")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
+  }
+  // Cluster styles
+  if (theme.clusterBkg) out = out.replace(/fill=\"#fffbe6\"/g, `fill="${String(theme.clusterBkg)}"`);
+  if (theme.clusterBorder) out = out.replace(/stroke=\"#cfcf99\"/g, `stroke="${String(theme.clusterBorder)}"`);
+  if (theme.clusterTextColor) out = out.replace(/(<text[^>]*class=\".*subgraph.*\"[^>]*)(fill=\"#333\")/g, (_m, p1) => `${p1}fill="${String(theme.clusterTextColor)}"`);
+  // Fonts
+  if (theme.fontFamily) out = out.replace(/font-family=\"[^\"]+\"/g, `font-family="${String(theme.fontFamily)}"`);
+  if (theme.fontSize) out = out.replace(/font-size=\"[0-9.]+\"/g, `font-size="${String(theme.fontSize)}"`);
   return out;
 }
 
