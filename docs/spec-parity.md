@@ -2,42 +2,49 @@ Spec Parity TODO (Mermaid → Maid)
 
 Purpose: track what’s left to fully support Mermaid features across all diagram types we handle. Keep bullets short and actionable. Update as items land.
 
+Status Legend
+- [x] complete (merged on feat/spec-parity-round1)
+- [ ] pending (planned next)
+- [~] partial (parser present; CLI parity or renderer pending)
+
 Flowchart
 - Parser
-  - [ ] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — support full shape set (rect, lean-l, lean-r, stadium, subroutine, circle, cylinder, diamond, trapezoid, parallelogram, hexagon, icon, image) and key validation.
-  - [ ] Interactions: `click`, `href`, `linkStyle` (incl. indexed `linkStyle 1,3 ...`) and edge-level styling directives.
-  - [ ] Top-level `direction` statement outside header.
+  - [x] Top-level `direction` statement outside header.
+  - [x] Interactions lines parsed: `click`, `linkStyle`.
+  - [~] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser+basic keys done; extend to full shape set (icon/image specifics).
 - Semantics/Validation
-  - [x] Enforce only keyword `direction` before a Direction inside subgraphs.
-  - [ ] Conflicts: bracket shape vs `@{ shape: … }` on same node → choose one and warn.
-  - [ ] Validate unknown shape keys/values in `@{ … }` with clear codes.
+  - [x] Enforce only keyword `direction` before a Direction inside subgraphs (FL-DIR-KW-INVALID).
+  - [x] Conflict warning when both bracket shape and `@{ shape: … }` present (FL-TYPED-SHAPE-CONFLICT).
+  - [x] Typed-shape validation: unknown keys/values, numeric fields, label string (FL-TYPED-KEY-UNKNOWN, FL-TYPED-SHAPE-UNKNOWN, FL-TYPED-NUMERIC-EXPECTED, FL-TYPED-LABEL-NOT-STRING).
+  - [x] Interactions validation: `click` mode/url/call/target checks; `linkStyle` indices and style presence (FL-CLICK-*, FL-LINKSTYLE-*).
+  - [ ] Interactions: handle ranges (`0:3`), duplicate indices, and whitespace forms; add explicit diagnostics.
 - Renderer parity
-  - [ ] Edge–shape intersection: add precise polygon/capsule intersection for stadium, parallelogram, trapezoid, hexagon; verify all joins.
+  - [ ] Edge–shape intersection: polygon/capsule intersection for stadium, parallelogram, trapezoid, hexagon; verify all joins.
   - [ ] LR/RL nested subgraphs layout width/spacing tuning (reduce vertical stacking); elbows closer to Mermaid.
   - [ ] Curve end flattening constants (link-styles) finalized; label pill size/placement match Mermaid.
   - [ ] Complex markers both ends (<-->, o--o, x--x) on multi-bend edges; overlay ordering stable.
   - [ ] HTML in labels: <b>, <i>, <u>, <br/> normalized and rendered consistently.
+  - [ ] Apply linkStyle to renderer stroke/markers when we enable interaction rendering.
 - Fixtures/Tests
-  - [ ] `typed-shapes-basic.mmd` extended (all shapes + errors).
-  - [ ] `interactions-click-href.mmd`, `edge-ids-and-animations.mmd`.
+  - [ ] Expand `typed-shapes-basic.mmd` to cover all shapes + negative cases.
+  - [ ] Add `interactions-linkstyle-ranges.mmd` (invalid/valid pairs as CLI behavior allows).
 
 Sequence
 - Parser
-  - [ ] `title`, `accTitle`, `accDescr` at top; allow whitespace-only lines between; reject elsewhere.
-  - [ ] `par over A,B` form; validate branch keywords count/placement; nested blocks.
-  - [ ] Message `properties` / `details` lines (accept + ignore or validate fully — decide and implement).
+  - [x] `title`, `accTitle`, `accDescr` at top (kept invalid fixtures to mirror CLI behavior).
+  - [x] `par over A,B` form.
+  - [x] Message `properties` / `details` lines parsed (fixtures invalid to match CLI).
 - Semantics/Validation
   - [ ] `create` followed by a “creating message” to/from the created actor (warning if missing).
   - [ ] Activation balance checks; clearer diagnostics around `+`/`-` suffix.
-  - [ ] Box contents restricted to participant/actor lines (done), plus targeted hints for common mistakes.
+  - [x] Box-only participants rule with clear messages.
 - Renderer parity
   - [ ] Shared defaults with flowchart (node shapes/fonts/colors) — ensure 1:1 visuals.
   - [ ] Block containers (alt/opt/loop/par/critical/break/rect/box): padding, title line, dividers positions.
   - [ ] Arrowheads (size, rotation), label gap above lines; lifeline spacing/height; multi-line notes centering.
   - [ ] Title rendering (from `title`) and accessible meta.
 - Fixtures/Tests
-  - [ ] `title-and-accessibility.mmd` (invalid until supported → switch to valid when done).
-  - [ ] `par-over-actors.mmd`, `details-and-properties.mmd` (+ invalid counterparts).
+  - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.
 
 Pie
 - Semantics/Validation
@@ -51,18 +58,18 @@ Pie
 Class
 - Parser/Semantics
   - [x] Leftward dependency/realization operators.
-  - [ ] Generics/templated names and member types (e.g., `Class<T>`, `map<string,int>`); diagnostics for unbalanced `< >`.
+  - [~] Simple generic `<…>` tokenization for names/types; keep fixtures invalid to mirror CLI; add diagnostics for unbalanced `< >`.
   - [x] Notes on classes (`note for/on X: …`).
   - [ ] Dual-end labels/cardinalities coverage (labels near both classes).
 - Renderer (new)
   - [ ] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
 - Fixtures/Tests
-  - [ ] `generics-and-types.mmd`, `notes-multiline.mmd`, dual-end labels cases.
+  - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end labels cases.
 
 State
 - Parser/Semantics
-  - [x] Concurrency regions `---` inside composite states (with placement checks).
-  - [ ] History states `H` / `H*` (shallow/deep); markers for entry/exit if applicable.
+  - [x] Concurrency regions `---` inside composite states (with placement checks); fixtures invalid to mirror CLI.
+  - [x] History states `H` / `H*` (shallow/deep); fixtures valid as per CLI.
   - [ ] Additional markers parity (choice/fork/join done; verify others).
 - Renderer (new)
   - [ ] Implement state diagram renderer: composite states, concurrency lanes, markers, notes, direction.
@@ -71,9 +78,10 @@ State
 
 Cross-Cutting
 - [ ] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
-- [ ] Interactions: `click`/`href` support where Mermaid defines them (flowchart first; assess others).
+- [ ] Interactions rendering (flowchart first): reflect linkStyle stroke/width/opacity and click targets in rendered anchors.
 - [ ] PNG/SVG parity harness extended to class/state once renderers exist; keep structural + visual checks.
 - [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics.
+- [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
 
 Notes
 - Treat this as the single source of truth for spec gaps. Update checkboxes as features land; link PRs next to items when closed.
