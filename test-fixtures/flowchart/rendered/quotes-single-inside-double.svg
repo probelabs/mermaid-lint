@@ -47,6 +47,7 @@
     <rect class="node-shape"  x="214" y="40" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="254" y="64.9" text-anchor="middle">B</text>
   </g>
-  <path class="edge-path" d="M164,60 L174,60 C186,60 198,60 204,60 L214,60" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M214,60 L206,63 L206,57 Z" fill="#555555" />
+  <g><path class="edge-path" d="M164,60 L174,60 C186,60 198,60 204,60 L214,60" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M214,60 L206,63 L206,57 Z" fill="#555555" /></g>
+  
 </svg>

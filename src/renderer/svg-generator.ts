@@ -673,7 +673,11 @@ export class SVGRenderer implements IRenderer {
       overlay += triangleAtStart(boundaryStart, firstLeg, this.arrowStroke);
     }
 
-    return { path: edgeElement, overlay: overlay || undefined };
+    if (overlay) {
+      const grouped = `<g>${edgeElement}\n${overlay}</g>`;
+      return { path: grouped };
+    }
+    return { path: edgeElement };
   }
 
   // --- helpers ---

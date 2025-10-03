@@ -54,13 +54,13 @@
     <rect class="node-shape"  x="110" y="464" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="150" y="488.9" text-anchor="middle">Done</text>
   </g>
-  <path class="edge-path" d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M150,344 L150,354 C150,366 150,448 150,454 L150,464" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M150,229 L147,221 L153,221 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M150,344 L150,354 C150,366 150,448 150,454 L150,464" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M150,464 L147,456 L153,456 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(62.5,21)">
 <rect class="cluster-border" x="0" y="0" width="175" height="353" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="5" width="132" height="18" rx="3"/>
 <text class="cluster-label-text" x="72" y="18" text-anchor="middle">Runtime Execution</text>
 </g>
-  <path d="M150,229 L147,221 L153,221 Z" fill="#555555" />
-  <path d="M150,464 L147,456 L153,456 Z" fill="#555555" />
 </svg>

@@ -48,6 +48,7 @@
     <rect class="node-shape"  x="62" y="146" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="102" y="170.9" text-anchor="middle">End</text>
   </g>
-  <path class="edge-path" d="M102,96 L102,106 C102,118 102,130 102,136 L102,146" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M102,146 L99,138 L105,138 Z" fill="#555555" />
+  <g><path class="edge-path" d="M102,96 L102,106 C102,118 102,130 102,136 L102,146" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M102,146 L99,138 L105,138 Z" fill="#555555" /></g>
+  
 </svg>

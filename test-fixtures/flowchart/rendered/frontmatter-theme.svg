@@ -54,13 +54,13 @@
     <polygon class="node-shape"  points="150,389 198,437 150,485 102,437" />
     <text class="node-label" x="150" y="441.9" text-anchor="middle">Gamma</text>
   </g>
-  <path class="edge-path" d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M150,269 L150,279 C150,291 150,373 150,379 L150,389" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M150,229 L147,221 L153,221 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M150,269 L150,279 C150,291 150,373 150,379 L150,389" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M150,389 L147,381 L153,381 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(80,21)">
 <rect class="cluster-border" x="0" y="0" width="140" height="278" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="5" width="46" height="18" rx="3"/>
 <text class="cluster-label-text" x="29" y="18" text-anchor="middle">Group</text>
 </g>
-  <path d="M150,229 L147,221 L153,221 Z" fill="#555555" />
-  <path d="M150,389 L147,381 L153,381 Z" fill="#555555" />
 </svg>

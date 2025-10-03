@@ -51,6 +51,7 @@
     <rect class="node-shape"  x="40" y="164" width="240" height="56" rx="0" ry="0" />
     <text class="node-label" x="160" y="196.9" text-anchor="middle">Another long piece of text here</text>
   </g>
-  <path class="edge-path" d="M160,114 L160,124 C160,136 160,148 160,154 L160,164" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M160,164 L157,156 L163,156 Z" fill="#555555" />
+  <g><path class="edge-path" d="M160,114 L160,124 C160,136 160,148 160,154 L160,164" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M160,164 L157,156 L163,156 Z" fill="#555555" /></g>
+  
 </svg>

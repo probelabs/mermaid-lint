@@ -51,8 +51,9 @@
     <rect class="node-shape"  x="332" y="40" width="124" height="40" rx="0" ry="0" />
     <text class="node-label" x="394" y="64.9" text-anchor="middle">Symbols ★☆♦♠</text>
   </g>
-  <path class="edge-path" d="M136,60 L146,60 C158,60 170,60 176,60 L186,60" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M282,60 L292,60 C304,60 316,60 322,60 L332,60" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M186,60 L178,63 L178,57 Z" fill="#555555" />
-  <path d="M332,60 L324,63 L324,57 Z" fill="#555555" />
+  <g><path class="edge-path" d="M136,60 L146,60 C158,60 170,60 176,60 L186,60" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M186,60 L178,63 L178,57 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M282,60 L292,60 C304,60 316,60 322,60 L332,60" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M332,60 L324,63 L324,57 Z" fill="#555555" /></g>
+  
 </svg>

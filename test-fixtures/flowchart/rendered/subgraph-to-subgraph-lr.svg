@@ -60,9 +60,12 @@
     <rect class="node-shape"  x="221" y="320" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="261" y="344.9" text-anchor="middle">D</text>
   </g>
-  <path class="edge-path" d="M151,180 L161,180 C173,180 205,180 211,180 L221,180" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M151,340 L161,340 C173,340 205,340 211,340 L221,340" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M331,171 L351,171 L126.6,171 L126.6,331 L41,331" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M151,180 L161,180 C173,180 205,180 211,180 L221,180" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M221,180 L213,183 L213,177 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M151,340 L161,340 C173,340 205,340 211,340 L221,340" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M221,340 L213,343 L213,337 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M331,171 L351,171 L126.6,171 L126.6,331 L41,331" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M41,331 L49,328 L49,334 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(41,112)">
 <rect class="cluster-border" x="0" y="0" width="290" height="118" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="5" width="60" height="18" rx="3"/>
@@ -73,7 +76,4 @@
 <rect class="cluster-title-bg" x="6" y="5" width="60" height="18" rx="3"/>
 <text class="cluster-label-text" x="36" y="18" text-anchor="middle">Group B</text>
 </g>
-  <path d="M221,180 L213,183 L213,177 Z" fill="#555555" />
-  <path d="M221,340 L213,343 L213,337 Z" fill="#555555" />
-  <path d="M41,331 L49,328 L49,334 Z" fill="#555555" />
 </svg>

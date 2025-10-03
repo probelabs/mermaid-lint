@@ -59,10 +59,11 @@
     <rect class="node-shape"  x="170" y="130" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="210" y="154.9" text-anchor="middle">E</text>
   </g>
-  <path class="edge-path" d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M80,170 L80,180 C80,192 80,204 80,210 L80,220" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M210,80 L210,90 C210,102 210,114 210,120 L210,130" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M80,130 L77,122 L83,122 Z" fill="#555555" />
-  <path d="M80,220 L77,212 L83,212 Z" fill="#555555" />
-  <path d="M210,130 L207,122 L213,122 Z" fill="#555555" />
+  <g><path class="edge-path" d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M80,130 L77,122 L83,122 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M80,170 L80,180 C80,192 80,204 80,210 L80,220" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M80,220 L77,212 L83,212 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M210,80 L210,90 C210,102 210,114 210,120 L210,130" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M210,130 L207,122 L213,122 Z" fill="#555555" /></g>
+  
 </svg>

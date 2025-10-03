@@ -54,13 +54,13 @@
     <rect class="node-shape"  x="201" y="69" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="241" y="93.9" text-anchor="middle">C</text>
   </g>
-  <path class="edge-path" d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M241,109 L241,109 L241,62.76 L91,62.76 L91,41" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M91,109 L91,119 C91,131 91,213 91,219 L91,229" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M91,229 L88,221 L94,221 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M241,109 L241,109 L241,62.76 L91,62.76 L91,41" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M91,41 L94,49 L88,49 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(21,21)">
 <rect class="cluster-border" x="0" y="0" width="140" height="278" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="5" width="46" height="18" rx="3"/>
 <text class="cluster-label-text" x="29" y="18" text-anchor="middle">Inner</text>
 </g>
-  <path d="M91,229 L88,221 L94,221 Z" fill="#555555" />
-  <path d="M91,41 L94,49 L88,49 Z" fill="#555555" />
 </svg>

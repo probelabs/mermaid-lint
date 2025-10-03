@@ -93,7 +93,8 @@
     <tspan x="660" y="1263.9" text-anchor="middle">middleware chain</tspan>
   </text>
   </g>
-  <path class="edge-path" d="M338,125 L338,135 C338,147 338,229 338,235 L338,245" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M338,125 L338,135 C338,147 338,229 338,235 L338,245" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M338,245 L335,237 L341,237 Z" fill="#555555" /></g>
   <g>
     <path class="edge-path" d="M235.23076923076923,469 L225.59615384615384,479.5 C214.03461538461536,492.1 171,693 171,705 L171,725" stroke-linecap="round" stroke-linejoin="round" />
     <rect class="edge-label-bg" x="161" y="591.5485985903947" width="20" height="14" rx="3" />
@@ -112,20 +113,19 @@
     <text class="edge-label-text" x="350.23149699138474" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle">No</text>
     <path d="M350,1037 L347,1029 L353,1029 Z" fill="#555555" />
   </g>
-  <path class="edge-path" d="M350,1093 L350,1103 C350,1115 350,1197 350,1203 L350,1213" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M350,1093 L350,1103 C350,1115 350,1197 350,1203 L350,1213" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M350,1213 L347,1205 L353,1205 Z" fill="#555555" /></g>
   <g>
     <path class="edge-path" d="M609.2990654205607,897 L616.9042056074766,907.5 C626.0303738317756,920.1 660,1020.2 660,1026.5 L660,1037" stroke-linecap="round" stroke-linejoin="round" />
     <rect class="edge-label-bg" x="646.7685030086152" y="959.6803847989913" width="26" height="14" rx="3" />
     <text class="edge-label-text" x="659.7685030086152" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle">Yes</text>
     <path d="M660,1037 L657,1029 L663,1029 Z" fill="#555555" />
   </g>
-  <path class="edge-path" d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M660,1222 L657,1214 L663,1214 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(21,21)">
 <rect class="cluster-border" x="0" y="0" width="789" height="1296" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="5" width="334" height="18" rx="3"/>
 <text class="cluster-label-text" x="173" y="18" text-anchor="middle">API Loader : Custom Authentication Processing</text>
 </g>
-  <path d="M338,245 L335,237 L341,237 Z" fill="#555555" />
-  <path d="M350,1213 L347,1205 L353,1205 Z" fill="#555555" />
-  <path d="M660,1222 L657,1214 L663,1214 Z" fill="#555555" />
 </svg>
