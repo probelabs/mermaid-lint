@@ -24,11 +24,11 @@
     </marker>
   </defs>
   <g id="A">
-    <rect class="node-shape" fill="#f9f" x="40" y="40" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape" style="fill:#f9f" x="40" y="40" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="80" y="64.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
-    <rect class="node-shape" stroke="#333" stroke-width="4" x="40" y="130" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape" style="stroke:#333;stroke-width:4" x="40" y="130" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="80" y="154.9" text-anchor="middle">B</text>
   </g>
   <path class="edge-path" d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke-linecap="round" stroke-linejoin="round" />

@@ -153,11 +153,18 @@ export class SVGRenderer implements IRenderer {
   }
 
   private buildNodeStyleAttrs(style: { stroke?: string; strokeWidth?: number; fill?: string }): string {
-    const attrs: string[] = [];
-    if (style.stroke) attrs.push(`stroke=\"${style.stroke}\"`);
-    if (style.strokeWidth != null) attrs.push(`stroke-width=\"${style.strokeWidth}\"`);
-    if (style.fill) attrs.push(`fill=\"${style.fill}\"`);
-    return attrs.join(' ');
+    const decs: string[] = [];
+    if (style.fill) decs.push(`fill:${style.fill}`);
+    if (style.stroke) decs.push(`stroke:${style.stroke}`);
+    if (style.strokeWidth != null) decs.push(`stroke-width:${style.strokeWidth}`);
+    return decs.length ? `style=\"${decs.join(';')}\"` : '';
+  }
+
+  private buildNodeStrokeStyle(style: { stroke?: string; strokeWidth?: number }): string {
+    const decs: string[] = [];
+    if (style.stroke) decs.push(`stroke:${style.stroke}`);
+    if (style.strokeWidth != null) decs.push(`stroke-width:${style.strokeWidth}`);
+    return decs.length ? `style=\"${decs.join(';')}\"` : '';
   }
 
   private generateDefs(): string {
@@ -269,7 +276,7 @@ export class SVGRenderer implements IRenderer {
           `${x + node.width - inset},${y + node.height}`, // bottom-right (narrow)
           `${x + inset},${y + node.height}`          // bottom-left (narrow)
         ].join(' ');
-        shape = `<polygon class="node-shape" points="${points}" />`;
+        shape = `<polygon class="node-shape" ${styleAttr} points="${points}" />`;
         break;
       }
 
@@ -280,10 +287,11 @@ export class SVGRenderer implements IRenderer {
         const topCY = y + ry;
         const botCY = y + node.height - ry;
         const bodyH = Math.max(0, node.height - ry * 2);
-        shape = `<g ${styleAttr}>
-          <rect class="node-shape" x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" />
-          <ellipse class="node-shape" cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" />
-          <path class="node-shape" d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" fill="none" />
+        const strokeOnly = this.buildNodeStrokeStyle({ stroke, strokeWidth });
+        shape = `<g>
+          <rect class="node-shape" ${styleAttr} x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" />
+          <ellipse class="node-shape" ${styleAttr} cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" />
+          <path class="node-shape" ${strokeOnly} d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" fill="none" />
         </g>`;
         // Center label within the cylindrical body (between the caps)
         labelCenterY = topCY + bodyH / 2;
@@ -292,18 +300,20 @@ export class SVGRenderer implements IRenderer {
 
       case 'subroutine':
         const insetX = 5;
-        shape = `<g ${styleAttr}>
-          <rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />
-          <line class="node-shape" x1="${x + insetX}" y1="${y}" x2="${x + insetX}" y2="${y + node.height}" />
-          <line class="node-shape" x1="${x + node.width - insetX}" y1="${y}" x2="${x + node.width - insetX}" y2="${y + node.height}" />
+        const strokeOnly2 = this.buildNodeStrokeStyle({ stroke, strokeWidth });
+        shape = `<g>
+          <rect class="node-shape" ${styleAttr} x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />
+          <line class="node-shape" ${strokeOnly2} x1="${x + insetX}" y1="${y}" x2="${x + insetX}" y2="${y + node.height}" />
+          <line class="node-shape" ${strokeOnly2} x1="${x + node.width - insetX}" y1="${y}" x2="${x + node.width - insetX}" y2="${y + node.height}" />
         </g>`;
         break;
 
       case 'double':
         const gap = 4;
-        shape = `<g ${styleAttr}>
-          <rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />
-          <rect class="node-shape" x="${x + gap}" y="${y + gap}" width="${node.width - gap * 2}" height="${node.height - gap * 2}" rx="0" ry="0" fill="none" />
+        const strokeOnly3 = this.buildNodeStrokeStyle({ stroke, strokeWidth });
+        shape = `<g>
+          <rect class="node-shape" ${styleAttr} x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />
+          <rect class="node-shape" ${strokeOnly3} x="${x + gap}" y="${y + gap}" width="${node.width - gap * 2}" height="${node.height - gap * 2}" rx="0" ry="0" fill="none" />
         </g>`;
         break;
 
