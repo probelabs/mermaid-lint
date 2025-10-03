@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="198" viewBox="-50 -10 370 198">
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="192" viewBox="-50 -10 370 192">
   <style>
     .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
-    .actor-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; fill: #111; }
+    .actor-label { font-family: Arial, sans-serif; font-size: 16px; fill: #111; }
     .lifeline { stroke: #999; stroke-width: 0.5px; }
     .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
@@ -22,25 +22,25 @@
     .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
   </style>
   <g class="actor" transform="translate(24,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">&quot;Eve</text>
   </g>
   <g class="actor" transform="translate(158,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
-  <line class="lifeline" x1="79" y1="66" x2="79" y2="102"/>
-  <line class="lifeline" x1="213" y1="66" x2="213" y2="102"/>
-  <path class="msg-line solid" d="M 79 84 L 213 84" />
-  <path d="M213,84 L205,87 L205,81 Z" fill="#333" />
-  <rect class="msg-label-bg" x="134" y="66" width="24" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="74" text-anchor="middle">hi</text>
-  <g class="actor" transform="translate(24,102)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <line class="lifeline" x1="79" y1="60" x2="79" y2="96"/>
+  <line class="lifeline" x1="213" y1="60" x2="213" y2="96"/>
+  <path class="msg-line solid" d="M 79 78 L 213 78" />
+  <path d="M213,78 L205,81 L205,75 Z" fill="#333" />
+  <rect class="msg-label-bg" x="134" y="60" width="24" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="68" text-anchor="middle">hi</text>
+  <g class="actor" transform="translate(24,96)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">&quot;Eve</text>
   </g>
-  <g class="actor" transform="translate(158,102)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <g class="actor" transform="translate(158,96)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
 </svg>

@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="476" height="306" viewBox="-50 -10 476 306">
+<svg xmlns="http://www.w3.org/2000/svg" width="476" height="300" viewBox="-50 -10 476 300">
   <style>
     .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
-    .actor-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; fill: #111; }
+    .actor-label { font-family: Arial, sans-serif; font-size: 16px; fill: #111; }
     .lifeline { stroke: #999; stroke-width: 0.5px; }
     .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
@@ -22,47 +22,47 @@
     .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
   </style>
   <g class="actor" transform="translate(24,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
   <g class="actor" transform="translate(158,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
   <g class="actor" transform="translate(292,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">C</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(16,58)">
+<g class="cluster-bg-layer" transform="translate(16,52)">
   <rect class="cluster-bg" x="0" y="0" width="394" height="88" rx="0"/>
 </g>
-  <line class="lifeline" x1="79" y1="66" x2="79" y2="210"/>
-  <line class="lifeline" x1="213" y1="66" x2="213" y2="210"/>
-  <line class="lifeline" x1="347" y1="66" x2="347" y2="210"/>
-  <path class="msg-line solid" d="M 79 156 L 213 156" />
-  <path d="M213,156 L205,159 L205,153 Z" fill="#333" />
-  <rect class="msg-label-bg" x="112" y="138" width="68" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="146" text-anchor="middle">Branch 1</text>
-  <path class="msg-line solid" d="M 79 192 L 347 192" />
-  <path d="M347,192 L339,195 L339,189 Z" fill="#333" />
-  <rect class="msg-label-bg" x="179" y="174" width="68" height="16" rx="3"/>
-  <text class="msg-label" x="213" y="182" text-anchor="middle">Branch 2</text>
-<g class="cluster-overlay" transform="translate(16,58)">
+  <line class="lifeline" x1="79" y1="60" x2="79" y2="204"/>
+  <line class="lifeline" x1="213" y1="60" x2="213" y2="204"/>
+  <line class="lifeline" x1="347" y1="60" x2="347" y2="204"/>
+  <path class="msg-line solid" d="M 79 150 L 213 150" />
+  <path d="M213,150 L205,153 L205,147 Z" fill="#333" />
+  <rect class="msg-label-bg" x="112" y="132" width="68" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="140" text-anchor="middle">Branch 1</text>
+  <path class="msg-line solid" d="M 79 186 L 347 186" />
+  <path d="M347,186 L339,189 L339,183 Z" fill="#333" />
+  <rect class="msg-label-bg" x="179" y="168" width="68" height="16" rx="0"/>
+  <text class="msg-label" x="213" y="176" text-anchor="middle">Branch 2</text>
+<g class="cluster-overlay" transform="translate(16,52)">
 <rect class="cluster-border" x="0" y="0" width="394" height="88" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="32" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">alt</text>
 <line x1="0" y1="44" x2="394" y2="44" class="cluster-border" />
 </g>
-  <g class="actor" transform="translate(24,210)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <g class="actor" transform="translate(24,204)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
-  <g class="actor" transform="translate(158,210)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <g class="actor" transform="translate(158,204)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
-  <g class="actor" transform="translate(292,210)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <g class="actor" transform="translate(292,204)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">C</text>
   </g>
 </svg>

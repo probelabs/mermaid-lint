@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="450" viewBox="-50 -10 370 450">
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="444" viewBox="-50 -10 370 444">
   <style>
     .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
-    .actor-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; fill: #111; }
+    .actor-label { font-family: Arial, sans-serif; font-size: 16px; fill: #111; }
     .lifeline { stroke: #999; stroke-width: 0.5px; }
     .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
@@ -22,41 +22,41 @@
     .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
   </style>
   <g class="actor" transform="translate(24,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Alice</text>
   </g>
   <g class="actor" transform="translate(158,24)">
-    <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Bob</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(16,58)">
+<g class="cluster-bg-layer" transform="translate(16,52)">
   <rect class="cluster-bg" x="0" y="0" width="260" height="88" rx="0"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(16,202)">
+<g class="cluster-bg-layer" transform="translate(16,196)">
   <rect class="cluster-bg" x="0" y="0" width="260" height="52" rx="0"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(16,274)">
+<g class="cluster-bg-layer" transform="translate(16,268)">
   <rect class="cluster-bg" x="0" y="0" width="260" height="52" rx="0"/>
 </g>
-  <line class="lifeline" x1="79" y1="66" x2="79" y2="354"/>
-  <line class="lifeline" x1="213" y1="66" x2="213" y2="354"/>
-  <path class="msg-line solid" d="M 79 156 L 213 156" />
-  <path d="M213,156 L205,159 L205,153 Z" fill="#333" />
-  <rect class="msg-label-bg" x="98" y="138" width="96" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="146" text-anchor="middle">Good morning</text>
-  <path class="msg-line solid" d="M 79 192 L 213 192" />
-  <path d="M213,192 L205,195 L205,189 Z" fill="#333" />
-  <rect class="msg-label-bg" x="98" y="174" width="96" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="182" text-anchor="middle">Good evening</text>
-  <path class="msg-line dotted" d="M 213 264 L 79 264" />
-  <path d="M79,264 L87,261 L87,267 Z" fill="#333" />
-  <rect class="msg-label-bg" x="134" y="246" width="24" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="254" text-anchor="middle">OK</text>
-  <path class="msg-line solid" d="M 79 336 L 213 336" />
-  <path d="M213,336 L205,339 L205,333 Z" fill="#333" />
-  <rect class="msg-label-bg" x="126.5" y="318" width="39" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="326" text-anchor="middle">Step</text>
-<g class="cluster-overlay" transform="translate(16,58)">
+  <line class="lifeline" x1="79" y1="60" x2="79" y2="348"/>
+  <line class="lifeline" x1="213" y1="60" x2="213" y2="348"/>
+  <path class="msg-line solid" d="M 79 150 L 213 150" />
+  <path d="M213,150 L205,153 L205,147 Z" fill="#333" />
+  <rect class="msg-label-bg" x="98" y="132" width="96" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="140" text-anchor="middle">Good morning</text>
+  <path class="msg-line solid" d="M 79 186 L 213 186" />
+  <path d="M213,186 L205,189 L205,183 Z" fill="#333" />
+  <rect class="msg-label-bg" x="98" y="168" width="96" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="176" text-anchor="middle">Good evening</text>
+  <path class="msg-line dotted" d="M 213 258 L 79 258" />
+  <path d="M79,258 L87,255 L87,261 Z" fill="#333" />
+  <rect class="msg-label-bg" x="134" y="240" width="24" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="248" text-anchor="middle">OK</text>
+  <path class="msg-line solid" d="M 79 330 L 213 330" />
+  <path d="M213,330 L205,333 L205,327 Z" fill="#333" />
+  <rect class="msg-label-bg" x="126.5" y="312" width="39" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="320" text-anchor="middle">Step</text>
+<g class="cluster-overlay" transform="translate(16,52)">
 <rect class="cluster-border" x="0" y="0" width="260" height="88" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="132" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">alt: Is morning ?</text>
@@ -64,22 +64,22 @@
 <rect class="cluster-title-bg" x="6" y="34" width="96" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="45" text-anchor="start">Is evening ?</text>
 </g>
-<g class="cluster-overlay" transform="translate(16,202)">
+<g class="cluster-overlay" transform="translate(16,196)">
 <rect class="cluster-border" x="0" y="0" width="260" height="52" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="147" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">opt: Optional check</text>
 </g>
-<g class="cluster-overlay" transform="translate(16,274)">
+<g class="cluster-overlay" transform="translate(16,268)">
 <rect class="cluster-border" x="0" y="0" width="260" height="52" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="125" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">loop: Until done</text>
 </g>
-  <g class="actor" transform="translate(24,354)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <g class="actor" transform="translate(24,348)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Alice</text>
   </g>
-  <g class="actor" transform="translate(158,354)">
-    <rect class="actor-rect" width="110" height="32" rx="3" fill="#eaeaea" stroke="#666"/>
+  <g class="actor" transform="translate(158,348)">
+    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Bob</text>
   </g>
 </svg>

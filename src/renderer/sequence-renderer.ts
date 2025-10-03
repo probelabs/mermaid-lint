@@ -20,7 +20,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width+50}" height="${height+40}" viewBox="-50 -10 ${width+50} ${height+40}">`);
   svgParts.push(`  <style>
     .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
-    .actor-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; fill: #111; }
+    .actor-label { font-family: Arial, sans-serif; font-size: 16px; fill: #111; }
     .lifeline { stroke: #999; stroke-width: 0.5px; }
     .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
@@ -81,7 +81,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
 
 function drawParticipant(out: string[], p: LayoutParticipant) {
   out.push(`  <g class="actor" transform="translate(${p.x},${p.y})">`);
-  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="4" fill="#eaeaea" stroke="#666"/>`);
+  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="0" fill="#eaeaea" stroke="#666"/>`);
   out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2}" text-anchor="middle" dominant-baseline="middle">${escapeXml(p.display)}</text>`);
   out.push('  </g>');
 }
@@ -91,7 +91,7 @@ function drawParticipantBottom(out: string[], p: LayoutParticipant, layout: Sequ
   const lifeline = layout.lifelines.find(l => Math.abs(l.x - (p.x + p.width / 2)) < 0.001);
   const y = lifeline ? lifeline.y2 : (layout.height - 28);
   out.push(`  <g class="actor" transform="translate(${p.x},${y})">`);
-  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="3" fill="#eaeaea" stroke="#666"/>`);
+  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="0" fill="#eaeaea" stroke="#666"/>`);
   out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2}" text-anchor="middle" dominant-baseline="middle">${escapeXml(p.display)}</text>`);
   out.push('  </g>');
 }
@@ -126,14 +126,14 @@ function drawMessageLabel(out: string[], m: LayoutMessage, label: string, _count
   const w = Math.max(20, measureText(label, 12) + 10);
   const x = xMid - w / 2;
   const y = m.y - 10 - h / 2; // above the line
-  out.push(`  <rect class=\"msg-label-bg\" x=\"${x}\" y=\"${y}\" width=\"${w}\" height=\"${h}\" rx=\"3\"/>`);
+  out.push(`  <rect class=\"msg-label-bg\" x=\"${x}\" y=\"${y}\" width=\"${w}\" height=\"${h}\" rx=\"0\"/>`);
   out.push(`  <text class=\"msg-label\" x=\"${xMid}\" y=\"${y + h/2}\" text-anchor=\"middle\">${escapeXml(label)}</text>`);
 }
 
 
 function drawNote(out: string[], n: LayoutNote) {
   out.push(`  <g class="note" transform="translate(${n.x},${n.y})">`);
-  out.push(`    <rect width="${n.width}" height="${n.height}" rx="3"/>`);
+  out.push(`    <rect width="${n.width}" height="${n.height}" rx="0"/>`);
   out.push(`    <text class="note-text" x="${n.width / 2}" y="${n.height / 2 + 4}" text-anchor="middle">${escapeXml(n.text)}</text>`);
   out.push('  </g>');
 }
@@ -143,7 +143,7 @@ function drawBlock(out: string[], b: LayoutBlock) {
   out.push(`    <rect class="group-frame" width="${b.width}" height="${b.height}"/>`);
   const titleText = b.title ? `${b.type}: ${b.title}` : b.type;
   const titleW = Math.max(24, measureText(titleText, 12) + 10);
-  out.push(`    <rect class="group-title-bg" x="6" y="-2" width="${titleW}" height="18" rx="3"/>`);
+  out.push(`    <rect class="group-title-bg" x="6" y="-2" width="${titleW}" height="18" rx="0"/>`);
   out.push(`    <text class="group-title" x="${6 + titleW/2}" y="11" text-anchor="middle">${escapeXml(titleText)}</text>`);
   if (b.branches && b.branches.length) {
     for (const br of b.branches) {
@@ -151,7 +151,7 @@ function drawBlock(out: string[], b: LayoutBlock) {
       out.push(`    <line x1="0" y1="${yRel}" x2="${b.width}" y2="${yRel}" class="group-frame" />`);
       if (br.title) {
         const bw = Math.max(24, measureText(br.title, 12) + 10);
-        out.push(`    <rect class="group-title-bg" x="6" y="${yRel - 10}" width="${bw}" height="18" rx="3"/>`);
+        out.push(`    <rect class="group-title-bg" x="6" y="${yRel - 10}" width="${bw}" height="18" rx="0"/>`);
         out.push(`    <text class="group-title" x="${6 + bw/2}" y="${yRel + 1}" text-anchor="middle">${escapeXml(br.title)}</text>`);
       }
     }

@@ -46,6 +46,7 @@ const MARGIN_X = 24;
 const MARGIN_Y = 24;
 const ACTOR_FONT_SIZE = 16;
 const ACTOR_H = 32;
+const LIFELINE_GAP = 4; // vertical gap between actor box and lifeline start
 const ACTOR_PAD_X = 12;
 const COL_MIN = 110;
 const ROW_H = 36;
@@ -114,7 +115,7 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
     }
   });
 
-  const lifelineTop = MARGIN_Y + ACTOR_H + 10;
+  const lifelineTop = MARGIN_Y + ACTOR_H + LIFELINE_GAP;
   const contentHeight = row * ROW_H;
   const height = lifelineTop + contentHeight + MARGIN_Y + ACTOR_H; // reserve space for bottom actor boxes
 
