@@ -1,5 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="338" height="979" viewBox="0 0 338 979">
   <rect x="0" y="0" width="338" height="979" fill="#ffffff" />
+  <style>
+      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
@@ -12,74 +24,74 @@
     </marker>
   </defs>
   <g id="A">
-    <rect x="123.75" y="40" width="103" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Rectangle</text>
+    <rect class="node-shape"  x="123.75" y="40" width="103" height="40" rx="0" ry="0" />
+    <text class="node-label" x="175.25" y="64.9" text-anchor="middle">Rectangle</text>
   </g>
   <g id="B">
-    <circle cx="175.25" cy="171" r="41" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="175.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Circle</text>
+    <circle class="node-shape"  cx="175.25" cy="171" r="41" />
+    <text class="node-label" x="175.25" y="175.9" text-anchor="middle">Circle</text>
   </g>
   <g id="C">
-    <polygon points="175.25,262 228.75,315.5 175.25,369 121.75,315.5" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="320.4" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Diamond</text>
+    <polygon class="node-shape"  points="175.25,262 228.75,315.5 175.25,369 121.75,315.5" />
+    <text class="node-label" x="175.25" y="320.4" text-anchor="middle">Diamond</text>
   </g>
   <g id="D">
-    <rect x="40" y="444" width="107" height="40" rx="20" ry="20" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="93.5" y="468.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Stadium</text>
+    <rect class="node-shape"  x="40" y="444" width="107" height="40" rx="20" ry="20" />
+    <text class="node-label" x="93.5" y="468.9" text-anchor="middle">Stadium</text>
   </g>
   <g id="E">
     <g>
-          <rect x="197" y="439" width="120" height="50" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-          <line x1="202" y1="439" x2="202" y2="489" stroke="#3f3f3f" stroke-width="1.5" />
-          <line x1="312" y1="439" x2="312" y2="489" stroke="#3f3f3f" stroke-width="1.5" />
+          <rect class="node-shape"  x="197" y="439" width="120" height="50" rx="0" ry="0" />
+          <line class="node-shape"  x1="202" y1="439" x2="202" y2="489" />
+          <line class="node-shape"  x1="312" y1="439" x2="312" y2="489" />
         </g>
-    <text x="257" y="468.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Subroutine</text>
+    <text class="node-label" x="257" y="468.9" text-anchor="middle">Subroutine</text>
   </g>
   <g id="F">
     <g>
-          <rect x="127.25" y="552.2" width="96" height="33.6" stroke="none" fill="#eef0ff" />
-          <ellipse cx="175.25" cy="552.2" rx="48" ry="13.2" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-          <path d="M127.25,552.2 L127.25,585.8 A48,13.2 0 0,0 223.25,585.8 L223.25,552.2" stroke="#3f3f3f" stroke-width="1.5" fill="none" />
+          <rect class="node-shape"  x="127.25" y="552.2" width="96" height="33.6" />
+          <ellipse class="node-shape"  cx="175.25" cy="552.2" rx="48" ry="13.2" />
+          <path class="node-shape"  d="M127.25,552.2 L127.25,585.8 A48,13.2 0 0,0 223.25,585.8 L223.25,552.2" fill="none" />
         </g>
-    <text x="175.25" y="573.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Database</text>
+    <text class="node-label" x="175.25" y="573.9" text-anchor="middle">Database</text>
   </g>
   <g id="H">
-    <polygon points="102.8,739 278.75,739 247.7,779 71.75,779" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="763.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram Alt</text>
+    <polygon class="node-shape"  points="102.8,739 278.75,739 247.7,779 71.75,779" />
+    <text class="node-label" x="175.25" y="763.9" text-anchor="middle">Parallelogram Alt</text>
   </g>
   <g id="G">
-    <polygon points="173.25,649 317.75,649 292.25,689 147.75,689" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="232.75" y="673.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Parallelogram</text>
+    <polygon class="node-shape"  points="173.25,649 317.75,649 292.25,689 147.75,689" />
+    <text class="node-label" x="232.75" y="673.9" text-anchor="middle">Parallelogram</text>
   </g>
   <g id="I">
-    <polygon points="128.35,829 222.15,829 242.25,869 108.25,869" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="853.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid</text>
+    <polygon class="node-shape"  points="128.35,829 222.15,829 242.25,869 108.25,869" />
+    <text class="node-label" x="175.25" y="853.9" text-anchor="middle">Trapezoid</text>
   </g>
   <g id="J">
-    <polygon points="109.75,919 240.75,919 221.1,959 129.4,959" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="175.25" y="943.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Trapezoid Alt</text>
+    <polygon class="node-shape"  points="109.75,919 240.75,919 221.1,959 129.4,959" />
+    <text class="node-label" x="175.25" y="943.9" text-anchor="middle">Trapezoid Alt</text>
   </g>
-  <path d="M175.25,80 L175.25,90 C175.25,102 175.25,114 175.25,120 L175.25,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M175.25,212 L175.25,222 C175.25,234 175.25,246 175.25,252 L175.25,262" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M175.25,80 L175.25,90 C175.25,102 175.25,114 175.25,120 L175.25,130" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M175.25,212 L175.25,222 C175.25,234 175.25,246 175.25,252 L175.25,262" stroke-linecap="round" stroke-linejoin="round" />
   <g>
-    <path d="M125.83050847457628,369 L119.04512235200397,376.3456473620507 C110.90265900491718,385.1604241965116 93.5,428 93.5,434 L93.5,444" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="71.5" y="397.55873114551076" width="44" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="93.5" y="404.55873114551076" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Link 1</text>
+    <path class="edge-path" d="M125.83050847457628,369 L119.04512235200397,376.3456473620507 C110.90265900491718,385.1604241965116 93.5,428 93.5,434 L93.5,444" stroke-linecap="round" stroke-linejoin="round" />
+    <rect class="edge-label-bg" x="71.5" y="397.55873114551076" width="44" height="14" rx="3" />
+    <text class="edge-label-text" x="93.5" y="404.55873114551076" text-anchor="middle" dominant-baseline="middle">Link 1</text>
     <path d="M93.5,444 L90.5,436 L96.5,436 Z" fill="#555555" />
   </g>
   <g>
-    <path d="M224.66949152542372,369 L231.45487764799603,376.3456473620507 C239.59734099508282,385.1604241965116 257,423 257,429 L257,439" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-    <rect x="233.51313947239237" y="395.3903711719477" width="44" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
-    <text x="255.51313947239237" y="402.3903711719477" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">Link 2</text>
+    <path class="edge-path" d="M224.66949152542372,369 L231.45487764799603,376.3456473620507 C239.59734099508282,385.1604241965116 257,423 257,429 L257,439" stroke-linecap="round" stroke-linejoin="round" />
+    <rect class="edge-label-bg" x="233.51313947239237" y="395.3903711719477" width="44" height="14" rx="3" />
+    <text class="edge-label-text" x="255.51313947239237" y="402.3903711719477" text-anchor="middle" dominant-baseline="middle">Link 2</text>
     <path d="M257,439 L254,431 L260,431 Z" fill="#555555" />
   </g>
-  <path d="M93.5,484 L93.5,494 C93.5,506 117.38387900545622,530.068664774313 122.36208346931923,533.4179154839456 L130.6590909090909,539" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M257,489 L257,499 C257,511 233.11612099454376,530.068664774313 228.13791653068077,533.4179154839456 L219.8409090909091,539" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M143.88636363636363,599 L136.65994506488664,605.9122264596737 C139.53030303030303,603.1666666666666 122.10606060606061,612.3333333333334 117.75,624 C113.39393939393939,635.6666666666666 117.75,654 117.75,669 C117.75,684 112.42592592592592,702.3333333333334 117.75,714 L149.69444444444446,739" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M206.61363636363637,599 L213.84005493511336,605.9122264596737 C222.51175722088573,614.206898211282 232.75,633 232.75,639 L232.75,649" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M232.75,689 L232.75,699 C232.75,711 213.40563557167692,729.1390678134703 208.6806055656314,732.836917383419 L200.80555555555554,739" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M175.25,779 L175.25,789 C175.25,801 175.25,813 175.25,819 L175.25,829" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M175.25,869 L175.25,879 C175.25,891 175.25,903 175.25,909 L175.25,919" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M93.5,484 L93.5,494 C93.5,506 117.38387900545622,530.068664774313 122.36208346931923,533.4179154839456 L130.6590909090909,539" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M257,489 L257,499 C257,511 233.11612099454376,530.068664774313 228.13791653068077,533.4179154839456 L219.8409090909091,539" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M143.88636363636363,599 L136.65994506488664,605.9122264596737 C139.53030303030303,603.1666666666666 122.10606060606061,612.3333333333334 117.75,624 C113.39393939393939,635.6666666666666 117.75,654 117.75,669 C117.75,684 112.42592592592592,702.3333333333334 117.75,714 L149.69444444444446,739" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M206.61363636363637,599 L213.84005493511336,605.9122264596737 C222.51175722088573,614.206898211282 232.75,633 232.75,639 L232.75,649" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M232.75,689 L232.75,699 C232.75,711 213.40563557167692,729.1390678134703 208.6806055656314,732.836917383419 L200.80555555555554,739" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M175.25,779 L175.25,789 C175.25,801 175.25,813 175.25,819 L175.25,829" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M175.25,869 L175.25,879 C175.25,891 175.25,903 175.25,909 L175.25,919" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M175.25,130 L172.25,122 L178.25,122 Z" fill="#555555" />
   <path d="M175.25,262 L172.25,254 L178.25,254 Z" fill="#555555" />
   <path d="M130.6590909090909,539 L122.34685960245727,537.023434619088 L125.69611031208987,532.045230155225 Z" fill="#555555" />

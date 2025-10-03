@@ -715,7 +715,7 @@ npm test
 
 ### Experimental Renderer
 
-Maid includes an experimental lightweight renderer for flowchart diagrams. This renderer serves as a visual validation tool for our parser implementation.
+Maid includes an experimental lightweight renderer for flowchart and pie diagrams. This renderer serves as a visual validation tool for our parser implementation.
 
 **Purpose:**
 - Validate parser correctness by visually rendering diagrams
@@ -724,7 +724,7 @@ Maid includes an experimental lightweight renderer for flowchart diagrams. This 
 
 **Status:**
 - ⚠️ **Experimental** - Not intended for production use
-- Currently supports only flowchart diagrams
+- Currently supports flowchart and pie diagrams
 - Primary goal is parser validation, not feature parity with Mermaid.js
 
 **Building the Browser Bundle:**

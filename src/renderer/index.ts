@@ -6,6 +6,9 @@ import { SVGRenderer } from './svg-generator.js';
 import type { Graph } from './types.js';
 import type { ValidationError } from '../core/types.js';
 import type { ILayoutEngine, IRenderer } from './interfaces.js';
+import { buildPieModel } from './pie-builder.js';
+import { renderPie } from './pie-renderer.js';
+import { parseFrontmatter } from '../core/frontmatter.js';
 
 export interface RenderOptions {
   /** Include validation errors as overlays on the diagram */
@@ -145,18 +148,47 @@ export class MermaidRenderer {
   }
 
   /**
-   * Renders only supported diagram types (for now just flowchart)
+   * Renders supported diagram types (flowchart + pie for now)
    */
   renderAny(text: string, options: RenderOptions = {}): RenderResult {
-    // Detect diagram type
-    const firstLine = text.trim().split('\n')[0];
+    // Detect diagram type with optional Mermaid frontmatter
+    let content = text;
+    let theme: Record<string, any> | undefined;
+    if (text.trimStart().startsWith('---')) {
+      const fm = parseFrontmatter(text);
+      if (fm) {
+        content = fm.body;
+        theme = fm.themeVariables || (fm.config && fm.config.themeVariables) || undefined;
+      }
+    }
+    const firstLine = content.trim().split('\n')[0];
 
-    if (firstLine.match(/^(flowchart|graph)\s+/i)) {
-      return this.render(text, options);
+    if (/^(flowchart|graph)\s+/i.test(firstLine)) {
+      const res = this.render(content, options);
+      const svg2 = theme ? applyFlowchartTheme(res.svg, theme) : res.svg;
+      return { svg: svg2, graph: res.graph, errors: res.errors };
+    }
+    if (/^pie\b/i.test(firstLine)) {
+      // Render a pie chart via dedicated pipeline (no Dagre layout)
+      try {
+        const { model, errors } = buildPieModel(content);
+        const svg = renderPie(model, {
+          width: options.width,
+          height: options.height,
+          rimStroke: theme?.pieStrokeColor,
+          rimStrokeWidth: theme?.pieOuterStrokeWidth,
+        });
+        const themedSvg = applyPieTheme(svg, theme);
+        return { svg: themedSvg, graph: { nodes: [], edges: [], direction: 'TD' }, errors };
+      } catch (e: any) {
+        const msg = e?.message || 'Pie render error';
+        const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'PIE_RENDER' } as ValidationError];
+        return { svg: this.generateErrorSvg(msg), graph: { nodes: [], edges: [], direction: 'TD' }, errors: err };
+      }
     }
 
     // Unsupported diagram type
-    const errorSvg = this.generateErrorSvg('Unsupported diagram type. Currently only flowchart diagrams are supported for rendering.');
+    const errorSvg = this.generateErrorSvg('Unsupported diagram type. Rendering supports flowchart and pie for now.');
 
     return {
       svg: errorSvg,
@@ -241,6 +273,102 @@ export class MermaidRenderer {
       .replace(/'/g, '&apos;');
   }
 }
+
+// Apply basic pie theme variables to the generated SVG.
+function applyPieTheme(svg: string, theme?: Record<string, any>): string {
+  if (!theme) return svg;
+  let out = svg;
+  // Apply rim and slice outlines via CSS when provided
+  if (theme.pieOuterStrokeWidth != null || theme.pieStrokeColor) {
+    out = out.replace(/\.pieOuterCircle\s*\{[^}]*\}/, (m) => {
+      let rule = m;
+      if (theme.pieStrokeColor) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.pieStrokeColor)};`);
+      if (theme.pieOuterStrokeWidth != null) rule = rule.replace(/stroke-width:\s*[^;]+;/, `stroke-width: ${String(theme.pieOuterStrokeWidth)};`);
+      return rule;
+    });
+    if (theme.pieStrokeColor) {
+      out = out.replace(/\.pieCircle\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.pieStrokeColor)};`));
+    }
+  }
+// pieSectionTextColor
+  if (theme.pieSectionTextColor) {
+    const c = String(theme.pieSectionTextColor);
+    // Replace the default style color for labels, and also add fill on <text> nodes
+    out = out.replace(/\.slice-label \{[^}]*\}/, (m) => m.replace(/fill:\s*#[0-9A-Fa-f]{3,8}|fill:\s*rgb\([^)]*\)/, `fill: ${c}`));
+    out = out.replace(/<text class="slice-label"([^>]*)>/g, `<text class="slice-label"$1 fill="${c}">`);
+  }
+  // pieTitleTextColor
+  if (theme.pieTitleTextColor) {
+    const c = String(theme.pieTitleTextColor);
+    out = out.replace(/<text class="pie-title"([^>]*)>/g, `<text class="pie-title"$1 fill="${c}">`);
+  }
+  // pieSectionTextSize
+  if (theme.pieSectionTextSize) {
+    const size = String(theme.pieSectionTextSize);
+    out = out.replace(/<text class="slice-label"([^>]*)>/g, `<text class="slice-label"$1 font-size="${size}">`);
+  }
+  // pieTitleTextSize
+  if (theme.pieTitleTextSize) {
+    const size = String(theme.pieTitleTextSize);
+    out = out.replace(/<text class="pie-title"([^>]*)>/g, `<text class="pie-title"$1 font-size="${size}">`);
+  }
+  // pie1..pie12 color overrides: replace fill of path slices in order
+  const colors: string[] = [];
+  for (let i = 1; i <= 24; i++) {
+    const key = 'pie' + i;
+    if (theme[key]) colors.push(String(theme[key]));
+  }
+  if (colors.length) {
+    let idx = 0;
+    out = out.replace(/<path[^>]*class="pieCircle"[^>]*\sfill="([^"]+)"/g, (_m) => {
+      const color = colors[idx] ?? null;
+      idx++;
+      if (color) return _m.replace(/fill="([^"]+)"/, `fill="${color}"`);
+      return _m;
+    });
+  }
+  return out;
+}
+
+function applyFlowchartTheme(svg: string, theme?: Record<string, any>): string {
+  if (!theme) return svg;
+  let out = svg;
+  // Node colors via CSS
+  if (theme.nodeBkg || theme.nodeBorder) {
+    out = out.replace(/\.node-shape\s*\{[^}]*\}/, (m) => {
+      let rule = m;
+      if (theme.nodeBkg) rule = rule.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeBkg)};`);
+      if (theme.nodeBorder) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.nodeBorder)};`);
+      return rule;
+    });
+  }
+  if (theme.nodeTextColor) {
+    out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeTextColor)};`));
+  }
+  // Edge + arrow colors via CSS
+  if (theme.lineColor) {
+    out = out.replace(/\.edge-path\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lineColor)};`));
+  }
+  if (theme.arrowheadColor) {
+    out = out.replace(/(<path d="M0,0 L0,[0-9.]+ L[0-9.]+,[0-9.]+ z"[^>]*)(fill="[^"]*")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
+    out = out.replace(/(<circle cx="4\.5" cy="4\.5" r="4\.5"[^>]*)(fill="[^"]*")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
+  }
+  // Cluster styles via CSS (background and border are separate classes)
+  if (theme.clusterBkg) {
+    out = out.replace(/\.cluster-bg\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`));
+  }
+  if (theme.clusterBorder) {
+    out = out.replace(/\.cluster-border\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`));
+  }
+  if (theme.clusterTextColor) {
+    out = out.replace(/\.cluster-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterTextColor)};`));
+  }
+  // Fonts via CSS
+  if (theme.fontFamily) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${String(theme.fontFamily)};`));
+  if (theme.fontSize) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${String(theme.fontSize)};`));
+  return out;
+}
+
 
 // Export main render function for convenience
 export function renderMermaid(text: string, options: RenderOptions = {}): RenderResult {

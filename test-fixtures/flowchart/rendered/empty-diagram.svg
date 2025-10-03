@@ -1,5 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="841" height="641" viewBox="0 0 841 641">
   <rect x="0" y="0" width="841" height="641" fill="#ffffff" />
+  <style>
+      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />

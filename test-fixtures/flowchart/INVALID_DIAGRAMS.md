@@ -48,7 +48,7 @@ This file contains invalid flowchart test fixtures with:
 | 13 | [unclosed quote in label](#13-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
 | 14 | [unescaped quotes in decision](#14-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 15 | [unmatched end](#15-unmatched-end) | INVALID | INVALID | — |
-| 16 | [unquoted label with quotes](#16-unquoted-label-with-quotes) | INVALID | INVALID | ❌ safe |
+| 16 | [unquoted label with quotes](#16-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
 | 17 | [wrong direction](#17-wrong-direction) | INVALID | INVALID | — |
 
 ---

@@ -1,5 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="590" height="116" viewBox="0 0 590 116">
   <rect x="0" y="0" width="590" height="116" fill="#ffffff" />
+  <style>
+      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
@@ -12,22 +24,22 @@
     </marker>
   </defs>
   <g id="A">
-    <rect x="40" y="40" width="240" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text font-family="Arial, sans-serif" font-size="14" fill="#333">
+    <rect class="node-shape"  x="40" y="40" width="240" height="56" rx="0" ry="0" />
+    <text class="node-label">
     <tspan x="160" y="63.9" text-anchor="middle">Node with &amp;quot;quotes&amp;quot;</tspan>
     <tspan x="160" y="81.9" text-anchor="middle">and &amp;amp; ampersand</tspan>
   </text>
   </g>
   <g id="B">
-    <rect x="330" y="48" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="370" y="72.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">OK</text>
+    <rect class="node-shape"  x="330" y="48" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="370" y="72.9" text-anchor="middle">OK</text>
   </g>
   <g id="C">
-    <rect x="460" y="48" width="110" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="515" y="72.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Plain text</text>
+    <rect class="node-shape"  x="460" y="48" width="110" height="40" rx="0" ry="0" />
+    <text class="node-label" x="515" y="72.9" text-anchor="middle">Plain text</text>
   </g>
-  <path d="M280,68 L290,68 C302,68 314,68 320,68 L330,68" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M410,68 L420,68 C432,68 444,68 450,68 L460,68" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M280,68 L290,68 C302,68 314,68 320,68 L330,68" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M410,68 L420,68 C432,68 444,68 450,68 L460,68" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M330,68 L322,71 L322,65 Z" fill="#555555" />
   <path d="M460,68 L452,71 L452,65 Z" fill="#555555" />
 </svg>

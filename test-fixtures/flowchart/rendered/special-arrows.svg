@@ -1,5 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="660" height="100" viewBox="0 0 660 100">
   <rect x="0" y="0" width="660" height="100" fill="#ffffff" />
+  <style>
+      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
@@ -12,29 +24,29 @@
     </marker>
   </defs>
   <g id="A">
-    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+    <rect class="node-shape"  x="40" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="80" y="64.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
-    <rect x="170" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="210" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+    <rect class="node-shape"  x="170" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="210" y="64.9" text-anchor="middle">B</text>
   </g>
   <g id="C">
-    <rect x="300" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="340" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+    <rect class="node-shape"  x="300" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="340" y="64.9" text-anchor="middle">C</text>
   </g>
   <g id="D">
-    <rect x="430" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="470" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <rect class="node-shape"  x="430" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="470" y="64.9" text-anchor="middle">D</text>
   </g>
   <g id="E">
-    <rect x="560" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="600" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
+    <rect class="node-shape"  x="560" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="600" y="64.9" text-anchor="middle">E</text>
   </g>
-  <path d="M120,60 L130,60 C142,60 154,60 160,60 L170,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
-  <path d="M250,60 L260,60 C272,60 284,60 290,60 L300,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
-  <path d="M380,60 L390,60 C402,60 414,60 420,60 L430,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M510,60 L520,60 C532,60 544,60 550,60 L560,60" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" />
+  <path class="edge-path" d="M120,60 L130,60 C142,60 154,60 160,60 L170,60" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
+  <path class="edge-path" d="M250,60 L260,60 C272,60 284,60 290,60 L300,60" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
+  <path class="edge-path" d="M380,60 L390,60 C402,60 414,60 420,60 L430,60" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M510,60 L520,60 C532,60 544,60 550,60 L560,60" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" />
   <path d="M430,60 L422,63 L422,57 Z" fill="#555555" /><path d="M388,60 L380,57 L380,63 Z" fill="#555555" />
   <path d="M560,60 L552,63 L552,57 Z" fill="#555555" />
 </svg>
