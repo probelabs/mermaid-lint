@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="397" viewBox="0 0 560 397">
-  <rect x="0" y="0" width="560" height="397" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="397" viewBox="0 0 500 397">
+  <rect x="0" y="0" width="500" height="397" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -39,44 +39,44 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <g class="subgraph-bg"><g class="cluster-bg-layer" transform="translate(41,21)">
+  <g class="subgraph-bg"><g class="cluster-bg-layer" transform="translate(21,21)">
   <rect class="cluster-bg" x="0" y="0" width="449" height="158" rx="0"/>
 </g></g>
   <g id="Auth">
-    <rect class="node-shape"  x="221" y="289" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="261" y="313.9" text-anchor="middle">Auth</text>
+    <rect class="node-shape"  x="201" y="289" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="241" y="313.9" text-anchor="middle">Auth</text>
   </g>
   <g id="__start_44">
-    <circle class="node-shape"  cx="111" cy="109" r="40" />
-    <text class="node-label" x="111" y="113.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="91" cy="109" r="40" />
+    <text class="node-label" x="91" y="113.9" text-anchor="middle"></text>
   </g>
   <g id="Login">
-    <rect class="node-shape"  x="221" y="89" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="261" y="113.9" text-anchor="middle">Login</text>
+    <rect class="node-shape"  x="201" y="89" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="241" y="113.9" text-anchor="middle">Login</text>
   </g>
   <g id="Success">
-    <rect class="node-shape"  x="371" y="89" width="89" height="40" rx="0" ry="0" />
-    <text class="node-label" x="415.5" y="113.9" text-anchor="middle">Success</text>
+    <rect class="node-shape"  x="351" y="89" width="89" height="40" rx="0" ry="0" />
+    <text class="node-label" x="395.5" y="113.9" text-anchor="middle">Success</text>
   </g>
   <g id="__start_85">
-    <circle class="node-shape"  cx="111" cy="309" r="40" />
-    <text class="node-label" x="111" y="313.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="91" cy="309" r="40" />
+    <text class="node-label" x="91" y="313.9" text-anchor="middle"></text>
   </g>
-  <g id="__start_107">
-    <circle class="node-shape"  cx="415.5" cy="309" r="40" />
-    <text class="node-label" x="415.5" y="313.9" text-anchor="middle"></text>
+  <g id="__end_107">
+    <circle class="node-shape"  cx="395.5" cy="309" r="40" />
+    <text class="node-label" x="395.5" y="313.9" text-anchor="middle"></text>
   </g>
-  <g><path class="edge-path" d="M151,109 L161,109 C173,109 205,109 211,109 L221,109" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M221,109 L215,111.5 L215,106.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M301,109 L311,109 C323,109 355,109 361,109 L371,109" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M371,109 L365,111.5 L365,106.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M151,309 L151,309 L62.599999999999994,309 L62.599999999999994,100 L41,100" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M41,100 L47,97.5 L47,102.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M490,100 L510,100 L418.53999999999996,100 L418.53999999999996,309 L375.5,309 L375.5,309" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M375.5,309 L375.5,309 L375.5,309 Z" fill="#555555" /></g>
-  <g class="cluster-overlay" transform="translate(41,21)">
+  <g><path class="edge-path" d="M131,109 L141,109 C153,109 185,109 191,109 L201,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M201,109 L195,111.5 L195,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M281,109 L291,109 C303,109 335,109 341,109 L351,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M351,109 L345,111.5 L345,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M131,309 L141,309 C153,309 185,309 191,309 L201,309" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M201,309 L195,311.5 L195,306.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M281,309 L291,309 C303,309 339.5,309 345.5,309 L355.5,309" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M355.5,309 L349.5,311.5 L349.5,306.5 Z" fill="#555555" /></g>
+  <g class="cluster-overlay" transform="translate(21,21)">
 <rect class="cluster-border" x="0" y="0" width="449" height="158" rx="0"/>
-<rect class="cluster-title-bg" x="6" y="5" width="39" height="18" rx="3"/>
-<text class="cluster-label-text" x="25.5" y="18" text-anchor="middle">Auth</text>
+<rect class="cluster-title-bg" x="6" y="17" width="89" height="18" rx="3"/>
+<text class="cluster-label-text" x="50.5" y="30" text-anchor="middle">Auth__lane0</text>
 </g>
 </svg>

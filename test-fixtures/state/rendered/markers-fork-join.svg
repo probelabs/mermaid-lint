@@ -59,7 +59,7 @@
     <rect class="node-shape"  x="105" y="350" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="145" y="374.9" text-anchor="middle">Join</text>
   </g>
-  <g id="__start_146">
+  <g id="__end_146">
     <circle class="node-shape"  cx="145" cy="480" r="40" />
     <text class="node-label" x="145" y="484.9" text-anchor="middle"></text>
   </g>

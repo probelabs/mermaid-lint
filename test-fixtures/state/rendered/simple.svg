@@ -51,7 +51,7 @@
     <rect class="node-shape"  x="40" y="260" width="89" height="40" rx="0" ry="0" />
     <text class="node-label" x="84.5" y="284.9" text-anchor="middle">Running</text>
   </g>
-  <g id="__start_66">
+  <g id="__end_66">
     <circle class="node-shape"  cx="84.5" cy="390" r="40" />
     <text class="node-label" x="84.5" y="394.9" text-anchor="middle"></text>
   </g>

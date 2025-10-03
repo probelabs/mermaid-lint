@@ -19,12 +19,23 @@ function textFromTokens(tokens: IToken[] | undefined): string {
   return parts.join(' ').replace(/\s+/g, ' ').trim();
 }
 
-function actorRefToId(ref: CstNode | undefined): { id: string; label?: string; kind: StateNodeDef['kind'] } {
+function actorRefToId(ref: CstNode | undefined, ctx: { isTarget?: boolean } = {}): { id: string; label?: string; kind: StateNodeDef['kind'] } {
   if (!ref) return { id: '', kind: 'simple' };
   const ch = (ref.children || {}) as any;
-  if (ch.Start) return { id: `__start_${(ch.Start[0] as IToken).startOffset ?? 0}`, kind: 'start' };
+  if (ch.Start) {
+    const kind = ctx.isTarget ? 'end' : 'start';
+    return { id: `__${kind}_${(ch.Start[0] as IToken).startOffset ?? 0}`, kind: kind as StateNodeDef['kind'] };
+  }
   if (ch.HistoryDeep) return { id: `__histdeep_${(ch.HistoryDeep[0] as IToken).startOffset ?? 0}`, label: 'H*', kind: 'history-deep' };
   if (ch.HistoryShallow) return { id: `__hist_${(ch.HistoryShallow[0] as IToken).startOffset ?? 0}`, label: 'H', kind: 'history' };
+  // Markers like <<choice>> / <<fork>> / <<join>>
+  let special: StateNodeDef['kind'] | undefined;
+  if (ch.AngleAngleOpen && ch.Identifier && ch.AngleAngleClose) {
+    const k = String((ch.Identifier[0] as IToken).image).toLowerCase();
+    if (k === 'choice') special = 'choice';
+    else if (k === 'fork') special = 'fork';
+    else if (k === 'join') special = 'join';
+  }
   // Identifier or QuotedString
   const toks: IToken[] = [];
   (ch.Identifier as IToken[] | undefined)?.forEach(t => toks.push(t));
@@ -32,7 +43,7 @@ function actorRefToId(ref: CstNode | undefined): { id: string; label?: string; k
   toks.sort((a,b) => (a.startOffset ?? 0) - (b.startOffset ?? 0));
   const txt = textFromTokens(toks) || '';
   const id = txt.trim().replace(/\s+/g, '_');
-  return { id, label: txt, kind: 'simple' };
+  return { id, label: txt, kind: special || 'simple' };
 }
 
 export function buildStateModel(text: string): StateModel {
@@ -45,7 +56,8 @@ export function buildStateModel(text: string): StateModel {
   const transitions: TransitionDef[] = [];
   const composites: Array<{ id: string; label?: string; nodes: string[]; parent?: string }> = [];
 
-  const stack: string[] = [];
+  type CompCtx = { id: string; lane: number };
+  const stack: CompCtx[] = [];
   const diagramChildren = (cst.children || {}) as any;
   const stmts = (diagramChildren.statement as CstNode[] | undefined) || [];
 
@@ -54,11 +66,20 @@ export function buildStateModel(text: string): StateModel {
     if (ex) return ex;
     nodes.set(def.id, def);
     // add to current composite parent
-    const parent = stack[stack.length - 1];
-    if (parent) {
-      const comp = composites.find(c => c.id === parent);
-      if (comp && !comp.nodes.includes(def.id)) comp.nodes.push(def.id);
-      def.parent = parent;
+    const parentCtx = stack[stack.length - 1];
+    if (parentCtx) {
+      const parent = parentCtx.id;
+      // Create lane subgraph id if inside lanes
+      const laneId = `${parent}__lane${parentCtx.lane}`;
+      let laneSg = composites.find(c => c.id === laneId);
+      if (!laneSg) {
+        // Ensure parent composite exists
+        if (!composites.find(c => c.id === parent)) composites.push({ id: parent, label: parent, nodes: [], parent: stack.length > 1 ? stack[stack.length-2].id : undefined });
+        composites.push({ id: laneId, label: undefined, nodes: [], parent });
+      }
+      laneSg = composites.find(c => c.id === laneId)!;
+      if (!laneSg.nodes.includes(def.id)) laneSg.nodes.push(def.id);
+      def.parent = laneId;
     }
     return def;
   }
@@ -88,9 +109,10 @@ export function buildStateModel(text: string): StateModel {
       const idTok = (bch.Identifier?.[0] || bch.QuotedString?.[0]) as IToken | undefined;
       const idRaw = idTok ? (idTok.image.startsWith('"') ? idTok.image.slice(1,-1) : idTok.image) : `__state_${b.location ?? Math.random()}`;
       const id = idRaw.replace(/\s+/g, '_');
+      // Register composite container (no lane yet; lanes created on demand)
       ensureNode({ id, label: idRaw, kind: 'composite' });
-      if (!composites.find(c => c.id === id)) composites.push({ id, label: idRaw, nodes: [], parent: stack[stack.length - 1] });
-      stack.push(id);
+      if (!composites.find(c => c.id === id)) composites.push({ id, label: idRaw, nodes: [], parent: stack.length ? stack[stack.length - 1].id : undefined });
+      stack.push({ id, lane: 0 });
       const inner = (bch.innerStatement as CstNode[] | undefined) || [];
       for (const s of inner) visitStatement(s);
       stack.pop();
@@ -98,8 +120,8 @@ export function buildStateModel(text: string): StateModel {
     }
     if (ch.transitionStmt) {
       const t = ch.transitionStmt[0] as CstNode; const tch = (t.children || {}) as any;
-      const left = actorRefToId(tch.actorRef?.[0]);
-      const right = actorRefToId(tch.actorRef?.[1]);
+      const left = actorRefToId(tch.actorRef?.[0], { isTarget: false });
+      const right = actorRefToId(tch.actorRef?.[1], { isTarget: true });
       if (left.id) ensureNode({ id: left.id, label: left.label || left.id, kind: left.kind });
       if (right.id) ensureNode({ id: right.id, label: right.label || right.id, kind: right.kind });
       let label: string | undefined;
@@ -114,6 +136,14 @@ export function buildStateModel(text: string): StateModel {
       }
       if (left.id && right.id) transitions.push({ source: left.id, target: right.id, label });
       return;
+    }
+    // Lane separator inside composite
+    if ((node as any).name === 'innerStatement') {
+      const ich = (node.children || {}) as any;
+      if (ich.Dashes && ich.Dashes.length && stack.length) {
+        stack[stack.length - 1].lane += 1;
+        return;
+      }
     }
     if (ch.noteStmt) {
       // Represent notes as dashed-edge rectangle nodes labeled and connected to the referenced state
@@ -161,4 +191,3 @@ export function buildStateModel(text: string): StateModel {
     composites,
   };
 }
-
