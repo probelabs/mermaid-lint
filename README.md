@@ -126,9 +126,19 @@ npx -y @probelabs/maid render diagram.mmd -f png
 
 Notes
 - The renderer is **experimental** and primarily for parser validation
-- Currently supports **flowchart diagrams only**
+- Currently supports **flowchart, pie, and sequence** diagrams
 - PNG output requires `rsvg-convert` or `ImageMagick` installed
 - See "Development > Experimental Renderer" for technical details
+
+#### Renderer Parity / Visual Comparison
+
+To compare our renderer vs Mermaid CLI across fixtures, see AGENTS.md for the step‑by‑step parity workflow. Quick start:
+
+```
+npm run build
+npm run compare:renderers:sequence   # or :flowchart / :pie
+```
+Outputs (Mermaid+Maid SVG/PNG and diffs) go to `.tmp-compare-all/`.
 
 ### Autofix in a nutshell
 
