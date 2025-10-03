@@ -64,48 +64,27 @@ export class SVGRenderer implements IRenderer {
     // Add defs for markers (arrowheads)
     elements.push(this.generateDefs());
 
-    // Draw subgraphs (cluster backgrounds) behind edges and nodes
+    // Draw subgraphs (cluster backgrounds) behind edges and nodes, using shared block utils
     if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
+      // Import at top level in ESM build; here require dynamically to avoid type tightening
+      const utils = require('./block-utils.js');
+      const blockBackground = utils.blockBackground; const blockOverlay = utils.blockOverlay;
       const sgs = (layout as any).subgraphs as Array<{id:string;label?:string;x:number;y:number;width:number;height:number;parent?:string}>;
       const order = sgs.slice().sort((a,b) => (a.parent ? 1 : 0) - (b.parent ? 1 : 0));
-      const bgRects: string[] = [];
-      const borderRects: string[] = [];
-      const titleBgRects: string[] = [];
-      const titles: Array<{depth:number, svg:string}> = [];
-      const depthOf = (sg:any) => {
-        let d=0; let p=sg.parent; const map = new Map(order.map(o=>[o.id,o]));
-        while(p){ d++; p = map.get(p)?.parent; }
-        return d;
-      };
+      const map = new Map(order.map(o=>[o.id,o]));
+      const depthOf = (sg:any) => { let d=0; let p=sg.parent; while(p){ d++; p = map.get(p)?.parent; } return d; };
+      const bgs: string[] = [];
       for (const sg of order) {
         const x = sg.x + padX;
         const y = sg.y + padY;
-        const w = sg.width;
-        const h = sg.height;
-        // Separate background and border classes so overlays never hide children due to CSS fill
-        bgRects.push(`<rect class="cluster-bg" x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" />`);
-        borderRects.push(`<rect class="cluster-border" x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" />`);
-        if (sg.label) {
-          const depth = depthOf(sg);
-          const dy = 18 + depth * 12; // push nested titles slightly lower to avoid overlap
-          const text = this.escapeXml(sg.label);
-          const est = Math.max(40, Math.min(220, text.length * 7 + 12));
-          const tx = x + w/2 - est/2;
-          const ty = y + dy - 10;
-          titleBgRects.push(`<rect class="cluster-title-bg" x="${tx}" y="${ty}" width="${est}" height="16" rx="3" ry="3" />`);
-          titles.push({ depth, svg: `<text class="cluster-label-text" x="${x + w/2}" y="${y + dy}" text-anchor="middle">${text}</text>` });
-        }
+        bgs.push(blockBackground(x, y, sg.width, sg.height));
+        const depth = depthOf(sg);
+        const title = sg.label ? this.escapeXml(sg.label) : undefined;
+        // slight nested offset for titles to avoid overlap (matches previous behavior)
+        const titleYOffset = 7 + depth * 12;
+        overlays.push(blockOverlay(x, y, sg.width, sg.height, title, [], titleYOffset));
       }
-      // Backgrounds behind everything
-      elements.push(`<g class="subgraph-bg">${bgRects.join('')}</g>`);
-      // Keep borders and titles to draw on top later
-      const borderGroup = `<g class="subgraph-borders">${borderRects.join('')}</g>`;
-      const titleBgs = `<g class="subgraph-title-bg">${titleBgRects.join('')}</g>`;
-      const titleGroup = `<g class="subgraph-titles">${titles.sort((a,b)=> a.depth - b.depth).map(t=>t.svg).join('')}</g>`;
-      // Stash overlay to draw after edges/nodes
-      overlays.push(borderGroup);
-      overlays.push(titleBgs);
-      overlays.push(titleGroup);
+      elements.push(`<g class="subgraph-bg">${bgs.join('')}</g>`);
     }
 
     // Build a padded node lookup for geometry intersections (include clusters)

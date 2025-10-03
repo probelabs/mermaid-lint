@@ -1,52 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="390" height="347" viewBox="0 0 390 347">
-  <rect x="0" y="0" width="390" height="347" fill="#ffffff" />
-  <style>
-      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
-      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
-      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
-      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
-      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      /* Subgraph (cluster) styling */
-      .cluster-bg { fill: #ffffde; }
-      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
-      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-    </style>
-  <defs>
-    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
-    </marker>
-    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
-      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
-    </marker>
-    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
-    </marker>
-  </defs>
-  <g class="subgraph-bg"><rect class="cluster-bg" x="80" y="21" width="140" height="278" rx="4" ry="4" /><rect class="cluster-bg" x="230" y="21" width="140" height="278" rx="4" ry="4" /></g>
-  <g id="A">
-    <rect class="node-shape"  x="110" y="69" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="150" y="93.9" text-anchor="middle">A</text>
-  </g>
-  <g id="B">
-    <rect class="node-shape"  x="110" y="229" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="150" y="253.9" text-anchor="middle">B</text>
-  </g>
-  <g id="C">
-    <rect class="node-shape"  x="260" y="69" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="300" y="93.9" text-anchor="middle">C</text>
-  </g>
-  <g id="D">
-    <rect class="node-shape"  x="260" y="229" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="300" y="253.9" text-anchor="middle">D</text>
-  </g>
-  <path class="edge-path" d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M300,109 L300,119 C300,131 300,213 300,219 L300,229" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M220,160 L230,160" stroke-linecap="round" stroke-linejoin="round" />
-  <g class="subgraph-borders"><rect class="cluster-border" x="80" y="21" width="140" height="278" rx="4" ry="4" /><rect class="cluster-border" x="230" y="21" width="140" height="278" rx="4" ry="4" /></g>
-  <g class="subgraph-title-bg"><rect class="cluster-title-bg" x="130" y="29" width="40" height="16" rx="3" ry="3" /><rect class="cluster-title-bg" x="280" y="29" width="40" height="16" rx="3" ry="3" /></g>
-  <g class="subgraph-titles"><text class="cluster-label-text" x="150" y="39" text-anchor="middle">One</text><text class="cluster-label-text" x="300" y="39" text-anchor="middle">Two</text></g>
-  <path d="M150,229 L147,221 L153,221 Z" fill="#555555" />
-  <path d="M300,229 L297,221 L303,221 Z" fill="#555555" />
-  <path d="M230,160 L222,163 L222,157 Z" fill="#555555" />
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
+  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
+    Render Error
+  </text>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    <tspan x="200" dy="0">require is not defined</tspan>
+  </text>
 </svg>

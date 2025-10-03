@@ -12,7 +12,9 @@ export function blockBackground(x: number, y: number, width: number, height: num
 }
 
 export function blockOverlay(x: number, y: number, width: number, height: number,
-                             title?: string, branchYs: Array<{ y:number; title?: string }> = []): string {
+                             title?: string,
+                             branchYs: Array<{ y:number; title?: string }> = [],
+                             titleYOffset: number = 0): string {
   const parts: string[] = [];
   parts.push(`<g class="cluster-overlay" transform="translate(${x},${y})">`);
   parts.push(`<rect class="cluster-border" x="0" y="0" width="${width}" height="${height}" rx="4"/>`);
@@ -20,8 +22,10 @@ export function blockOverlay(x: number, y: number, width: number, height: number
   const titleText = title ? escapeXml(title) : '';
   if (titleText) {
     const titleW = Math.max(24, measureText(titleText, 12) + 10);
-    parts.push(`<rect class="cluster-title-bg" x="6" y="-2" width="${titleW}" height="18" rx="3"/>`);
-    parts.push(`<text class="cluster-label-text" x="${6 + titleW/2}" y="11" text-anchor="middle">${titleText}</text>`);
+    const yBg = -2 + titleYOffset;
+    const yText = 11 + titleYOffset;
+    parts.push(`<rect class="cluster-title-bg" x="6" y="${yBg}" width="${titleW}" height="18" rx="3"/>`);
+    parts.push(`<text class="cluster-label-text" x="${6 + titleW/2}" y="${yText}" text-anchor="middle">${titleText}</text>`);
   }
   for (const br of branchYs) {
     const yRel = br.y - y;
@@ -35,4 +39,3 @@ export function blockOverlay(x: number, y: number, width: number, height: number
   parts.push('</g>');
   return parts.join('\n');
 }
-
