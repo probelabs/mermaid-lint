@@ -25,7 +25,7 @@ const __dirname = path.dirname(__filename);
 
 const SUPPORTED_TYPES = ['flowchart', 'pie', 'sequence', 'class', 'state'];
 // Diagram types currently supported by our experimental renderer
-const RENDER_SUPPORTED = new Set(['flowchart', 'pie', 'sequence', 'class']);
+const RENDER_SUPPORTED = new Set(['flowchart', 'pie', 'sequence', 'class', 'state']);
 
 function stripAnsi(input) {
   if (!input) return input;
