@@ -81,8 +81,8 @@ export class SVGRenderer implements IRenderer {
         const y = sg.y + padY;
         const w = sg.width;
         const h = sg.height;
-        bgRects.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="#fffbe6" stroke="none" />`);
-        borderRects.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" />`);
+        bgRects.push(`<rect class="cluster-rect" x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" />`);
+        borderRects.push(`<rect class="cluster-rect" x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="none" />`);
         if (sg.label) {
           const depth = depthOf(sg);
           const dy = 18 + depth * 12; // push nested titles slightly lower to avoid overlap
@@ -90,8 +90,8 @@ export class SVGRenderer implements IRenderer {
           const est = Math.max(40, Math.min(220, text.length * 7 + 12));
           const tx = x + w/2 - est/2;
           const ty = y + dy - 10;
-          titleBgRects.push(`<rect x="${tx}" y="${ty}" width="${est}" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" />`);
-          titles.push({ depth, svg: `<text x="${x + w/2}" y="${y + dy}" text-anchor="middle" font-family="${this.fontFamily}" font-size="12" fill="#333">${text}</text>` });
+          titleBgRects.push(`<rect class="cluster-title-bg" x="${tx}" y="${ty}" width="${est}" height="16" rx="3" ry="3" />`);
+          titles.push({ depth, svg: `<text class="cluster-label-text" x="${x + w/2}" y="${y + dy}" text-anchor="middle">${text}</text>` });
         }
       }
       // Backgrounds behind everything
@@ -129,10 +129,21 @@ export class SVGRenderer implements IRenderer {
       if (overlay) overlays.push(overlay);
     }
 
-    // White background rect to match Mermaid output
+    // White background + CSS classes for styling
     const bg = `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff" />`;
+    const css = `<style>
+      .node-shape { fill: ${this.defaultFill}; stroke: ${this.defaultStroke}; stroke-width: 1px; }
+      .node-label { fill: #333; font-family: ${this.fontFamily}; font-size: ${this.fontSize}px; }
+      .edge-path { stroke: ${this.arrowStroke}; stroke-width: 2px; fill: none; }
+      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+      .edge-label-text { fill: #333; font-family: ${this.fontFamily}; font-size: ${Math.max(10, this.fontSize - 2)}px; }
+      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+      .cluster-label-text { fill: #333; font-family: ${this.fontFamily}; font-size: 12px; }
+    </style>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   ${bg}
+  ${css}
   ${elements.join('\n  ')}
   ${overlays.join('\n  ')}
 </svg>`;
@@ -172,21 +183,21 @@ export class SVGRenderer implements IRenderer {
 
     switch (node.shape) {
       case 'rectangle':
-        shape = `<rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />`;
         break;
 
       case 'round':
-        shape = `<rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="5" ry="5" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="5" ry="5" />`;
         break;
 
       case 'stadium':
         const radius = node.height / 2;
-        shape = `<rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" ry="${radius}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" ry="${radius}" />`;
         break;
 
       case 'circle':
         const r = Math.min(node.width, node.height) / 2;
-        shape = `<circle cx="${cx}" cy="${cy}" r="${r}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<circle class="node-shape" cx="${cx}" cy="${cy}" r="${r}" />`;
         break;
 
       case 'diamond': {
@@ -196,7 +207,7 @@ export class SVGRenderer implements IRenderer {
           `${cx},${y + node.height}`,      // bottom
           `${x},${cy}`                      // left
         ].join(' ');
-        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<polygon class="node-shape" points="${points}" />`;
         break;
       }
 
@@ -210,7 +221,7 @@ export class SVGRenderer implements IRenderer {
           `${x + dx},${y + node.height}`,           // bottom-left
           `${x},${cy}`                               // left
         ].join(' ');
-        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<polygon class="node-shape" points="${points}" />`;
         break;
       }
 
@@ -222,7 +233,7 @@ export class SVGRenderer implements IRenderer {
           `${x + node.width - skew},${y + node.height}`, // bottom-right
           `${x},${y + node.height}`                 // bottom-left
         ].join(' ');
-        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<polygon class="node-shape" points="${points}" />`;
         break;
       }
 
@@ -234,7 +245,7 @@ export class SVGRenderer implements IRenderer {
           `${x + node.width},${y + node.height}`,   // bottom-right
           `${x},${y + node.height}`                 // bottom-left
         ].join(' ');
-        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<polygon class="node-shape" points="${points}" />`;
         break;
       }
 
@@ -246,7 +257,7 @@ export class SVGRenderer implements IRenderer {
           `${x + node.width - inset},${y + node.height}`, // bottom-right (narrow)
           `${x + inset},${y + node.height}`          // bottom-left (narrow)
         ].join(' ');
-        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
+        shape = `<polygon class="node-shape" points="${points}" />`;
         break;
       }
 
@@ -258,9 +269,9 @@ export class SVGRenderer implements IRenderer {
         const botCY = y + node.height - ry;
         const bodyH = Math.max(0, node.height - ry * 2);
         shape = `<g>
-          <rect x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" stroke="none" fill="${fill}" />
-          <ellipse cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
-          <path d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
+          <rect class="node-shape" x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" />
+          <ellipse class="node-shape" cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" />
+          <path class="node-shape" d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" fill="none" />
         </g>`;
         // Center label within the cylindrical body (between the caps)
         labelCenterY = topCY + bodyH / 2;
@@ -270,17 +281,17 @@ export class SVGRenderer implements IRenderer {
       case 'subroutine':
         const insetX = 5;
         shape = `<g>
-          <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
-          <line x1="${x + insetX}" y1="${y}" x2="${x + insetX}" y2="${y + node.height}" stroke="${stroke}" stroke-width="${strokeWidth}" />
-          <line x1="${x + node.width - insetX}" y1="${y}" x2="${x + node.width - insetX}" y2="${y + node.height}" stroke="${stroke}" stroke-width="${strokeWidth}" />
+          <rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />
+          <line class="node-shape" x1="${x + insetX}" y1="${y}" x2="${x + insetX}" y2="${y + node.height}" />
+          <line class="node-shape" x1="${x + node.width - insetX}" y1="${y}" x2="${x + node.width - insetX}" y2="${y + node.height}" />
         </g>`;
         break;
 
       case 'double':
         const gap = 4;
         shape = `<g>
-          <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
-          <rect x="${x + gap}" y="${y + gap}" width="${node.width - gap * 2}" height="${node.height - gap * 2}" rx="0" ry="0" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
+          <rect class="node-shape" x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />
+          <rect class="node-shape" x="${x + gap}" y="${y + gap}" width="${node.width - gap * 2}" height="${node.height - gap * 2}" rx="0" ry="0" fill="none" />
         </g>`;
         break;
 
@@ -309,7 +320,7 @@ export class SVGRenderer implements IRenderer {
     if (maxCharsPerLine <= 0 || text.length <= maxCharsPerLine) {
       // Single line - use dy offset for better vertical centering
       const dyOffset = this.fontSize * 0.35; // Empirical value for vertical centering
-      return `<text x="${x}" y="${y + dyOffset}" text-anchor="middle" font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${this.escapeXml(text)}</text>`;
+      return `<text class="node-label" x="${x}" y="${y + dyOffset}" text-anchor="middle">${this.escapeXml(text)}</text>`;
     }
 
     // Split text into words
@@ -345,7 +356,7 @@ export class SVGRenderer implements IRenderer {
       return `<tspan x="${x}" y="${lineY}" text-anchor="middle">${this.escapeXml(line)}</tspan>`;
     }).join('\n    ');
 
-    return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">
+    return `<text class="node-label">
     ${tspans}
   </text>`;
   }
@@ -577,7 +588,7 @@ export class SVGRenderer implements IRenderer {
     }
     const pathData = pathParts.join(' ');
 
-    let edgeElement = `<path d="${pathData}" stroke="${this.arrowStroke}" stroke-width="${strokeWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
+    let edgeElement = `<path class="edge-path" d="${pathData}" stroke-linecap="round" stroke-linejoin="round"`;
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
     }
@@ -600,8 +611,8 @@ export class SVGRenderer implements IRenderer {
       const height = 14;
       const x = pos.x - width / 2;
       const y = pos.y - height / 2;
-      const labelBg = `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />`;
-      const labelText = `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${fontSize}" fill="#444">${text}</text>`;
+      const labelBg = `<rect class="edge-label-bg" x="${x}" y="${y}" width="${width}" height="${height}" rx="3" />`;
+      const labelText = `<text class="edge-label-text" x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle">${text}</text>`;
 
       // Overlay arrowheads (same logic as unlabeled case), drawn last for visibility
       let overlay = '';

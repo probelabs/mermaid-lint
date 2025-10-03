@@ -1,5 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="184" height="206" viewBox="0 0 184 206">
   <rect x="0" y="0" width="184" height="206" fill="#ffffff" />
+  <style>
+      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
@@ -12,14 +22,14 @@
     </marker>
   </defs>
   <g id="A">
-    <rect x="40" y="40" width="124" height="56" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <rect class="node-shape" x="40" y="40" width="124" height="56" rx="0" ry="0" />
     <text font-family="Arial, sans-serif" font-size="14" fill="#333"><tspan x="102" y="63.9" text-anchor="middle"><tspan >Load Prompt </tspan></tspan>
     <tspan x="102" y="81.9" text-anchor="middle"><tspan > from file</tspan></tspan></text>
   </g>
   <g id="B">
-    <rect x="62" y="146" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
-    <text x="102" y="170.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">End</text>
+    <rect class="node-shape" x="62" y="146" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="102" y="170.9" text-anchor="middle">End</text>
   </g>
-  <path d="M102,96 L102,106 C102,118 102,130 102,136 L102,146" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="edge-path" d="M102,96 L102,106 C102,118 102,130 102,136 L102,146" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M102,146 L99,138 L105,138 Z" fill="#555555" />
 </svg>
