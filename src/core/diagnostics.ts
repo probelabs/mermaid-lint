@@ -523,6 +523,43 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     };
   }
 
+  // Box blocks only allow participant declarations
+  if (inRule('boxBlock') && (err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException')) {
+    // Check if we're seeing a message arrow or other non-participant statement
+    const isMessage = /->|-->>|-->/.test(ltxt);
+    const isNote = /note\s+(left|right|over)/i.test(ltxt);
+    const isActivate = /activate\s+/i.test(ltxt);
+    const isDeactivate = /deactivate\s+/i.test(ltxt);
+    if (isMessage || isNote || isActivate || isDeactivate || tokType === 'NoteKeyword' || tokType === 'ActivateKeyword' || tokType === 'DeactivateKeyword') {
+      // Check if there's an 'end' keyword later in the file - if not, it's missing-end, not invalid-content
+      const lines = text.split(/\r?\n/);
+      const boxLine = Math.max(0, line - 1);
+      let hasEnd = false;
+      // Find the opening box line upwards
+      let openIdx = -1;
+      for (let i = boxLine; i >= 0; i--) {
+        if (/^\s*box\b/.test(lines[i] || '')) { openIdx = i; break; }
+      }
+      if (openIdx !== -1) {
+        // Check if there's an 'end' after the current line
+        for (let i = boxLine; i < lines.length; i++) {
+          if (/^\s*end\s*$/.test(lines[i] || '')) { hasEnd = true; break; }
+          // Stop if we find another block or outdent
+          if (i > boxLine && /^\s*(sequenceDiagram|box|alt|opt|loop|par|rect|critical|break)\b/.test(lines[i] || '')) break;
+        }
+      }
+      if (hasEnd) {
+        return {
+          line, column, severity: 'error', code: 'SE-BOX-INVALID-CONTENT',
+          message: 'Box blocks can only contain participant/actor declarations.',
+          hint: 'Move messages, notes, and other statements outside the box block.\nExample:\nbox "Group"\n  participant A\n  participant B\nend\nA->>B: Message',
+          length: len
+        };
+      }
+      // Otherwise fall through to missing-end handler
+    }
+  }
+
   // Missing 'end' inside a block (alt/opt/loop/par/rect/critical/break/box)
   const blockRules: Array<{ rule: string; label: string }> = [
     { rule: 'altBlock', label: 'alt' },

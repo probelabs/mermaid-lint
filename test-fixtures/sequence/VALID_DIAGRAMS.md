@@ -22,15 +22,16 @@ This file contains all valid sequence test fixtures rendered with both Mermaid a
 7. [bidir and async arrows](#7-bidir-and-async-arrows)
 8. [blocks alt opt loop](#8-blocks-alt-opt-loop)
 9. [box groups](#9-box-groups)
-10. [critical break rect](#10-critical-break-rect)
-11. [links and menus](#11-links-and-menus)
-12. [no trailing newline](#12-no-trailing-newline)
-13. [notes](#13-notes)
-14. [par and](#14-par-and)
-15. [par minimal](#15-par-minimal)
-16. [participant double in double](#16-participant-double-in-double)
-17. [participant escaped quotes](#17-participant-escaped-quotes)
-18. [participant unclosed quote](#18-participant-unclosed-quote)
+10. [box with messages outside](#10-box-with-messages-outside)
+11. [critical break rect](#11-critical-break-rect)
+12. [links and menus](#12-links-and-menus)
+13. [no trailing newline](#13-no-trailing-newline)
+14. [notes](#14-notes)
+15. [par and](#15-par-and)
+16. [par minimal](#16-par-minimal)
+17. [participant double in double](#17-participant-double-in-double)
+18. [participant escaped quotes](#18-participant-escaped-quotes)
+19. [participant unclosed quote](#19-participant-unclosed-quote)
 
 ---
 
@@ -533,7 +534,53 @@ sequenceDiagram
 
 ---
 
-## 10. Critical Break Rect
+## 10. Box With Messages Outside
+
+📄 **Source**: [`box-with-messages-outside.mmd`](./valid/box-with-messages-outside.mmd)
+
+### Rendered Output (Mermaid)
+
+```mermaid
+sequenceDiagram
+    box "API Layer"
+        participant Server
+        participant API
+    end
+    box "UI Layer"
+        participant UI
+        participant Component
+    end
+    Server->>API: Request
+    API->>UI: Data
+    UI->>Component: Render
+    Note over API,UI: Communication layer
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+    box "API Layer"
+        participant Server
+        participant API
+    end
+    box "UI Layer"
+        participant UI
+        participant Component
+    end
+    Server->>API: Request
+    API->>UI: Data
+    UI->>Component: Render
+    Note over API,UI: Communication layer
+
+```
+</details>
+
+---
+
+## 11. Critical Break Rect
 
 📄 **Source**: [`critical-break-rect.mmd`](./valid/critical-break-rect.mmd)
 
@@ -598,7 +645,7 @@ sequenceDiagram
 
 ---
 
-## 11. Links And Menus
+## 12. Links And Menus
 
 📄 **Source**: [`links-and-menus.mmd`](./valid/links-and-menus.mmd)
 
@@ -649,7 +696,7 @@ sequenceDiagram
 
 ---
 
-## 12. No Trailing Newline
+## 13. No Trailing Newline
 
 📄 **Source**: [`no-trailing-newline.mmd`](./valid/no-trailing-newline.mmd)
 
@@ -690,7 +737,7 @@ A->>B: hi
 
 ---
 
-## 13. Notes
+## 14. Notes
 
 📄 **Source**: [`notes.mmd`](./valid/notes.mmd)
 
@@ -741,7 +788,7 @@ sequenceDiagram
 
 ---
 
-## 14. Par And
+## 15. Par And
 
 📄 **Source**: [`par-and.mmd`](./valid/par-and.mmd)
 
@@ -796,7 +843,7 @@ sequenceDiagram
 
 ---
 
-## 15. Par Minimal
+## 16. Par Minimal
 
 📄 **Source**: [`par-minimal.mmd`](./valid/par-minimal.mmd)
 
@@ -847,7 +894,7 @@ sequenceDiagram
 
 ---
 
-## 16. Participant Double In Double
+## 17. Participant Double In Double
 
 📄 **Source**: [`participant-double-in-double.mmd`](./valid/participant-double-in-double.mmd)
 
@@ -892,7 +939,7 @@ sequenceDiagram
 
 ---
 
-## 17. Participant Escaped Quotes
+## 18. Participant Escaped Quotes
 
 📄 **Source**: [`participant-escaped-quotes.mmd`](./valid/participant-escaped-quotes.mmd)
 
@@ -937,7 +984,7 @@ sequenceDiagram
 
 ---
 
-## 18. Participant Unclosed Quote
+## 19. Participant Unclosed Quote
 
 📄 **Source**: [`participant-unclosed-quote.mmd`](./valid/participant-unclosed-quote.mmd)
 

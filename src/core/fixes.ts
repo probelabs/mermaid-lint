@@ -471,6 +471,59 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 4, 'option'));
       continue;
     }
+    if (is('SE-BOX-INVALID-CONTENT', e)) {
+      // Move messages, notes, and other invalid content outside the box block
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      // Find the opening box line upwards
+      const boxRe = /^(\s*)box\b/;
+      let openIdx = -1;
+      let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = boxRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx !== -1) {
+        // Find the closing 'end' line
+        let endIdx = -1;
+        for (let i = openIdx + 1; i < lines.length; i++) {
+          const trimmed = (lines[i] || '').trim();
+          if (trimmed === 'end') { endIdx = i; break; }
+        }
+        if (endIdx !== -1) {
+          // Collect all invalid lines (messages, notes, etc.) inside the box
+          const invalidLines: number[] = [];
+          for (let i = openIdx + 1; i < endIdx; i++) {
+            const raw = lines[i] || '';
+            const trimmed = raw.trim();
+            if (trimmed === '') continue; // skip blank lines
+            // Check if it's NOT a participant/actor declaration
+            if (!/^\s*(participant|actor)\b/i.test(raw)) {
+              invalidLines.push(i);
+            }
+          }
+          // Move invalid lines after the 'end' keyword
+          if (invalidLines.length > 0) {
+            // Adjust indentation: moved content should align with 'end', not with box content
+            const endIndent = openIndent; // 'end' has same indent as 'box'
+            const movedContent = invalidLines.map(i => {
+              const line = lines[i] || '';
+              // Remove existing indentation and apply 'end' indentation
+              const trimmed = line.trimStart();
+              return endIndent + trimmed;
+            }).join('\n') + '\n';
+            // Delete invalid lines from inside the box (in reverse to maintain indices)
+            for (let i = invalidLines.length - 1; i >= 0; i--) {
+              const idx = invalidLines[i];
+              edits.push({ start: { line: idx + 1, column: 1 }, end: { line: idx + 2, column: 1 }, newText: '' });
+            }
+            // Insert moved content after 'end'
+            edits.push(insertAt(text, { line: endIdx + 2, column: 1 }, movedContent));
+          }
+        }
+      }
+      continue;
+    }
     if (is('SE-BLOCK-MISSING-END', e)) {
       // Insert 'end' aligned with the opening block's indentation, before the next outdented line.
       const lines = text.split(/\r?\n/);

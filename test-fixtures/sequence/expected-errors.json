@@ -11,6 +11,12 @@
   "box-unclosed.mmd": [
     "SE-BLOCK-MISSING-END"
   ],
+  "box-with-messages.mmd": [
+    "SE-BOX-INVALID-CONTENT"
+  ],
+  "box-with-notes.mmd": [
+    "SE-BOX-INVALID-CONTENT"
+  ],
   "create-malformed.mmd": [
     "SE-CREATE-MALFORMED"
   ],

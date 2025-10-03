@@ -14,17 +14,19 @@ This file contains invalid sequence test fixtures with:
 3. [Autonumber Extraneous](#3-autonumber-extraneous)
 4. [Autonumber Malformed](#4-autonumber-malformed)
 5. [Box Unclosed](#5-box-unclosed)
-6. [Create Malformed](#6-create-malformed)
-7. [Create Missing Name](#7-create-missing-name)
-8. [Critical Else](#8-critical-else)
-9. [Destroy Malformed](#9-destroy-malformed)
-10. [Else Outside Alt](#10-else-outside-alt)
-11. [Missing Colon](#11-missing-colon)
-12. [Note Malformed](#12-note-malformed)
-13. [Option In Par](#13-option-in-par)
-14. [Option Outside Critical](#14-option-outside-critical)
-15. [Unmatched End](#15-unmatched-end)
-16. [Wrong Arrow](#16-wrong-arrow)
+6. [Box With Messages](#6-box-with-messages)
+7. [Box With Notes](#7-box-with-notes)
+8. [Create Malformed](#8-create-malformed)
+9. [Create Missing Name](#9-create-missing-name)
+10. [Critical Else](#10-critical-else)
+11. [Destroy Malformed](#11-destroy-malformed)
+12. [Else Outside Alt](#12-else-outside-alt)
+13. [Missing Colon](#13-missing-colon)
+14. [Note Malformed](#14-note-malformed)
+15. [Option In Par](#15-option-in-par)
+16. [Option Outside Critical](#16-option-outside-critical)
+17. [Unmatched End](#17-unmatched-end)
+18. [Wrong Arrow](#18-wrong-arrow)
 
 ---
 
@@ -37,17 +39,19 @@ This file contains invalid sequence test fixtures with:
 | 3 | [autonumber extraneous](#3-autonumber-extraneous) | INVALID | INVALID | ✅ safe |
 | 4 | [autonumber malformed](#4-autonumber-malformed) | INVALID | INVALID | ✅ all |
 | 5 | [box unclosed](#5-box-unclosed) | INVALID | INVALID | ✅ safe |
-| 6 | [create malformed](#6-create-malformed) | INVALID | INVALID | — |
-| 7 | [create missing name](#7-create-missing-name) | INVALID | INVALID | — |
-| 8 | [critical else](#8-critical-else) | INVALID | INVALID | ✅ safe |
-| 9 | [destroy malformed](#9-destroy-malformed) | INVALID | INVALID | — |
-| 10 | [else outside alt](#10-else-outside-alt) | INVALID | INVALID | — |
-| 11 | [missing colon](#11-missing-colon) | INVALID | INVALID | ✅ safe |
-| 12 | [note malformed](#12-note-malformed) | INVALID | INVALID | ✅ safe |
-| 13 | [option in par](#13-option-in-par) | INVALID | INVALID | — |
-| 14 | [option outside critical](#14-option-outside-critical) | INVALID | INVALID | — |
-| 15 | [unmatched end](#15-unmatched-end) | INVALID | INVALID | — |
-| 16 | [wrong arrow](#16-wrong-arrow) | INVALID | INVALID | — |
+| 6 | [box with messages](#6-box-with-messages) | INVALID | INVALID | ✅ safe |
+| 7 | [box with notes](#7-box-with-notes) | INVALID | INVALID | ✅ safe |
+| 8 | [create malformed](#8-create-malformed) | INVALID | INVALID | — |
+| 9 | [create missing name](#9-create-missing-name) | INVALID | INVALID | — |
+| 10 | [critical else](#10-critical-else) | INVALID | INVALID | ✅ safe |
+| 11 | [destroy malformed](#11-destroy-malformed) | INVALID | INVALID | — |
+| 12 | [else outside alt](#12-else-outside-alt) | INVALID | INVALID | — |
+| 13 | [missing colon](#13-missing-colon) | INVALID | INVALID | ✅ safe |
+| 14 | [note malformed](#14-note-malformed) | INVALID | INVALID | ✅ safe |
+| 15 | [option in par](#15-option-in-par) | INVALID | INVALID | — |
+| 16 | [option outside critical](#16-option-outside-critical) | INVALID | INVALID | — |
+| 17 | [unmatched end](#17-unmatched-end) | INVALID | INVALID | — |
+| 18 | [wrong arrow](#18-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
@@ -457,7 +461,183 @@ sequenceDiagram
 
 ---
 
-## 6. Create Malformed
+## 6. Box With Messages
+
+📄 **Source**: [`box-with-messages.mmd`](./invalid/box-with-messages.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+    participant A
+    participant B
+    box "Group"
+        A->>B: message inside box
+    end
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 5:
+...box "Group"        A->>B: message insid
+----------------------^
+Expecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'ACTOR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[SE-BOX-INVALID-CONTENT]: Box blocks can only contain participant/actor declarations.
+at test-fixtures/sequence/invalid/box-with-messages.mmd:5:9
+  4 |     box "Group"
+  5 |         A->>B: message inside box
+    |         ^
+  6 |     end
+hint: Move messages, notes, and other statements outside the box block.
+  Example:
+  box "Group"
+    participant A
+    participant B
+  end
+  A->>B: Message
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+    participant A
+    participant B
+    box "Group"
+    end
+    A->>B: message inside box
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+    participant A
+    participant B
+    box "Group"
+        A->>B: message inside box
+    end
+
+```
+</details>
+
+---
+
+## 7. Box With Notes
+
+📄 **Source**: [`box-with-notes.mmd`](./invalid/box-with-notes.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+    participant A
+    participant B
+    box "Group"
+        Note over A: note inside box
+    end
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 5:
+...box "Group"        Note over A: note in
+----------------------^
+Expecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'note'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[SE-BOX-INVALID-CONTENT]: Box blocks can only contain participant/actor declarations.
+at test-fixtures/sequence/invalid/box-with-notes.mmd:5:9
+  4 |     box "Group"
+  5 |         Note over A: note inside box
+    |         ^^^^
+  6 |     end
+hint: Move messages, notes, and other statements outside the box block.
+  Example:
+  box "Group"
+    participant A
+    participant B
+  end
+  A->>B: Message
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+    participant A
+    participant B
+    box "Group"
+    end
+    Note over A: note inside box
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+    participant A
+    participant B
+    box "Group"
+        Note over A: note inside box
+    end
+
+```
+</details>
+
+---
+
+## 8. Create Malformed
 
 📄 **Source**: [`create-malformed.mmd`](./invalid/create-malformed.mmd)
 
@@ -531,7 +711,7 @@ sequenceDiagram
 
 ---
 
-## 7. Create Missing Name
+## 9. Create Missing Name
 
 📄 **Source**: [`create-missing-name.mmd`](./invalid/create-missing-name.mmd)
 
@@ -600,7 +780,7 @@ sequenceDiagram
 
 ---
 
-## 8. Critical Else
+## 10. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -695,7 +875,7 @@ sequenceDiagram
 
 ---
 
-## 9. Destroy Malformed
+## 11. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -767,7 +947,7 @@ sequenceDiagram
 
 ---
 
-## 10. Else Outside Alt
+## 12. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -839,7 +1019,7 @@ sequenceDiagram
 
 ---
 
-## 11. Missing Colon
+## 13. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -918,7 +1098,7 @@ sequenceDiagram
 
 ---
 
-## 12. Note Malformed
+## 14. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -997,7 +1177,7 @@ sequenceDiagram
 
 ---
 
-## 13. Option In Par
+## 15. Option In Par
 
 📄 **Source**: [`option-in-par.mmd`](./invalid/option-in-par.mmd)
 
@@ -1077,7 +1257,7 @@ sequenceDiagram
 
 ---
 
-## 14. Option Outside Critical
+## 16. Option Outside Critical
 
 📄 **Source**: [`option-outside-critical.mmd`](./invalid/option-outside-critical.mmd)
 
@@ -1152,7 +1332,7 @@ sequenceDiagram
 
 ---
 
-## 15. Unmatched End
+## 17. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1224,7 +1404,7 @@ sequenceDiagram
 
 ---
 
-## 16. Wrong Arrow
+## 18. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
