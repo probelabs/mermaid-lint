@@ -538,7 +538,15 @@ sequenceDiagram
 
 📄 **Source**: [`box-with-messages-outside.mmd`](./valid/box-with-messages-outside.mmd)
 
-### Rendered Output (Mermaid)
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
 
 ```mermaid
 sequenceDiagram
@@ -556,6 +564,15 @@ sequenceDiagram
     Note over API,UI: Communication layer
 
 ```
+
+</td>
+<td>
+
+<img src="./rendered/box-with-messages-outside.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
 
 <details>
 <summary>View source code</summary>
