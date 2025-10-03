@@ -49,6 +49,8 @@ export function renderPie(model: PieChartModel, opts: InternalOptions = {}): str
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
     .leader { stroke: #444; stroke-width: 1; fill: none; }
+    .pieCircle { stroke: black; stroke-width: 2px; opacity: 0.7; }
+    .pieOuterCircle { stroke: black; stroke-width: 2px; fill: none; }
   </style>`;
 
   if (model.title) {
@@ -72,8 +74,8 @@ export function renderPie(model: PieChartModel, opts: InternalOptions = {}): str
       'Z'
     ].join(' ');
     const fill = s.color || palette(i);
-    // Mermaid default does not draw per-slice strokes; avoid white outlines between slices
-    svg += `\n    <path d="${d}" fill="${fill}" fill-opacity="0.9" stroke="none" />`;
+    // Use CSS class-based styling for outlines and opacity
+    svg += `\n    <path d="${d}" class="pieCircle" fill="${fill}" />`;
 
     // Percent labels on slices (Mermaid parity)
     const mid = (start + end) / 2;
@@ -109,21 +111,22 @@ export function renderPie(model: PieChartModel, opts: InternalOptions = {}): str
     start = end;
   });
 
-  // Optional outer rim; allow theming via options
-  const rimStroke = opts.rimStroke ?? 'none';
-  const rimWidth = opts.rimStrokeWidth != null ? String(opts.rimStrokeWidth) : '';
-  svg += `\n  </g>\n  <circle class="pie-rim" cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="${rimStroke}"${rimWidth ? ` stroke-width="${rimWidth}"` : ''} />`;
+  // Outer rim via CSS; keep legacy class name for compatibility; also include attributes for theming
+  const rimStroke = (opts.rimStroke as string) || 'black';
+  const rimWidth = opts.rimStrokeWidth != null ? String(opts.rimStrokeWidth) : '2px';
+  svg += `\n  </g>\n  <circle class="pie-rim pieOuterCircle" cx="${cx}" cy="${cy}" r="${radius}" stroke="${rimStroke}" stroke-width="${rimWidth}" fill="none" />`;
 
   // Legend to the right: label and optional value (with showData)
   if (legendItems.length) {
     const legendX = cx + radius + pad / 2;
-    let legendY = (model.title ? pad * 2 : pad) + 10;
+    const totalH = legendItems.length * LEG_VSPACE;
+    let legendY = cy - totalH / 2 + 10;
     svg += `\n  <g class="legend">`;
     slices.forEach((s, i) => {
       const y = legendY + i * LEG_VSPACE;
       const fill = s.color || palette(i);
       const text = escapeXml(`${s.label}${model.showData ? ` ${formatNumber(Number(s.value))}` : ''}`);
-      svg += `\n    <rect x="${legendX}" y="${y - LEG_SW + 6}" width="${LEG_SW}" height="${LEG_SW}" fill="${fill}" stroke="#fff" stroke-width="1" />`;
+      svg += `\n    <rect x="${legendX}" y="${y - LEG_SW + 6}" width="${LEG_SW}" height="${LEG_SW}" fill="${fill}" stroke="${fill}" stroke-width="1" />`;
       svg += `\n    <text class="slice-label legend-text" x="${legendX + LEG_SW + LEG_GAP}" y="${y}" text-anchor="start">${text}</text>`;
     });
     svg += `\n  </g>`;

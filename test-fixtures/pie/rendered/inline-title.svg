@@ -3,24 +3,26 @@
     .pie-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #222; }
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #222; dominant-baseline: middle; }
     .leader { stroke: #444; stroke-width: 1; fill: none; }
+    .pieCircle { stroke: black; stroke-width: 2px; opacity: 0.7; }
+    .pieOuterCircle { stroke: black; stroke-width: 2px; fill: none; }
   </style>
   <text class="pie-title" x="283.5" y="32" text-anchor="middle">Pets adopted by volunteers</text>
   <g class="pie" aria-label="pie">
-    <path d="M 283.5 222 L 283.50 60.00 A 162 162 0 1 1 127.72 177.55 Z" fill="#ECECFF" fill-opacity="0.9" stroke="none" />
+    <path d="M 283.5 222 L 283.50 60.00 A 162 162 0 1 1 127.72 177.55 Z" class="pieCircle" fill="#ECECFF" />
     <text class="slice-label" x="344.00" y="302.18" text-anchor="start">79%</text>
-    <path d="M 283.5 222 L 127.72 177.55 A 162 162 0 0 1 252.28 63.04 Z" fill="#ffffde" fill-opacity="0.9" stroke="none" />
+    <path d="M 283.5 222 L 127.72 177.55 A 162 162 0 0 1 252.28 63.04 Z" class="pieCircle" fill="#ffffde" />
     <text class="slice-label" x="215.52" y="148.06" text-anchor="end">17%</text>
-    <path d="M 283.5 222 L 252.28 63.04 A 162 162 0 0 1 283.50 60.00 Z" fill="hsl(80, 100%, 56.2745098039%)" fill-opacity="0.9" stroke="none" />
+    <path d="M 283.5 222 L 252.28 63.04 A 162 162 0 0 1 283.50 60.00 Z" class="pieCircle" fill="hsl(80, 100%, 56.2745098039%)" />
     <path class="leader" d="M 269.38 76.88 L 266.88 51.09 L 254.88 51.09" />
     <text class="slice-label" x="252.88" y="51.09" text-anchor="end">3%</text>
   </g>
-  <circle class="pie-rim" cx="283.5" cy="222" r="162" fill="none" stroke="none" />
+  <circle class="pie-rim pieOuterCircle" cx="283.5" cy="222" r="162" stroke="black" stroke-width="2px" fill="none" />
   <g class="legend">
-    <rect x="457.5" y="52" width="12" height="12" fill="#ECECFF" stroke="#fff" stroke-width="1" />
-    <text class="slice-label legend-text" x="477.5" y="58" text-anchor="start">Dogs</text>
-    <rect x="457.5" y="70" width="12" height="12" fill="#ffffde" stroke="#fff" stroke-width="1" />
-    <text class="slice-label legend-text" x="477.5" y="76" text-anchor="start">Cats</text>
-    <rect x="457.5" y="88" width="12" height="12" fill="hsl(80, 100%, 56.2745098039%)" stroke="#fff" stroke-width="1" />
-    <text class="slice-label legend-text" x="477.5" y="94" text-anchor="start">Rats</text>
+    <rect x="457.5" y="199" width="12" height="12" fill="#ECECFF" stroke="#ECECFF" stroke-width="1" />
+    <text class="slice-label legend-text" x="477.5" y="205" text-anchor="start">Dogs</text>
+    <rect x="457.5" y="217" width="12" height="12" fill="#ffffde" stroke="#ffffde" stroke-width="1" />
+    <text class="slice-label legend-text" x="477.5" y="223" text-anchor="start">Cats</text>
+    <rect x="457.5" y="235" width="12" height="12" fill="hsl(80, 100%, 56.2745098039%)" stroke="hsl(80, 100%, 56.2745098039%)" stroke-width="1" />
+    <text class="slice-label legend-text" x="477.5" y="241" text-anchor="start">Rats</text>
   </g>
 </svg>

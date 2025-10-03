@@ -290,7 +290,7 @@ export class MermaidRenderer {
 function applyPieTheme(svg: string, theme?: Record<string, any>): string {
   if (!theme) return svg;
   let out = svg;
-  // Apply rim styles (outer circle) when provided
+  // Apply rim styles (outer circle) via CSS when provided
   if (theme.pieOuterStrokeWidth != null) {
     const w = String(theme.pieOuterStrokeWidth);
     // Insert or replace stroke-width on the rim circle tag
@@ -330,7 +330,7 @@ function applyPieTheme(svg: string, theme?: Record<string, any>): string {
   }
   if (colors.length) {
     let idx = 0;
-    out = out.replace(/<path d="M [^"]+" fill="([^"]+)"/g, (_m) => {
+    out = out.replace(/<path[^>]*class="pieCircle"[^>]*\sfill="([^"]+)"/g, (_m) => {
       const color = colors[idx] ?? null;
       idx++;
       if (color) return _m.replace(/fill="([^"]+)"/, `fill="${color}"`);
