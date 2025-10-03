@@ -8,6 +8,9 @@
   "autonumber-malformed.mmd": [
     "SE-AUTONUMBER-NON-NUMERIC"
   ],
+  "box-empty.mmd": [
+    "SE-BOX-EMPTY"
+  ],
   "box-unclosed.mmd": [
     "SE-BLOCK-MISSING-END"
   ],

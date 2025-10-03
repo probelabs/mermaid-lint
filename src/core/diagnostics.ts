@@ -549,6 +549,27 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
         }
       }
       if (hasEnd) {
+        // Check if there are ANY participants in the box
+        let hasParticipants = false;
+        for (let i = openIdx + 1; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          if (/^\s*end\s*$/.test(raw)) break;
+          if (/^\s*(participant|actor)\b/i.test(raw)) {
+            hasParticipants = true;
+            break;
+          }
+        }
+
+        if (!hasParticipants) {
+          // Box with no participants - suggest using 'rect' instead
+          return {
+            line: openIdx + 1, column: 1, severity: 'error', code: 'SE-BOX-EMPTY',
+            message: "Box block has no participant/actor declarations. Use 'rect' to group messages visually.",
+            hint: "Replace 'box' with 'rect' if you want to group messages:\nrect rgb(240, 240, 255)\n  A->>B: Message\n  Note over A: Info\nend",
+            length: 3
+          };
+        }
+
         return {
           line, column, severity: 'error', code: 'SE-BOX-INVALID-CONTENT',
           message: 'Box blocks can only contain participant/actor declarations.',

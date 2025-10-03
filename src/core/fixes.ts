@@ -471,6 +471,21 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 4, 'option'));
       continue;
     }
+    if (is('SE-BOX-EMPTY', e)) {
+      // Convert empty box to rect
+      const lines = text.split(/\r?\n/);
+      const boxIdx = Math.max(0, e.line - 1);
+      const boxLine = lines[boxIdx] || '';
+      // Extract the label from box "Label"
+      const labelMatch = /^\s*box\s+(.+)$/.exec(boxLine);
+      if (labelMatch) {
+        const indent = boxLine.match(/^\s*/)?.[0] || '';
+        // Convert to rect with a light color
+        const newLine = `${indent}rect rgb(240, 240, 255)`;
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: boxLine.length + 1 }, newText: newLine });
+      }
+      continue;
+    }
     if (is('SE-BOX-INVALID-CONTENT', e)) {
       // Move messages, notes, and other invalid content outside the box block
       const lines = text.split(/\r?\n/);
