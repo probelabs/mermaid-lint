@@ -15,24 +15,21 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   const width = Math.ceil(layout.width);
   const height = Math.ceil(layout.height);
 
-  svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`);
+  svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width+50}" height="${height+40}" viewBox="-50 -10 ${width+50} ${height+40}">`);
   svgParts.push(`  <style>
-    .actor-rect { fill: #ECECFF; stroke: #333; stroke-width: 1.5px; }
-    .actor-label { font-family: Arial, sans-serif; font-size: 14px; fill: #111; }
-    .lifeline { stroke: #999; stroke-dasharray: 3 3; }
-    .activation { fill: #f2f2f2; stroke: #666; stroke-width: 1px; }
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; fill: #111; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
-    .msg-line.dotted { stroke-dasharray: 4 3; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
     .msg-line.thick { stroke-width: 3px; }
-    .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
-    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
-    .msg-badge { fill: #fff; stroke: #999; stroke-width: 1px; }
-    .msg-badge-text { font-family: Arial, sans-serif; font-size: 10px; fill: #333; dominant-baseline: middle; }
+    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: central; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
-    .note { fill: #fff8dc; stroke: #d2b48c; stroke-width: 1px; }
-    .note-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
@@ -60,6 +57,9 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   // Blocks
   for (const b of layout.blocks) drawBlock(svgParts, b);
 
+  // Bottom actor boxes (Mermaid draws both top and bottom)
+  for (const p of layout.participants) drawParticipantBottom(svgParts, p, layout);
+
   svgParts.push('</svg>');
   let svg = svgParts.join('\n');
   if (opts.theme) svg = applySequenceTheme(svg, opts.theme);
@@ -68,7 +68,17 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
 
 function drawParticipant(out: string[], p: LayoutParticipant) {
   out.push(`  <g class="actor" transform="translate(${p.x},${p.y})">`);
-  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="4"/>`);
+  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="4" fill="#eaeaea" stroke="#666"/>`);
+  out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2 + 4}" text-anchor="middle">${escapeXml(p.display)}</text>`);
+  out.push('  </g>');
+}
+
+function drawParticipantBottom(out: string[], p: LayoutParticipant, layout: SequenceLayout) {
+  // bottom actor box aligned with lifeline end (y2)
+  const lifeline = layout.lifelines.find(l => Math.abs(l.x - (p.x + p.width / 2)) < 0.001);
+  const y = lifeline ? lifeline.y2 : (layout.height - 28);
+  out.push(`  <g class="actor" transform="translate(${p.x},${y})">`);
+  out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="3" fill="#eaeaea" stroke="#666"/>`);
   out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2 + 4}" text-anchor="middle">${escapeXml(p.display)}</text>`);
   out.push('  </g>');
 }
@@ -87,15 +97,7 @@ function drawMarker(out: string[], kind: 'arrow'|'open'|'cross', x: number, y: n
   const rot = (angle * 180 / Math.PI).toFixed(2);
   if (kind === 'arrow') {
     const dx = which === 'start' ? size : -size;
-    // Draw one or two chevrons for async arrows
-    const drawOne = (ox: number) => `  <path class=\"arrowhead\" transform=\"translate(${ox},${y}) rotate(${rot})\" d=\"M 0 0 L 0 ${-size} L ${dx} 0 Z\" />`;
-    if (async) {
-      const offset = which === 'start' ? -8 : 8; // nudge second head along the line
-      out.push(drawOne(x));
-      out.push(drawOne(x + offset));
-    } else {
-      out.push(drawOne(x));
-    }
+    out.push(`  <path class=\"arrowhead\" transform=\"translate(${x},${y}) rotate(${rot})\" d=\"M 0 0 L 0 ${-size} L ${dx} 0 Z\" />`);
   } else if (kind === 'open') {
     out.push(`  <circle class="openhead" cx="${x}" cy="${y}" r="4" />`);
   } else if (kind === 'cross') {
@@ -114,22 +116,12 @@ function formatMessageLabel(text?: string, counter?: number): string | undefined
   return text;
 }
 
-function drawMessageLabel(out: string[], m: LayoutMessage, label: string, counter?: number) {
+function drawMessageLabel(out: string[], m: LayoutMessage, label: string, _counter?: number) {
   const xMid = (m.x1 + m.x2) / 2;
-  const h = 16;
-  const w = Math.max(20, measureText(label, 12) + 12);
-  const x = xMid - w / 2;
-  const y = m.y - h - 4; // draw above the line
-  out.push(`  <rect class="msg-label-bg" x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/>`);
-  out.push(`  <text class="msg-label" x="${xMid}" y="${y + h/2 + 4}" text-anchor="middle">${escapeXml(label)}</text>`);
-  // Optional autonumber badge when both number and text present
-  if (counter != null && /\D/.test(label)) {
-    const bx = x - 12; // left of pill
-    const by = y + h/2;
-    out.push(`  <circle class="msg-badge" cx="${bx}" cy="${by}" r="8"/>`);
-    out.push(`  <text class="msg-badge-text" x="${bx}" y="${by + 0.5}" text-anchor="middle">${counter}</text>`);
-  }
+  const y = m.y;
+  out.push(`  <text class=\"msg-label\" x=\"${xMid}\" y=\"${y}\" text-anchor=\"middle\">${escapeXml(label)}</text>`);
 }
+
 
 function drawNote(out: string[], n: LayoutNote) {
   out.push(`  <g class="note" transform="translate(${n.x},${n.y})">`);

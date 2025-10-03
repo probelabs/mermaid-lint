@@ -115,10 +115,10 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
 
   const lifelineTop = MARGIN_Y + ACTOR_H + 10;
   const contentHeight = row * ROW_H;
-  const height = lifelineTop + contentHeight + MARGIN_Y;
+  const height = lifelineTop + contentHeight + MARGIN_Y + ACTOR_H; // reserve space for bottom actor boxes
 
   // Lifelines
-  const lifelines = participants.map(p => ({ x: p.x + p.width / 2, y1: lifelineTop, y2: height - MARGIN_Y }));
+  const lifelines = participants.map(p => ({ x: p.x + p.width / 2, y1: lifelineTop, y2: height - MARGIN_Y - ACTOR_H }));
 
   // row -> y
   function yForRow(r: number): number { return lifelineTop + r * ROW_H + ROW_H / 2; }
@@ -150,7 +150,7 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
   };
 
   // Track open blocks stack for layout metrics
-  const openForLayout: Array<{ block: Block; startRow: number; branches: Array<{ title?: string; row: number }>; }> = [];
+  const openForLayout: Array<{ block: Block; startRow: number; branches: Array<{ title?: string; row: number }>; lastRow?: number; }> = [];
 
   model.events.forEach((ev, idx) => {
     const r = rowIndexForEvent.has(idx) ? rowIndexForEvent.get(idx)! : null;
@@ -164,6 +164,8 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
           messages.push({ from: p1.id, to: p2.id, text: ev.msg.text, y, x1, x2, line: ev.msg.line, startMarker: ev.msg.startMarker, endMarker: ev.msg.endMarker, async: ev.msg.async });
           if (ev.msg.activateTarget) startAct(ev.msg.to, r);
           if (ev.msg.deactivateTarget) endAct(ev.msg.to, r);
+          const top = openForLayout[openForLayout.length - 1];
+          if (top) top.lastRow = r;
         }
         break;
       }
@@ -187,6 +189,8 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
             notes.push({ x, y, width: NOTE_W, height: ROW_H - NOTE_PAD, text: ev.note.text, anchor: leftSide ? 'left' : 'right' });
           }
         }
+        const top = openForLayout[openForLayout.length - 1];
+        if (top && r != null) top.lastRow = r;
         break;
       }
       case 'activate': if (r != null) startAct(ev.actor, r); break;
@@ -198,7 +202,7 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
       }
       case 'block-branch': {
         const top = openForLayout[openForLayout.length - 1];
-        if (top && r != null) top.branches.push({ title: ev.branch.title, row: r });
+        if (top && r != null) { top.branches.push({ title: ev.branch.title, row: r }); top.lastRow = r; }
         break;
       }
       case 'block-end': {
@@ -210,7 +214,8 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
           const left = first ? first.x : MARGIN_X;
           const right = last ? (last.x + last.width) : (left + 200);
           const yTop = yForRow(top.startRow) - ROW_H / 2 - BLOCK_PAD;
-          const yBot = (r != null ? yForRow(Math.max(r, top.startRow)) : (lifelineTop + contentHeight)) + ROW_H / 2 + BLOCK_PAD;
+          const endRow = top.lastRow != null ? top.lastRow : top.startRow;
+          const yBot = yForRow(endRow) + ROW_H / 2 + BLOCK_PAD;
           const layout: LayoutBlock = { type: top.block.type, title: top.block.title, x: left - BLOCK_PAD, y: yTop, width: (right - left) + BLOCK_PAD * 2, height: (yBot - yTop) };
           if (top.branches.length) layout.branches = top.branches.map(b => ({ title: b.title, y: yForRow(b.row) - ROW_H / 2 }));
           blocks.push(layout);

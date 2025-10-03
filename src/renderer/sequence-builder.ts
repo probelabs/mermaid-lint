@@ -92,7 +92,7 @@ export function buildSequenceModel(text: string): SequenceModel {
 
   const openBlocks: Block[] = [];
 
-  for (const ln of lines) {
+  function processLineNode(ln: CstNode) {
     const ch = (ln.children || {}) as any;
 
     // participantDecl
@@ -108,7 +108,7 @@ export function buildSequenceModel(text: string): SequenceModel {
       const p = ensureParticipant(participantsMap, byDisplay, id, display);
       // Create explicit event for future if needed
       events.push({ kind: 'create', actor: p.id, display: p.display });
-      continue;
+      return;
     }
 
     // autonumberStmt
@@ -120,7 +120,7 @@ export function buildSequenceModel(text: string): SequenceModel {
       if (nums.length >= 1) (autonumber as any).start = Number(nums[0].image);
       if (nums.length >= 2) (autonumber as any).step = Number(nums[1].image);
       if (sch.OffKeyword) autonumber = { on: false };
-      continue;
+      return;
     }
 
     // activate / deactivate
@@ -128,13 +128,13 @@ export function buildSequenceModel(text: string): SequenceModel {
       const st = ch.activateStmt[0] as CstNode; const sch = (st.children || {}) as any;
       const idTxt = actorRefToText(sch.actorRef?.[0]); const p = ensureParticipant(participantsMap, byDisplay, idTxt);
       events.push({ kind: 'activate', actor: p.id });
-      continue;
+      return;
     }
     if (ch.deactivateStmt) {
       const st = ch.deactivateStmt[0] as CstNode; const sch = (st.children || {}) as any;
       const idTxt = actorRefToText(sch.actorRef?.[0]); const p = ensureParticipant(participantsMap, byDisplay, idTxt);
       events.push({ kind: 'deactivate', actor: p.id });
-      continue;
+      return;
     }
 
     // create / destroy lines
@@ -144,14 +144,14 @@ export function buildSequenceModel(text: string): SequenceModel {
       const alias = sch.lineRemainder ? lineRemainderToText(sch.lineRemainder[0]) : undefined;
       const p = ensureParticipant(participantsMap, byDisplay, idTxt, alias || idTxt);
       events.push({ kind: 'create', actor: p.id, display: p.display });
-      continue;
+      return;
     }
     if (ch.destroyStmt) {
       const st = ch.destroyStmt[0] as CstNode; const sch = (st.children || {}) as any;
       const idTxt = actorRefToText(sch.actorRef?.[0]);
       const p = ensureParticipant(participantsMap, byDisplay, idTxt);
       events.push({ kind: 'destroy', actor: p.id });
-      continue;
+      return;
     }
 
     // noteStmt
@@ -171,7 +171,7 @@ export function buildSequenceModel(text: string): SequenceModel {
         if (a2) { const p2 = ensureParticipant(participantsMap, byDisplay, a2); ids.push(p2.id); }
         events.push({ kind: 'note', note: { pos: 'over', actors: ids, text } });
       }
-      continue;
+      return;
     }
 
     // Blocks: alt/opt/loop/par/critical/break/rect/box
@@ -217,7 +217,7 @@ export function buildSequenceModel(text: string): SequenceModel {
         break;
       }
     }
-    if (handledBlock) continue;
+    if (handledBlock) return;
 
     // messageStmt
     if (ch.messageStmt) {
@@ -232,14 +232,39 @@ export function buildSequenceModel(text: string): SequenceModel {
       const deactivateTarget = !!sch.Minus;
       const msg: Message = { from, to, text, line: arrow.line, startMarker: arrow.start, endMarker: arrow.end, async: arrow.async, activateTarget, deactivateTarget };
       events.push({ kind: 'message', msg });
-      continue;
+      return;
     }
 
     // linkStmt (ignored for rendering for now)
-    if (ch.linkStmt) { events.push({ kind: 'noop' }); continue; }
+    if (ch.linkStmt) { events.push({ kind: 'noop' }); return; }
 
     // blankLine or anything else ignored
     events.push({ kind: 'noop' });
+  }
+
+  // Collect nested line rules from a block node (alt/opt/loop/par/critical/break/rect/box)
+  function collectInnerLines(blockNode: CstNode): CstNode[] {
+    const out: CstNode[] = [];
+    const ch = (blockNode.children || {}) as any;
+    for (const key of Object.keys(ch)) {
+      const arr = ch[key];
+      if (Array.isArray(arr)) {
+        for (const node of arr) {
+          if (node && typeof node === 'object' && (node as CstNode).name === 'line') out.push(node as CstNode);
+        }
+      }
+    }
+    return out;
+  }
+
+  for (const ln of lines) {
+    processLineNode(ln);
+    // If the top-level line was a block, recurse into its internal lines
+    const ch = (ln.children || {}) as any;
+    const block = ch.altBlock?.[0] || ch.optBlock?.[0] || ch.loopBlock?.[0] || ch.parBlock?.[0] || ch.criticalBlock?.[0] || ch.breakBlock?.[0] || ch.rectBlock?.[0] || ch.boxBlock?.[0];
+    if (block) {
+      for (const inner of collectInnerLines(block)) processLineNode(inner);
+    }
   }
 
   return {
@@ -248,4 +273,3 @@ export function buildSequenceModel(text: string): SequenceModel {
     autonumber: (autonumber as any).on === true || (autonumber as any).on === false ? (autonumber as any) : { on: false }
   };
 }
-
