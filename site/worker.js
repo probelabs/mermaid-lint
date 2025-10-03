@@ -12,7 +12,7 @@ export default {
       
       // Remove /maid from the path and proxy to the Pages site
       const newPath = url.pathname.replace('/maid', '') || '/';
-      const pagesUrl = `https://f9f3677d.maid-cp6.pages.dev${newPath}${url.search}`;
+      const pagesUrl = `https://browser-renderer-demo.maid-cp6.pages.dev${newPath}${url.search}`;
       
       // Fetch from the Pages deployment
       const response = await fetch(pagesUrl, {

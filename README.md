@@ -108,6 +108,85 @@ Maid can be used programmatically (ESM, CommonJS, and TypeScript). The public AP
 
 For detailed examples (ESM, CommonJS, TypeScript) and API surface, see docs/SDK.md.
 
+### Browser Usage with Mermaid.js-Compatible API
+
+Maid provides a **drop-in replacement** for Mermaid.js that works in the browser with no external dependencies. Perfect for validating and rendering diagrams client-side without Puppeteer or Chrome.
+
+**Quick Start (via CDN):**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maid Browser Example</title>
+</head>
+<body>
+    <div id="diagram"></div>
+
+    <script type="module">
+        // Import from ProLabs CDN
+        import { createMermaidAPI } from 'https://probelabs.com/maid/maid.bundle.js';
+
+        // Create a Mermaid.js-compatible API
+        const maid = createMermaidAPI();
+
+        const diagramText = `
+            flowchart TD
+                A[Start] --> B{Decision}
+                B -->|Yes| C[Process]
+                B -->|No| D[End]
+        `;
+
+        // Use exactly like Mermaid.js
+        const { svg } = await maid.render('diagram-id', diagramText);
+        document.getElementById('diagram').innerHTML = svg;
+    </script>
+</body>
+</html>
+```
+
+**Features:**
+- ✅ **Same API as Mermaid.js** - Drop-in replacement for `mermaid.render()`
+- ✅ **No dependencies** - Works completely offline (~350KB bundle)
+- ✅ **Built-in validation** - Auto-fixes common errors before rendering
+- ✅ **Experimental renderer** - Supports flowchart and pie diagrams
+
+**Toggle Between Renderers:**
+
+```html
+<script type="module">
+    import { createMermaidAPI } from 'https://probelabs.com/maid/maid.bundle.js';
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    const maidRenderer = createMermaidAPI();
+    mermaid.initialize({ startOnLoad: false });
+
+    // Choose renderer based on user preference
+    const useMaid = true; // or read from checkbox
+    const renderer = useMaid ? maidRenderer : mermaid;
+
+    // Both use the same API!
+    const { svg } = await renderer.render('id', diagramText);
+</script>
+```
+
+**Interactive Demo:** Try it live at [https://probelabs.com/maid/demo.html](https://probelabs.com/maid/demo.html)
+
+**API Reference:**
+- `createMermaidAPI()` - Creates Mermaid.js-compatible instance
+- `maid.render(id, text, options?)` - Async render (returns `{ svg }`)
+- `maid.renderSync(id, text, options?)` - Sync render (returns `{ svg }`)
+- `maid.initialize(config?)` - No-op for compatibility
+
+**Supported Diagram Types (Browser Rendering):**
+- ✅ Flowcharts (`flowchart`, `graph`)
+- ✅ Pie charts (`pie`)
+- 🚧 Other types fall back to validation only
+
+**Bundle Sizes:**
+- Maid browser bundle: ~350KB minified
+- Mermaid.js: ~400KB (CDN) or 1.7GB (mermaid-cli + Puppeteer)
+
 ### Rendering Diagrams (Experimental)
 
 ```bash
