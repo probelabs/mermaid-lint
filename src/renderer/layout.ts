@@ -67,7 +67,12 @@ export class DagreLayoutEngine implements ILayoutEngine {
 
     // Add nodes
     for (const node of graph.nodes) {
-      const dimensions = this.calculateNodeDimensions(node.label, node.shape);
+      // Respect explicit width/height when provided by the caller (e.g., class/state renderers)
+      const providedW = (node as any).width as number | undefined;
+      const providedH = (node as any).height as number | undefined;
+      const dimensions = (providedW && providedH)
+        ? { width: providedW, height: providedH }
+        : this.calculateNodeDimensions(node.label, node.shape);
       g.setNode(node.id, {
         width: dimensions.width,
         height: dimensions.height,

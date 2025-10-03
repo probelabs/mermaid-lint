@@ -587,8 +587,24 @@ export class SVGRenderer implements IRenderer {
     const pathData = pathParts.join(' ');
 
     let edgeElement = `<path class="edge-path" d="${pathData}" stroke-linecap="round" stroke-linejoin="round"`;
+    // Per-edge style overrides (from linkStyle)
+    const styleStroke = (edge as any).style?.stroke as (string|undefined);
+    const styleStrokeWidth = (edge as any).style?.strokeWidth as (number|undefined);
+    const styleStrokeOpacity = (edge as any).style?.strokeOpacity as (number|undefined);
+    if ((edge as any).dasharray) strokeDasharray = String((edge as any).dasharray);
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
+    }
+    if (styleStrokeWidth != null) {
+      edgeElement += ` stroke-width="${styleStrokeWidth}"`;
+    } else {
+      if (strokeWidth && strokeWidth !== 1.5) edgeElement += ` stroke-width="${strokeWidth}"`;
+    }
+    if (styleStrokeOpacity != null) {
+      edgeElement += ` stroke-opacity="${styleStrokeOpacity}"`;
+    }
+    if (styleStroke) {
+      edgeElement += ` stroke="${styleStroke}"`;
     }
     // Apply explicit markers from edge if present
     const startMarkUrl = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
@@ -619,20 +635,23 @@ export class SVGRenderer implements IRenderer {
       const vlenl = Math.hypot(vxl, vyl) || 1;
       const uxl = vxl / vlenl; const uyl = vyl / vlenl;
       const nxl = -uyl; const nyl = uxl;
-      const triLenL = 8; const triWL = 6;
+      // Scale overlay arrowhead with stroke width if provided (linkStyle)
+      const ow = (styleStrokeWidth != null ? styleStrokeWidth : strokeWidth);
+      const triLenL = Math.max(6, Math.min(14, 6 + (ow - 1.5) * 3));
+      const triWL   = Math.max(5, Math.min(12, 5 + (ow - 1.5) * 2.5));
       // Arrow points forward in direction of travel: tip AT boundaryEnd, base pulled back
       const p1xL = boundaryEnd.x, p1yL = boundaryEnd.y; // tip at boundary
       const baseXL = boundaryEnd.x - uxl * triLenL; const baseYL = boundaryEnd.y - uyl * triLenL;
       const p2xL = baseXL + nxl * (triWL/2), p2yL = baseYL + nyl * (triWL/2);
       const p3xL = baseXL - nxl * (triWL/2), p3yL = baseYL - nyl * (triWL/2);
-      overlay += triangleAtEnd(prevEndL, boundaryEnd, this.arrowStroke);
+      overlay += triangleAtEnd(prevEndL, boundaryEnd, (styleStroke || this.arrowStroke), triLenL, triWL);
       if (mStart === 'arrow' && points.length >= 2) {
         const firstLeg = points[1];
         const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
         const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
         const snx = -suy; const sny = sux;
         const sbaseX = boundaryStart.x - sux * triLenL; const sbaseY = boundaryStart.y - suy * triLenL;
-        overlay += triangleAtStart(boundaryStart, firstLeg, this.arrowStroke);
+        overlay += triangleAtStart(boundaryStart, firstLeg, (styleStroke || this.arrowStroke), triLenL, triWL);
       }
 
       const pathGroup = `<g>
@@ -652,9 +671,10 @@ export class SVGRenderer implements IRenderer {
     const vlen = Math.hypot(vx, vy) || 1;
     const ux = vx / vlen; const uy = vy / vlen;
     const nx = -uy; const ny = ux;
-    // reuse triLen from above (8px)
-    const triLen = 8; // px overlay triangle length
-    const triW = 6;   // px base width
+    // Scale overlay arrowhead with stroke width if provided (linkStyle)
+    const ow2 = (styleStrokeWidth != null ? styleStrokeWidth : strokeWidth);
+    const triLen = Math.max(6, Math.min(14, 6 + (ow2 - 1.5) * 3));
+    const triW   = Math.max(5, Math.min(12, 5 + (ow2 - 1.5) * 2.5));
     // Arrow points forward in direction of travel: tip AT boundaryEnd, base pulled back
     const p1x = boundaryEnd.x, p1y = boundaryEnd.y; // tip at boundary
     const baseX = boundaryEnd.x - ux * triLen;
@@ -662,7 +682,7 @@ export class SVGRenderer implements IRenderer {
     const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
     const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
 
-    if (mEnd === 'arrow') overlay += triangleAtEnd(prevEnd, boundaryEnd, this.arrowStroke);
+    if (mEnd === 'arrow') overlay += triangleAtEnd(prevEnd, boundaryEnd, (styleStroke || this.arrowStroke), triLen, triW);
     // Optional: support start arrow overlay if needed
     if (mStart === 'arrow' && points.length >= 2) {
       const firstLeg = points[1];
@@ -670,7 +690,7 @@ export class SVGRenderer implements IRenderer {
       const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
       const snx = -suy; const sny = sux;
       // Arrow points backward from boundaryStart toward firstLeg (start arrow points back toward source)
-      overlay += triangleAtStart(boundaryStart, firstLeg, this.arrowStroke);
+      overlay += triangleAtStart(boundaryStart, firstLeg, (styleStroke || this.arrowStroke), triLen, triW);
     }
 
     if (overlay) {

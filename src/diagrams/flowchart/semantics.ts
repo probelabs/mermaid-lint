@@ -9,6 +9,7 @@ const BaseVisitor: any = (parserInstance as any).getBaseCstVisitorConstructorWit
 
 class FlowSemanticsVisitor extends BaseVisitor {
   private ctx: Ctx;
+  private edgeCount = 0;
 
   constructor(ctx: Ctx) {
     super();
@@ -18,12 +19,10 @@ class FlowSemanticsVisitor extends BaseVisitor {
 
   // Entry point
   diagram(ctx: any) {
-    // Visit all statements
     if (ctx.statement) ctx.statement.forEach((s: CstNode) => this.visit(s));
   }
 
   statement(ctx: any) {
-    // delegate to child rules only (skip token arrays)
     for (const k of Object.keys(ctx)) {
       const arr = (ctx as any)[k];
       if (Array.isArray(arr)) {
@@ -34,26 +33,150 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
-  clickStatement(_ctx: any) {
+  clickStatement(ctx: any) {
+    const ids: any[] = (ctx as any).Identifier || [];
+    const q: any[] = (ctx as any).QuotedString || [];
+    const t0 = ids[0];
+    const modeTok = ids[1];
+    const mode = (modeTok?.image || '').toLowerCase();
+    if (!mode) {
+      this.ctx.errors.push({
+        line: (t0?.startLine ?? 1),
+        column: (t0?.startColumn ?? 1),
+        severity: 'error',
+        code: 'FL-CLICK-MODE-MISSING',
+        message: "After 'click <id>' specify 'href' or 'call'.",
+        hint: "Examples: click A href \"https://…\" \"Tip\" _blank | click A call doThing() \"Tip\"",
+      });
+      return;
+    }
+    if (mode === 'href') {
+      if (q.length < 1) {
+        this.ctx.errors.push({
+          line: (modeTok.startLine ?? 1),
+          column: (modeTok.startColumn ?? 1),
+          severity: 'error',
+          code: 'FL-CLICK-HREF-URL-MISSING',
+          message: "'click … href' requires a quoted URL.",
+          hint: 'Example: click A href "https://example.com" "Open" _blank'
+        });
+      }
+      const tgt = ids[2];
+      if (tgt && !/^_(blank|self|parent|top)$/i.test((tgt.image || ''))) {
+        this.ctx.errors.push({
+          line: tgt.startLine ?? 1,
+          column: tgt.startColumn ?? 1,
+          severity: 'warning',
+          code: 'FL-CLICK-TARGET-UNKNOWN',
+          message: `Unknown target '${tgt.image}'. Use _blank/_self/_parent/_top.`,
+          hint: 'Example: … _blank'
+        });
+      }
+      return;
+    }
+    if (mode === 'call' || mode === 'callback') {
+      const fnTok = ids[2];
+      if (!fnTok) {
+        this.ctx.errors.push({
+          line: (modeTok.startLine ?? 1),
+          column: (modeTok.startColumn ?? 1),
+          severity: 'error',
+          code: 'FL-CLICK-CALL-NAME-MISSING',
+          message: "'click … call' requires a function name.",
+          hint: 'Example: click A call doThing() "Tooltip"'
+        });
+      }
+      return;
+    }
     this.ctx.errors.push({
-      line: 1,
-      column: 1,
+      line: (modeTok.startLine ?? 1),
+      column: (modeTok.startColumn ?? 1),
       severity: 'error',
-      code: 'FL-INTERACTION-UNSUPPORTED',
-      message: "Interaction statements ('click', 'linkStyle') are not supported in validation yet.",
-      hint: 'Remove the interaction line or validate rendering separately.'
+      code: 'FL-CLICK-MODE-INVALID',
+      message: `Unknown click mode '${modeTok.image}'. Use 'href' or 'call'.`,
+      hint: 'Examples: href "…" | call fn()'
     });
   }
 
-  linkStyleStatement(_ctx: any) {
-    this.ctx.errors.push({
-      line: 1,
-      column: 1,
-      severity: 'error',
-      code: 'FL-INTERACTION-UNSUPPORTED',
-      message: "Interaction statements ('click', 'linkStyle') are not supported in validation yet.",
-      hint: 'Remove the interaction line or validate rendering separately.'
-    });
+  linkStyleStatement(ctx: any) {
+    const nums: number[] = ((ctx as any).NumberLiteral || []).map((t: any) => parseInt(t.image, 10)).filter((n: number) => Number.isFinite(n));
+    if (nums.length === 0) {
+      const anyTok: any = (ctx as any).LinkStyleKeyword?.[0] || (ctx as any).Identifier?.[0] || (ctx as any).NumberLiteral?.[0];
+      this.ctx.errors.push({
+        line: anyTok?.startLine ?? 1,
+        column: anyTok?.startColumn ?? 1,
+        severity: 'error',
+        code: 'FL-LINKSTYLE-NO-INDICES',
+        message: "'linkStyle' requires one or more link indices (comma separated).",
+        hint: 'Example: linkStyle 0,1 stroke:#f66,stroke-width:2px'
+      });
+      return;
+    }
+    const hasStyle = ((ctx as any).ColorValue && (ctx as any).ColorValue.length > 0) || ((ctx as any).Colon && (ctx as any).Colon.length > 0);
+    if (!hasStyle) {
+      const firstNum: any = (ctx as any).NumberLiteral?.[0];
+      this.ctx.errors.push({
+        line: firstNum?.startLine ?? 1,
+        column: firstNum?.startColumn ?? 1,
+        severity: 'error',
+        code: 'FL-LINKSTYLE-MISSING-STYLE',
+        message: "Missing style declarations after indices.",
+        hint: 'Example: linkStyle 0 stroke:#f00,stroke-width:2px'
+      });
+    }
+
+    // Detect ranges like 0:3 among the tokens (unsupported for now)
+    const allTok: any[] = ([] as any[])
+      .concat((ctx as any).NumberLiteral || [])
+      .concat((ctx as any).Colon || [])
+      .concat((ctx as any).Comma || []);
+    const ordered = allTok
+      .filter(t => typeof t?.startOffset === 'number')
+      .sort((a, b) => (a.startOffset - b.startOffset));
+    for (let i = 0; i < ordered.length - 2; i++) {
+      const a = ordered[i]; const mid = ordered[i+1]; const b = ordered[i+2];
+      if (a.tokenType?.name === 'NumberLiteral' && mid.tokenType?.name === 'Colon' && b.tokenType?.name === 'NumberLiteral') {
+        this.ctx.errors.push({
+          line: mid.startLine ?? 1,
+          column: mid.startColumn ?? 1,
+          severity: 'error',
+          code: 'FL-LINKSTYLE-RANGE-UNSUPPORTED',
+          message: "Ranges like '0:3' are not supported in linkStyle indices.",
+          hint: 'List indices explicitly: linkStyle 0,1,2,3 …'
+        });
+        break;
+      }
+    }
+
+    // Duplicate indices
+    const seen = new Set<number>();
+    for (const n of nums) {
+      if (seen.has(n)) {
+        const numTok: any = (ctx as any).NumberLiteral?.find((t: any) => parseInt(t.image, 10) === n);
+        this.ctx.errors.push({
+          line: numTok?.startLine ?? 1,
+          column: numTok?.startColumn ?? 1,
+          severity: 'warning',
+          code: 'FL-LINKSTYLE-DUPLICATE-INDEX',
+          message: `Duplicate linkStyle index ${n}.`,
+          hint: 'Remove duplicates.'
+        });
+      }
+      seen.add(n);
+    }
+    for (const n of nums) {
+      if (!(n >= 0 && n < this.edgeCount)) {
+        const numTok: any = (ctx as any).NumberLiteral?.find((t: any) => parseInt(t.image, 10) === n);
+        this.ctx.errors.push({
+          line: numTok?.startLine ?? 1,
+          column: numTok?.startColumn ?? 1,
+          severity: 'error',
+          code: 'FL-LINKSTYLE-INDEX-OUT-OF-RANGE',
+          message: `linkStyle index ${n} is out of range (0..${Math.max(0, this.edgeCount - 1)}).`,
+          hint: `Use an index between 0 and ${Math.max(0, this.edgeCount - 1)} or add more links first.`
+        });
+      }
+    }
   }
 
   subgraph(ctx: any) {
@@ -61,7 +184,6 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 
   subgraphStatement(ctx: any) {
-    // visit nested rules inside subgraph body
     for (const k of Object.keys(ctx)) {
       const arr = (ctx as any)[k];
       if (Array.isArray(arr)) {
@@ -89,7 +211,8 @@ class FlowSemanticsVisitor extends BaseVisitor {
 
   nodeStatement(ctx: any) {
     if (ctx.nodeOrParallelGroup) ctx.nodeOrParallelGroup.forEach((n: CstNode) => this.visit(n));
-    // links are syntactic; semantic link warnings stay outside for now
+    const linksHere = Array.isArray((ctx as any).link) ? (ctx as any).link.length : 0;
+    if (linksHere > 0) this.edgeCount += linksHere;
   }
 
   nodeOrParallelGroup(ctx: any) {
@@ -97,7 +220,6 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 
   node(ctx: any) {
-    // typed-shape attr object vs bracket shape conflict
     const hasAttr = Array.isArray((ctx as any).attrObject) && (ctx as any).attrObject.length > 0;
     const hasShape = Array.isArray(ctx.nodeShape) && ctx.nodeShape.length > 0;
     if (hasAttr && hasShape) {
@@ -112,10 +234,8 @@ class FlowSemanticsVisitor extends BaseVisitor {
         hint: 'Pick one style: either A[Label] or A@{ shape: rect, label: "Label" }'
       });
     }
-    // only shape/content semantics live here
     if (ctx.nodeShape) ctx.nodeShape.forEach((n: CstNode) => this.visit(n));
 
-    // Validate typed-shape keys and values
     if (hasAttr) {
       const attr = (ctx as any).attrObject?.[0];
       const pairs: any[] = (attr?.children?.attrPair || []);

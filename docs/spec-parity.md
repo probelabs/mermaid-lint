@@ -11,23 +11,25 @@ Flowchart
 - Parser
   - [x] Top-level `direction` statement outside header.
   - [x] Interactions lines parsed: `click`, `linkStyle`.
-  - [~] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser+basic keys done; extend to full shape set (icon/image specifics).
+  - [~] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser+basic keys done; extend to full shape set (icon/image specifics + renderer mapping).
 - Semantics/Validation
   - [x] Enforce only keyword `direction` before a Direction inside subgraphs (FL-DIR-KW-INVALID).
   - [x] Conflict warning when both bracket shape and `@{ shape: … }` present (FL-TYPED-SHAPE-CONFLICT).
   - [x] Typed-shape validation: unknown keys/values, numeric fields, label string (FL-TYPED-KEY-UNKNOWN, FL-TYPED-SHAPE-UNKNOWN, FL-TYPED-NUMERIC-EXPECTED, FL-TYPED-LABEL-NOT-STRING).
   - [x] Interactions validation: `click` mode/url/call/target checks; `linkStyle` indices and style presence (FL-CLICK-*, FL-LINKSTYLE-*).
-  - [ ] Interactions: handle ranges (`0:3`), duplicate indices, and whitespace forms; add explicit diagnostics.
+  - [x] Interactions extras: range usage `0:3` flagged (FL-LINKSTYLE-RANGE-UNSUPPORTED); duplicate indices warned (FL-LINKSTYLE-DUPLICATE-INDEX).
+  - [ ] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
 - Renderer parity
   - [ ] Edge–shape intersection: polygon/capsule intersection for stadium, parallelogram, trapezoid, hexagon; verify all joins.
   - [ ] LR/RL nested subgraphs layout width/spacing tuning (reduce vertical stacking); elbows closer to Mermaid.
-  - [ ] Curve end flattening constants (link-styles) finalized; label pill size/placement match Mermaid.
+  - [ ] Curve end flattening constants (link-styles) finalized; label pill size/placement match Mermaid (currently close but still tunable).
   - [ ] Complex markers both ends (<-->, o--o, x--x) on multi-bend edges; overlay ordering stable.
   - [ ] HTML in labels: <b>, <i>, <u>, <br/> normalized and rendered consistently.
-  - [ ] Apply linkStyle to renderer stroke/markers when we enable interaction rendering.
+  - [x] Apply linkStyle to renderer: path stroke/width/opacity/dasharray; overlay arrowheads pick up color and scale with stroke-width.
 - Fixtures/Tests
   - [ ] Expand `typed-shapes-basic.mmd` to cover all shapes + negative cases.
-  - [ ] Add `interactions-linkstyle-ranges.mmd` (invalid/valid pairs as CLI behavior allows).
+  - [x] Add `interactions-linkstyle-ranges.mmd` (invalid; range unsupported today).
+  - [ ] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices.
 
 Sequence
 - Parser
@@ -45,6 +47,7 @@ Sequence
   - [ ] Title rendering (from `title`) and accessible meta.
 - Fixtures/Tests
   - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.
+  - [ ] Add fixtures for nested blocks with `par over` + `and` branches (both valid and invalid placements).
 
 Pie
 - Semantics/Validation
@@ -64,7 +67,7 @@ Class
 - Renderer (new)
   - [ ] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
 - Fixtures/Tests
-  - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end labels cases.
+  - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end label/cardinality cases.
 
 State
 - Parser/Semantics
@@ -75,6 +78,7 @@ State
   - [ ] Implement state diagram renderer: composite states, concurrency lanes, markers, notes, direction.
 - Fixtures/Tests
   - [ ] Nested concurrency, history states valid/invalid, marker edge cases.
+  - [ ] Add invalid fixtures for misplaced concurrency at block start/end (multiple separators, empty regions).
 
 Cross-Cutting
 - [ ] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
@@ -82,6 +86,12 @@ Cross-Cutting
 - [ ] PNG/SVG parity harness extended to class/state once renderers exist; keep structural + visual checks.
 - [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics.
 - [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
+
+Progress Snapshot (auto-updating intent)
+- Flowchart: CLI parity 100%; interactions validated and rendered (style); arrowheads scale with stroke-width.
+- Sequence: CLI parity 100%; advanced headers/details parsed; fixtures kept invalid pending CLI acceptance.
+- State: CLI parity 100%; concurrency parsed but invalid in fixtures; history valid.
+- Class: CLI parity 100%; generics parsed but invalid in fixtures.
 
 Notes
 - Treat this as the single source of truth for spec gaps. Update checkboxes as features land; link PRs next to items when closed.

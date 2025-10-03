@@ -3,6 +3,7 @@
 export interface NodeStyle {
   stroke?: string;
   strokeWidth?: number;
+  strokeOpacity?: number;
   fill?: string;
 }
 
@@ -25,6 +26,7 @@ export interface Edge {
   type: ArrowType;
   markerStart?: 'none' | 'arrow' | 'circle' | 'cross';
   markerEnd?: 'none' | 'arrow' | 'circle' | 'cross';
+  style?: NodeStyle; // reuse basic stroke/strokeWidth/strokeOpacity
 }
 
 export interface Graph {

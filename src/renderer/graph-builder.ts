@@ -11,6 +11,7 @@ export class GraphBuilder {
   private edgeCounter = 0;
   private subgraphs: Subgraph[] = [];
   private currentSubgraphStack: string[] = [];
+  private pendingLinkStyles: Array<{ indices: number[]; props: Record<string,string> }>= [];
   // Styling support (classDef/class/style)
   private classStyles: Map<string, Record<string,string>> = new Map();
   private nodeStyles: Map<string, Record<string,string>> = new Map();
@@ -50,6 +51,7 @@ export class GraphBuilder {
     this.classStyles.clear();
     this.nodeStyles.clear();
     this.nodeClasses.clear();
+    this.pendingLinkStyles = [];
   }
 
   private extractDirection(cst: CstNode): Direction {
@@ -81,9 +83,14 @@ export class GraphBuilder {
         this.processClassAssign(stmt.children.classStatement[0] as CstNode);
       } else if (stmt.children?.styleStatement) {
         this.processStyle(stmt.children.styleStatement[0] as CstNode);
+      } else if (stmt.children?.linkStyleStatement) {
+        this.processLinkStyle(stmt.children.linkStyleStatement[0] as CstNode);
       }
       // Skip class, style, and other statements for now
     }
+
+    // Apply pending link styles to edges after all edges have been created
+    this.applyLinkStyles();
   }
 
   private processNodeStatement(stmt: CstNode) {
@@ -577,6 +584,40 @@ export class GraphBuilder {
       if (k && v) props[k.trim()] = v.trim();
     }
     return props;
+  }
+
+  private processLinkStyle(cst: CstNode) {
+    // Collect indices
+    const nums = (cst.children?.NumberLiteral as IToken[] | undefined) || [];
+    const indices = nums.map(n => parseInt(n.image, 10)).filter(n => Number.isFinite(n));
+    // Collect style props similar to node style parsing
+    const props = this.collectStyleProps(cst);
+    this.pendingLinkStyles.push({ indices, props });
+  }
+
+  private applyLinkStyles() {
+    if (!this.pendingLinkStyles.length || !this.edges.length) return;
+    const normalize = (s: Record<string,string>): Record<string, any> => {
+      const out: Record<string, any> = {};
+      for (const [kRaw, vRaw] of Object.entries(s)) {
+        const k = kRaw.trim().toLowerCase(); const v = vRaw.trim();
+        if (k === 'stroke') out.stroke = v;
+        else if (k === 'stroke-width') { const num = parseFloat(v); if (!Number.isNaN(num)) out.strokeWidth = num; }
+        else if (k === 'opacity' || k === 'stroke-opacity') { const num = parseFloat(v); if (!Number.isNaN(num)) out.strokeOpacity = num; }
+        else if (k === 'stroke-dasharray') out.dasharray = v;
+      }
+      return out;
+    };
+    for (const cmd of this.pendingLinkStyles) {
+      const style = normalize(cmd.props);
+      for (const idx of cmd.indices) {
+        if (idx >= 0 && idx < this.edges.length) {
+          const e = this.edges[idx] as any;
+          e.style = { ...(e.style || {}), stroke: style.stroke ?? (e.style?.stroke), strokeWidth: style.strokeWidth ?? (e.style?.strokeWidth), strokeOpacity: style.strokeOpacity ?? (e.style?.strokeOpacity) };
+          if (style.dasharray) e.dasharray = style.dasharray;
+        }
+      }
+    }
   }
 
   private computeNodeStyle(nodeId: string): Record<string, any> {

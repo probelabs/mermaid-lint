@@ -11,6 +11,8 @@ import { renderPie } from './pie-renderer.js';
 import { buildSequenceModel } from './sequence-builder.js';
 import { renderSequence } from './sequence-renderer.js';
 import { parseFrontmatter } from '../core/frontmatter.js';
+import { buildClassModel } from './class-builder.js';
+import { renderClass } from './class-renderer.js';
 
 export interface RenderOptions {
   /** Include validation errors as overlays on the diagram */
@@ -196,6 +198,17 @@ export class MermaidRenderer {
       } catch (e: any) {
         const msg = e?.message || 'Sequence render error';
         const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'SEQUENCE_RENDER' } as ValidationError];
+        return { svg: this.generateErrorSvg(msg), graph: { nodes: [], edges: [], direction: 'TD' }, errors: err };
+      }
+    }
+    if (/^classDiagram\b/.test(firstLine)) {
+      try {
+        const model = buildClassModel(content);
+        const svg = renderClass(model, { theme });
+        return { svg, graph: { nodes: [], edges: [], direction: model.direction }, errors: [] };
+      } catch (e: any) {
+        const msg = e?.message || 'Class render error';
+        const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'CLASS_RENDER' } as ValidationError];
         return { svg: this.generateErrorSvg(msg), graph: { nodes: [], edges: [], direction: 'TD' }, errors: err };
       }
     }

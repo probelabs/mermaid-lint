@@ -75,7 +75,7 @@
 <path d="M202,60 L194,63 L194,57 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M89,310 L98.02802290123356,289.93772688614763 C108.86165038271382,265.8629991495248 186,150 192,150 L202,150" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" />
 <path d="M202,150 L194,153 L194,147 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M98,310 L107.45,299.5 C118.79,286.9 186,240 192,240 L202,240" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M98,310 L107.45,299.5 C118.79,286.9 186,240 192,240 L202,240" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
 <path d="M202,240 L194,243 L194,237 Z" fill="#555555" /></g>
   <g>
     <path class="edge-path" d="M120,330 L130,330 C142,330 186,330 192,330 L202,330" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" />
@@ -84,7 +84,7 @@
     <path d="M202,330 L194,333 L194,327 Z" fill="#555555" />
   </g>
   <g>
-    <path class="edge-path" d="M98,350 L107.45,360.5 C118.79,373.1 186,420 192,420 L202,420" stroke-linecap="round" stroke-linejoin="round" />
+    <path class="edge-path" d="M98,350 L107.45,360.5 C118.79,373.1 186,420 192,420 L202,420" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
     <rect class="edge-label-bg" x="131.73515469808623" y="398.2612829978736" width="32" height="14" rx="3" />
     <text class="edge-label-text" x="147.73515469808623" y="405.2612829978736" text-anchor="middle" dominant-baseline="middle">text</text>
     <path d="M202,420 L194,423 L194,417 Z" fill="#555555" />
