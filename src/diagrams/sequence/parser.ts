@@ -27,6 +27,8 @@ export class SequenceParser extends CstParser {
       { ALT: () => this.SUBRULE(this.createStmt) },
       { ALT: () => this.SUBRULE(this.destroyStmt) },
       { ALT: () => this.SUBRULE(this.linkStmt) },
+      { ALT: () => this.SUBRULE(this.propertiesStmt) },
+      { ALT: () => this.SUBRULE(this.detailsStmt) },
       { ALT: () => this.SUBRULE(this.altBlock) },
       { ALT: () => this.SUBRULE(this.optBlock) },
       { ALT: () => this.SUBRULE(this.loopBlock) },
@@ -186,6 +188,26 @@ export class SequenceParser extends CstParser {
     this.SUBRULE(this.actorRef);
     this.CONSUME(t.Colon);
     this.OPTION(() => this.SUBRULE(this.lineRemainder));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
+  });
+
+  private propertiesStmt = this.RULE('propertiesStmt', () => {
+    this.CONSUME(t.PropertiesKeyword);
+    this.OPTION(() => this.CONSUME(t.Colon));
+    this.OPTION1(() => this.SUBRULE(this.lineRemainder));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
+      { ALT: () => this.CONSUME(EOF) }
+    ]);
+  });
+
+  private detailsStmt = this.RULE('detailsStmt', () => {
+    this.CONSUME(t.DetailsKeyword);
+    this.OPTION(() => this.CONSUME(t.Colon));
+    this.OPTION1(() => this.SUBRULE(this.lineRemainder));
     this.OR2([
       { ALT: () => this.AT_LEAST_ONE(() => this.CONSUME(t.Newline)) },
       { ALT: () => this.CONSUME(EOF) }

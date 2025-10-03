@@ -57,6 +57,8 @@ export class StateParser extends CstParser {
   private actorRef = this.RULE('actorRef', () => {
     this.OR([
       { ALT: () => this.CONSUME(t.Start) },
+      { ALT: () => this.CONSUME(t.HistoryDeep) },
+      { ALT: () => this.CONSUME(t.HistoryShallow) },
       {
         ALT: () => {
           this.OR2([

@@ -174,7 +174,7 @@ export class ClassParser extends CstParser {
 
   private classRef = this.RULE('classRef', () => {
     this.OR([
-      { ALT: () => this.CONSUME(t.Identifier) },
+      { ALT: () => { this.CONSUME(t.Identifier); this.OPTION(() => this.CONSUME(t.GenericAngle)); } },
       { ALT: () => this.CONSUME(t.QuotedString) },
       { ALT: () => this.CONSUME(t.BacktickName) },
     ]);
@@ -185,6 +185,7 @@ export class ClassParser extends CstParser {
       { ALT: () => this.CONSUME(t.QuotedString) },
       { ALT: () => this.CONSUME(t.Identifier) },
       { ALT: () => this.CONSUME(t.NumberLiteral) },
+      { ALT: () => this.CONSUME(t.GenericAngle) },
     ]);
   });
 

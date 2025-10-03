@@ -1,7 +1,4 @@
 {
   "diagramType": "state",
-  "items": [
-    "concurrency-two-regions.mmd",
-    "markers-and-concurrency.mmd"
-  ]
+  "items": []
 }

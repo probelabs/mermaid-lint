@@ -46,6 +46,8 @@ export const EndKeyword = createToken({ name: 'EndKeyword', pattern: /end/i, lon
 
 export const LinksKeyword = createToken({ name: 'LinksKeyword', pattern: /links/i, longer_alt: Identifier });
 export const LinkKeyword = createToken({ name: 'LinkKeyword', pattern: /link/i, longer_alt: Identifier });
+export const PropertiesKeyword = createToken({ name: 'PropertiesKeyword', pattern: /properties/i, longer_alt: Identifier });
+export const DetailsKeyword = createToken({ name: 'DetailsKeyword', pattern: /details/i, longer_alt: Identifier });
 
 export const BreakKeyword = createToken({ name: 'BreakKeyword', pattern: /break/i, longer_alt: Identifier });
 
@@ -125,6 +127,8 @@ export const allTokens = [
   EndKeyword,
   LinksKeyword,
   LinkKeyword,
+  PropertiesKeyword,
+  DetailsKeyword,
   // Arrows
   BidirAsyncDotted,
   BidirAsync,

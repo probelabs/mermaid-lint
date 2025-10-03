@@ -8,7 +8,7 @@ This file contains all valid state test fixtures rendered with Mermaid.
 
 1. [aliases and descriptions](#1-aliases-and-descriptions)
 2. [block and notes](#2-block-and-notes)
-3. [concurrency two regions](#3-concurrency-two-regions)
+3. [history states](#3-history-states)
 4. [markers fork join](#4-markers-fork-join)
 5. [nested and notes](#5-nested-and-notes)
 6. [simple](#6-simple)
@@ -87,19 +87,21 @@ Note right of Auth: Handles user authentication
 
 ---
 
-## 3. Concurrency Two Regions
+## 3. History States
 
-📄 **Source**: [`concurrency-two-regions.mmd`](./valid/concurrency-two-regions.mmd)
+📄 **Source**: [`history-states.mmd`](./valid/history-states.mmd)
 
 ### Rendered Output (Mermaid)
 
 ```mermaid
 stateDiagram-v2
-  state Outer {
-    [*] --> A
-    ---
-    [*] --> B
+  state Composite {
+    [*] --> S1
+    S1 --> [H]
+    [H*] --> S2
   }
+  [*] --> Composite
+  Composite --> [*]
 
 
 ```
@@ -109,11 +111,13 @@ stateDiagram-v2
 
 ```
 stateDiagram-v2
-  state Outer {
-    [*] --> A
-    ---
-    [*] --> B
+  state Composite {
+    [*] --> S1
+    S1 --> [H]
+    [H*] --> S2
   }
+  [*] --> Composite
+  Composite --> [*]
 
 
 ```

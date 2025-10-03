@@ -43,6 +43,8 @@ export const Comma = createToken({ name: 'Comma', pattern: /,/ });
 export const Visibility = createToken({ name: 'Visibility', pattern: /[+\-#~]/ });
 export const LTlt = createToken({ name: 'LTlt', pattern: /<</ });
 export const GTgt = createToken({ name: 'GTgt', pattern: />>/ });
+// Simple generic angle segment <...> (no nesting)
+export const GenericAngle = createToken({ name: 'GenericAngle', pattern: /<[^\n\r>]+>/ });
 
 export const QuotedString = createToken({ name: 'QuotedString', pattern: /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/ });
 export const BacktickName = createToken({ name: 'BacktickName', pattern: /`(?:\\.|[^`\\])*`/ });
@@ -83,6 +85,7 @@ export const allTokens = [
   // Punct
   LTlt,
   GTgt,
+  GenericAngle,
   LCurly, RCurly,
   LParen, RParen,
   SquareOpen, SquareClose,

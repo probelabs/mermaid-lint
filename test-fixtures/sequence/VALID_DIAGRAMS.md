@@ -33,7 +33,6 @@ This file contains all valid sequence test fixtures rendered with both Mermaid a
 18. [participant double in double](#18-participant-double-in-double)
 19. [participant escaped quotes](#19-participant-escaped-quotes)
 20. [participant unclosed quote](#20-participant-unclosed-quote)
-21. [title and accessibility](#21-title-and-accessibility)
 
 ---
 
@@ -1098,59 +1097,6 @@ sequenceDiagram
 sequenceDiagram
   participant "Bob
   A->B: hi
-
-
-```
-</details>
-
----
-
-## 21. Title And Accessibility
-
-📄 **Source**: [`title-and-accessibility.mmd`](./valid/title-and-accessibility.mmd)
-
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
-```mermaid
-sequenceDiagram
-  title Checkout Flow
-  accTitle Accessible Title
-  accDescr This diagram describes the checkout steps.
-  participant A as Alice
-  participant B as Bob
-  A->>B: Start
-
-
-```
-
-</td>
-<td>
-
-<img src="./rendered/title-and-accessibility.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
-
-<details>
-<summary>View source code</summary>
-
-```
-sequenceDiagram
-  title Checkout Flow
-  accTitle Accessible Title
-  accDescr This diagram describes the checkout steps.
-  participant A as Alice
-  participant B as Bob
-  A->>B: Start
 
 
 ```

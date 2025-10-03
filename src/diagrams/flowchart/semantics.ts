@@ -34,6 +34,28 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
+  clickStatement(_ctx: any) {
+    this.ctx.errors.push({
+      line: 1,
+      column: 1,
+      severity: 'error',
+      code: 'FL-INTERACTION-UNSUPPORTED',
+      message: "Interaction statements ('click', 'linkStyle') are not supported in validation yet.",
+      hint: 'Remove the interaction line or validate rendering separately.'
+    });
+  }
+
+  linkStyleStatement(_ctx: any) {
+    this.ctx.errors.push({
+      line: 1,
+      column: 1,
+      severity: 'error',
+      code: 'FL-INTERACTION-UNSUPPORTED',
+      message: "Interaction statements ('click', 'linkStyle') are not supported in validation yet.",
+      hint: 'Remove the interaction line or validate rendering separately.'
+    });
+  }
+
   subgraph(ctx: any) {
     if (ctx.subgraphStatement) ctx.subgraphStatement.forEach((s: CstNode) => this.visit(s));
   }
@@ -92,6 +114,67 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
     // only shape/content semantics live here
     if (ctx.nodeShape) ctx.nodeShape.forEach((n: CstNode) => this.visit(n));
+
+    // Validate typed-shape keys and values
+    if (hasAttr) {
+      const attr = (ctx as any).attrObject?.[0];
+      const pairs: any[] = (attr?.children?.attrPair || []);
+      const validKeys = new Set(['shape','label','padding','cornerRadius','icon','image']);
+      const shapes = new Set(['rect','round','rounded','stadium','subroutine','circle','cylinder','diamond','trapezoid','trapezoidAlt','parallelogram','hexagon','lean-l','lean-r','icon','image']);
+      for (const p of pairs) {
+        const keyTok: any = p.children?.attrKey?.[0];
+        const valTok: any = (p.children?.QuotedString?.[0] || p.children?.Identifier?.[0] || p.children?.NumberLiteral?.[0] || p.children?.Text?.[0]);
+        if (!keyTok) continue;
+        const key = keyTok.image;
+        if (!validKeys.has(key)) {
+          this.ctx.errors.push({
+            line: keyTok.startLine ?? 1,
+            column: keyTok.startColumn ?? 1,
+            severity: 'warning',
+            code: 'FL-TYPED-KEY-UNKNOWN',
+            message: `Unknown typed-shape key '${key}'.`,
+            hint: "Allowed keys: shape, label, padding, cornerRadius, icon, image"
+          });
+          continue;
+        }
+        if (key === 'shape' && valTok) {
+          const v = String(valTok.image).replace(/^"|"$/g,'');
+          if (!shapes.has(v)) {
+            this.ctx.errors.push({
+              line: valTok.startLine ?? 1,
+              column: valTok.startColumn ?? 1,
+              severity: 'error',
+              code: 'FL-TYPED-SHAPE-UNKNOWN',
+              message: `Unknown shape '${v}' in '@{ shape: … }'.`,
+              hint: 'Use one of: rect, round, stadium, subroutine, circle, cylinder, diamond, trapezoid, parallelogram, hexagon, lean-l, lean-r, icon, image'
+            });
+          }
+        }
+        if (key === 'label' && valTok && valTok.tokenType?.name !== 'QuotedString') {
+          this.ctx.errors.push({
+            line: valTok.startLine ?? 1,
+            column: valTok.startColumn ?? 1,
+            severity: 'warning',
+            code: 'FL-TYPED-LABEL-NOT-STRING',
+            message: "Typed-shape 'label' should be a quoted string.",
+            hint: 'Example: A@{ shape: rect, label: "Start" }'
+          });
+        }
+        if ((key === 'padding' || key === 'cornerRadius') && valTok) {
+          const raw = String(valTok.image).replace(/^"|"$/g,'');
+          if (!/^\d+(px)?$/.test(raw)) {
+            this.ctx.errors.push({
+              line: valTok.startLine ?? 1,
+              column: valTok.startColumn ?? 1,
+              severity: 'warning',
+              code: 'FL-TYPED-NUMERIC-EXPECTED',
+              message: `'${key}' expects a number (optionally with px).`,
+              hint: `Use: ${key}: 8 or ${key}: "8px"`
+            });
+          }
+        }
+      }
+    }
   }
 
   private checkEmptyContent(openTok: IToken, contentNodes: CstNode[] | undefined) {
