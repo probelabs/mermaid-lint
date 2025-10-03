@@ -1,5 +1,6 @@
 import type { Layout, LayoutNode, LayoutEdge, NodeShape, ArrowType } from './types.js';
 import { triangleAtEnd, triangleAtStart } from './arrow-utils.js';
+import { blockBackground, blockOverlay } from './block-utils.js';
 import type { IRenderer } from './interfaces.js';
 
 /**
@@ -66,9 +67,6 @@ export class SVGRenderer implements IRenderer {
 
     // Draw subgraphs (cluster backgrounds) behind edges and nodes, using shared block utils
     if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
-      // Import at top level in ESM build; here require dynamically to avoid type tightening
-      const utils = require('./block-utils.js');
-      const blockBackground = utils.blockBackground; const blockOverlay = utils.blockOverlay;
       const sgs = (layout as any).subgraphs as Array<{id:string;label?:string;x:number;y:number;width:number;height:number;parent?:string}>;
       const order = sgs.slice().sort((a,b) => (a.parent ? 1 : 0) - (b.parent ? 1 : 0));
       const map = new Map(order.map(o=>[o.id,o]));
