@@ -333,38 +333,44 @@ function applyPieTheme(svg: string, theme?: Record<string, any>): string {
 function applyFlowchartTheme(svg: string, theme?: Record<string, any>): string {
   if (!theme) return svg;
   let out = svg;
-  // Node colors
-  if (theme.nodeBkg) {
-    out = out.replace(/fill=\"#eef0ff\"/g, `fill="${String(theme.nodeBkg)}"`);
-    out = out.replace(/fill=\"#f9f9ff\"/g, `fill="${String(theme.nodeBkg)}"`);
-    out = out.replace(/fill=\"#ECECFF\"/g, `fill="${String(theme.nodeBkg)}"`);
-  }
-  if (theme.nodeBorder) {
-    out = out.replace(/stroke=\"#3f3f3f\"/g, `stroke="${String(theme.nodeBorder)}"`);
-    out = out.replace(/stroke=\"#9370db\"/gi, `stroke="${String(theme.nodeBorder)}"`);
+  // Node colors via CSS
+  if (theme.nodeBkg || theme.nodeBorder) {
+    out = out.replace(/\.node-shape\s*\{[^}]*\}/, (m) => {
+      let rule = m;
+      if (theme.nodeBkg) rule = rule.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeBkg)};`);
+      if (theme.nodeBorder) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.nodeBorder)};`);
+      return rule;
+    });
   }
   if (theme.nodeTextColor) {
-    out = out.replace(/(<text[^>]*)(fill=\"#333\")/g, (_m, p1) => `${p1}fill="${String(theme.nodeTextColor)}"`);
+    out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeTextColor)};`));
   }
-  // Edge + arrow colors
+  // Edge + arrow colors via CSS
   if (theme.lineColor) {
-    out = out.replace(/(<path[^>]*class=\"edge-path\"[^>]*)(stroke=\"[^\"]*\")?/g, (_m, p1) => `${p1} stroke="${String(theme.lineColor)}"`);
-    out = out.replace(/stroke=\"#666\"/g, `stroke="${String(theme.lineColor)}"`);
-    out = out.replace(/stroke=\"#333333\"/g, `stroke="${String(theme.lineColor)}"`);
+    out = out.replace(/\.edge-path\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lineColor)};`));
   }
   if (theme.arrowheadColor) {
-    out = out.replace(/(<path d=\"M0,0 L0,[0-9.]+ L[0-9.]+,[0-9.]+ z\"[^>]*)(fill=\"[^\"]*\")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
-    out = out.replace(/(<circle cx=\"4\.5\" cy=\"4\.5\" r=\"4\.5\"[^>]*)(fill=\"[^\"]*\")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
+    out = out.replace(/(<path d="M0,0 L0,[0-9.]+ L[0-9.]+,[0-9.]+ z"[^>]*)(fill="[^"]*")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
+    out = out.replace(/(<circle cx="4\.5" cy="4\.5" r="4\.5"[^>]*)(fill="[^"]*")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
   }
-  // Cluster styles
-  if (theme.clusterBkg) out = out.replace(/fill=\"#fffbe6\"/g, `fill="${String(theme.clusterBkg)}"`);
-  if (theme.clusterBorder) out = out.replace(/stroke=\"#cfcf99\"/g, `stroke="${String(theme.clusterBorder)}"`);
-  if (theme.clusterTextColor) out = out.replace(/(<text[^>]*class=\".*subgraph.*\"[^>]*)(fill=\"#333\")/g, (_m, p1) => `${p1}fill="${String(theme.clusterTextColor)}"`);
-  // Fonts
-  if (theme.fontFamily) out = out.replace(/font-family=\"[^\"]+\"/g, `font-family="${String(theme.fontFamily)}"`);
-  if (theme.fontSize) out = out.replace(/font-size=\"[0-9.]+\"/g, `font-size="${String(theme.fontSize)}"`);
+  // Cluster styles via CSS
+  if (theme.clusterBkg || theme.clusterBorder) {
+    out = out.replace(/\.cluster-rect\s*\{[^}]*\}/, (m) => {
+      let rule = m;
+      if (theme.clusterBkg) rule = rule.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`);
+      if (theme.clusterBorder) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`);
+      return rule;
+    });
+  }
+  if (theme.clusterTextColor) {
+    out = out.replace(/\.cluster-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterTextColor)};`));
+  }
+  // Fonts via CSS
+  if (theme.fontFamily) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${String(theme.fontFamily)};`));
+  if (theme.fontSize) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${String(theme.fontSize)};`));
   return out;
 }
+
 
 // Export main render function for convenience
 export function renderMermaid(text: string, options: RenderOptions = {}): RenderResult {
