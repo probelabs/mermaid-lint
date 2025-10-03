@@ -27,14 +27,14 @@
     <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">API</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(14,52)">
-  <rect class="cluster-bg" x="0" y="0" width="264" height="56" rx="4"/>
+<g class="cluster-bg-layer" transform="translate(16,54)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="52" rx="4"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(14,88)">
-  <rect class="cluster-bg" x="0" y="0" width="264" height="92" rx="4"/>
+<g class="cluster-bg-layer" transform="translate(16,90)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="88" rx="4"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(14,160)">
-  <rect class="cluster-bg" x="0" y="0" width="264" height="56" rx="4"/>
+<g class="cluster-bg-layer" transform="translate(16,162)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="52" rx="4"/>
 </g>
   <line class="lifeline" x1="79" y1="62" x2="79" y2="242"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="242"/>
@@ -42,23 +42,23 @@
   <g class="crosshead" transform="translate(79,224)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
   <rect class="msg-label-bg" x="112" y="206" width="68" height="16" rx="3"/>
   <text class="msg-label" x="146" y="214" text-anchor="middle">ROLLBACK</text>
-<g class="cluster-overlay" transform="translate(14,52)">
-<rect class="cluster-border" x="0" y="0" width="264" height="56" rx="4"/>
+<g class="cluster-overlay" transform="translate(16,54)">
+<rect class="cluster-border" x="0" y="0" width="260" height="52" rx="4"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="269" height="18" rx="3"/>
-<text class="cluster-label-text" x="140.5" y="11" text-anchor="middle">rect: rgba ( 200 , 200 , 255 , 0 .3)</text>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">rect: rgba ( 200 , 200 , 255 , 0 .3)</text>
 </g>
-<g class="cluster-overlay" transform="translate(14,88)">
-<rect class="cluster-border" x="0" y="0" width="264" height="92" rx="4"/>
+<g class="cluster-overlay" transform="translate(16,90)">
+<rect class="cluster-border" x="0" y="0" width="260" height="88" rx="4"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="161" height="18" rx="3"/>
-<text class="cluster-label-text" x="86.5" y="11" text-anchor="middle">critical: Transaction</text>
-<line x1="0" y1="46" x2="264" y2="46" class="cluster-border" />
-<rect class="cluster-title-bg" x="6" y="36" width="46" height="18" rx="3"/>
-<text class="cluster-label-text" x="29" y="47" text-anchor="middle">Retry</text>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">critical: Transaction</text>
+<line x1="0" y1="44" x2="260" y2="44" class="cluster-border" />
+<rect class="cluster-title-bg" x="6" y="34" width="46" height="18" rx="3"/>
+<text class="cluster-label-text" x="12" y="45" text-anchor="start">Retry</text>
 </g>
-<g class="cluster-overlay" transform="translate(14,160)">
-<rect class="cluster-border" x="0" y="0" width="264" height="56" rx="4"/>
+<g class="cluster-overlay" transform="translate(16,162)">
+<rect class="cluster-border" x="0" y="0" width="260" height="52" rx="4"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="132" height="18" rx="3"/>
-<text class="cluster-label-text" x="72" y="11" text-anchor="middle">break: On failure</text>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">break: On failure</text>
 </g>
   <g class="actor" transform="translate(24,242)">
     <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>

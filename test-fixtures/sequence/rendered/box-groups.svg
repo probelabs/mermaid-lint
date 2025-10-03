@@ -35,11 +35,11 @@
     <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">B2</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(14,52)">
-  <rect class="cluster-bg" x="0" y="0" width="532" height="56" rx="4"/>
+<g class="cluster-bg-layer" transform="translate(16,54)">
+  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="4"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(14,88)">
-  <rect class="cluster-bg" x="0" y="0" width="532" height="56" rx="4"/>
+<g class="cluster-bg-layer" transform="translate(16,90)">
+  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="4"/>
 </g>
   <line class="lifeline" x1="79" y1="62" x2="79" y2="206"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="206"/>
@@ -53,15 +53,15 @@
   <path d="M481,188 L473,191 L473,185 Z" fill="#333" />
   <rect class="msg-label-bg" x="324" y="170" width="46" height="16" rx="3"/>
   <text class="msg-label" x="347" y="178" text-anchor="middle">Async</text>
-<g class="cluster-overlay" transform="translate(14,52)">
-<rect class="cluster-border" x="0" y="0" width="532" height="56" rx="4"/>
+<g class="cluster-overlay" transform="translate(16,54)">
+<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="4"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="176" height="18" rx="3"/>
-<text class="cluster-label-text" x="94" y="11" text-anchor="middle">box: LightBlue System A</text>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">box: LightBlue System A</text>
 </g>
-<g class="cluster-overlay" transform="translate(14,88)">
-<rect class="cluster-border" x="0" y="0" width="532" height="56" rx="4"/>
+<g class="cluster-overlay" transform="translate(16,90)">
+<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="4"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="183" height="18" rx="3"/>
-<text class="cluster-label-text" x="97.5" y="11" text-anchor="middle">box: LightGreen System B</text>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">box: LightGreen System B</text>
 </g>
   <g class="actor" transform="translate(24,206)">
     <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>

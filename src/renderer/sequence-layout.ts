@@ -50,7 +50,7 @@ const COL_MIN = 110;
 const ROW_H = 36;
 const NOTE_W = 160;
 const NOTE_PAD = 8;
-const BLOCK_PAD = 10;
+const BLOCK_PAD = 8;
 
 export function layoutSequence(model: SequenceModel): SequenceLayout {
   // Determine participant order by first mention (participantDecl/create/message/note)
