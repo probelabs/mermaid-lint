@@ -1,0 +1,13 @@
+sequenceDiagram
+    box "API Layer"
+        participant Server
+        participant API
+    end
+    box "UI Layer"
+        participant UI
+        participant Component
+    end
+    Server->>API: Request
+    API->>UI: Data
+    UI->>Component: Render
+    Note over API,UI: Communication layer

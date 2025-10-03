@@ -313,9 +313,15 @@ export class SequenceParser extends CstParser {
     this.CONSUME(t.BoxKeyword);
     this.OPTION(() => this.SUBRULE(this.lineRemainder));
     this.AT_LEAST_ONE(() => this.CONSUME(t.Newline));
-    this.MANY(() => this.SUBRULE(this.line));
+    this.MANY(() => this.OR([
+      { ALT: () => this.SUBRULE(this.participantDecl) },
+      { ALT: () => this.SUBRULE(this.blankLine) },
+    ]));
     this.CONSUME(t.EndKeyword);
-    this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline));
+    this.OR2([
+      { ALT: () => this.AT_LEAST_ONE2(() => this.CONSUME2(t.Newline)) },
+      { ALT: () => this.CONSUME2(EOF) }
+    ]);
   });
 
   private lineRemainder = this.RULE('lineRemainder', () => {
