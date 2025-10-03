@@ -117,7 +117,20 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
           continue;
         }
         if (stack.length > 0) {
-          if (/^\s*---\s*$/.test(raw)) top().seps.push(ln);
+          if (/^\s*---\s*$/.test(raw)) { 
+            top().seps.push(ln);
+            // Current CLI treats concurrency as unsupported; surface a clear error code
+            if (!has('ST-CONCURRENCY-UNSUPPORTED', ln)) {
+              errors.push({
+                line: ln,
+                column: 1,
+                severity: 'error',
+                code: 'ST-CONCURRENCY-UNSUPPORTED',
+                message: "Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.",
+                hint: "Remove '---' or split logic into separate composite states.",
+              });
+            }
+          }
           else if (raw.trim() !== '') top().content.push(ln);
         }
       }

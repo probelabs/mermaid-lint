@@ -31,6 +31,17 @@ function triangleOpenAt(points: [Pt, Pt], color: string, length = 10, width = 8,
   return `<path d="M${tip.x},${tip.y} L${p2.x},${p2.y} M${tip.x},${tip.y} L${p3.x},${p3.y}" stroke="${color}" fill="none" />`;
 }
 
+function triangleHollowAt(points: [Pt, Pt], color: string, length = 12, width = 10, atEnd = true): string {
+  const [a,b] = atEnd ? points : [points[1], points[0]];
+  const vx = b.x - a.x, vy = b.y - a.y; const len = Math.hypot(vx, vy) || 1; const ux = vx/len, uy = vy/len; const nx = -uy, ny = ux;
+  const tip = { x: b.x, y: b.y };
+  const base = { x: b.x - ux * length, y: b.y - uy * length };
+  const p2 = { x: base.x + nx*(width/2), y: base.y + ny*(width/2) };
+  const p3 = { x: base.x - nx*(width/2), y: base.y - ny*(width/2) };
+  const d = `M${tip.x},${tip.y} L${p2.x},${p2.y} L${p3.x},${p3.y} Z`;
+  return `<path d="${d}" fill="white" stroke="${color}" />`;
+}
+
 function diamondAt(points: [Pt, Pt], color: string, filled: boolean, size = 10, atStart = true): string {
   const [a,b] = atStart ? points : [points[1], points[0]];
   const vx = b.x - a.x, vy = b.y - a.y; const len = Math.hypot(vx, vy) || 1; const ux = vx/len, uy = vy/len; const nx = -uy, ny = ux;
@@ -136,10 +147,10 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
     const pEnd: [Pt,Pt] = [pts[pts.length-2] ?? pts[pts.length-1], pts[pts.length-1]];
     switch (rel.kind) {
       case 'extends':
-        parts.push(triangleOpenAt(pEnd, edgeColor, 12, 10, true));
+        parts.push(triangleHollowAt(pEnd, edgeColor, 12, 10, true));
         break;
       case 'realization':
-        parts.push(triangleOpenAt(pEnd, edgeColor, 12, 10, true));
+        parts.push(triangleHollowAt(pEnd, edgeColor, 12, 10, true));
         break;
       case 'dependency':
         // Approximate with open triangle for now
@@ -180,7 +191,26 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
     }
   }
 
+  // Notes anchored to classes: render to the right with dashed connector
+  const noteW = 140, noteH = 44, dx = 20;
+  const byId = Object.fromEntries(layout.nodes.map(n => [n.id, n]));
+  const seenAnchorCount: Record<string, number> = {};
+  const notes = model.notes || [];
+  for (const note of notes) {
+    const anchor = byId[note.target];
+    if (!anchor) continue;
+    const count = (seenAnchorCount[note.target] = (seenAnchorCount[note.target] || 0) + 1);
+    const nx = anchor.x + anchor.width + dx;
+    const ny = anchor.y + (count - 1) * (noteH + 8);
+    parts.push(`  <g class="note" transform="translate(${nx},${ny})">`);
+    parts.push(`    <rect width="${noteW}" height="${noteH}" rx="0"/>`);
+    parts.push(`    <text class="note-text" x="${noteW/2}" y="${noteH/2 + 4}" text-anchor="middle">${escapeXml(note.text)}</text>`);
+    parts.push('  </g>');
+    // Connector (dashed)
+    const ax = anchor.x + anchor.width; const ay = anchor.y + 16;
+    parts.push(`<line x1="${ax}" y1="${ay}" x2="${nx}" y2="${ny + noteH/2}" stroke="#999" stroke-dasharray="4 3"/>`);
+  }
+
   parts.push('</svg>');
   return parts.join('\n');
 }
-

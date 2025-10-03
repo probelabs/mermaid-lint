@@ -130,9 +130,10 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
   }
 
   // 2) Missing arrow between nodes on the same line
-  if (isInRule(err, 'nodeStatement') && err.name === 'NoViableAltException') {
-    // Common pattern: expecting Newline/EOF but found Identifier
-    if ((err.message || '').includes('[Newline') && (err.message || '').includes('[EOF')) {
+  if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException')) {
+    // Common pattern: two nodes on same line without an arrow
+    const msg = err.message || '';
+    if (tokType === 'Identifier' && msg.includes('Newline') && msg.includes('EOF')) {
       return {
         line, column, severity: 'error', code: 'FL-LINK-MISSING',
         message: `Two nodes on one line must be connected with an arrow before '${found}'.`,

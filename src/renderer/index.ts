@@ -205,7 +205,8 @@ export class MermaidRenderer {
       try {
         const model = buildClassModel(content);
         const svg = renderClass(model, { theme });
-        return { svg, graph: { nodes: [], edges: [], direction: model.direction }, errors: [] };
+        const themed = theme ? applyFlowchartTheme(svg, theme) : svg;
+        return { svg: themed, graph: { nodes: [], edges: [], direction: model.direction }, errors: [] };
       } catch (e: any) {
         const msg = e?.message || 'Class render error';
         const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'CLASS_RENDER' } as ValidationError];

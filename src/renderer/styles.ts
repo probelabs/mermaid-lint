@@ -43,3 +43,28 @@ export function buildSharedCss(opts: SharedStyleOptions = {}): string {
   `;
 }
 
+// Apply node/edge/cluster theme variables similarly across flow-like diagrams (flowchart, class)
+export function applyFlowLikeTheme(svg: string, theme?: Record<string, any>): string {
+  if (!theme) return svg;
+  let out = svg;
+  if (theme.nodeBkg || theme.nodeBorder) {
+    out = out.replace(/\.node-shape\s*\{[^}]*\}/, (m) => {
+      let rule = m;
+      if (theme.nodeBkg) rule = rule.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeBkg)};`);
+      if (theme.nodeBorder) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.nodeBorder)};`);
+      return rule;
+    });
+  }
+  if (theme.nodeTextColor) {
+    out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeTextColor)};`));
+  }
+  if (theme.lineColor) {
+    out = out.replace(/\.edge-path\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lineColor)};`));
+  }
+  if (theme.clusterBkg) out = out.replace(/\.cluster-bg\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`));
+  if (theme.clusterBorder) out = out.replace(/\.cluster-border\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`));
+  if (theme.clusterTextColor) out = out.replace(/\.cluster-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterTextColor)};`));
+  if (theme.fontFamily) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${String(theme.fontFamily)};`));
+  if (theme.fontSize) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${String(theme.fontSize)};`));
+  return out;
+}

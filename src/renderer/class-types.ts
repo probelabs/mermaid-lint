@@ -33,5 +33,5 @@ export interface ClassModel {
   direction: 'TD' | 'TB' | 'LR' | 'RL' | 'BT';
   classes: ClassDef[];
   relations: Relation[];
+  notes?: Array<{ target: string; text: string }>;
 }
-

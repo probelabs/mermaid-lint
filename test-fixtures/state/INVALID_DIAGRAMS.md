@@ -26,10 +26,10 @@ This file contains invalid state test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [concurrency outside block](#1-concurrency-outside-block) | INVALID | INVALID | — |
-| 2 | [concurrency two regions](#2-concurrency-two-regions) | INVALID | VALID | — |
+| 2 | [concurrency two regions](#2-concurrency-two-regions) | INVALID | INVALID | — |
 | 3 | [header missing](#3-header-missing) | INVALID | INVALID | — |
 | 4 | [invalid arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 5 | [markers and concurrency](#5-markers-and-concurrency) | INVALID | VALID | — |
+| 5 | [markers and concurrency](#5-markers-and-concurrency) | INVALID | INVALID | — |
 | 6 | [missing rbrace](#6-missing-rbrace) | INVALID | INVALID | ✅ safe |
 | 7 | [note glued to previous](#7-note-glued-to-previous) | INVALID | INVALID | — |
 | 8 | [note missing colon](#8-note-missing-colon) | INVALID | INVALID | ✅ safe |
@@ -146,7 +146,17 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: VALID
+### maid Result: INVALID
+
+```
+error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
+at test-fixtures/state/invalid/concurrency-two-regions.mmd:4:1
+  3 |     [*] --> A
+  4 |     ---
+    | ^
+  5 |     [*] --> B
+hint: Remove '---' or split logic into separate composite states.
+```
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -348,7 +358,17 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: VALID
+### maid Result: INVALID
+
+```
+error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
+at test-fixtures/state/invalid/markers-and-concurrency.mmd:4:1
+  3 |   [*] --> Stage1
+  4 |   ---
+    | ^
+  5 |   Stage2 --> [*]
+hint: Remove '---' or split logic into separate composite states.
+```
 
 ### maid Auto-fix (`--fix`) Preview
 

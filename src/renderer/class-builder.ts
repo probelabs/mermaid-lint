@@ -51,6 +51,7 @@ export function buildClassModel(text: string): ClassModel {
 
   const classes = new Map<string, ClassDef>();
   const relations: Relation[] = [];
+  const notes: Array<{ target: string; text: string }> = [];
   let direction: ClassModel['direction'] = 'TD';
 
   function ensureClass(idRaw: string, display?: string): ClassDef {
@@ -99,8 +100,12 @@ export function buildClassModel(text: string): ClassModel {
       continue;
     }
     if (ch.noteStmt) {
-      // For MVP renderer we skip notes; will render later as separate node+edge if needed
-      // Keeping placeholder for future enhancement
+      const node = ch.noteStmt[0] as CstNode; const nch = (node.children || {}) as any;
+      const target = classRefToText(nch.classRef?.[0]);
+      const labelToks: IToken[] = [];
+      ['QuotedString','Identifier','NumberLiteral'].forEach(k => (nch[k] as IToken[] | undefined)?.forEach(t => labelToks.push(t)));
+      const text = textFromTokens(labelToks);
+      if (target && text) notes.push({ target: canonicalId(target), text });
       continue;
     }
     if (ch.relationStmt) {
@@ -162,6 +167,6 @@ export function buildClassModel(text: string): ClassModel {
     direction,
     classes: Array.from(classes.values()),
     relations,
+    notes,
   };
 }
-
