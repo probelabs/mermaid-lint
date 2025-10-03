@@ -55,8 +55,8 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
 
   // Notes
   for (const n of layout.notes) drawNote(svgParts, n);
-  // Blocks
-  for (const b of layout.blocks) drawBlock(svgParts, b);
+  // Block borders/titles on top
+  for (const b of layout.blocks) drawBlockOverlay(svgParts, b);
 
   // Bottom actor boxes (Mermaid draws both top and bottom)
   for (const p of layout.participants) drawParticipantBottom(svgParts, p, layout);
@@ -81,6 +81,33 @@ function drawParticipantBottom(out: string[], p: LayoutParticipant, layout: Sequ
   out.push(`  <g class="actor" transform="translate(${p.x},${y})">`);
   out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="3" fill="#eaeaea" stroke="#666"/>`);
   out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2 + 4}" text-anchor="middle">${escapeXml(p.display)}</text>`);
+  out.push('  </g>');
+}
+
+function drawBlockBackground(out: string[], b: LayoutBlock) {
+  out.push(`  <g class="group-bg" transform="translate(${b.x},${b.y})">`);
+  out.push(`    <rect width="${b.width}" height="${b.height}" fill="none"/>`);
+  out.push('  </g>');
+}
+
+function drawBlockOverlay(out: string[], b: LayoutBlock) {
+  out.push(`  <g class="group" transform="translate(${b.x},${b.y})">`);
+  out.push(`    <rect class="group-frame" width="${b.width}" height="${b.height}"/>`);
+  const titleText = b.title ? `${b.type}: ${b.title}` : b.type;
+  const titleW = Math.max(24, measureText(titleText, 12) + 10);
+  out.push(`    <rect class="group-title-bg" x="6" y="-2" width="${titleW}" height="18" rx="3"/>`);
+  out.push(`    <text class="group-title" x="${6 + titleW/2}" y="11" text-anchor="middle">${escapeXml(titleText)}</text>`);
+  if (b.branches && b.branches.length) {
+    for (const br of b.branches) {
+      const yRel = br.y - b.y;
+      out.push(`    <line x1="0" y1="${yRel}" x2="${b.width}" y2="${yRel}" class="group-frame" />`);
+      if (br.title) {
+        const bw = Math.max(24, measureText(br.title, 12) + 10);
+        out.push(`    <rect class="group-title-bg" x="6" y="${yRel - 10}" width="${bw}" height="18" rx="3"/>`);
+        out.push(`    <text class="group-title" x="${6 + bw/2}" y="${yRel + 1}" text-anchor="middle">${escapeXml(br.title)}</text>`);
+      }
+    }
+  }
   out.push('  </g>');
 }
 
