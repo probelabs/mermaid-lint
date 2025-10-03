@@ -28,12 +28,12 @@
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
   </style>
   <g class="actor" transform="translate(24,24)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
   <g class="actor" transform="translate(158,24)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
   <line class="lifeline" x1="79" y1="60" x2="79" y2="132"/>
   <line class="lifeline" x1="213" y1="60" x2="213" y2="132"/>
@@ -47,11 +47,11 @@
   <rect class="msg-label-bg" x="51" y="96" width="190" height="16" rx="0"/>
   <text class="msg-label" x="146" y="104" text-anchor="middle">returns and deactivates A</text>
   <g class="actor" transform="translate(24,132)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
   <g class="actor" transform="translate(158,132)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
 </svg>

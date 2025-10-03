@@ -28,12 +28,12 @@
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
   </style>
   <g class="actor" transform="translate(24,24)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
   <g class="actor" transform="translate(158,24)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
   <line class="lifeline" x1="79" y1="60" x2="79" y2="168"/>
   <line class="lifeline" x1="213" y1="60" x2="213" y2="168"/>
@@ -50,11 +50,11 @@
   <rect class="msg-label-bg" x="98" y="132" width="96" height="16" rx="0"/>
   <text class="msg-label" x="146" y="140" text-anchor="middle">No numbering</text>
   <g class="actor" transform="translate(24,168)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
   <g class="actor" transform="translate(158,168)">
-    <rect class="actor-rect" width="110" height="32" rx="0" fill="#eaeaea" stroke="#666"/>
-    <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
 </svg>
