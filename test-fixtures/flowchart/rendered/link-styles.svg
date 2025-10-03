@@ -6,7 +6,9 @@
       .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
       .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
       .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
       .cluster-title-bg { fill: rgba(255,255,255,0.8); }
       .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
     </style>
@@ -22,35 +24,35 @@
     </marker>
   </defs>
   <g id="A">
-    <rect class="node-shape" x="40" y="310" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="40" y="310" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="80" y="334.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
-    <rect class="node-shape" x="202" y="40" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="40" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="64.9" text-anchor="middle">B</text>
   </g>
   <g id="C">
-    <rect class="node-shape" x="202" y="130" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="130" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="154.9" text-anchor="middle">C</text>
   </g>
   <g id="D">
-    <rect class="node-shape" x="202" y="220" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="220" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="244.9" text-anchor="middle">D</text>
   </g>
   <g id="E">
-    <rect class="node-shape" x="202" y="310" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="310" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="334.9" text-anchor="middle">E</text>
   </g>
   <g id="F">
-    <rect class="node-shape" x="202" y="400" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="400" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="424.9" text-anchor="middle">F</text>
   </g>
   <g id="G">
-    <rect class="node-shape" x="202" y="490" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="490" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="514.9" text-anchor="middle">G</text>
   </g>
   <g id="H">
-    <rect class="node-shape" x="202" y="580" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="202" y="580" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="242" y="604.9" text-anchor="middle">H</text>
   </g>
   <path class="edge-path" d="M86,310 L92.3216534824596,288.92782172513466 C99.90763766141112,263.6412077952963 186,60 192,60 L202,60" stroke-linecap="round" stroke-linejoin="round" />

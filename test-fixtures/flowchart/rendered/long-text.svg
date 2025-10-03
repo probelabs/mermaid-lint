@@ -6,7 +6,9 @@
       .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
       .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
       .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
       .cluster-title-bg { fill: rgba(255,255,255,0.8); }
       .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
     </style>
@@ -22,7 +24,7 @@
     </marker>
   </defs>
   <g id="A">
-    <rect class="node-shape" x="40" y="40" width="240" height="74" rx="0" ry="0" />
+    <rect class="node-shape"  x="40" y="40" width="240" height="74" rx="0" ry="0" />
     <text class="node-label">
     <tspan x="160" y="63.9" text-anchor="middle">This is a very long text that</tspan>
     <tspan x="160" y="81.9" text-anchor="middle">spans quite a bit of space in</tspan>
@@ -30,7 +32,7 @@
   </text>
   </g>
   <g id="B">
-    <rect class="node-shape" x="40" y="164" width="240" height="56" rx="0" ry="0" />
+    <rect class="node-shape"  x="40" y="164" width="240" height="56" rx="0" ry="0" />
     <text class="node-label" x="160" y="196.9" text-anchor="middle">Another long piece of text here</text>
   </g>
   <path class="edge-path" d="M160,114 L160,124 C160,136 160,148 160,154 L160,164" stroke-linecap="round" stroke-linejoin="round" />

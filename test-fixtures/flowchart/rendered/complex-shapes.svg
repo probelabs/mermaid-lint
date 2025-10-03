@@ -6,7 +6,9 @@
       .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
       .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
       .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
       .cluster-title-bg { fill: rgba(255,255,255,0.8); }
       .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
     </style>
@@ -22,23 +24,23 @@
     </marker>
   </defs>
   <g id="A">
-    <rect class="node-shape" x="123.75" y="40" width="103" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="123.75" y="40" width="103" height="40" rx="0" ry="0" />
     <text class="node-label" x="175.25" y="64.9" text-anchor="middle">Rectangle</text>
   </g>
   <g id="B">
-    <circle class="node-shape" cx="175.25" cy="171" r="41" />
+    <circle class="node-shape"  cx="175.25" cy="171" r="41" />
     <text class="node-label" x="175.25" y="175.9" text-anchor="middle">Circle</text>
   </g>
   <g id="C">
-    <polygon class="node-shape" points="175.25,262 228.75,315.5 175.25,369 121.75,315.5" />
+    <polygon class="node-shape"  points="175.25,262 228.75,315.5 175.25,369 121.75,315.5" />
     <text class="node-label" x="175.25" y="320.4" text-anchor="middle">Diamond</text>
   </g>
   <g id="D">
-    <rect class="node-shape" x="40" y="444" width="107" height="40" rx="20" ry="20" />
+    <rect class="node-shape"  x="40" y="444" width="107" height="40" rx="20" ry="20" />
     <text class="node-label" x="93.5" y="468.9" text-anchor="middle">Stadium</text>
   </g>
   <g id="E">
-    <g>
+    <g >
           <rect class="node-shape" x="197" y="439" width="120" height="50" rx="0" ry="0" />
           <line class="node-shape" x1="202" y1="439" x2="202" y2="489" />
           <line class="node-shape" x1="312" y1="439" x2="312" y2="489" />
@@ -46,7 +48,7 @@
     <text class="node-label" x="257" y="468.9" text-anchor="middle">Subroutine</text>
   </g>
   <g id="F">
-    <g>
+    <g >
           <rect class="node-shape" x="127.25" y="552.2" width="96" height="33.6" />
           <ellipse class="node-shape" cx="175.25" cy="552.2" rx="48" ry="13.2" />
           <path class="node-shape" d="M127.25,552.2 L127.25,585.8 A48,13.2 0 0,0 223.25,585.8 L223.25,552.2" fill="none" />
@@ -54,15 +56,15 @@
     <text class="node-label" x="175.25" y="573.9" text-anchor="middle">Database</text>
   </g>
   <g id="H">
-    <polygon class="node-shape" points="102.8,739 278.75,739 247.7,779 71.75,779" />
+    <polygon class="node-shape"  points="102.8,739 278.75,739 247.7,779 71.75,779" />
     <text class="node-label" x="175.25" y="763.9" text-anchor="middle">Parallelogram Alt</text>
   </g>
   <g id="G">
-    <polygon class="node-shape" points="173.25,649 317.75,649 292.25,689 147.75,689" />
+    <polygon class="node-shape"  points="173.25,649 317.75,649 292.25,689 147.75,689" />
     <text class="node-label" x="232.75" y="673.9" text-anchor="middle">Parallelogram</text>
   </g>
   <g id="I">
-    <polygon class="node-shape" points="128.35,829 222.15,829 242.25,869 108.25,869" />
+    <polygon class="node-shape"  points="128.35,829 222.15,829 242.25,869 108.25,869" />
     <text class="node-label" x="175.25" y="853.9" text-anchor="middle">Trapezoid</text>
   </g>
   <g id="J">

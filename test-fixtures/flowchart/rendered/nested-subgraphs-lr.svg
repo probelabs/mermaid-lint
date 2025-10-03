@@ -6,7 +6,9 @@
       .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
       .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
       .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
       .cluster-title-bg { fill: rgba(255,255,255,0.8); }
       .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
     </style>
@@ -21,31 +23,31 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <g class="subgraph-bg"><rect class="cluster-rect" x="21" y="152" width="290" height="278" rx="4" ry="4" /><rect class="cluster-rect" x="21" y="152" width="290" height="118" rx="4" ry="4" /></g>
+  <g class="subgraph-bg"><rect class="cluster-bg" x="21" y="152" width="290" height="278" rx="4" ry="4" /><rect class="cluster-bg" x="21" y="152" width="290" height="118" rx="4" ry="4" /></g>
   <g id="A">
-    <rect class="node-shape" x="51" y="200" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="51" y="200" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="91" y="224.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
-    <rect class="node-shape" x="201" y="200" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="201" y="200" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="241" y="224.9" text-anchor="middle">B</text>
   </g>
   <g id="C">
-    <rect class="node-shape" x="51" y="360" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="51" y="360" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="91" y="384.9" text-anchor="middle">C</text>
   </g>
   <g id="D">
-    <rect class="node-shape" x="201" y="360" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="201" y="360" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="241" y="384.9" text-anchor="middle">D</text>
   </g>
   <g id="E">
-    <rect class="node-shape" x="201" y="40" width="80" height="40" rx="0" ry="0" />
+    <rect class="node-shape"  x="201" y="40" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="241" y="64.9" text-anchor="middle">E</text>
   </g>
   <path class="edge-path" d="M131,220 L141,220 C153,220 185,220 191,220 L201,220" stroke-linecap="round" stroke-linejoin="round" />
   <path class="edge-path" d="M131,380 L141,380 C153,380 185,380 191,380 L201,380" stroke-linecap="round" stroke-linejoin="round" />
   <path class="edge-path" d="M311,291 L331,291 L242.6,291 L242.6,60 L201,60 L201,60" stroke-linecap="round" stroke-linejoin="round" />
-  <g class="subgraph-borders"><rect class="cluster-rect" x="21" y="152" width="290" height="278" rx="4" ry="4" fill="none" /><rect class="cluster-rect" x="21" y="152" width="290" height="118" rx="4" ry="4" fill="none" /></g>
+  <g class="subgraph-borders"><rect class="cluster-border" x="21" y="152" width="290" height="278" rx="4" ry="4" /><rect class="cluster-border" x="21" y="152" width="290" height="118" rx="4" ry="4" /></g>
   <g class="subgraph-title-bg"><rect class="cluster-title-bg" x="142.5" y="160" width="47" height="16" rx="3" ry="3" /><rect class="cluster-title-bg" x="142.5" y="172" width="47" height="16" rx="3" ry="3" /></g>
   <g class="subgraph-titles"><text class="cluster-label-text" x="166" y="170" text-anchor="middle">Outer</text><text class="cluster-label-text" x="166" y="182" text-anchor="middle">Inner</text></g>
   <path d="M201,220 L193,223 L193,217 Z" fill="#555555" />

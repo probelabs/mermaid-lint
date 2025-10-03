@@ -353,14 +353,12 @@ function applyFlowchartTheme(svg: string, theme?: Record<string, any>): string {
     out = out.replace(/(<path d="M0,0 L0,[0-9.]+ L[0-9.]+,[0-9.]+ z"[^>]*)(fill="[^"]*")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
     out = out.replace(/(<circle cx="4\.5" cy="4\.5" r="4\.5"[^>]*)(fill="[^"]*")/g, (_m, p1) => `${p1}fill="${String(theme.arrowheadColor)}"`);
   }
-  // Cluster styles via CSS
-  if (theme.clusterBkg || theme.clusterBorder) {
-    out = out.replace(/\.cluster-rect\s*\{[^}]*\}/, (m) => {
-      let rule = m;
-      if (theme.clusterBkg) rule = rule.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`);
-      if (theme.clusterBorder) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`);
-      return rule;
-    });
+  // Cluster styles via CSS (background and border are separate classes)
+  if (theme.clusterBkg) {
+    out = out.replace(/\.cluster-bg\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`));
+  }
+  if (theme.clusterBorder) {
+    out = out.replace(/\.cluster-border\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`));
   }
   if (theme.clusterTextColor) {
     out = out.replace(/\.cluster-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterTextColor)};`));

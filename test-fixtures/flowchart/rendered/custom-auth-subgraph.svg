@@ -6,7 +6,9 @@
       .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
       .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
       .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      .cluster-rect { fill: #ffffde; stroke: #aaaa33; stroke-width: 1px; }
+      /* Subgraph (cluster) styling */
+      .cluster-bg { fill: #ffffde; }
+      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
       .cluster-title-bg { fill: rgba(255,255,255,0.8); }
       .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
     </style>
@@ -21,38 +23,38 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <g class="subgraph-bg"><rect class="cluster-rect" x="21" y="21" width="789" height="1296" rx="4" ry="4" /></g>
+  <g class="subgraph-bg"><rect class="cluster-bg" x="21" y="21" width="789" height="1296" rx="4" ry="4" /></g>
   <g id="A">
-    <rect class="node-shape" x="218" y="69" width="240" height="56" rx="0" ry="0" />
+    <rect class="node-shape"  x="218" y="69" width="240" height="56" rx="0" ry="0" />
     <text class="node-label" x="338" y="101.9" text-anchor="middle">Start processing API definition</text>
   </g>
   <g id="B">
-    <polygon class="node-shape" points="338,245 450,357 338,469 226,357" />
+    <polygon class="node-shape"  points="338,245 450,357 338,469 226,357" />
     <text class="node-label" x="338" y="361.9" text-anchor="middle">Custom Auth Enabled ?</text>
   </g>
   <g id="C">
-    <rect class="node-shape" x="51" y="725" width="240" height="56" rx="0" ry="0" />
+    <rect class="node-shape"  x="51" y="725" width="240" height="56" rx="0" ry="0" />
     <text class="node-label">
     <tspan x="171" y="748.9" text-anchor="middle">Continue with other auth</tspan>
     <tspan x="171" y="766.9" text-anchor="middle">methods</tspan>
   </text>
   </g>
   <g id="D">
-    <polygon class="node-shape" points="505,609 649,753 505,897 361,753" />
+    <polygon class="node-shape"  points="505,609 649,753 505,897 361,753" />
     <text class="node-label">
     <tspan x="505" y="748.9" text-anchor="middle">Is Driver AND AuthCheck .Path</tspan>
     <tspan x="505" y="766.9" text-anchor="middle">configured ?</tspan>
   </text>
   </g>
   <g id="E">
-    <rect class="node-shape" x="230" y="1037" width="240" height="56" rx="0" ry="0" />
+    <rect class="node-shape"  x="230" y="1037" width="240" height="56" rx="0" ry="0" />
     <text class="node-label">
     <tspan x="350" y="1060.9" text-anchor="middle">Inject</tspan>
     <tspan x="350" y="1078.9" text-anchor="middle">PluginAuthGatekeeperMiddleware</tspan>
   </text>
   </g>
   <g id="F">
-    <rect class="node-shape" x="230" y="1213" width="240" height="74" rx="0" ry="0" />
+    <rect class="node-shape"  x="230" y="1213" width="240" height="74" rx="0" ry="0" />
     <text class="node-label">
     <tspan x="350" y="1236.9" text-anchor="middle">API is now blocked . All</tspan>
     <tspan x="350" y="1254.9" text-anchor="middle">requests will be rejected with</tspan>
@@ -60,14 +62,14 @@
   </text>
   </g>
   <g id="G">
-    <rect class="node-shape" x="540" y="1037" width="240" height="56" rx="0" ry="0" />
+    <rect class="node-shape"  x="540" y="1037" width="240" height="56" rx="0" ry="0" />
     <text class="node-label">
     <tspan x="660" y="1060.9" text-anchor="middle">Load configured custom auth</tspan>
     <tspan x="660" y="1078.9" text-anchor="middle">plugin</tspan>
   </text>
   </g>
   <g id="H">
-    <rect class="node-shape" x="540" y="1222" width="240" height="56" rx="0" ry="0" />
+    <rect class="node-shape"  x="540" y="1222" width="240" height="56" rx="0" ry="0" />
     <text class="node-label">
     <tspan x="660" y="1245.9" text-anchor="middle">Add custom auth plugin to</tspan>
     <tspan x="660" y="1263.9" text-anchor="middle">middleware chain</tspan>
@@ -100,7 +102,7 @@
     <path d="M660,1037 L657,1029 L663,1029 Z" fill="#555555" />
   </g>
   <path class="edge-path" d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke-linecap="round" stroke-linejoin="round" />
-  <g class="subgraph-borders"><rect class="cluster-rect" x="21" y="21" width="789" height="1296" rx="4" ry="4" fill="none" /></g>
+  <g class="subgraph-borders"><rect class="cluster-border" x="21" y="21" width="789" height="1296" rx="4" ry="4" /></g>
   <g class="subgraph-title-bg"><rect class="cluster-title-bg" x="305.5" y="29" width="220" height="16" rx="3" ry="3" /></g>
   <g class="subgraph-titles"><text class="cluster-label-text" x="415.5" y="39" text-anchor="middle">API Loader : Custom Authentication Processing</text></g>
   <path d="M338,245 L335,237 L341,237 Z" fill="#555555" />
