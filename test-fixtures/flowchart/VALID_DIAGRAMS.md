@@ -24,19 +24,24 @@ This file contains all valid flowchart test fixtures rendered with both Mermaid 
 9. [long text](#9-long-text)
 10. [mismatched quotes](#10-mismatched-quotes)
 11. [multidirectional arrows](#11-multidirectional-arrows)
-12. [nested subgraphs](#12-nested-subgraphs)
-13. [node ids special](#13-node-ids-special)
-14. [only nodes](#14-only-nodes)
-15. [quotes single inside double](#15-quotes-single-inside-double)
-16. [simple flow](#16-simple-flow)
-17. [special arrows](#17-special-arrows)
-18. [special chars](#18-special-chars)
-19. [styling classes](#19-styling-classes)
-20. [subgraph quoted title](#20-subgraph-quoted-title)
-21. [subgraphs](#21-subgraphs)
-22. [undefined node](#22-undefined-node)
-23. [unicode text](#23-unicode-text)
-24. [with text](#24-with-text)
+12. [nested subgraphs lr](#12-nested-subgraphs-lr)
+13. [nested subgraphs](#13-nested-subgraphs)
+14. [node ids special](#14-node-ids-special)
+15. [node to subgraph](#15-node-to-subgraph)
+16. [only nodes](#16-only-nodes)
+17. [quotes single inside double](#17-quotes-single-inside-double)
+18. [simple flow](#18-simple-flow)
+19. [special arrows](#19-special-arrows)
+20. [special chars](#20-special-chars)
+21. [styling classes](#21-styling-classes)
+22. [subgraph quoted title](#22-subgraph-quoted-title)
+23. [subgraph to node](#23-subgraph-to-node)
+24. [subgraph to subgraph lr](#24-subgraph-to-subgraph-lr)
+25. [subgraph to subgraph](#25-subgraph-to-subgraph)
+26. [subgraphs](#26-subgraphs)
+27. [undefined node](#27-undefined-node)
+28. [unicode text](#28-unicode-text)
+29. [with text](#29-with-text)
 
 ---
 
@@ -557,7 +562,62 @@ flowchart LR
 
 ---
 
-## 12. Nested Subgraphs
+## 12. Nested Subgraphs Lr
+
+📄 **Source**: [`nested-subgraphs-lr.mmd`](./valid/nested-subgraphs-lr.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart LR
+    subgraph outer[Outer]
+        subgraph inner[Inner]
+            A --> B
+        end
+        C --> D
+    end
+    outer --> E
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/nested-subgraphs-lr.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart LR
+    subgraph outer[Outer]
+        subgraph inner[Inner]
+            A --> B
+        end
+        C --> D
+    end
+    outer --> E
+
+
+```
+</details>
+
+---
+
+## 13. Nested Subgraphs
 
 📄 **Source**: [`nested-subgraphs.mmd`](./valid/nested-subgraphs.mmd)
 
@@ -608,7 +668,7 @@ flowchart TD
 
 ---
 
-## 13. Node Ids Special
+## 14. Node Ids Special
 
 📄 **Source**: [`node-ids-special.mmd`](./valid/node-ids-special.mmd)
 
@@ -663,7 +723,56 @@ flowchart TD
 
 ---
 
-## 14. Only Nodes
+## 15. Node To Subgraph
+
+📄 **Source**: [`node-to-subgraph.mmd`](./valid/node-to-subgraph.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart TD
+  subgraph inner[Inner]
+    A --> B
+  end
+  C --> inner
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/node-to-subgraph.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  subgraph inner[Inner]
+    A --> B
+  end
+  C --> inner
+
+
+```
+</details>
+
+---
+
+## 16. Only Nodes
 
 📄 **Source**: [`only-nodes.mmd`](./valid/only-nodes.mmd)
 
@@ -706,7 +815,7 @@ flowchart TD
 
 ---
 
-## 15. Quotes Single Inside Double
+## 17. Quotes Single Inside Double
 
 📄 **Source**: [`quotes-single-inside-double.mmd`](./valid/quotes-single-inside-double.mmd)
 
@@ -749,7 +858,7 @@ flowchart LR
 
 ---
 
-## 16. Simple Flow
+## 18. Simple Flow
 
 📄 **Source**: [`simple-flow.mmd`](./valid/simple-flow.mmd)
 
@@ -788,7 +897,7 @@ flowchart TD
 
 ---
 
-## 17. Special Arrows
+## 19. Special Arrows
 
 📄 **Source**: [`special-arrows.mmd`](./valid/special-arrows.mmd)
 
@@ -833,7 +942,7 @@ flowchart LR
 
 ---
 
-## 18. Special Chars
+## 20. Special Chars
 
 📄 **Source**: [`special-chars.mmd`](./valid/special-chars.mmd)
 
@@ -876,7 +985,7 @@ flowchart LR
 
 ---
 
-## 19. Styling Classes
+## 21. Styling Classes
 
 📄 **Source**: [`styling-classes.mmd`](./valid/styling-classes.mmd)
 
@@ -919,7 +1028,7 @@ flowchart TD
 
 ---
 
-## 20. Subgraph Quoted Title
+## 22. Subgraph Quoted Title
 
 📄 **Source**: [`subgraph-quoted-title.mmd`](./valid/subgraph-quoted-title.mmd)
 
@@ -968,7 +1077,166 @@ flowchart TD
 
 ---
 
-## 21. Subgraphs
+## 23. Subgraph To Node
+
+📄 **Source**: [`subgraph-to-node.mmd`](./valid/subgraph-to-node.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart TD
+  subgraph outer[Outer]
+    A --> B
+  end
+  outer --> C
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/subgraph-to-node.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  subgraph outer[Outer]
+    A --> B
+  end
+  outer --> C
+
+
+```
+</details>
+
+---
+
+## 24. Subgraph To Subgraph Lr
+
+📄 **Source**: [`subgraph-to-subgraph-lr.mmd`](./valid/subgraph-to-subgraph-lr.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart LR
+  subgraph A1[Group A]
+    A --> B
+  end
+  subgraph B1[Group B]
+    C --> D
+  end
+  A1 --> B1
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/subgraph-to-subgraph-lr.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart LR
+  subgraph A1[Group A]
+    A --> B
+  end
+  subgraph B1[Group B]
+    C --> D
+  end
+  A1 --> B1
+
+
+```
+</details>
+
+---
+
+## 25. Subgraph To Subgraph
+
+📄 **Source**: [`subgraph-to-subgraph.mmd`](./valid/subgraph-to-subgraph.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart TD
+  subgraph A1[Group A]
+    A --> B
+  end
+  subgraph B1[Group B]
+    C --> D
+  end
+  A1 --> B1
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/subgraph-to-subgraph.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  subgraph A1[Group A]
+    A --> B
+  end
+  subgraph B1[Group B]
+    C --> D
+  end
+  A1 --> B1
+
+
+```
+</details>
+
+---
+
+## 26. Subgraphs
 
 📄 **Source**: [`subgraphs.mmd`](./valid/subgraphs.mmd)
 
@@ -1019,7 +1287,7 @@ flowchart TD
 
 ---
 
-## 22. Undefined Node
+## 27. Undefined Node
 
 📄 **Source**: [`undefined-node.mmd`](./valid/undefined-node.mmd)
 
@@ -1062,7 +1330,7 @@ flowchart TD
 
 ---
 
-## 23. Unicode Text
+## 28. Unicode Text
 
 📄 **Source**: [`unicode-text.mmd`](./valid/unicode-text.mmd)
 
@@ -1109,7 +1377,7 @@ flowchart LR
 
 ---
 
-## 24. With Text
+## 29. With Text
 
 📄 **Source**: [`with-text.mmd`](./valid/with-text.mmd)
 

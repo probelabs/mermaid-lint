@@ -1,9 +1,11 @@
 import { createToken, Lexer, type IToken } from 'chevrotain';
 
 // Identifiers - define first since used by keywords
+// Identifiers allow hyphens only between alphanumeric segments to avoid capturing '--' arrows.
 export const Identifier = createToken({
     name: "Identifier",
-    pattern: /[a-zA-Z_][a-zA-Z0-9_-]*/
+    // e.g., id-2, _id, A1, but not A-- (that belongs to an arrow token)
+    pattern: /[a-zA-Z_][a-zA-Z0-9_]*(?:-[a-zA-Z0-9_]+)*/
 });
 
 // Numbers (for node IDs like node1, node2)
@@ -204,6 +206,10 @@ export const AngleLess = createToken({ name: "AngleLess", pattern: /</ });
 // Link text delimiter
 export const Pipe = createToken({ name: "Pipe", pattern: /\|/ });
 
+// Slash tokens (used in shapes like [/text/] and [\\text/])
+export const ForwardSlash = createToken({ name: 'ForwardSlash', pattern: /\// });
+export const Backslash = createToken({ name: 'Backslash', pattern: /\\/ });
+
 // Text content patterns
 export const QuotedString = createToken({
     name: "QuotedString",
@@ -306,6 +312,8 @@ export const allTokens = [
     DiamondClose,
     AngleOpen,
     AngleLess,
+    ForwardSlash,
+    Backslash,
     Pipe,
     TripleColon,
     Ampersand,

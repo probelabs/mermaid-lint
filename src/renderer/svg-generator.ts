@@ -8,52 +8,167 @@ export class SVGRenderer implements IRenderer {
   private padding = 20;
   private fontSize = 14;
   private fontFamily = 'Arial, sans-serif';
+  // Theme: tuned to resemble Mermaid default
+  private defaultStroke = '#3f3f3f';
+  private defaultFill = '#eef0ff'; // light violet-ish fill
+  private arrowStroke = '#555555';
+  private arrowMarkerSize = 9; // px (1.5x larger for better visibility)
 
   render(layout: Layout): string {
-    const width = layout.width + this.padding * 2;
-    const height = layout.height + this.padding * 2;
+    // Compute dynamic bounds across nodes, subgraphs, and edge points
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    for (const n of layout.nodes) {
+      minX = Math.min(minX, n.x);
+      minY = Math.min(minY, n.y);
+      maxX = Math.max(maxX, n.x + n.width);
+      maxY = Math.max(maxY, n.y + n.height);
+    }
+    if ((layout as any).subgraphs) {
+      for (const sg of (layout as any).subgraphs as Array<{x:number;y:number;width:number;height:number}>) {
+        minX = Math.min(minX, sg.x);
+        minY = Math.min(minY, sg.y);
+        maxX = Math.max(maxX, sg.x + sg.width);
+        maxY = Math.max(maxY, sg.y + sg.height);
+      }
+    }
+    for (const e of layout.edges) {
+      if (e.points) for (const p of e.points) {
+        minX = Math.min(minX, p.x);
+        minY = Math.min(minY, p.y);
+        maxX = Math.max(maxX, p.x);
+        maxY = Math.max(maxY, p.y);
+      }
+    }
+    if (!isFinite(minX)) { minX = 0; }
+    if (!isFinite(minY)) { minY = 0; }
+    if (!isFinite(maxX)) { maxX = layout.width; }
+    if (!isFinite(maxY)) { maxY = layout.height; }
+    const extraPadX = Math.max(0, -Math.floor(minX) + 1);
+    const extraPadY = Math.max(0, -Math.floor(minY) + 1);
+
+    const padX = this.padding + extraPadX;
+    const padY = this.padding + extraPadY;
+
+    const bboxWidth = Math.ceil(maxX) - Math.min(0, Math.floor(minX));
+    const bboxHeight = Math.ceil(maxY) - Math.min(0, Math.floor(minY));
+    const width = bboxWidth + this.padding * 2 + extraPadX;
+    const height = bboxHeight + this.padding * 2 + extraPadY;
 
     const elements: string[] = [];
+    const overlays: string[] = [];
 
     // Add defs for markers (arrowheads)
     elements.push(this.generateDefs());
 
-    // Draw edges first (so they appear behind nodes)
-    for (const edge of layout.edges) {
-      elements.push(this.generateEdge(edge));
+    // Draw subgraphs (cluster backgrounds) behind edges and nodes
+    if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
+      const sgs = (layout as any).subgraphs as Array<{id:string;label?:string;x:number;y:number;width:number;height:number;parent?:string}>;
+      const order = sgs.slice().sort((a,b) => (a.parent ? 1 : 0) - (b.parent ? 1 : 0));
+      const bgRects: string[] = [];
+      const borderRects: string[] = [];
+      const titleBgRects: string[] = [];
+      const titles: Array<{depth:number, svg:string}> = [];
+      const depthOf = (sg:any) => {
+        let d=0; let p=sg.parent; const map = new Map(order.map(o=>[o.id,o]));
+        while(p){ d++; p = map.get(p)?.parent; }
+        return d;
+      };
+      for (const sg of order) {
+        const x = sg.x + padX;
+        const y = sg.y + padY;
+        const w = sg.width;
+        const h = sg.height;
+        bgRects.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="#fffbe6" stroke="none" />`);
+        borderRects.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" />`);
+        if (sg.label) {
+          const depth = depthOf(sg);
+          const dy = 18 + depth * 12; // push nested titles slightly lower to avoid overlap
+          const text = this.escapeXml(sg.label);
+          const est = Math.max(40, Math.min(220, text.length * 7 + 12));
+          const tx = x + w/2 - est/2;
+          const ty = y + dy - 10;
+          titleBgRects.push(`<rect x="${tx}" y="${ty}" width="${est}" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" />`);
+          titles.push({ depth, svg: `<text x="${x + w/2}" y="${y + dy}" text-anchor="middle" font-family="${this.fontFamily}" font-size="12" fill="#333">${text}</text>` });
+        }
+      }
+      // Backgrounds behind everything
+      elements.push(`<g class="subgraph-bg">${bgRects.join('')}</g>`);
+      // Keep borders and titles to draw on top later
+      const borderGroup = `<g class="subgraph-borders">${borderRects.join('')}</g>`;
+      const titleBgs = `<g class="subgraph-title-bg">${titleBgRects.join('')}</g>`;
+      const titleGroup = `<g class="subgraph-titles">${titles.sort((a,b)=> a.depth - b.depth).map(t=>t.svg).join('')}</g>`;
+      // Stash overlay to draw after edges/nodes
+      overlays.push(borderGroup);
+      overlays.push(titleBgs);
+      overlays.push(titleGroup);
     }
 
-    // Draw nodes
+    // Build a padded node lookup for geometry intersections (include clusters)
+    const nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}> = {};
+    for (const n of layout.nodes) {
+      nodeMap[n.id] = { x: n.x + padX, y: n.y + padY, width: n.width, height: n.height, shape: (n as any).shape };
+    }
+    if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
+      for (const sg of (layout as any).subgraphs as Array<{id:string;x:number;y:number;width:number;height:number}>) {
+        nodeMap[sg.id] = { x: sg.x + padX, y: sg.y + padY, width: sg.width, height: sg.height, shape: 'rectangle' };
+      }
+    }
+
+    // Draw nodes first so edges can connect visibly without being hidden by node borders
     for (const node of layout.nodes) {
-      elements.push(this.generateNode(node));
+      elements.push(this.generateNodeWithPad(node, padX, padY));
     }
 
+    // Draw edges on top of nodes; arrowhead overlays still collected for final top-most draw
+    for (const edge of layout.edges) {
+      const { path, overlay } = this.generateEdge(edge, padX, padY, nodeMap);
+      elements.push(path);
+      if (overlay) overlays.push(overlay);
+    }
+
+    // White background rect to match Mermaid output
+    const bg = `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff" />`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  ${bg}
   ${elements.join('\n  ')}
+  ${overlays.join('\n  ')}
 </svg>`;
   }
 
   private generateDefs(): string {
+    // Use userSpaceOnUse so marker sizes are consistent across viewers.
+    // Provide explicit viewBox for reliable rendering.
+    const aw = Math.max(8, this.arrowMarkerSize + 2);
+    const ah = Math.max(8, this.arrowMarkerSize + 2);
+    const arefX = Math.max(6, aw);
+    const arefY = Math.max(4, Math.round(ah / 2));
     return `<defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" viewBox="0 0 ${aw} ${ah}" markerWidth="${aw}" markerHeight="${ah}" refX="${arefX}" refY="${arefY}" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,${ah} L${aw},${arefY} z" fill="${this.arrowStroke}" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="${this.arrowStroke}" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="${this.arrowStroke}" stroke-width="2.25" />
     </marker>
   </defs>`;
   }
 
-  private generateNode(node: LayoutNode): string {
-    const x = node.x + this.padding;
-    const y = node.y + this.padding;
+  private generateNodeWithPad(node: LayoutNode, padX: number, padY: number): string {
+    const x = node.x + padX;
+    const y = node.y + padY;
     const cx = x + node.width / 2;
     const cy = y + node.height / 2;
 
     let shape = '';
-    const strokeWidth = 1.5;  // Thinner stroke to match Mermaid
-    const stroke = '#9370db';  // Purple stroke similar to Mermaid
-    const fill = '#f9f9ff';    // Light purple fill similar to Mermaid
+    let labelCenterY = cy;
+    const strokeWidth = (node.style?.strokeWidth ?? 1.5);
+    const stroke = (node.style?.stroke ?? this.defaultStroke);
+    const fill = (node.style?.fill ?? this.defaultFill);
 
     switch (node.shape) {
       case 'rectangle':
@@ -123,14 +238,34 @@ export class SVGRenderer implements IRenderer {
         break;
       }
 
-      case 'cylinder':
-        const ellipseRy = 10;
-        shape = `<g>
-          <ellipse cx="${cx}" cy="${y + ellipseRy}" rx="${node.width/2}" ry="${ellipseRy}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
-          <rect x="${x}" y="${y + ellipseRy}" width="${node.width}" height="${node.height - ellipseRy * 2}" stroke="none" fill="${fill}" />
-          <path d="M${x},${y + ellipseRy} L${x},${y + node.height - ellipseRy} A${node.width/2},${ellipseRy} 0 0,0 ${x + node.width},${y + node.height - ellipseRy} L${x + node.width},${y + ellipseRy}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
-        </g>`;
+      case 'trapezoidAlt': {
+        const inset = node.width * 0.15;
+        const points = [
+          `${x},${y}`,                               // top-left (full width)
+          `${x + node.width},${y}`,                  // top-right
+          `${x + node.width - inset},${y + node.height}`, // bottom-right (narrow)
+          `${x + inset},${y + node.height}`          // bottom-left (narrow)
+        ].join(' ');
+        shape = `<polygon points="${points}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />`;
         break;
+      }
+
+      case 'cylinder': {
+        // Scale the ellipse vertically based on node size
+        const rx = Math.max(8, node.width / 2);
+        const ry = Math.max(6, Math.min(node.height * 0.22, node.width * 0.25));
+        const topCY = y + ry;
+        const botCY = y + node.height - ry;
+        const bodyH = Math.max(0, node.height - ry * 2);
+        shape = `<g>
+          <rect x="${x}" y="${topCY}" width="${node.width}" height="${bodyH}" stroke="none" fill="${fill}" />
+          <ellipse cx="${cx}" cy="${topCY}" rx="${node.width/2}" ry="${ry}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="${fill}" />
+          <path d="M${x},${topCY} L${x},${botCY} A${node.width/2},${ry} 0 0,0 ${x + node.width},${botCY} L${x + node.width},${topCY}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none" />
+        </g>`;
+        // Center label within the cylindrical body (between the caps)
+        labelCenterY = topCY + bodyH / 2;
+        break;
+      }
 
       case 'subroutine':
         const insetX = 5;
@@ -154,7 +289,7 @@ export class SVGRenderer implements IRenderer {
     }
 
     // Add text label with wrapping
-    const text = this.generateWrappedText(node.label, cx, cy, node.width - 20);
+    const text = this.generateWrappedText(node.label, cx, labelCenterY, node.width - 20);
 
     return `<g id="${node.id}">
     ${shape}
@@ -163,8 +298,12 @@ export class SVGRenderer implements IRenderer {
   }
 
   private generateWrappedText(text: string, x: number, y: number, maxWidth: number): string {
-    // Estimate character width (rough approximation)
-    const charWidth = this.fontSize * 0.6;
+    // If the label contains basic HTML, use the rich renderer
+    if (text.includes('<')) {
+      return this.generateRichText(text, x, y, maxWidth);
+    }
+    // Estimate character width (tuned to Mermaid)
+    const charWidth = 7; // px per character
     const maxCharsPerLine = Math.floor(maxWidth / charWidth);
 
     if (maxCharsPerLine <= 0 || text.length <= maxCharsPerLine) {
@@ -196,7 +335,7 @@ export class SVGRenderer implements IRenderer {
     }
 
     // Generate SVG text with tspans for each line
-    const lineHeight = this.fontSize * 1.2;
+    const lineHeight = 18; // px - add a bit more vertical space
     const totalHeight = (lines.length - 1) * lineHeight;
     const startY = y - totalHeight / 2 + this.fontSize * 0.35; // Add dy offset for centering
 
@@ -211,33 +350,142 @@ export class SVGRenderer implements IRenderer {
   </text>`;
   }
 
-  private generateEdge(edge: LayoutEdge): string {
+  // Basic HTML-aware text renderer supporting <br>, <b>/<strong>, <i>/<em>, <u>
+  private generateRichText(html: string, x: number, y: number, maxWidth: number): string {
+    // Normalize tag spacing so tokens like "< br / >" become "<br/>"
+    html = this.normalizeHtml(html);
+    type Seg = { text: string; bold?: boolean; italic?: boolean; underline?: boolean; br?: boolean };
+    const segments: Seg[] = [];
+    // Normalize <br> variants to a unique token and tokenize tags
+    const re = /<\/?(br|b|strong|i|em|u)\s*\/?\s*>/gi;
+    let lastIndex = 0;
+    const state = { bold: false, italic: false, underline: false };
+    const pushText = (t: string) => {
+      if (!t) return;
+      segments.push({ text: this.htmlDecode(t), bold: state.bold, italic: state.italic, underline: state.underline });
+    };
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(html))) {
+      // text before tag
+      pushText(html.slice(lastIndex, m.index));
+      const tag = m[0].toLowerCase();
+      const name = m[1].toLowerCase();
+      const isClose = tag.startsWith('</');
+      if (name === 'br') {
+        segments.push({ text: '', br: true });
+      } else if (name === 'b' || name === 'strong') {
+        state.bold = !isClose ? true : false;
+      } else if (name === 'i' || name === 'em') {
+        state.italic = !isClose ? true : false;
+      } else if (name === 'u') {
+        state.underline = !isClose ? true : false;
+      }
+      lastIndex = re.lastIndex;
+    }
+    pushText(html.slice(lastIndex));
+
+    // Wrap into lines with forced breaks
+    const lines: Seg[][] = [];
+    const charWidth = 7;
+    const maxCharsPerLine = Math.max(1, Math.floor(maxWidth / charWidth));
+    let current: Seg[] = [];
+    let currentLen = 0;
+    const flush = () => { if (current.length) { lines.push(current); current = []; currentLen = 0; } };
+    const splitWords = (s: Seg): Seg[] => {
+      if (!s.text) return [s];
+      const words = s.text.split(/(\s+)/); // keep spaces
+      return words.map(w => ({ ...s, text: w }));
+    };
+
+    for (const seg of segments) {
+      if (seg.br) { flush(); continue; }
+      for (const w of splitWords(seg)) {
+        const wlen = w.text.length;
+        if (currentLen + wlen > maxCharsPerLine && currentLen > 0) {
+          flush();
+        }
+        current.push(w);
+        currentLen += wlen;
+      }
+    }
+    flush();
+
+    // Emit SVG tspans
+    const lineHeight = 18; // richer text lines spacing up slightly
+    const totalHeight = (lines.length - 1) * lineHeight;
+    const startY = y - totalHeight / 2 + this.fontSize * 0.35;
+    const tspans: string[] = [];
+    for (let i = 0; i < lines.length; i++) {
+      const lineY = startY + i * lineHeight;
+      // Build inline tspans for style changes
+      let acc = '';
+      let cursorX = x;
+      // Use a grouping <tspan> to align the full line by x/y, and nest inline tspans
+      const inner: string[] = [];
+      let buffer = '';
+      let style = { bold: false, italic: false, underline: false };
+      const flushInline = () => {
+        if (!buffer) return;
+        const styleAttr = `${style.bold ? 'font-weight="bold" ' : ''}${style.italic ? 'font-style="italic" ' : ''}${style.underline ? 'text-decoration="underline" ' : ''}`;
+        inner.push(`<tspan ${styleAttr}>${this.escapeXml(buffer)}</tspan>`);
+        buffer = '';
+      };
+      for (const w of lines[i]) {
+        const wStyle = { bold: !!w.bold, italic: !!w.italic, underline: !!w.underline };
+        if (wStyle.bold !== style.bold || wStyle.italic !== style.italic || wStyle.underline !== style.underline) {
+          flushInline();
+          style = wStyle;
+        }
+        buffer += w.text;
+      }
+      flushInline();
+      tspans.push(`<tspan x="${x}" y="${lineY}" text-anchor="middle">${inner.join('')}</tspan>`);
+    }
+
+    return `<text font-family="${this.fontFamily}" font-size="${this.fontSize}" fill="#333">${tspans.join('\n    ')}</text>`;
+  }
+
+  private normalizeHtml(s: string): string {
+    // collapse spaces between < and tag name, around '/', and before >
+    let out = s.replace(/<\s+/g, '<')
+               .replace(/\s+>/g, '>')
+               .replace(/<\s*\//g, '</')
+               .replace(/\s*\/\s*>/g, '/>')
+               .replace(/<\s*(br)\s*>/gi, '<$1/>'); // turn <br> into <br/>
+    return out;
+  }
+
+  private htmlDecode(s: string): string {
+    return s
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+  }
+
+  private generateEdge(edge: LayoutEdge, padX: number, padY: number, nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}>): { path: string; overlay?: string } {
     if (!edge.points || edge.points.length < 2) {
-      return '';
+      return { path: '' };
     }
 
-    // Build path
-    const points = edge.points.map(p => ({
-      x: p.x + this.padding,
-      y: p.y + this.padding
-    }));
-
-    let pathData = `M${points[0].x},${points[0].y}`;
-    for (let i = 1; i < points.length; i++) {
-      pathData += ` L${points[i].x},${points[i].y}`;
-    }
+    // Build smoothed path (Catmull-Rom to Bezier) from dagre points
+    const points = edge.points.map(p => ({ x: p.x + padX, y: p.y + padY }));
+    const segData = this.buildSmoothSegments(points);
 
     // Style based on arrow type
     let strokeDasharray = '';
-    let strokeWidth = 2;
-    let markerEnd = 'url(#arrow)';
+    let strokeWidth = 1.5;
+    // Do not assume a default arrowhead; rely on model markers
+    let markerEnd = '';
+    let markerStart = '';
 
     switch (edge.type) {
       case 'open':
         markerEnd = '';
         break;
       case 'dotted':
-        strokeDasharray = '5,5';
+        strokeDasharray = '3,3';
         break;
       case 'thick':
         strokeWidth = 3;
@@ -248,29 +496,456 @@ export class SVGRenderer implements IRenderer {
         break;
     }
 
-    let edgeElement = `<path d="${pathData}" stroke="#666" stroke-width="${strokeWidth}" fill="none"`;
+    // Build Mermaid-like path
+    const mStart = (edge as any).markerStart as (undefined|string);
+    const mEnd = (edge as any).markerEnd as (undefined|string);
+    const sourceNode = nodeMap[(edge as any).source];
+    const targetNode = nodeMap[(edge as any).target];
+    // Compute boundary tips by intersecting first/last polyline legs
+    let boundaryStart = points[0];
+    let boundaryEnd = points[points.length - 1];
+    if (sourceNode && points.length >= 2) {
+      const pseudo = { start: points[0], segs: [{ c1: points[1], c2: points[Math.max(0, points.length - 2)], to: points[points.length - 1] }] } as any;
+      boundaryStart = this.intersectSegmentsStart(pseudo, sourceNode).start;
+    }
+    if (targetNode && points.length >= 2) {
+      const pseudo = { start: points[0], segs: [{ c1: points[1], c2: points[Math.max(0, points.length - 2)], to: points[points.length - 1] }] } as any;
+      const after = this.intersectSegmentsEnd(pseudo, targetNode) as any;
+      boundaryEnd = after.segs.length ? after.segs[after.segs.length - 1].to : boundaryEnd;
+    }
+    const pathParts: string[] = [];
+    pathParts.push(`M${boundaryStart.x},${boundaryStart.y}`);
+    // Short, straight lead-out segment from the source boundary
+    let startFlat = points.length >= 2 ? points[1] : boundaryStart;
+    if (points.length >= 2) {
+      const svx = points[1].x - boundaryStart.x;
+      const svy = points[1].y - boundaryStart.y;
+      const slen = Math.hypot(svx, svy) || 1;
+      const SFLAT = Math.min(22, Math.max(10, slen * 0.15));
+      startFlat = { x: boundaryStart.x + (svx / slen) * SFLAT, y: boundaryStart.y + (svy / slen) * SFLAT };
+      pathParts.push(`L${startFlat.x},${startFlat.y}`);
+    }
+    const orthogonal = (edge as any).pathMode === 'orthogonal';
+    if (points.length >= 4 && !orthogonal) {
+      // Multiple interior points: C segments for interior, then L into boundary
+      const pts = [points[0], ...points, points[points.length - 1]]; // duplicate ends
+      for (let i = 1; i < pts.length - 3; i++) {
+        const p0 = pts[i - 1];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[i + 2];
+        const c1x = p1.x + (p2.x - p0.x) / 6; const c1y = p1.y + (p2.y - p0.y) / 6;
+        const c2x = p2.x - (p3.x - p1.x) / 6; const c2y = p2.y - (p3.y - p1.y) / 6;
+        pathParts.push(`C${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`);
+      }
+      // Final straight into boundary
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    } else if (points.length === 3 && !orthogonal) {
+      // One interior point: end with a short flat segment into boundary like Mermaid
+      const p0 = boundaryStart, p1 = points[1], p2 = boundaryEnd;
+      // Approach point: a bit before the boundary along the last leg
+      const ax = boundaryEnd.x - p1.x;
+      const ay = boundaryEnd.y - p1.y;
+      const alen = Math.hypot(ax, ay) || 1;
+      const FLAT_IN = Math.min(20, Math.max(10, alen * 0.15));
+      const preEnd = { x: boundaryEnd.x - (ax/alen) * FLAT_IN, y: boundaryEnd.y - (ay/alen) * FLAT_IN };
+      // Control points: CR-like near start, and align the last control along the final leg into preEnd
+      // First control oriented along the initial leg from boundaryStart → points[1]
+      const sdx = startFlat.x - boundaryStart.x; const sdy = startFlat.y - boundaryStart.y;
+      const sdirx = (sdx === 0 && sdy === 0) ? (p1.x - p0.x) : sdx; // fallback if startFlat==start
+      const sdiry = (sdx === 0 && sdy === 0) ? (p1.y - p0.y) : sdy;
+      const sdlen = Math.hypot(sdirx, sdiry) || 1;
+      const c1len = Math.min(40, Math.max(12, sdlen * 1.2));
+      const c1x = startFlat.x + (sdirx / sdlen) * c1len;
+      const c1y = startFlat.y + (sdiry / sdlen) * c1len;
+      // Second control aligned with the last leg towards boundaryEnd
+      const dirx = (boundaryEnd.x - p1.x) / alen; const diry = (boundaryEnd.y - p1.y) / alen;
+      const c2x = preEnd.x - dirx * (FLAT_IN * 0.6);
+      const c2y = preEnd.y - diry * (FLAT_IN * 0.6);
+      pathParts.push(`C${c1x},${c1y} ${c2x},${c2y} ${preEnd.x},${preEnd.y}`);
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    } else {
+      // Only two points: straight line
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    }
+    // If orthogonal path is requested, emit pure L segments across all interior points
+    if (orthogonal) {
+      pathParts.length = 0;
+      pathParts.push(`M${boundaryStart.x},${boundaryStart.y}`);
+      for (const p of points.slice(1, -1)) pathParts.push(`L${p.x},${p.y}`);
+      pathParts.push(`L${boundaryEnd.x},${boundaryEnd.y}`);
+    }
+    const pathData = pathParts.join(' ');
+
+    let edgeElement = `<path d="${pathData}" stroke="${this.arrowStroke}" stroke-width="${strokeWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
     }
-    if (markerEnd) {
-      edgeElement += ` marker-end="${markerEnd}"`;
-    }
+    // Apply explicit markers from edge if present
+    const startMarkUrl = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
+    const endMarkUrl = mEnd === 'arrow' ? 'url(#arrow)' : mEnd === 'circle' ? 'url(#circle-marker)' : mEnd === 'cross' ? 'url(#cross-marker)' : (markerEnd || '');
+    // No tangent fix needed: last command is a straight L into the node boundary
+    // Prefer overlay triangles for arrowheads; keep circle/cross as markers
+    if (startMarkUrl && mStart !== 'arrow') edgeElement += ` marker-start="${startMarkUrl}"`;
+    if (endMarkUrl && mEnd !== 'arrow') edgeElement += ` marker-end="${endMarkUrl}"`;
     edgeElement += ' />';
 
     // Add edge label if present
     if (edge.label) {
-      const midPoint = points[Math.floor(points.length / 2)];
-      const labelBg = `<rect x="${midPoint.x - 30}" y="${midPoint.y - 10}" width="60" height="20" fill="white" opacity="0.9" rx="3" />`;
-      const labelText = `<text x="${midPoint.x}" y="${midPoint.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${this.fontSize - 2}" fill="#333">${this.escapeXml(edge.label)}</text>`;
+      const pos = this.pointAtRatio(points, 0.55);
+      const text = this.escapeXml(edge.label);
+      const padding = 4;
+      const fontSize = this.fontSize - 3; // slightly smaller than node labels
+      const width = Math.max(18, Math.min(220, text.length * 6 + padding * 2));
+      const height = 14;
+      const x = pos.x - width / 2;
+      const y = pos.y - height / 2;
+      const labelBg = `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />`;
+      const labelText = `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle" font-family="${this.fontFamily}" font-size="${fontSize}" fill="#444">${text}</text>`;
 
-      return `<g>
+      // Overlay arrowheads (same logic as unlabeled case), drawn last for visibility
+      let overlay = '';
+      const prevEndL = points.length >= 2 ? points[points.length - 2] : boundaryEnd;
+      const vxl = boundaryEnd.x - prevEndL.x; const vyl = boundaryEnd.y - prevEndL.y;
+      const vlenl = Math.hypot(vxl, vyl) || 1;
+      const uxl = vxl / vlenl; const uyl = vyl / vlenl;
+      const nxl = -uyl; const nyl = uxl;
+      const triLenL = 8; const triWL = 6;
+      // Arrow points forward in direction of travel: tip AT boundaryEnd, base pulled back
+      const p1xL = boundaryEnd.x, p1yL = boundaryEnd.y; // tip at boundary
+      const baseXL = boundaryEnd.x - uxl * triLenL; const baseYL = boundaryEnd.y - uyl * triLenL;
+      const p2xL = baseXL + nxl * (triWL/2), p2yL = baseYL + nyl * (triWL/2);
+      const p3xL = baseXL - nxl * (triWL/2), p3yL = baseYL - nyl * (triWL/2);
+      const triEnd = `<path d="M${p1xL},${p1yL} L${p2xL},${p2yL} L${p3xL},${p3yL} Z" fill="${this.arrowStroke}" />`;
+      overlay += triEnd;
+      if (mStart === 'arrow' && points.length >= 2) {
+        const firstLeg = points[1];
+        const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
+        const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
+        const snx = -suy; const sny = sux;
+        const sbaseX = boundaryStart.x - sux * triLenL; const sbaseY = boundaryStart.y - suy * triLenL;
+        const sp1x = boundaryStart.x, sp1y = boundaryStart.y;
+        const sp2x = sbaseX + snx * (triWL/2), sp2y = sbaseY + sny * (triWL/2);
+        const sp3x = sbaseX - snx * (triWL/2), sp3y = sbaseY - sny * (triWL/2);
+        overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
+      }
+
+      const pathGroup = `<g>
     ${edgeElement}
     ${labelBg}
     ${labelText}
+    ${overlay}
   </g>`;
+      return { path: pathGroup };
     }
 
-    return edgeElement;
+    // Build optional overlay arrowheads for viewers with limited marker support (triangles only)
+    let overlay = '';
+    // For direction, use last polyline leg (points.length-2 -> boundaryEnd)
+    const prevEnd = points.length >= 2 ? points[points.length - 2] : boundaryEnd;
+    const vx = boundaryEnd.x - prevEnd.x; const vy = boundaryEnd.y - prevEnd.y;
+    const vlen = Math.hypot(vx, vy) || 1;
+    const ux = vx / vlen; const uy = vy / vlen;
+    const nx = -uy; const ny = ux;
+    // reuse triLen from above (8px)
+    const triLen = 8; // px overlay triangle length
+    const triW = 6;   // px base width
+    // Arrow points forward in direction of travel: tip AT boundaryEnd, base pulled back
+    const p1x = boundaryEnd.x, p1y = boundaryEnd.y; // tip at boundary
+    const baseX = boundaryEnd.x - ux * triLen;
+    const baseY = boundaryEnd.y - uy * triLen;
+    const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
+    const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
+
+    const triangle = `<path d="M${p1x},${p1y} L${p2x},${p2y} L${p3x},${p3y} Z" fill="${this.arrowStroke}" />`;
+
+    // reuse mStart/mEnd from above
+    if (mEnd === 'arrow') {
+      overlay += triangle;
+    }
+    // Optional: support start arrow overlay if needed
+    if (mStart === 'arrow' && points.length >= 2) {
+      const firstLeg = points[1];
+      const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
+      const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
+      const snx = -suy; const sny = sux;
+      // Arrow points backward from boundaryStart toward firstLeg (start arrow points back toward source)
+      const sp1x = boundaryStart.x - sux * triLen, sp1y = boundaryStart.y - suy * triLen;
+      const sbaseX = boundaryStart.x; const sbaseY = boundaryStart.y;
+      const sp2x = sbaseX + snx * (triW/2), sp2y = sbaseY + sny * (triW/2);
+      const sp3x = sbaseX - snx * (triW/2), sp3y = sbaseY - sny * (triW/2);
+      overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
+    }
+
+    return { path: edgeElement, overlay: overlay || undefined };
+  }
+
+  // --- helpers ---
+  private buildSmoothSegments(points: Array<{x:number;y:number}>): { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} {
+    if (points.length < 2) {
+      const p = points[0] || {x:0,y:0};
+      return { start: p, segs: [] };
+    }
+    if (points.length === 2) {
+      const p0 = points[0];
+      const p1 = points[1];
+      const c1 = { x: p0.x + (p1.x - p0.x) / 3, y: p0.y + (p1.y - p0.y) / 3 };
+      const c2 = { x: p0.x + 2*(p1.x - p0.x) / 3, y: p0.y + 2*(p1.y - p0.y) / 3 };
+      return { start: p0, segs: [{ c1, c2, to: p1 }] };
+    }
+    const pts = [points[0], ...points, points[points.length - 1]]; // duplicate ends
+    const segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}> = [];
+    const firstIdx = 1;
+    const lastIdx = pts.length - 3; // index i of the last produced segment
+    const midFactor = 1.0;          // keep mid segments as-is
+    const endFactor = 0.35;         // reduce handle magnitude near the ends more
+    const FLAT_LEN = 28;            // ~28px straight approach near node boundaries (closer to Mermaid)
+    for (let i = 1; i < pts.length - 2; i++) {
+      const p0 = pts[i - 1];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2];
+      const f1 = (i === firstIdx) ? endFactor : midFactor;
+      const f2 = (i === lastIdx)  ? endFactor : midFactor;
+      // Initial CR->Bezier handles
+      let c1 = { x: p1.x + ((p2.x - p0.x) / 6) * f1, y: p1.y + ((p2.y - p0.y) / 6) * f1 };
+      let c2 = { x: p2.x - ((p3.x - p1.x) / 6) * f2, y: p2.y - ((p3.y - p1.y) / 6) * f2 };
+
+      // Flatten start/end approach to nodes by aligning the endpoint handle along the chord
+      if (i === firstIdx) {
+        const dx = p2.x - p1.x, dy = p2.y - p1.y; const len = Math.hypot(dx, dy) || 1;
+        const t = Math.min(FLAT_LEN, len * 0.5);
+        c1 = { x: p1.x + (dx/len) * t, y: p1.y + (dy/len) * t };
+      }
+      if (i === lastIdx) {
+        const dx = p2.x - p1.x, dy = p2.y - p1.y; const len = Math.hypot(dx, dy) || 1;
+        const t = Math.min(FLAT_LEN, len * 0.5);
+        c2 = { x: p2.x - (dx/len) * t, y: p2.y - (dy/len) * t };
+      }
+      segs.push({ c1, c2, to: { x: p2.x, y: p2.y } });
+    }
+    return { start: pts[1], segs };
+  }
+
+  private pathFromSegments(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>}): string {
+    let d = `M${data.start.x},${data.start.y}`;
+    for (const s of data.segs) {
+      d += ` C${s.c1.x},${s.c1.y} ${s.c2.x},${s.c2.y} ${s.to.x},${s.to.y}`;
+    }
+    return d;
+  }
+
+  private trimSegmentsEnd(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , cut: number) {
+    const segs = data.segs.slice();
+    if (!segs.length) return data;
+    const last = { ...segs[segs.length - 1] };
+    const vx = last.to.x - last.c2.x;
+    const vy = last.to.y - last.c2.y;
+    const len = Math.hypot(vx, vy) || 1;
+    // Clamp cut to avoid crossing the control point which would invert direction
+    const eff = Math.max(0.1, Math.min(cut, Math.max(0, len - 0.2)));
+    const nx = vx / len;
+    const ny = vy / len;
+    const newTo = { x: last.to.x - nx * eff, y: last.to.y - ny * eff };
+    last.to = newTo;
+    segs[segs.length - 1] = last;
+    return { start: data.start, segs };
+  }
+
+  private trimSegmentsStart(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , cut: number) {
+    const segs = data.segs.slice();
+    if (!segs.length) return data;
+    const first = { ...segs[0] };
+    const vx = first.c1.x - data.start.x;
+    const vy = first.c1.y - data.start.y;
+    const len = Math.hypot(vx, vy) || 1;
+    const eff = Math.max(0.1, Math.min(cut, Math.max(0, len - 0.2)));
+    const nx = vx / len;
+    const ny = vy / len;
+    const newStart = { x: data.start.x + nx * eff, y: data.start.y + ny * eff };
+    return { start: newStart, segs };
+  }
+
+  // ---- shape intersections ----
+  private intersectSegmentsEnd(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , node: {x:number;y:number;width:number;height:number;shape:string}) {
+    if (!data.segs.length) return data;
+    const last = data.segs[data.segs.length - 1];
+    const p1 = last.c2; const p2 = last.to;
+    const hit = this.intersectLineWithNode(p1, p2, node);
+    if (hit) {
+      const segs = data.segs.slice();
+      segs[segs.length - 1] = { ...last, to: hit };
+      return { start: data.start, segs };
+    }
+    return data;
+  }
+
+  private intersectSegmentsStart(data: { start:{x:number;y:number}; segs: Array<{c1:{x:number;y:number}; c2:{x:number;y:number}; to:{x:number;y:number}}>} , node: {x:number;y:number;width:number;height:number;shape:string}) {
+    if (!data.segs.length) return data;
+    const first = data.segs[0];
+    const p1 = data.start; const p2 = first.c1;
+    const hit = this.intersectLineWithNode(p1, p2, node);
+    if (hit) {
+      return { start: hit, segs: data.segs };
+    }
+    return data;
+  }
+
+  private intersectLineWithNode(p1:{x:number;y:number}, p2:{x:number;y:number}, node:{x:number;y:number;width:number;height:number;shape:string}): {x:number;y:number} | null {
+    const shape = node.shape;
+    const rectPoly = () => ([
+      {x:node.x, y:node.y},
+      {x:node.x+node.width, y:node.y},
+      {x:node.x+node.width, y:node.y+node.height},
+      {x:node.x, y:node.y+node.height}
+    ]);
+    switch (shape) {
+      case 'circle': {
+        const cx = node.x + node.width/2; const cy = node.y + node.height/2; const r = Math.min(node.width, node.height)/2;
+        return this.lineCircleIntersection(p1, p2, {cx, cy, r});
+      }
+      case 'diamond': {
+        const cx = node.x + node.width/2; const cy = node.y + node.height/2;
+        const poly = [ {x:cx, y:node.y}, {x:node.x+node.width, y:cy}, {x:cx, y:node.y+node.height}, {x:node.x, y:cy} ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'hexagon': {
+        const s = Math.max(10, node.width * 0.2);
+        const poly = [
+          {x:node.x + s, y:node.y},
+          {x:node.x + node.width - s, y:node.y},
+          {x:node.x + node.width, y:node.y + node.height/2},
+          {x:node.x + node.width - s, y:node.y + node.height},
+          {x:node.x + s, y:node.y + node.height},
+          {x:node.x, y:node.y + node.height/2}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'parallelogram': {
+        const o = Math.min(node.width*0.25, node.height*0.6);
+        const poly = [
+          {x:node.x + o, y:node.y},
+          {x:node.x + node.width, y:node.y},
+          {x:node.x + node.width - o, y:node.y + node.height},
+          {x:node.x, y:node.y + node.height}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'trapezoid': { // top narrow
+        const o = Math.min(node.width*0.2, node.height*0.5);
+        const poly = [
+          {x:node.x + o, y:node.y},
+          {x:node.x + node.width - o, y:node.y},
+          {x:node.x + node.width, y:node.y + node.height},
+          {x:node.x, y:node.y + node.height}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'trapezoidAlt': { // bottom narrow
+        const o = Math.min(node.width*0.2, node.height*0.5);
+        const poly = [
+          {x:node.x, y:node.y},
+          {x:node.x + node.width, y:node.y},
+          {x:node.x + node.width - o, y:node.y + node.height},
+          {x:node.x + o, y:node.y + node.height}
+        ];
+        return this.linePolygonIntersection(p1, p2, poly);
+      }
+      case 'stadium': { // capsule: rectangle with semicircle caps left/right
+        const r = Math.min(node.height/2, node.width/2);
+        // First try rectangle middle
+        const rect = [
+          {x:node.x + r, y:node.y},
+          {x:node.x + node.width - r, y:node.y},
+          {x:node.x + node.width - r, y:node.y + node.height},
+          {x:node.x + r, y:node.y + node.height}
+        ];
+        const hitRect = this.linePolygonIntersection(p1, p2, rect);
+        if (hitRect) return hitRect;
+        // Left cap
+        const left = this.lineCircleIntersection(p1, p2, { cx: node.x + r, cy: node.y + node.height/2, r });
+        // Right cap
+        const right = this.lineCircleIntersection(p1, p2, { cx: node.x + node.width - r, cy: node.y + node.height/2, r });
+        // Choose the intersection closer to p2 (end)
+        const pick = (...pts: ({x:number;y:number}|null)[]) => {
+          let best=null as any; let bestd=-Infinity;
+          for (const pt of pts) if (pt) { const d = -( (pt.x - p2.x)**2 + (pt.y - p2.y)**2 ); if (d>bestd) { bestd=d; best=pt; } }
+          return best;
+        };
+        return pick(left, right);
+      }
+      default: {
+        // default to rectangle
+        return this.linePolygonIntersection(p1, p2, rectPoly());
+      }
+    }
+  }
+
+  private lineCircleIntersection(p1:{x:number;y:number}, p2:{x:number;y:number}, c:{cx:number;cy:number;r:number}): {x:number;y:number} | null {
+    // parametric p = p1 + t*(p2-p1)
+    const dx = p2.x - p1.x; const dy = p2.y - p1.y;
+    const fx = p1.x - c.cx; const fy = p1.y - c.cy;
+    const a = dx*dx + dy*dy;
+    const b = 2*(fx*dx + fy*dy);
+    const cc = fx*fx + fy*fy - c.r*c.r;
+    const disc = b*b - 4*a*cc; if (disc < 0) return null;
+    const s = Math.sqrt(disc);
+    // we need t in (0,1), nearest to 1 (closest to p2)
+    const t1 = (-b - s) / (2*a);
+    const t2 = (-b + s) / (2*a);
+    const ts = [t1, t2].filter(t => t >= 0 && t <= 1);
+    if (!ts.length) return null;
+    const t = Math.max(...ts);
+    return { x: p1.x + dx*t, y: p1.y + dy*t };
+  }
+
+  private linePolygonIntersection(p1:{x:number;y:number}, p2:{x:number;y:number}, poly:Array<{x:number;y:number}>): {x:number;y:number} | null {
+    let bestT = -Infinity; let best=null as any;
+    for (let i=0;i<poly.length;i++){
+      const a = poly[i]; const b = poly[(i+1)%poly.length];
+      const hit = this.segmentIntersection(p1,p2,a,b);
+      if (hit && hit.t >= 0 && hit.t <= 1 && hit.u >=0 && hit.u <=1){
+        if (hit.t > bestT){ bestT = hit.t; best = {x: hit.x, y: hit.y}; }
+      }
+    }
+    return best;
+  }
+
+  private segmentIntersection(p:{x:number;y:number}, p2:{x:number;y:number}, q:{x:number;y:number}, q2:{x:number;y:number}): {x:number;y:number;t:number;u:number}|null {
+    const r = { x: p2.x - p.x, y: p2.y - p.y };
+    const s = { x: q2.x - q.x, y: q2.y - q.y };
+    const rxs = r.x*s.y - r.y*s.x; if (Math.abs(rxs) < 1e-6) return null;
+    const q_p = { x: q.x - p.x, y: q.y - p.y };
+    const t = (q_p.x*s.y - q_p.y*s.x)/rxs;
+    const u = (q_p.x*r.y - q_p.y*r.x)/rxs;
+    const x = p.x + t*r.x; const y = p.y + t*r.y;
+    return {x,y,t,u};
+  }
+
+  private pointAtRatio(points: Array<{x:number;y:number}>, ratio: number): {x:number;y:number} {
+    const clampRatio = Math.max(0, Math.min(1, ratio));
+    let total = 0;
+    const segs: number[] = [];
+    for (let i = 0; i < points.length - 1; i++) {
+      const dx = points[i+1].x - points[i].x;
+      const dy = points[i+1].y - points[i].y;
+      const len = Math.hypot(dx, dy);
+      segs.push(len);
+      total += len;
+    }
+    if (total === 0) return points[Math.floor(points.length / 2)];
+    let target = total * clampRatio;
+    for (let i = 0; i < segs.length; i++) {
+      if (target <= segs[i]) {
+        const t = segs[i] === 0 ? 0 : target / segs[i];
+        return {
+          x: points[i].x + (points[i+1].x - points[i].x) * t,
+          y: points[i].y + (points[i+1].y - points[i].y) * t,
+        };
+      }
+      target -= segs[i];
+    }
+    return points[points.length - 1];
   }
 
   private escapeXml(text: string): string {

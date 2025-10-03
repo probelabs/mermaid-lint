@@ -1,33 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="690" height="270" viewBox="0 0 690 270">
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="347" viewBox="0 0 500 347">
+  <rect x="0" y="0" width="500" height="347" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <path d="M80,110 L80,165 L80,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M210,110 L210,165 L210,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M375,140 L375,165 L375,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g class="subgraph-bg"><rect x="190" y="21" width="290" height="278" rx="4" ry="4" fill="#fffbe6" stroke="none" /><rect x="190" y="21" width="140" height="278" rx="4" ry="4" fill="#fffbe6" stroke="none" /></g>
   <g id="A">
-    <rect x="40" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="94.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
+    <rect x="220" y="69" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="260" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
-    <rect x="40" y="190" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="80" y="214.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
+    <rect x="220" y="229" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="260" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
-    <rect x="170" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="210" y="94.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
+    <rect x="370" y="69" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="410" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <g id="D">
-    <rect x="170" y="190" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="210" y="214.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
+    <rect x="370" y="229" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="410" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <g id="E">
-    <rect x="335" y="190" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="375" y="214.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
+    <rect x="40" y="229" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="80" y="253.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
   </g>
+  <path d="M260,109 L260,119 C260,131 260,213 260,219 L260,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M410,109 L410,119 C410,131 410,213 410,219 L410,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M335,299 L335,279 L335,245 L80,245 L80,229 L80,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <g class="subgraph-borders"><rect x="190" y="21" width="290" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="190" y="21" width="140" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
+  <g class="subgraph-title-bg"><rect x="311.5" y="29" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="236.5" y="41" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
+  <g class="subgraph-titles"><text x="335" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Outer</text><text x="260" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Inner</text></g>
+  <path d="M260,229 L257,221 L263,221 Z" fill="#555555" />
+  <path d="M410,229 L407,221 L413,221 Z" fill="#555555" />
+  <path d="M80,229 L80,229 L80,229 Z" fill="#555555" />
 </svg>

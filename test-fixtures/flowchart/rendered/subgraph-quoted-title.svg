@@ -1,24 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="387.5" height="368" viewBox="0 0 387.5 368">
+<svg xmlns="http://www.w3.org/2000/svg" width="258" height="552" viewBox="0 0 258 552">
+  <rect x="0" y="0" width="258" height="552" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <path d="M107.5,110 L107.5,165 L107.5,190" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M107.5,238 L107.5,263 L107.5,288" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <g class="subgraph-bg"><rect x="62.5" y="21" width="175" height="353" rx="4" ry="4" fill="#fffbe6" stroke="none" /></g>
   <g id="A">
-    <rect x="67.5" y="70" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="107.5" y="94.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start</text>
+    <rect x="110" y="69" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="150" y="93.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Start</text>
   </g>
   <g id="B">
-    <polygon points="107.5,190 175,214 107.5,238 40,214" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="107.5" y="218.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
+    <polygon points="150,229 207.5,286.5 150,344 92.5,286.5" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="150" y="291.4" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Decision</text>
   </g>
   <g id="C">
-    <rect x="67.5" y="288" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
-    <text x="107.5" y="312.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Done</text>
+    <rect x="110" y="464" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
+    <text x="150" y="488.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Done</text>
   </g>
+  <path d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M150,344 L150,354 C150,366 150,448 150,454 L150,464" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <g class="subgraph-borders"><rect x="62.5" y="21" width="175" height="353" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
+  <g class="subgraph-title-bg"><rect x="84.5" y="29" width="131" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
+  <g class="subgraph-titles"><text x="150" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Runtime Execution</text></g>
+  <path d="M150,229 L147,221 L153,221 Z" fill="#555555" />
+  <path d="M150,464 L147,456 L153,456 Z" fill="#555555" />
 </svg>

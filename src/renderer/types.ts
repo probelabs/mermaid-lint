@@ -1,5 +1,11 @@
 // Graph model types for renderer
 
+export interface NodeStyle {
+  stroke?: string;
+  strokeWidth?: number;
+  fill?: string;
+}
+
 export interface Node {
   id: string;
   label: string;
@@ -8,6 +14,7 @@ export interface Node {
   y?: number;
   width?: number;
   height?: number;
+  style?: NodeStyle;
 }
 
 export interface Edge {
@@ -16,6 +23,8 @@ export interface Edge {
   target: string;
   label?: string;
   type: ArrowType;
+  markerStart?: 'none' | 'arrow' | 'circle' | 'cross';
+  markerEnd?: 'none' | 'arrow' | 'circle' | 'cross';
 }
 
 export interface Graph {
@@ -41,7 +50,8 @@ export type NodeShape =
   | 'diamond'       // {text}
   | 'hexagon'       // {{text}}
   | 'parallelogram' // [/text/]
-  | 'trapezoid'     // [text\]
+  | 'trapezoid'     // [/text\] (top narrow)
+  | 'trapezoidAlt'  // [\text/] (bottom narrow)
   | 'double'        // [[[text]]]
   | 'subroutine';   // [[text]]
 
@@ -64,6 +74,18 @@ export interface LayoutNode extends Node {
 
 export interface LayoutEdge extends Edge {
   points: Array<{ x: number; y: number }>;
+  // Optional hint for renderer: draw as pure orthogonal segments (no smoothing)
+  pathMode?: 'orthogonal' | 'smooth';
+}
+
+export interface LayoutSubgraph {
+  id: string;
+  label?: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  parent?: string;
 }
 
 export interface Layout {
@@ -71,4 +93,5 @@ export interface Layout {
   edges: LayoutEdge[];
   width: number;
   height: number;
+  subgraphs?: LayoutSubgraph[];
 }

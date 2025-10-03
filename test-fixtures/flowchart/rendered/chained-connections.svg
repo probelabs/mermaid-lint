@@ -1,49 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="430" height="390" viewBox="0 0 430 390">
+<svg xmlns="http://www.w3.org/2000/svg" width="410" height="370" viewBox="0 0 410 370">
+  <rect x="0" y="0" width="410" height="370" fill="#ffffff" />
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
     </marker>
-    <marker id="circle-marker" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" markerUnits="strokeWidth">
-      <circle cx="3" cy="3" r="3" fill="#333" />
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <path d="M80,80 L80,105 L80,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M80,170 L80,195 L80,220" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M80,260 L80,285 L80,310" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M186.11111111111111,80 L150,105 L183.33333333333334,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M246.11111111111111,80 L285,105 L321.1111111111111,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M313.8888888888889,80 L275,105 L238.88888888888889,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-  <path d="M349.44444444444446,80 L355,105 L352.22222222222223,130" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)" />
   <g id="A">
-    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">A</text>
   </g>
   <g id="B">
-    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">B</text>
   </g>
   <g id="C">
-    <rect x="40" y="220" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="220" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="244.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">C</text>
   </g>
   <g id="D">
-    <rect x="40" y="310" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="40" y="310" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="80" y="334.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <g id="E">
-    <rect x="175" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="175" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="215" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">E</text>
   </g>
   <g id="F">
-    <rect x="305" y="40" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="305" y="40" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="345" y="64.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">F</text>
   </g>
   <g id="G">
-    <rect x="170" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="170" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="210" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">G</text>
   </g>
   <g id="H">
-    <rect x="310" y="130" width="80" height="40" rx="0" ry="0" stroke="#9370db" stroke-width="1.5" fill="#f9f9ff" />
+    <rect x="310" y="130" width="80" height="40" rx="0" ry="0" stroke="#3f3f3f" stroke-width="1.5" fill="#eef0ff" />
     <text x="350" y="154.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">H</text>
   </g>
+  <path d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M80,170 L80,180 C80,192 80,204 80,210 L80,220" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M80,260 L80,270 C80,282 80,294 80,300 L80,310" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M186.11111111111111,80 L177.88918919467332,85.69209978830308 C168.02288289494797,92.52261953426678 170.53333333333333,120.4 175.33333333333334,124 L183.33333333333334,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M246.11111111111111,80 L254.52289586487666,85.40757591313499 C264.61703756939534,91.89666700889698 307.9560360448106,120.89264033871507 312.8891891946733,124.30790021169692 L321.1111111111111,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M313.8888888888889,80 L305.4771041351234,85.40757591313498 C295.3829624306048,91.89666700889697 252.04396395518935,120.89264033871507 247.11081080532668,124.30790021169692 L238.88888888888889,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M349.44444444444446,80 L351.613749022631,89.76187060183953 C354.21691451645484,101.47611532404697 353.9891266394198,114.0978602452221 353.3265374829707,120.0611626532638 L352.22222222222223,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M80,130 L77,122 L83,122 Z" fill="#555555" />
+  <path d="M80,220 L77,212 L83,212 Z" fill="#555555" />
+  <path d="M80,310 L77,302 L83,302 Z" fill="#555555" />
+  <path d="M183.33333333333334,130 L175.13333333333333,127.60000000000001 L178.73333333333335,122.8 Z" fill="#555555" />
+  <path d="M321.1111111111111,130 L312.8259436414699,127.91289674428887 L316.2412035144518,122.9797435944262 Z" fill="#555555" />
+  <path d="M238.88888888888889,130 L243.7587964855482,122.9797435944262 L247.17405635853004,127.91289674428887 Z" fill="#555555" />
+  <path d="M352.22222222222223,130 L350.12402322680015,121.71763554438651 L356.0873256348419,122.3802247008356 Z" fill="#555555" />
 </svg>
