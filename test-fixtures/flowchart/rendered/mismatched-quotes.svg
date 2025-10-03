@@ -24,5 +24,5 @@
     <text x="160" y="170.9" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">D</text>
   </g>
   <path d="M160,96 L160,106 C160,118 160,130 160,136 L160,146" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M160,154 L157,146 L163,146 Z" fill="#555555" />
+  <path d="M160,146 L157,138 L163,138 Z" fill="#555555" />
 </svg>

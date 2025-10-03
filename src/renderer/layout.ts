@@ -210,19 +210,17 @@ export class DagreLayoutEngine implements ILayoutEngine {
             if (horizontalSubgraphs && srcSg && dstSg) {
               // Simple horizontal line at vertical center between subgraphs
               const midY = (srcSg.y + srcSg.height / 2 + dstSg.y + dstSg.height / 2) / 2;
-              const ARROW_LENGTH = 8; // Arrow extends 8px beyond the endpoint
 
               // Create horizontal line from source border to target border
-              // Account for arrow length to prevent overlap with target border
               if (srcSg.x < dstSg.x) {
                 // Source on left, target on right (normal left-to-right flow)
                 const startX = srcSg.x + srcSg.width;
-                const endX = dstSg.x - ARROW_LENGTH; // Pull back so arrow tip ends at border
+                const endX = dstSg.x;
                 pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
               } else {
                 // Source on right, target on left (right-to-left flow)
                 const startX = srcSg.x;
-                const endX = dstSg.x + dstSg.width + ARROW_LENGTH; // Push forward so arrow tip ends at border
+                const endX = dstSg.x + dstSg.width;
                 pts = [{ x: startX, y: midY }, { x: endX, y: midY }];
               }
             } else {

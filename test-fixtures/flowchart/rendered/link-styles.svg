@@ -50,27 +50,27 @@
     <path d="M120,330 L130,330 C142,330 186,330 192,330 L202,330" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3" />
     <rect x="149.1" y="323" width="32" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
     <text x="165.1" y="330" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">text</text>
-    <path d="M210,330 L202,333 L202,327 Z" fill="#555555" />
+    <path d="M202,330 L194,333 L194,327 Z" fill="#555555" />
   </g>
   <g>
     <path d="M98,350 L107.45,360.5 C118.79,373.1 186,420 192,420 L202,420" stroke="#555555" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
     <rect x="131.73515469808623" y="398.2612829978736" width="32" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
     <text x="147.73515469808623" y="405.2612829978736" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">text</text>
-    <path d="M210,420 L202,423 L202,417 Z" fill="#555555" />
+    <path d="M202,420 L194,423 L194,417 Z" fill="#555555" />
   </g>
   <g>
     <path d="M89,350 L98.02802290123356,370.06227311385237 C108.86165038271382,394.1370008504752 186,510 192,510 L202,510" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
     <rect x="121.8537234737644" y="451.56382994169866" width="32" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
     <text x="137.8537234737644" y="458.56382994169866" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">text</text>
-    <path d="M210,510 L202,513 L202,507 Z" fill="#555555" />
+    <path d="M202,510 L194,513 L194,507 Z" fill="#555555" />
   </g>
   <g>
     <path d="M86,350 L92.3216534824596,371.07217827486534 C99.90763766141112,396.3587922047037 186,600 192,600 L202,600" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
     <rect x="117.72969481952109" y="502.098982731737" width="32" height="14" fill="#ffffff" fill-opacity="0.8" stroke="#999" stroke-opacity="0.6" stroke-width="1" rx="3" />
     <text x="133.7296948195211" y="509.098982731737" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="11" fill="#444">text</text>
-    <path d="M210,600 L202,603 L202,597 Z" fill="#555555" />
+    <path d="M202,600 L194,603 L194,597 Z" fill="#555555" />
   </g>
-  <path d="M210,60 L202,63 L202,57 Z" fill="#555555" />
-  <path d="M210,150 L202,153 L202,147 Z" fill="#555555" />
-  <path d="M210,240 L202,243 L202,237 Z" fill="#555555" />
+  <path d="M202,60 L194,63 L194,57 Z" fill="#555555" />
+  <path d="M202,150 L194,153 L194,147 Z" fill="#555555" />
+  <path d="M202,240 L194,243 L194,237 Z" fill="#555555" />
 </svg>

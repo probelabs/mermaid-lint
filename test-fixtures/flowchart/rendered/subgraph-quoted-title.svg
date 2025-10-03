@@ -29,6 +29,6 @@
   <g class="subgraph-borders"><rect x="62.5" y="21" width="175" height="353" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="84.5" y="29" width="131" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="150" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Runtime Execution</text></g>
-  <path d="M150,237 L147,229 L153,229 Z" fill="#555555" />
-  <path d="M150,472 L147,464 L153,464 Z" fill="#555555" />
+  <path d="M150,229 L147,221 L153,221 Z" fill="#555555" />
+  <path d="M150,464 L147,456 L153,456 Z" fill="#555555" />
 </svg>

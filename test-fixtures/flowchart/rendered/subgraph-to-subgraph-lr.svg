@@ -34,7 +34,7 @@
   <g class="subgraph-borders"><rect x="41" y="112" width="290" height="118" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="41" y="272" width="290" height="118" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="155.5" y="120" width="61" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="155.5" y="280" width="61" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="186" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group A</text><text x="186" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Group B</text></g>
-  <path d="M229,180 L221,183 L221,177 Z" fill="#555555" />
-  <path d="M229,340 L221,343 L221,337 Z" fill="#555555" />
-  <path d="M33,331 L41,328 L41,334 Z" fill="#555555" />
+  <path d="M221,180 L213,183 L213,177 Z" fill="#555555" />
+  <path d="M221,340 L213,343 L213,337 Z" fill="#555555" />
+  <path d="M41,331 L49,328 L49,334 Z" fill="#555555" />
 </svg>

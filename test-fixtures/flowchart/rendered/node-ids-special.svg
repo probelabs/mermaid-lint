@@ -35,8 +35,8 @@
   <path d="M81,170 L81,180 C81,192 81,204 81,210 L81,220" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M81,260 L81,270 C81,282 81,294 81,300 L81,310" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M81,350 L81,360 C81,372 81,384 81,390 L81,400" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M81,138 L78,130 L84,130 Z" fill="#555555" />
-  <path d="M81,228 L78,220 L84,220 Z" fill="#555555" />
-  <path d="M81,318 L78,310 L84,310 Z" fill="#555555" />
-  <path d="M81,408 L78,400 L84,400 Z" fill="#555555" />
+  <path d="M81,130 L78,122 L84,122 Z" fill="#555555" />
+  <path d="M81,220 L78,212 L84,212 Z" fill="#555555" />
+  <path d="M81,310 L78,302 L84,302 Z" fill="#555555" />
+  <path d="M81,400 L78,392 L84,392 Z" fill="#555555" />
 </svg>

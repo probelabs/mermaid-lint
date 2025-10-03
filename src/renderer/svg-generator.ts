@@ -611,9 +611,9 @@ export class SVGRenderer implements IRenderer {
       const uxl = vxl / vlenl; const uyl = vyl / vlenl;
       const nxl = -uyl; const nyl = uxl;
       const triLenL = 8; const triWL = 6;
-      // Arrow points forward in direction of travel
-      const p1xL = boundaryEnd.x + uxl * triLenL, p1yL = boundaryEnd.y + uyl * triLenL;
-      const baseXL = boundaryEnd.x; const baseYL = boundaryEnd.y;
+      // Arrow points forward in direction of travel: tip AT boundaryEnd, base pulled back
+      const p1xL = boundaryEnd.x, p1yL = boundaryEnd.y; // tip at boundary
+      const baseXL = boundaryEnd.x - uxl * triLenL; const baseYL = boundaryEnd.y - uyl * triLenL;
       const p2xL = baseXL + nxl * (triWL/2), p2yL = baseYL + nyl * (triWL/2);
       const p3xL = baseXL - nxl * (triWL/2), p3yL = baseYL - nyl * (triWL/2);
       const triEnd = `<path d="M${p1xL},${p1yL} L${p2xL},${p2yL} L${p3xL},${p3yL} Z" fill="${this.arrowStroke}" />`;
@@ -650,10 +650,10 @@ export class SVGRenderer implements IRenderer {
     // reuse triLen from above (8px)
     const triLen = 8; // px overlay triangle length
     const triW = 6;   // px base width
-    // Arrow points forward in direction of travel: tip is ahead of boundaryEnd
-    const p1x = boundaryEnd.x + ux * triLen, p1y = boundaryEnd.y + uy * triLen; // tip
-    const baseX = boundaryEnd.x;
-    const baseY = boundaryEnd.y;
+    // Arrow points forward in direction of travel: tip AT boundaryEnd, base pulled back
+    const p1x = boundaryEnd.x, p1y = boundaryEnd.y; // tip at boundary
+    const baseX = boundaryEnd.x - ux * triLen;
+    const baseY = boundaryEnd.y - uy * triLen;
     const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
     const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
 

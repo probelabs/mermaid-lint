@@ -25,6 +25,6 @@
   </g>
   <path d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M80,170 L80,180 C80,192 80,204 80,210 L80,220" stroke="#555555" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M80,138 L77,130 L83,130 Z" fill="#555555" />
-  <path d="M80,228 L77,220 L83,220 Z" fill="#555555" />
+  <path d="M80,130 L77,122 L83,122 Z" fill="#555555" />
+  <path d="M80,220 L77,212 L83,212 Z" fill="#555555" />
 </svg>

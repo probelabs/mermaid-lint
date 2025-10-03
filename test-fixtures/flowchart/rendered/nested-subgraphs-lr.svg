@@ -38,7 +38,7 @@
   <g class="subgraph-borders"><rect x="21" y="152" width="290" height="278" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /><rect x="21" y="152" width="290" height="118" rx="4" ry="4" fill="none" stroke="#cfcf99" stroke-width="1" /></g>
   <g class="subgraph-title-bg"><rect x="142.5" y="160" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /><rect x="142.5" y="172" width="47" height="16" rx="3" ry="3" fill="rgba(255,255,255,0.8)" stroke="none" /></g>
   <g class="subgraph-titles"><text x="166" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Outer</text><text x="166" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Inner</text></g>
-  <path d="M209,220 L201,223 L201,217 Z" fill="#555555" />
-  <path d="M209,380 L201,383 L201,377 Z" fill="#555555" />
+  <path d="M201,220 L193,223 L193,217 Z" fill="#555555" />
+  <path d="M201,380 L193,383 L193,377 Z" fill="#555555" />
   <path d="M201,60 L201,60 L201,60 Z" fill="#555555" />
 </svg>
