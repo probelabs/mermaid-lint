@@ -18,6 +18,7 @@
     .group-frame, .cluster-border { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title, .cluster-label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-title-bg, .cluster-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
+    .cluster-bg { fill: #ffffde; }
   </style>
   <g class="actor" transform="translate(24,24)">
     <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
@@ -36,10 +37,10 @@
     <text class="actor-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B2</text>
   </g>
 <g class="cluster-bg-layer" transform="translate(16,58)">
-  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="4"/>
+  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="0"/>
 </g>
 <g class="cluster-bg-layer" transform="translate(16,94)">
-  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="4"/>
+  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="0"/>
 </g>
   <line class="lifeline" x1="79" y1="66" x2="79" y2="210"/>
   <line class="lifeline" x1="213" y1="66" x2="213" y2="210"/>
@@ -54,12 +55,12 @@
   <rect class="msg-label-bg" x="324" y="174" width="46" height="16" rx="3"/>
   <text class="msg-label" x="347" y="182" text-anchor="middle">Async</text>
 <g class="cluster-overlay" transform="translate(16,58)">
-<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="4"/>
+<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="176" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">box: LightBlue System A</text>
 </g>
 <g class="cluster-overlay" transform="translate(16,94)">
-<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="4"/>
+<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="183" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">box: LightGreen System B</text>
 </g>

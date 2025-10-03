@@ -24,7 +24,7 @@
     </marker>
   </defs>
   <g class="subgraph-bg"><g class="cluster-bg-layer" transform="translate(160,21)">
-  <rect class="cluster-bg" x="0" y="0" width="140" height="278" rx="4"/>
+  <rect class="cluster-bg" x="0" y="0" width="140" height="278" rx="0"/>
 </g></g>
   <g id="A">
     <rect class="node-shape"  x="190" y="69" width="80" height="40" rx="0" ry="0" />
@@ -41,7 +41,7 @@
   <path class="edge-path" d="M230,109 L230,119 C230,131 230,213 230,219 L230,229" stroke-linecap="round" stroke-linejoin="round" />
   <path class="edge-path" d="M230,299 L230,279 L230,245 L80,245 L80,229 L80,229" stroke-linecap="round" stroke-linejoin="round" />
   <g class="cluster-overlay" transform="translate(160,21)">
-<rect class="cluster-border" x="0" y="0" width="140" height="278" rx="4"/>
+<rect class="cluster-border" x="0" y="0" width="140" height="278" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="5" width="46" height="18" rx="3"/>
 <text class="cluster-label-text" x="29" y="18" text-anchor="middle">Outer</text>
 </g>

@@ -75,12 +75,12 @@ export class SVGRenderer implements IRenderer {
       for (const sg of order) {
         const x = sg.x + padX;
         const y = sg.y + padY;
-        bgs.push(blockBackground(x, y, sg.width, sg.height));
+        bgs.push(blockBackground(x, y, sg.width, sg.height, 0));
         const depth = depthOf(sg);
         const title = sg.label ? this.escapeXml(sg.label) : undefined;
         // slight nested offset for titles to avoid overlap (matches previous behavior)
         const titleYOffset = 7 + depth * 12;
-        overlays.push(blockOverlay(x, y, sg.width, sg.height, title, [], titleYOffset));
+        overlays.push(blockOverlay(x, y, sg.width, sg.height, title, [], titleYOffset, 'center', 'left', 0));
       }
       elements.push(`<g class="subgraph-bg">${bgs.join('')}</g>`);
     }

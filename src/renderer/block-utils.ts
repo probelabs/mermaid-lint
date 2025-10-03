@@ -4,10 +4,10 @@
 
 import { escapeXml, measureText } from './utils.js';
 
-export function blockBackground(x: number, y: number, width: number, height: number): string {
+export function blockBackground(x: number, y: number, width: number, height: number, radius: number = 0): string {
   // Transparent; kept as separate layer in case we theme fill later
   return `<g class="cluster-bg-layer" transform="translate(${x},${y})">
-  <rect class="cluster-bg" x="0" y="0" width="${width}" height="${height}" rx="4"/>
+  <rect class="cluster-bg" x="0" y="0" width="${width}" height="${height}" rx="${radius}"/>
 </g>`;
 }
 
@@ -20,11 +20,12 @@ export function blockOverlay(
   branchYs: Array<{ y:number; title?: string }> = [],
   titleYOffset: number = 0,
   align: 'center' | 'left' = 'center',
-  branchAlign: 'center' | 'left' = 'left'
+  branchAlign: 'center' | 'left' = 'left',
+  radius: number = 0
 ): string {
   const parts: string[] = [];
   parts.push(`<g class="cluster-overlay" transform="translate(${x},${y})">`);
-  parts.push(`<rect class="cluster-border" x="0" y="0" width="${width}" height="${height}" rx="4"/>`);
+  parts.push(`<rect class="cluster-border" x="0" y="0" width="${width}" height="${height}" rx="${radius}"/>`);
 
   const titleText = title ? escapeXml(title) : '';
   if (titleText) {

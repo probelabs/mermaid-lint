@@ -37,12 +37,13 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     .group-frame, .cluster-border { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title, .cluster-label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-title-bg, .cluster-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
+    .cluster-bg { fill: #ffffde; }
   </style>`);
 
   // Participants
   for (const p of layout.participants) drawParticipant(svgParts, p);
   // Block backgrounds behind content
-  for (const b of layout.blocks) svgParts.push(blockBackground(b.x, b.y, b.width, b.height));
+  for (const b of layout.blocks) svgParts.push(blockBackground(b.x, b.y, b.width, b.height, 0));
   // Lifelines
   for (const l of layout.lifelines) svgParts.push(`  <line class="lifeline" x1="${l.x}" y1="${l.y1}" x2="${l.x}" y2="${l.y2}"/>`);
   // Activations
@@ -65,7 +66,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     const title = b.title ? `${b.type}: ${b.title}` : b.type;
     const branches = (b.branches || []).map(br => ({ y: br.y, title: br.title }));
     // Left-align title/branch labels to mirror Mermaid's sequence blocks
-    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches, 0, 'left', 'left'));
+    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches, 0, 'left', 'left', 0));
   }
 
   // Bottom actor boxes (Mermaid draws both top and bottom)

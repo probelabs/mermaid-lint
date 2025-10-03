@@ -18,6 +18,7 @@
     .group-frame, .cluster-border { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title, .cluster-label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-title-bg, .cluster-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
+    .cluster-bg { fill: #ffffde; }
   </style>
   <g class="actor" transform="translate(24,24)">
     <rect class="actor-rect" width="110" height="32" rx="4" fill="#eaeaea" stroke="#666"/>
