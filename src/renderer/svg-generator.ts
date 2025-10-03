@@ -1,5 +1,6 @@
 import type { Layout, LayoutNode, LayoutEdge, NodeShape, ArrowType } from './types.js';
 import { triangleAtEnd, triangleAtStart } from './arrow-utils.js';
+import { buildSharedCss } from './styles.js';
 import { blockBackground, blockOverlay } from './block-utils.js';
 import type { IRenderer } from './interfaces.js';
 
@@ -108,20 +109,16 @@ export class SVGRenderer implements IRenderer {
       if (overlay) overlays.push(overlay);
     }
 
-    // White background + CSS classes for styling
+    // White background + shared CSS classes for styling
     const bg = `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff" />`;
-    const css = `<style>
-      .node-shape { fill: ${this.defaultFill}; stroke: ${this.defaultStroke}; stroke-width: 1px; }
-      .node-label { fill: #333; font-family: ${this.fontFamily}; font-size: ${this.fontSize}px; }
-      .edge-path { stroke: ${this.arrowStroke}; stroke-width: 2px; fill: none; }
-      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
-      .edge-label-text { fill: #333; font-family: ${this.fontFamily}; font-size: ${Math.max(10, this.fontSize - 2)}px; }
-      /* Subgraph (cluster) styling */
-      .cluster-bg { fill: #ffffde; }
-      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
-      .cluster-label-text { fill: #333; font-family: ${this.fontFamily}; font-size: 12px; }
-    </style>`;
+    const sharedCss = buildSharedCss({
+      fontFamily: this.fontFamily,
+      fontSize: this.fontSize,
+      nodeFill: this.defaultFill,
+      nodeStroke: this.defaultStroke,
+      edgeStroke: this.arrowStroke,
+    });
+    const css = `<style>${sharedCss}</style>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   ${bg}
   ${css}

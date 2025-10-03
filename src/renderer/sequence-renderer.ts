@@ -4,6 +4,7 @@ import { layoutSequence } from './sequence-layout.js';
 import { escapeXml, measureText } from './utils.js';
 import { triangleAtEnd, triangleAtStart } from './arrow-utils.js';
 import { blockBackground, blockOverlay } from './block-utils.js';
+import { buildSharedCss } from './styles.js';
 
 export interface SequenceRenderOptions {
   width?: number; // not used, layout is intrinsic
@@ -18,28 +19,14 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   const height = Math.ceil(layout.height);
 
   svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width+50}" height="${height+40}" viewBox="-50 -10 ${width+50} ${height+40}">`);
-  svgParts.push(`  <style>
-    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
-    .actor-label { font-family: Arial, sans-serif; font-size: 16px; fill: #111; }
-    .lifeline { stroke: #999; stroke-width: 0.5px; }
-    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
-    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
-    .msg-line.dotted { stroke-dasharray: 2 2; }
-    .msg-line.thick { stroke-width: 3px; }
-    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: middle; }
-    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
-    .arrowhead { fill: #333; }
-    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
-    .crosshead { stroke: #333; stroke-width: 1.5px; }
-    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
-    .note-text { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; }
-    /* Align sequence block styling exactly with flowchart clusters */
-    .group-frame { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-    .cluster-bg { fill: #ffffde; }
-    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
-    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-  </style>`);
+  const sharedCss = buildSharedCss({
+    fontFamily: 'Arial, sans-serif',
+    fontSize: 14,
+    nodeFill: '#eef0ff',
+    nodeStroke: '#3f3f3f',
+    edgeStroke: '#555555',
+  });
+  svgParts.push(`  <style>${sharedCss}</style>`);
 
   // Participants
   for (const p of layout.participants) drawParticipant(svgParts, p);
