@@ -1,9 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="122" viewBox="0 0 320 122">
+  <style>
+    .actor-rect { fill: #ECECFF; stroke: #333; stroke-width: 1.5px; }
+    .actor-label { font-family: Arial, sans-serif; font-size: 14px; fill: #111; }
+    .lifeline { stroke: #999; stroke-dasharray: 4 4; }
+    .activation { fill: #f2f2f2; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 4 3; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
+    .arrowhead { fill: #333; }
+    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
+    .crosshead { stroke: #333; stroke-width: 1.5px; }
+    .note { fill: #fff8dc; stroke: #d2b48c; stroke-width: 1px; }
+    .note-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
+    .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+  </style>
+  <g class="actor" transform="translate(24,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">&quot;Eve</text>
+  </g>
+  <g class="actor" transform="translate(158,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B</text>
+  </g>
+  <line class="lifeline" x1="79" y1="62" x2="79" y2="98"/>
+  <line class="lifeline" x1="213" y1="62" x2="213" y2="98"/>
+  <path class="msg-line solid" d="M 79 80 L 213 80" />
+  <path class="arrowhead" transform="translate(213,80) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
+  <text class="msg-label" x="146" y="84" text-anchor="middle">hi</text>
 </svg>

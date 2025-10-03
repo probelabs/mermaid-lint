@@ -18,15 +18,15 @@
   </style>
   <g class="actor" transform="translate(24,24)">
     <rect class="actor-rect" width="110" height="28" rx="4"/>
-    <text class="actor-label" x="55" y="18" text-anchor="middle">Alice</text>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">A</text>
   </g>
   <g class="actor" transform="translate(158,24)">
     <rect class="actor-rect" width="110" height="28" rx="4"/>
-    <text class="actor-label" x="55" y="18" text-anchor="middle">Bob</text>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B</text>
   </g>
   <line class="lifeline" x1="79" y1="62" x2="79" y2="98"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="98"/>
   <path class="msg-line solid" d="M 79 80 L 213 80" />
   <path class="arrowhead" transform="translate(213,80) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <text class="msg-label" x="146" y="84" text-anchor="middle">Hello Bob</text>
+  <text class="msg-label" x="146" y="84" text-anchor="middle">hi</text>
 </svg>

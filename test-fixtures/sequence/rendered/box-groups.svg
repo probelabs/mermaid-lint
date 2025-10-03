@@ -1,9 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="230" viewBox="0 0 560 230">
+  <style>
+    .actor-rect { fill: #ECECFF; stroke: #333; stroke-width: 1.5px; }
+    .actor-label { font-family: Arial, sans-serif; font-size: 14px; fill: #111; }
+    .lifeline { stroke: #999; stroke-dasharray: 4 4; }
+    .activation { fill: #f2f2f2; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 4 3; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
+    .arrowhead { fill: #333; }
+    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
+    .crosshead { stroke: #333; stroke-width: 1.5px; }
+    .note { fill: #fff8dc; stroke: #d2b48c; stroke-width: 1px; }
+    .note-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
+    .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+  </style>
+  <g class="actor" transform="translate(24,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">A1</text>
+  </g>
+  <g class="actor" transform="translate(158,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B1</text>
+  </g>
+  <g class="actor" transform="translate(292,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">A2</text>
+  </g>
+  <g class="actor" transform="translate(426,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B2</text>
+  </g>
+  <line class="lifeline" x1="79" y1="62" x2="79" y2="206"/>
+  <line class="lifeline" x1="213" y1="62" x2="213" y2="206"/>
+  <line class="lifeline" x1="347" y1="62" x2="347" y2="206"/>
+  <line class="lifeline" x1="481" y1="62" x2="481" y2="206"/>
+  <path class="msg-line solid" d="M 79 152 L 213 152" />
+  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
+  <text class="msg-label" x="146" y="156" text-anchor="middle">Sync</text>
+  <path class="msg-line dotted" d="M 347 188 L 481 188" />
+  <path class="arrowhead" transform="translate(481,188) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
+  <text class="msg-label" x="414" y="192" text-anchor="middle">Async</text>
+  <g class="group" transform="translate(14,52)">
+    <rect class="group-frame" width="532" height="182"/>
+    <text class="group-title" x="8" y="14" text-anchor="start">box: LightBlue System A</text>
+  </g>
+  <g class="group" transform="translate(14,88)">
+    <rect class="group-frame" width="532" height="146"/>
+    <text class="group-title" x="8" y="14" text-anchor="start">box: LightGreen System B</text>
+  </g>
 </svg>

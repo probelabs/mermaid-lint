@@ -235,7 +235,7 @@ async function main() {
             console.log('Usage: maid render <input.mmd> [output.svg|output.png]');
             console.log('       cat file.mmd | maid render - [output.svg|output.png]');
             console.log('');
-            console.log('Renders a Mermaid flowchart diagram to SVG or PNG using the experimental Maid renderer.');
+            console.log('Renders Mermaid diagrams to SVG/PNG using the experimental Maid renderer.');
             console.log('');
             console.log('Options:');
             console.log('  --format, -f    Output format: svg|png (default: auto-detect from extension or svg)');
@@ -248,7 +248,7 @@ async function main() {
             console.log('  cat diagram.mmd | maid render - out.svg    # Read from stdin');
             console.log('');
             console.log('Note: PNG output requires rsvg-convert or ImageMagick installed.');
-            console.log('      The renderer is experimental and currently supports only flowchart diagrams.');
+            console.log('      The renderer is experimental and currently supports: flowchart, pie, sequence.');
             process.exit(renderArgs.length === 0 ? 1 : 0);
         }
         await handleRenderCommand(renderArgs);
