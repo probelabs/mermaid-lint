@@ -22,8 +22,7 @@ export class StateParser extends CstParser {
       { ALT: () => this.SUBRULE(this.transitionStmt) },
       { ALT: () => this.SUBRULE(this.stateBlock) },
       { ALT: () => this.SUBRULE(this.stateDecl) },
-      // Concurrency separator (---) is not supported by mermaid-cli v11; treat as invalid (handled in postLex)
-      // { ALT: () => this.CONSUME(t.Dashes) },
+      // '---' only allowed inside state blocks; not at top level
       { ALT: () => this.SUBRULE(this.stateDescriptionStmt) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.SUBRULE(this.styleStmt) },
@@ -138,9 +137,24 @@ export class StateParser extends CstParser {
       { ALT: () => this.CONSUME(t.QuotedString) },
     ]);
     this.CONSUME(t.LCurly);
-    this.MANY(() => this.SUBRULE(this.statement));
+    this.MANY(() => this.SUBRULE(this.innerStatement));
     this.CONSUME(t.RCurly);
     this.OPTION(() => this.CONSUME(t.Newline));
+  });
+
+  // Statements allowed inside a composite state, including region separators '---'
+  private innerStatement = this.RULE('innerStatement', () => {
+    this.OR([
+      { ALT: () => this.SUBRULE(this.directionStmt) },
+      { ALT: () => this.SUBRULE(this.transitionStmt) },
+      { ALT: () => this.SUBRULE(this.stateBlock) },
+      { ALT: () => this.SUBRULE(this.stateDecl) },
+      { ALT: () => this.CONSUME(t.Dashes) },
+      { ALT: () => this.SUBRULE(this.stateDescriptionStmt) },
+      { ALT: () => this.SUBRULE(this.noteStmt) },
+      { ALT: () => this.SUBRULE(this.styleStmt) },
+      { ALT: () => this.CONSUME(t.Newline) },
+    ]);
   });
 
   private noteStmt = this.RULE('noteStmt', () => {

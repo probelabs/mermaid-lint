@@ -18,6 +18,7 @@ export class ClassParser extends CstParser {
       { ALT: () => this.SUBRULE(this.directionStmt) },
       { ALT: () => this.SUBRULE(this.classLine) },
       { ALT: () => this.SUBRULE(this.relationStmt) },
+      { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.SUBRULE(this.memberAssignStmt) },
       { ALT: () => this.CONSUME(t.Newline) },
     ]);
@@ -138,6 +139,19 @@ export class ClassParser extends CstParser {
     ]);
   });
 
+  private noteStmt = this.RULE('noteStmt', () => {
+    this.CONSUME(t.NoteKw);
+    this.OPTION(() => this.CONSUME(t.ForKw));
+    this.SUBRULE(this.classRef);
+    this.OPTION1(() => this.CONSUME(t.Colon));
+    this.OR([
+      { ALT: () => this.CONSUME(t.QuotedString) },
+      { ALT: () => this.CONSUME(t.Identifier) },
+      { ALT: () => this.CONSUME(t.NumberLiteral) },
+    ]);
+    this.OPTION2(() => this.CONSUME(t.Newline));
+  });
+
   private relationOp = this.RULE('relationOp', () => {
     this.OR([
       { ALT: () => this.CONSUME(t.RelCompToAgg) },
@@ -147,10 +161,13 @@ export class ClassParser extends CstParser {
       { ALT: () => this.CONSUME(t.LollipopLeft) },
       { ALT: () => this.CONSUME(t.LollipopRight) },
       { ALT: () => this.CONSUME(t.RelExtends) },
+      { ALT: () => this.CONSUME(t.RelExtendsRight) },
       { ALT: () => this.CONSUME(t.RelComposition) },
       { ALT: () => this.CONSUME(t.RelAggregation) },
       { ALT: () => this.CONSUME(t.RelRealization) },
       { ALT: () => this.CONSUME(t.RelDependency) },
+      { ALT: () => this.CONSUME(t.RelRealizationLeft) },
+      { ALT: () => this.CONSUME(t.RelDependencyLeft) },
       { ALT: () => this.CONSUME(t.RelAssociation) },
     ]);
   });

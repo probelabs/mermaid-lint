@@ -10,10 +10,12 @@ This file contains all valid class test fixtures rendered with Mermaid.
 2. [inline members and attrs](#2-inline-members-and-attrs)
 3. [member without name](#3-member-without-name)
 4. [members inline](#4-members-inline)
-5. [relations advanced](#5-relations-advanced)
-6. [relations all](#6-relations-all)
-7. [simple](#7-simple)
-8. [stereotype and alias](#8-stereotype-and-alias)
+5. [notes on class](#5-notes-on-class)
+6. [relations advanced](#6-relations-advanced)
+7. [relations all](#7-relations-all)
+8. [relations leftward](#8-relations-leftward)
+9. [simple](#9-simple)
+10. [stereotype and alias](#10-stereotype-and-alias)
 
 ---
 
@@ -141,7 +143,39 @@ class User {
 
 ---
 
-## 5. Relations Advanced
+## 5. Notes On Class
+
+📄 **Source**: [`notes-on-class.mmd`](./valid/notes-on-class.mmd)
+
+### Rendered Output (Mermaid)
+
+```mermaid
+classDiagram
+class Order
+note for Order "Domain aggregate"
+class Customer
+note for Customer "Preferred"
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class Order
+note for Order "Domain aggregate"
+class Customer
+note for Customer "Preferred"
+
+
+```
+</details>
+
+---
+
+## 6. Relations Advanced
 
 📄 **Source**: [`relations-advanced.mmd`](./valid/relations-advanced.mmd)
 
@@ -203,7 +237,7 @@ Client ..|> IService
 
 ---
 
-## 6. Relations All
+## 7. Relations All
 
 📄 **Source**: [`relations-all.mmd`](./valid/relations-all.mmd)
 
@@ -247,7 +281,51 @@ A ..|> B : realizes
 
 ---
 
-## 7. Simple
+## 8. Relations Leftward
+
+📄 **Source**: [`relations-leftward.mmd`](./valid/relations-leftward.mmd)
+
+### Rendered Output (Mermaid)
+
+```mermaid
+classDiagram
+class A
+class B
+class C
+class D
+A <|-- B
+B --|> C
+A <.. D
+D ..> A
+Client ..|> IService
+IService <|.. Impl
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+class A
+class B
+class C
+class D
+A <|-- B
+B --|> C
+A <.. D
+D ..> A
+Client ..|> IService
+IService <|.. Impl
+
+
+```
+</details>
+
+---
+
+## 9. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -283,7 +361,7 @@ class Bar
 
 ---
 
-## 8. Stereotype And Alias
+## 10. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 

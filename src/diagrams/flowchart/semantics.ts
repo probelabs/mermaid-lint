@@ -75,6 +75,21 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 
   node(ctx: any) {
+    // typed-shape attr object vs bracket shape conflict
+    const hasAttr = Array.isArray((ctx as any).attrObject) && (ctx as any).attrObject.length > 0;
+    const hasShape = Array.isArray(ctx.nodeShape) && ctx.nodeShape.length > 0;
+    if (hasAttr && hasShape) {
+      const tokArr: any[] = (ctx as any).attrObject?.[0]?.children?.attrLCurly || [];
+      const tok = tokArr[0];
+      this.ctx.errors.push({
+        line: tok?.startLine ?? 1,
+        column: tok?.startColumn ?? 1,
+        severity: 'warning',
+        code: 'FL-TYPED-SHAPE-CONFLICT',
+        message: "Both bracket shape and '@{ shape: … }' provided. Bracket shape will be used.",
+        hint: 'Pick one style: either A[Label] or A@{ shape: rect, label: "Label" }'
+      });
+    }
     // only shape/content semantics live here
     if (ctx.nodeShape) ctx.nodeShape.forEach((n: CstNode) => this.visit(n));
   }

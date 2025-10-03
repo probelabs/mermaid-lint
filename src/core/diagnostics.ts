@@ -767,10 +767,12 @@ export function mapStateParserError(err: IRecognitionException, text: string): V
 
   // state block missing closing brace
   if (isInRule(err, 'stateBlock') && err.name === 'MismatchedTokenException' && expecting(err, 'RCurly')) {
-    if (/---/.test(ltxt)) {
-      return { line, column, severity: 'error', code: 'ST-CONCURRENCY-UNSUPPORTED', message: "Concurrency separator '---' is not supported in Mermaid state diagrams.", hint: "Use separate states or regions without '---'.", length: len };
-    }
     return { line, column, severity: 'error', code: 'ST-BLOCK-MISSING-RBRACE', message: "Missing '}' to close a state block.", hint: "Close the block: state Foo { ... }", length: len };
+  }
+
+  // '---' outside of a state block
+  if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException') && tokType === 'Dashes' && !isInRule(err, 'innerStatement')) {
+    return { line, column, severity: 'error', code: 'ST-CONCURRENCY-OUTSIDE-BLOCK', message: "'---' is only allowed inside 'state { … }' blocks.", hint: "Move '---' inside a composite state block: state A { … --- … }", length: len };
   }
 
   // Double-in-double label/name heuristic

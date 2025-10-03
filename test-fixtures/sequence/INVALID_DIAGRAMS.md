@@ -26,8 +26,9 @@ This file contains invalid sequence test fixtures with:
 15. [Note Malformed](#15-note-malformed)
 16. [Option In Par](#16-option-in-par)
 17. [Option Outside Critical](#17-option-outside-critical)
-18. [Unmatched End](#18-unmatched-end)
-19. [Wrong Arrow](#19-wrong-arrow)
+18. [Title And Accessibility](#18-title-and-accessibility)
+19. [Unmatched End](#19-unmatched-end)
+20. [Wrong Arrow](#20-wrong-arrow)
 
 ---
 
@@ -37,23 +38,24 @@ This file contains invalid sequence test fixtures with:
 |---:|---|:---:|:---:|:---:|
 | 1 | [and in alt](#1-and-in-alt) | INVALID | INVALID | — |
 | 2 | [and outside par](#2-and-outside-par) | INVALID | INVALID | — |
-| 3 | [autonumber extraneous](#3-autonumber-extraneous) | INVALID | INVALID | ✅ safe |
-| 4 | [autonumber malformed](#4-autonumber-malformed) | INVALID | INVALID | ✅ all |
-| 5 | [box empty](#5-box-empty) | INVALID | INVALID | ✅ safe |
-| 6 | [box unclosed](#6-box-unclosed) | INVALID | INVALID | ✅ safe |
-| 7 | [box with messages](#7-box-with-messages) | INVALID | INVALID | ✅ safe |
-| 8 | [box with notes](#8-box-with-notes) | INVALID | INVALID | ✅ safe |
+| 3 | [autonumber extraneous](#3-autonumber-extraneous) | INVALID | INVALID | — |
+| 4 | [autonumber malformed](#4-autonumber-malformed) | INVALID | INVALID | — |
+| 5 | [box empty](#5-box-empty) | INVALID | INVALID | — |
+| 6 | [box unclosed](#6-box-unclosed) | INVALID | INVALID | — |
+| 7 | [box with messages](#7-box-with-messages) | INVALID | INVALID | — |
+| 8 | [box with notes](#8-box-with-notes) | INVALID | INVALID | — |
 | 9 | [create malformed](#9-create-malformed) | INVALID | INVALID | — |
 | 10 | [create missing name](#10-create-missing-name) | INVALID | INVALID | — |
-| 11 | [critical else](#11-critical-else) | INVALID | INVALID | ✅ safe |
+| 11 | [critical else](#11-critical-else) | INVALID | INVALID | — |
 | 12 | [destroy malformed](#12-destroy-malformed) | INVALID | INVALID | — |
 | 13 | [else outside alt](#13-else-outside-alt) | INVALID | INVALID | — |
-| 14 | [missing colon](#14-missing-colon) | INVALID | INVALID | ✅ safe |
-| 15 | [note malformed](#15-note-malformed) | INVALID | INVALID | ✅ safe |
+| 14 | [missing colon](#14-missing-colon) | INVALID | INVALID | — |
+| 15 | [note malformed](#15-note-malformed) | INVALID | INVALID | — |
 | 16 | [option in par](#16-option-in-par) | INVALID | INVALID | — |
 | 17 | [option outside critical](#17-option-outside-critical) | INVALID | INVALID | — |
-| 18 | [unmatched end](#18-unmatched-end) | INVALID | INVALID | — |
-| 19 | [wrong arrow](#19-wrong-arrow) | INVALID | INVALID | — |
+| 18 | [title and accessibility](#18-title-and-accessibility) | INVALID | INVALID | — |
+| 19 | [unmatched end](#19-unmatched-end) | INVALID | INVALID | — |
+| 20 | [wrong arrow](#20-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
@@ -258,31 +260,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-AUTONUMBER-EXTRANEOUS]: Unexpected token after 'autonumber'. Put 'autonumber' on its own line.
-at test-fixtures/sequence/invalid/autonumber-extraneous.mmd:2:20
-  1 | sequenceDiagram
-  2 |   autonumber 10 10 participant A
-    |                    ^^^^^^^^^^^
-  3 |   A->B: ok
-hint: Example:
-  autonumber 10 10
-  participant A
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-  autonumber 10 10
-  participant A
-  A->B: ok
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -339,13 +340,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-AUTONUMBER-NON-NUMERIC]: Autonumber values must be numbers. Found 'ten'.
-at test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
-  1 | sequenceDiagram
-  2 |   autonumber 10 ten
-    |                 ^^^
-  3 |   participant A
-hint: Use numbers: autonumber 10 or autonumber 10 10 (start and step).
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -354,15 +363,7 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-```mermaid
-sequenceDiagram
-  autonumber
-  participant A
-  participant B
-  A->B: hi
-
-
-```
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -422,35 +423,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-BOX-EMPTY]: Box block has no participant/actor declarations. Use 'rect' to group messages visually.
-at test-fixtures/sequence/invalid/box-empty.mmd:4:1
-  3 |     participant B
-  4 |     box "Empty Group"
-    | ^^^
-  5 |         A->>B: message
-hint: Replace 'box' with 'rect' if you want to group messages:
-  rect rgb(240, 240, 255)
-    A->>B: Message
-    Note over A: Info
-  end
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-    participant A
-    participant B
-    rect rgb(240, 240, 255)
-        A->>B: message
-        Note over A: note
-    end
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -510,31 +506,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
-at test-fixtures/sequence/invalid/box-unclosed.mmd:5:1
-  2 |   box Aqua Group  ← start of 'box'
-    | …
-  5 |   A->B: hi
-  6 |   end  ← insert 'end' here
-hint: Add 'end' on its own line aligned with the block's start.
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-  box Aqua Group
-    participant A
-    participant B
-  end
-  A->B: hi
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -594,37 +589,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-BOX-INVALID-CONTENT]: Box blocks can only contain participant/actor declarations.
-at test-fixtures/sequence/invalid/box-with-messages.mmd:6:9
-  5 |         participant C
-  6 |         A->>B: message inside box
-    |         ^
-  7 |     end
-hint: Move messages, notes, and other statements outside the box block.
-  Example:
-  box "Group"
-    participant A
-    participant B
-  end
-  A->>B: Message
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-    participant A
-    participant B
-    box "Group"
-        participant C
-    end
-    A->>B: message inside box
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -685,37 +673,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-BOX-INVALID-CONTENT]: Box blocks can only contain participant/actor declarations.
-at test-fixtures/sequence/invalid/box-with-notes.mmd:6:9
-  5 |         participant C
-  6 |         Note over A: note inside box
-    |         ^^^^
-  7 |     end
-hint: Move messages, notes, and other statements outside the box block.
-  Example:
-  box "Group"
-    participant A
-    participant B
-  end
-  A->>B: Message
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-    participant A
-    participant B
-    box "Group"
-        participant C
-    end
-    Note over A: note inside box
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -774,15 +755,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-CREATE-MALFORMED]: After 'create', specify 'participant' or 'actor' before the name.
-at test-fixtures/sequence/invalid/create-malformed.mmd:2:10
-  1 | sequenceDiagram
-  2 |   create B
-    |          ^
-  3 |   participant A
-hint: Examples:
-  create participant B
-  create actor D as Donald
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -846,13 +833,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-CREATE-MISSING-NAME]: Missing name after 'create'.
-at test-fixtures/sequence/invalid/create-missing-name.mmd:2:21
-  1 | sequenceDiagram
-  2 |   create participant
-    |                     ^
-  3 |   A->B: hi
-hint: Use: create participant A  or  create actor B
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -919,41 +914,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-ELSE-IN-CRITICAL]: 'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.
-at test-fixtures/sequence/invalid/critical-else.mmd:4:3
-  2 |   critical Do critical  ← start of 'critical'
-    | …
-  4 |   else Should not use else in critical
-  5 |   end  ← insert 'end' here
-hint: Replace with: option <label>
-  Example:
-  option Retry
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
 
-warning[SE-HINT-ALT-BLOCK-SUGGEST]: Found 'else' but no 'alt' block in the file.
-at test-fixtures/sequence/invalid/critical-else.mmd:4:3
-  3 |     A->B: try
-  4 |   else Should not use else in critical
-    |   ^^^^
-  5 |     A->B: nope
-hint: Use: alt Condition … else … end
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-  critical Do critical
-    A->B: try
-  option Should not use else in critical
-    A->B: nope
-  end
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1011,13 +995,21 @@ node_modules/mermaid/dist/mermaid.js:125016:20
 ### maid Result: INVALID
 
 ```
-error[SE-DESTROY-MISSING-NAME]: Missing name after 'destroy'.
-at test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
-  1 | sequenceDiagram
-  2 |   destroy participant
-    |                      ^
-  3 |   participant A
-hint: Use: destroy participant A  or  destroy actor B
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1084,13 +1076,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-ELSE-OUTSIDE-ALT]: 'else' is only allowed inside 'alt' blocks.
-at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
-  2 |   participant A
-  3 |   else Not allowed here
-    |   ^^^^
-  4 |   A->B: hi
-hint: Use: alt Condition … else … end
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1156,29 +1156,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
-at test-fixtures/sequence/invalid/missing-colon.mmd:4:35
-  3 |   participant B
-  4 |   A->>B Message text without colon
-    |                                   ^^
-  5 | 
-hint: Use: A->>B: Message text
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-  participant A
-  participant B
-  A->>B : Message text without colon
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1235,29 +1236,30 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
-at test-fixtures/sequence/invalid/note-malformed.mmd:3:32
-  2 |   participant A
-  3 |   Note right of A Missing colon
-    |                                ^
-  4 |   A->B: ok
-hint: Example: Note right of Alice: Hello
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-  participant A
-  Note right of A : Missing colon
-  A->B: ok
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1315,19 +1317,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-BRANCH-IN-WRONG-BLOCK]: 'option' is only valid in 'critical' blocks (not inside 'par').
-at test-fixtures/sequence/invalid/option-in-par.mmd:3:5
-  2 |   par
-  3 |     option Retry
-    |     ^^^^^^
-  4 |     A->B: nope
-hint: Use the proper branch for 'par' or close it with 'end'.
-  For 'critical', use:
-  critical
-    …
-  option Label
-    …
-  end
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1393,18 +1397,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-BRANCH-OUTSIDE-BLOCK]: 'option' is only allowed inside a 'critical' block.
-at test-fixtures/sequence/invalid/option-outside-critical.mmd:2:3
-  1 | sequenceDiagram
-  2 |   option Retry
-    |   ^^^^^^
-  3 |   A->B: Should be inside critical
-hint: Start a critical section:
-  critical
-    …
-  option Label
-    …
-  end
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1429,7 +1436,93 @@ sequenceDiagram
 
 ---
 
-## 18. Unmatched End
+## 18. Title And Accessibility
+
+📄 **Source**: [`title-and-accessibility.mmd`](./invalid/title-and-accessibility.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  title Checkout Flow
+  accTitle Accessible Title
+  accDescr This diagram describes the checkout steps.
+  participant A as Alice
+  participant B as Bob
+  A->>B: Start
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 3:
+...tle Accessible Title  accDescr This dia
+-----------------------^
+Expecting 'SOLID_OPEN_ARROW', 'DOTTED_OPEN_ARROW', 'SOLID_ARROW', 'BIDIRECTIONAL_SOLID_ARROW', 'DOTTED_ARROW', 'BIDIRECTIONAL_DOTTED_ARROW', 'SOLID_CROSS', 'DOTTED_CROSS', 'SOLID_POINT', 'DOTTED_POINT', got 'NEWLINE'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  title Checkout Flow
+  accTitle Accessible Title
+  accDescr This diagram describes the checkout steps.
+  participant A as Alice
+  participant B as Bob
+  A->>B: Start
+
+
+```
+</details>
+
+---
+
+## 19. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1469,13 +1562,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-END-WITHOUT-BLOCK]: 'end' without an open block (alt/opt/loop/par/rect/critical/break/box).
-at test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
-  2 |   participant A
-  3 |   end
-    |   ^^^
-  4 |   A->B: hi
-hint: Add a block above (e.g., par … end | alt … end) or remove this end.
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
+
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1501,7 +1602,7 @@ sequenceDiagram
 
 ---
 
-## 19. Wrong Arrow
+## 20. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
@@ -1541,15 +1642,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
 ### maid Result: INVALID
 
 ```
-error[SE-ARROW-INVALID]: Invalid sequence arrow near '
+file://out/diagrams/state/validate.js:88
+            const lines = src.split(/\r?\n/);
+                  ^
 
-'.
-at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:24
-  3 |   participant B
-  4 |   A==>>B: Unknown arrow
-    |                        ^^
-  5 | 
-hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
+SyntaxError: Identifier 'lines' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:357:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:108:18)
+    at #translate (node:internal/modules/esm/loader:556:20)
+    at afterLoad (node:internal/modules/esm/loader:606:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:611:12)
+    at #createModuleJob (node:internal/modules/esm/loader:635:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:348:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:313:41)
+
+Node.js v24.7.0
 ```
 
 ### maid Auto-fix (`--fix`) Preview

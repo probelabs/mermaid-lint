@@ -34,9 +34,12 @@ export class MermaidParser extends CstParser {
         this.OR([
             { ALT: () => this.SUBRULE(this.nodeStatement) },
             { ALT: () => this.SUBRULE(this.subgraph) },
+            { ALT: () => this.SUBRULE(this.directionStatement) },
             { ALT: () => this.SUBRULE(this.classStatement) },
             { ALT: () => this.SUBRULE(this.styleStatement) },
             { ALT: () => this.SUBRULE(this.classDefStatement) },
+            { ALT: () => this.SUBRULE(this.clickStatement) },
+            { ALT: () => this.SUBRULE(this.linkStyleStatement) },
             { ALT: () => this.CONSUME(tokens.Newline) } // Empty lines
         ]);
     });
@@ -88,6 +91,8 @@ export class MermaidParser extends CstParser {
                     this.OPTION(() => {
                         this.CONSUME(tokens.NumberLiteral, { LABEL: "nodeIdSuffix" });
                     });
+                    // Optional typed-shape attribute object: A@{ shape: rect, label: "Text" }
+                    this.OPTION1(() => this.SUBRULE(this.attrObject));
                 }
             },
             { 
@@ -107,6 +112,65 @@ export class MermaidParser extends CstParser {
             this.CONSUME(tokens.TripleColon);
             this.CONSUME3(tokens.Identifier, { LABEL: 'nodeClass' });
         });
+    });
+
+    // Attribute object used by typed shapes syntax after node id: @ { key: value, ... }
+    private attrObject = this.RULE('attrObject', () => {
+        this.CONSUME(tokens.AtSign);
+        this.CONSUME(tokens.DiamondOpen, { LABEL: 'attrLCurly' }); // reuse '{'
+        this.OPTION(() => {
+            this.SUBRULE(this.attrPair);
+            this.MANY(() => {
+                this.CONSUME(tokens.Comma);
+                this.SUBRULE2(this.attrPair);
+            });
+        });
+        this.CONSUME(tokens.DiamondClose, { LABEL: 'attrRCurly' });
+    });
+
+    private attrPair = this.RULE('attrPair', () => {
+        this.CONSUME(tokens.Identifier, { LABEL: 'attrKey' });
+        this.CONSUME(tokens.Colon);
+        this.OR([
+            { ALT: () => this.CONSUME(tokens.QuotedString) },
+            { ALT: () => this.CONSUME2(tokens.Identifier) },
+            { ALT: () => this.CONSUME(tokens.NumberLiteral) },
+            { ALT: () => this.CONSUME(tokens.Text) },
+        ]);
+    });
+
+    // Interaction statements — parsed permissively to avoid false errors
+    private clickStatement = this.RULE('clickStatement', () => {
+        this.CONSUME(tokens.ClickKeyword);
+        // target id
+        this.CONSUME(tokens.Identifier, { LABEL: 'clickTarget' });
+        // rest of the line: href/callback, tooltip, target, etc.
+        this.MANY(() => {
+            this.OR([
+                { ALT: () => this.CONSUME2(tokens.Identifier) },
+                { ALT: () => this.CONSUME(tokens.Text) },
+                { ALT: () => this.CONSUME(tokens.QuotedString) },
+                { ALT: () => this.CONSUME(tokens.NumberLiteral) },
+            ]);
+        });
+        this.OPTION(() => this.CONSUME(tokens.Newline));
+    });
+
+    private linkStyleStatement = this.RULE('linkStyleStatement', () => {
+        this.CONSUME(tokens.LinkStyleKeyword);
+        // indices or ranges followed by style tokens
+        this.MANY(() => {
+            this.OR([
+                { ALT: () => this.CONSUME(tokens.NumberLiteral) },
+                { ALT: () => this.CONSUME(tokens.Comma) },
+                { ALT: () => this.CONSUME(tokens.Identifier) },
+                { ALT: () => this.CONSUME(tokens.Text) },
+                { ALT: () => this.CONSUME(tokens.ColorValue) },
+                { ALT: () => this.CONSUME(tokens.Colon) },
+                { ALT: () => this.CONSUME(tokens.QuotedString) },
+            ]);
+        });
+        this.OPTION(() => this.CONSUME(tokens.Newline));
     });
     
     // All possible node shapes

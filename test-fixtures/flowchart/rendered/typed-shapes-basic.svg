@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="294" height="280" viewBox="0 0 294 280">
+  <rect x="0" y="0" width="294" height="280" fill="#ffffff" />
+  <style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
+    </marker>
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
+    </marker>
+  </defs>
+  <g id="A">
+    <rect class="node-shape"  x="40" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="80" y="64.9" text-anchor="middle">A</text>
+  </g>
+  <g id="B">
+    <rect class="node-shape"  x="194" y="40" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="234" y="64.9" text-anchor="middle">B</text>
+  </g>
+  <g id="C">
+    <rect class="node-shape"  x="40" y="175" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="80" y="199.9" text-anchor="middle">C</text>
+  </g>
+  <g id="D">
+    <rect class="node-shape"  x="194" y="130" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="234" y="154.9" text-anchor="middle">D</text>
+  </g>
+  <g id="E">
+    <rect class="node-shape"  x="194" y="220" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="234" y="244.9" text-anchor="middle">E</text>
+  </g>
+  <g><path class="edge-path" d="M120,60 L130,60 C142,60 178,60 184,60 L194,60" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M194,60 L186,63 L186,57 Z" fill="#555555" /></g>
+  <g>
+    <path class="edge-path" d="M114.22222222222223,175 L122.85594166348828,169.95431980705231 C133.21640499300753,163.8995035755151 178,150 184,150 L194,150" stroke-linecap="round" stroke-linejoin="round" />
+    <rect class="edge-label-bg" x="142.31961906297641" y="143.98204080735144" width="26" height="14" rx="3" />
+    <text class="edge-label-text" x="155.31961906297641" y="150.98204080735144" text-anchor="middle" dominant-baseline="middle">Yes</text>
+    <path d="M194,150 L186,153 L186,147 Z" fill="#555555" />
+  </g>
+  <g>
+    <path class="edge-path" d="M114.22222222222223,215 L122.85594166348828,220.04568019294769 C133.21640499300753,226.1004964244849 178,240 184,240 L194,240" stroke-linecap="round" stroke-linejoin="round" />
+    <rect class="edge-label-bg" x="145.31961906297641" y="232.01795919264856" width="20" height="14" rx="3" />
+    <text class="edge-label-text" x="155.31961906297641" y="239.01795919264856" text-anchor="middle" dominant-baseline="middle">No</text>
+    <path d="M194,240 L186,243 L186,237 Z" fill="#555555" />
+  </g>
+  
+</svg>

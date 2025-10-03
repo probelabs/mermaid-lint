@@ -8,9 +8,10 @@ This file contains all valid state test fixtures rendered with Mermaid.
 
 1. [aliases and descriptions](#1-aliases-and-descriptions)
 2. [block and notes](#2-block-and-notes)
-3. [markers fork join](#3-markers-fork-join)
-4. [nested and notes](#4-nested-and-notes)
-5. [simple](#5-simple)
+3. [concurrency two regions](#3-concurrency-two-regions)
+4. [markers fork join](#4-markers-fork-join)
+5. [nested and notes](#5-nested-and-notes)
+6. [simple](#6-simple)
 
 ---
 
@@ -86,7 +87,41 @@ Note right of Auth: Handles user authentication
 
 ---
 
-## 3. Markers Fork Join
+## 3. Concurrency Two Regions
+
+📄 **Source**: [`concurrency-two-regions.mmd`](./valid/concurrency-two-regions.mmd)
+
+### Rendered Output (Mermaid)
+
+```mermaid
+stateDiagram-v2
+  state Outer {
+    [*] --> A
+    ---
+    [*] --> B
+  }
+
+
+```
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+  state Outer {
+    [*] --> A
+    ---
+    [*] --> B
+  }
+
+
+```
+</details>
+
+---
+
+## 4. Markers Fork Join
 
 📄 **Source**: [`markers-fork-join.mmd`](./valid/markers-fork-join.mmd)
 
@@ -126,7 +161,7 @@ Join --> [*]
 
 ---
 
-## 4. Nested And Notes
+## 5. Nested And Notes
 
 📄 **Source**: [`nested-and-notes.mmd`](./valid/nested-and-notes.mmd)
 
@@ -168,7 +203,7 @@ Note right of MFA: One-time code
 
 ---
 
-## 5. Simple
+## 6. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 

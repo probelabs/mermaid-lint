@@ -51,6 +51,9 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
         hint: 'Example: A["He said &quot;Hi&quot;"]',
         scopeEndTokenNames: [
           'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
+        ],
+        scopeStartTokenNames: [
+          'SquareOpen','RoundOpen','DiamondOpen','DoubleSquareOpen','DoubleRoundOpen','StadiumOpen','CylinderOpen','HexagonOpen'
         ]
       }).filter(e => !seenDoubleLines.has(e.line) && !escapedLinesAll.has(e.line));
       const errs = escWarn.concat(dbl);
