@@ -43,11 +43,11 @@
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B2</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(16,52)">
-  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="0"/>
+<g class="cluster-bg-layer" transform="translate(16,40)">
+  <rect class="cluster-bg" x="0" y="0" width="528" height="64" rx="0"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(16,88)">
-  <rect class="cluster-bg" x="0" y="0" width="528" height="52" rx="0"/>
+<g class="cluster-bg-layer" transform="translate(16,76)">
+  <rect class="cluster-bg" x="0" y="0" width="528" height="64" rx="0"/>
 </g>
   <line class="lifeline" x1="79" y1="60" x2="79" y2="204"/>
   <line class="lifeline" x1="213" y1="60" x2="213" y2="204"/>
@@ -61,13 +61,13 @@
   <path d="M481,186 L473,189 L473,183 Z" fill="#333" />
   <rect class="msg-label-bg" x="324" y="168" width="46" height="16" rx="0"/>
   <text class="msg-label" x="347" y="176" text-anchor="middle">Async</text>
-<g class="cluster-overlay" transform="translate(16,52)">
-<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="0"/>
+<g class="cluster-overlay" transform="translate(16,40)">
+<rect class="cluster-border" x="0" y="0" width="528" height="64" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="176" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">box: LightBlue System A</text>
 </g>
-<g class="cluster-overlay" transform="translate(16,88)">
-<rect class="cluster-border" x="0" y="0" width="528" height="52" rx="0"/>
+<g class="cluster-overlay" transform="translate(16,76)">
+<rect class="cluster-border" x="0" y="0" width="528" height="64" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="183" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">box: LightGreen System B</text>
 </g>

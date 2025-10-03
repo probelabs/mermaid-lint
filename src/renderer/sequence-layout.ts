@@ -53,6 +53,7 @@ const ROW_H = 36;
 const NOTE_W = 160;
 const NOTE_PAD = 8;
 const BLOCK_PAD = 8;
+const TITLE_EXTRA_TOP = 12; // extra space to fit the title pill
 
 export function layoutSequence(model: SequenceModel): SequenceLayout {
   // Determine participant order by first mention (participantDecl/create/message/note)
@@ -173,6 +174,12 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
       }
       case 'note': {
         if (r == null) break;
+        // Estimate note height based on text length and width
+        const estLines = (text: string, width: number) => {
+          const charsPerLine = Math.max(8, Math.floor((width - NOTE_PAD * 2) / 7));
+          const length = text ? text.length : 0;
+          return Math.max(1, Math.ceil(length / charsPerLine));
+        };
         const y = yForRow(r) - NOTE_PAD; // top of note
         if (ev.note.pos === 'over') {
           const [a, b] = ev.note.actors;
@@ -180,7 +187,10 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
           if (p1 && p2) {
             const left = Math.min(p1.x + p1.width / 2, p2.x + p2.width / 2);
             const right = Math.max(p1.x + p1.width / 2, p2.x + p2.width / 2);
-            notes.push({ x: left - NOTE_PAD, y, width: (right - left) + NOTE_PAD * 2, height: ROW_H - NOTE_PAD, text: ev.note.text, anchor: 'over' });
+            const w = (right - left) + NOTE_PAD * 2;
+            const lines = estLines(ev.note.text, w);
+            const h = Math.max(ROW_H - NOTE_PAD, lines * 16 + NOTE_PAD);
+            notes.push({ x: left - NOTE_PAD, y, width: w, height: h, text: ev.note.text, anchor: 'over' });
           }
         } else {
           const actor = ev.note.actors[0];
@@ -188,7 +198,9 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
           if (p) {
             const leftSide = ev.note.pos === 'leftOf';
             const x = leftSide ? p.x - NOTE_W - 10 : p.x + p.width + 10;
-            notes.push({ x, y, width: NOTE_W, height: ROW_H - NOTE_PAD, text: ev.note.text, anchor: leftSide ? 'left' : 'right' });
+            const lines = estLines(ev.note.text, NOTE_W);
+            const h = Math.max(ROW_H - NOTE_PAD, lines * 16 + NOTE_PAD);
+            notes.push({ x, y, width: NOTE_W, height: h, text: ev.note.text, anchor: leftSide ? 'left' : 'right' });
           }
         }
         const top = openForLayout[openForLayout.length - 1];
@@ -215,7 +227,7 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
           const last = participants.length > 0 ? participants[participants.length - 1] : undefined;
           const left = first ? first.x : MARGIN_X;
           const right = last ? (last.x + last.width) : (left + 200);
-          const yTop = yForRow(top.startRow) - ROW_H / 2 - BLOCK_PAD;
+          const yTop = yForRow(top.startRow) - ROW_H / 2 - (BLOCK_PAD + TITLE_EXTRA_TOP);
           const endRow = top.lastRow != null ? top.lastRow : top.startRow;
           const yBot = yForRow(endRow) + ROW_H / 2 + BLOCK_PAD;
           const layout: LayoutBlock = { type: top.block.type, title: top.block.title, x: left - BLOCK_PAD, y: yTop, width: (right - left) + BLOCK_PAD * 2, height: (yBot - yTop) };

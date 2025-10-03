@@ -39,8 +39,8 @@
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">C</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(16,52)">
-  <rect class="cluster-bg" x="0" y="0" width="394" height="88" rx="0"/>
+<g class="cluster-bg-layer" transform="translate(16,40)">
+  <rect class="cluster-bg" x="0" y="0" width="394" height="100" rx="0"/>
 </g>
   <line class="lifeline" x1="79" y1="60" x2="79" y2="204"/>
   <line class="lifeline" x1="213" y1="60" x2="213" y2="204"/>
@@ -53,11 +53,11 @@
   <path d="M347,186 L339,189 L339,183 Z" fill="#333" />
   <rect class="msg-label-bg" x="179" y="168" width="68" height="16" rx="0"/>
   <text class="msg-label" x="213" y="176" text-anchor="middle">Branch 2</text>
-<g class="cluster-overlay" transform="translate(16,52)">
-<rect class="cluster-border" x="0" y="0" width="394" height="88" rx="0"/>
+<g class="cluster-overlay" transform="translate(16,40)">
+<rect class="cluster-border" x="0" y="0" width="394" height="100" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="32" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">alt</text>
-<line x1="0" y1="44" x2="394" y2="44" class="cluster-border" />
+<line x1="0" y1="56" x2="394" y2="56" class="cluster-border" />
 </g>
   <g class="actor" transform="translate(24,204)">
     <rect class="node-shape" width="110" height="32" rx="0"/>

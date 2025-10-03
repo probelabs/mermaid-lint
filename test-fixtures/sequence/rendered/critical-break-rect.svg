@@ -35,14 +35,14 @@
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">API</text>
   </g>
-<g class="cluster-bg-layer" transform="translate(16,52)">
-  <rect class="cluster-bg" x="0" y="0" width="260" height="52" rx="0"/>
+<g class="cluster-bg-layer" transform="translate(16,40)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="64" rx="0"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(16,88)">
-  <rect class="cluster-bg" x="0" y="0" width="260" height="88" rx="0"/>
+<g class="cluster-bg-layer" transform="translate(16,76)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="100" rx="0"/>
 </g>
-<g class="cluster-bg-layer" transform="translate(16,160)">
-  <rect class="cluster-bg" x="0" y="0" width="260" height="52" rx="0"/>
+<g class="cluster-bg-layer" transform="translate(16,148)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="64" rx="0"/>
 </g>
   <line class="lifeline" x1="79" y1="60" x2="79" y2="240"/>
   <line class="lifeline" x1="213" y1="60" x2="213" y2="240"/>
@@ -50,21 +50,21 @@
   <g class="crosshead" transform="translate(79,222)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
   <rect class="msg-label-bg" x="112" y="204" width="68" height="16" rx="0"/>
   <text class="msg-label" x="146" y="212" text-anchor="middle">ROLLBACK</text>
-<g class="cluster-overlay" transform="translate(16,52)">
-<rect class="cluster-border" x="0" y="0" width="260" height="52" rx="0"/>
+<g class="cluster-overlay" transform="translate(16,40)">
+<rect class="cluster-border" x="0" y="0" width="260" height="64" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="269" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">rect: rgba ( 200 , 200 , 255 , 0 .3)</text>
 </g>
-<g class="cluster-overlay" transform="translate(16,88)">
-<rect class="cluster-border" x="0" y="0" width="260" height="88" rx="0"/>
+<g class="cluster-overlay" transform="translate(16,76)">
+<rect class="cluster-border" x="0" y="0" width="260" height="100" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="161" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">critical: Transaction</text>
-<line x1="0" y1="44" x2="260" y2="44" class="cluster-border" />
-<rect class="cluster-title-bg" x="6" y="34" width="46" height="18" rx="3"/>
-<text class="cluster-label-text" x="12" y="45" text-anchor="start">Retry</text>
+<line x1="0" y1="56" x2="260" y2="56" class="cluster-border" />
+<rect class="cluster-title-bg" x="6" y="46" width="46" height="18" rx="3"/>
+<text class="cluster-label-text" x="12" y="57" text-anchor="start">Retry</text>
 </g>
-<g class="cluster-overlay" transform="translate(16,160)">
-<rect class="cluster-border" x="0" y="0" width="260" height="52" rx="0"/>
+<g class="cluster-overlay" transform="translate(16,148)">
+<rect class="cluster-border" x="0" y="0" width="260" height="64" rx="0"/>
 <rect class="cluster-title-bg" x="6" y="-2" width="132" height="18" rx="3"/>
 <text class="cluster-label-text" x="12" y="11" text-anchor="start">break: On failure</text>
 </g>
