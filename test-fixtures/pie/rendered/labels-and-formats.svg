@@ -6,17 +6,18 @@
   </style>
   <text class="pie-title" x="251" y="32" text-anchor="middle">Sales Q1</text>
   <g class="pie" aria-label="pie">
-    <path d="M 251 222 L 251.00 60.00 A 162 162 0 0 1 412.87 228.52 Z" fill="#ECECFF" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 251.00 60.00 A 162 162 0 0 1 412.87 228.52 Z" fill="#ECECFF" fill-opacity="0.9" stroke="none" />
     <text class="slice-label" x="323.44" y="152.42" text-anchor="start">26%</text>
-    <path d="M 251 222 L 412.87 228.52 A 162 162 0 0 1 125.51 324.46 Z" fill="#ffffde" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 412.87 228.52 A 162 162 0 0 1 125.51 324.46 Z" fill="#ffffde" fill-opacity="0.9" stroke="none" />
     <text class="slice-label" x="282.81" y="317.27" text-anchor="start">38%</text>
-    <path d="M 251 222 L 125.51 324.46 A 162 162 0 0 1 104.64 152.55 Z" fill="hsl(80, 100%, 56.2745098039%)" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 125.51 324.46 A 162 162 0 0 1 104.64 152.55 Z" fill="hsl(80, 100%, 56.2745098039%)" fill-opacity="0.9" stroke="none" />
     <text class="slice-label" x="151.29" y="234.11" text-anchor="end">18%</text>
-    <path d="M 251 222 L 104.64 152.55 A 162 162 0 0 1 153.68 92.49 Z" fill="hsl(240, 100%, 86.2745098039%)" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 104.64 152.55 A 162 162 0 0 1 153.68 92.49 Z" fill="hsl(240, 100%, 86.2745098039%)" fill-opacity="0.9" stroke="none" />
     <text class="slice-label" x="173.20" y="158.48" text-anchor="end">8%</text>
-    <path d="M 251 222 L 153.68 92.49 A 162 162 0 0 1 251.00 60.00 Z" fill="hsl(60, 100%, 63.5294117647%)" fill-opacity="0.9" stroke="#fff" stroke-width="1" />
+    <path d="M 251 222 L 153.68 92.49 A 162 162 0 0 1 251.00 60.00 Z" fill="hsl(60, 100%, 63.5294117647%)" fill-opacity="0.9" stroke="none" />
     <text class="slice-label" x="219.19" y="126.73" text-anchor="end">10%</text>
   </g>
+  <circle class="pie-rim" cx="251" cy="222" r="162" fill="none" stroke="none" />
   <g class="legend">
     <rect x="425" y="52" width="12" height="12" fill="#ECECFF" stroke="#fff" stroke-width="1" />
     <text class="slice-label legend-text" x="445" y="58" text-anchor="start">Apples</text>
