@@ -30,7 +30,7 @@
   <line class="lifeline" x1="79" y1="62" x2="79" y2="170"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="170"/>
   <path class="msg-line solid" d="M 79 116 L 213 116" />
-  <path class="arrowhead" transform="translate(213,116) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,116 L205,119 L205,113 Z" fill="#333" />
   <rect class="msg-label-bg" x="123" y="98" width="46" height="16" rx="3"/>
   <text class="msg-label" x="146" y="106" text-anchor="middle">Hello</text>
   <g class="note" transform="translate(144,72)">

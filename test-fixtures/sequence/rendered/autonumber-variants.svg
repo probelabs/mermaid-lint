@@ -30,15 +30,15 @@
   <line class="lifeline" x1="79" y1="62" x2="79" y2="170"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="170"/>
   <path class="msg-line solid" d="M 79 80 L 213 80" />
-  <path class="arrowhead" transform="translate(213,80) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,80 L205,83 L205,77 Z" fill="#333" />
   <rect class="msg-label-bg" x="123" y="62" width="46" height="16" rx="3"/>
   <text class="msg-label" x="146" y="70" text-anchor="middle">First</text>
   <path class="msg-line dotted" d="M 79 116 L 213 116" />
-  <path class="arrowhead" transform="translate(213,116) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,116 L205,119 L205,113 Z" fill="#333" />
   <rect class="msg-label-bg" x="119.5" y="98" width="53" height="16" rx="3"/>
   <text class="msg-label" x="146" y="106" text-anchor="middle">Second</text>
   <path class="msg-line solid" d="M 79 152 L 213 152" />
-  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,152 L205,155 L205,149 Z" fill="#333" />
   <rect class="msg-label-bg" x="98" y="134" width="96" height="16" rx="3"/>
   <text class="msg-label" x="146" y="142" text-anchor="middle">No numbering</text>
   <g class="actor" transform="translate(24,170)">

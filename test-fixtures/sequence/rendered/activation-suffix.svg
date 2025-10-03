@@ -31,11 +31,11 @@
   <line class="lifeline" x1="213" y1="62" x2="213" y2="134"/>
   <rect class="activation" x="209" y="62" width="8" height="72" />
   <path class="msg-line solid" d="M 79 80 L 213 80" />
-  <path class="arrowhead" transform="translate(213,80) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,80 L205,83 L205,77 Z" fill="#333" />
   <rect class="msg-label-bg" x="83.5" y="62" width="125" height="16" rx="3"/>
   <text class="msg-label" x="146" y="70" text-anchor="middle">call activates B</text>
   <path class="msg-line dotted" d="M 213 116 L 79 116" />
-  <path class="arrowhead" transform="translate(79,116) rotate(180.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M79,116 L87,113 L87,119 Z" fill="#333" />
   <rect class="msg-label-bg" x="51" y="98" width="190" height="16" rx="3"/>
   <text class="msg-label" x="146" y="106" text-anchor="middle">returns and deactivates A</text>
   <g class="actor" transform="translate(24,134)">

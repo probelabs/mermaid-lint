@@ -2,6 +2,8 @@ import type { SequenceModel } from './sequence-types.js';
 import type { SequenceLayout, LayoutParticipant, LayoutMessage, LayoutNote, LayoutBlock, LayoutActivation } from './sequence-layout.js';
 import { layoutSequence } from './sequence-layout.js';
 import { escapeXml, measureText } from './utils.js';
+import { triangleAtEnd, triangleAtStart } from './arrow-utils.js';
+import { blockBackground, blockOverlay } from './block-utils.js';
 
 export interface SequenceRenderOptions {
   width?: number; // not used, layout is intrinsic
@@ -39,6 +41,8 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
 
   // Participants
   for (const p of layout.participants) drawParticipant(svgParts, p);
+  // Block backgrounds behind content
+  for (const b of layout.blocks) svgParts.push(blockBackground(b.x, b.y, b.width, b.height));
   // Lifelines
   for (const l of layout.lifelines) svgParts.push(`  <line class="lifeline" x1="${l.x}" y1="${l.y1}" x2="${l.x}" y2="${l.y2}"/>`);
   // Activations
@@ -57,7 +61,11 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   // Notes
   for (const n of layout.notes) drawNote(svgParts, n);
   // Block borders/titles on top
-  for (const b of layout.blocks) drawBlockOverlay(svgParts, b);
+  for (const b of layout.blocks) {
+    const title = b.title ? `${b.type}: ${b.title}` : b.type;
+    const branches = (b.branches || []).map(br => ({ y: br.y, title: br.title }));
+    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches));
+  }
 
   // Bottom actor boxes (Mermaid draws both top and bottom)
   for (const p of layout.participants) drawParticipantBottom(svgParts, p, layout);
@@ -85,62 +93,22 @@ function drawParticipantBottom(out: string[], p: LayoutParticipant, layout: Sequ
   out.push('  </g>');
 }
 
-function drawBlockBackground(out: string[], b: LayoutBlock) {
-  out.push(`  <g class="group-bg" transform="translate(${b.x},${b.y})">`);
-  out.push(`    <rect width="${b.width}" height="${b.height}" fill="none"/>`);
-  out.push('  </g>');
-}
-
-function drawBlockOverlay(out: string[], b: LayoutBlock) {
-  out.push(`  <g class="group" transform="translate(${b.x},${b.y})">`);
-  out.push(`    <rect class="group-frame" width="${b.width}" height="${b.height}"/>`);
-  const titleText = b.title ? `${b.type}: ${b.title}` : b.type;
-  const titleW = Math.max(24, measureText(titleText, 12) + 10);
-  out.push(`    <rect class="group-title-bg" x="6" y="-2" width="${titleW}" height="18" rx="3"/>`);
-  out.push(`    <text class="group-title" x="${6 + titleW/2}" y="11" text-anchor="middle">${escapeXml(titleText)}</text>`);
-  if (b.branches && b.branches.length) {
-    for (const br of b.branches) {
-      const yRel = br.y - b.y;
-      out.push(`    <line x1="0" y1="${yRel}" x2="${b.width}" y2="${yRel}" class="group-frame" />`);
-      if (br.title) {
-        const bw = Math.max(24, measureText(br.title, 12) + 10);
-        out.push(`    <rect class="group-title-bg" x="6" y="${yRel - 10}" width="${bw}" height="18" rx="3"/>`);
-        out.push(`    <text class="group-title" x="${6 + bw/2}" y="${yRel + 1}" text-anchor="middle">${escapeXml(br.title)}</text>`);
-      }
-    }
-  }
-  out.push('  </g>');
-}
 
 function drawMessage(out: string[], m: LayoutMessage) {
   const cls = `msg-line ${m.line}`.trim();
   const x1 = m.x1, x2 = m.x2, y = m.y;
   out.push(`  <path class="${cls}" d="M ${x1} ${y} L ${x2} ${y}" />`);
   // Markers: start/end
-  const ang = Math.atan2(0, x2 - x1); // horizontal line
-  if (m.startMarker !== 'none') drawMarker(out, m.startMarker, x1, y, ang, 'start', m.async, x2 < x1);
-  if (m.endMarker !== 'none') drawMarker(out, m.endMarker, x2, y, ang, 'end', m.async, x2 < x1);
+  const start = { x: x1, y } as const; const end = { x: x2, y } as const;
+  if (m.endMarker === 'arrow') out.push('  ' + triangleAtEnd(start, end));
+  if (m.startMarker === 'arrow') out.push('  ' + triangleAtStart(start, end));
+  if (m.endMarker === 'open') out.push(`  <circle class="openhead" cx="${x2}" cy="${y}" r="4" />`);
+  if (m.startMarker === 'open') out.push(`  <circle class="openhead" cx="${x1}" cy="${y}" r="4" />`);
+  if (m.endMarker === 'cross') out.push(`  <g class="crosshead" transform="translate(${x2},${y})"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>`);
+  if (m.startMarker === 'cross') out.push(`  <g class="crosshead" transform="translate(${x1},${y})"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>`);
 }
 
-function drawMarker(out: string[], kind: 'arrow'|'open'|'cross', x: number, y: number, angle: number, which: 'start'|'end', async?: boolean, reversed?: boolean) {
-  const size = 6;
-  // For horizontal lines, angle will be 0; reverse leftwards when needed
-  const theta = reversed ? Math.PI : 0;
-  const rot = ((theta) * 180 / Math.PI).toFixed(2);
-  if (kind === 'arrow') {
-    // Triangle base behind endpoint so it points in the line direction
-    const path = `M 0 0 L -7 -4 L -7 4 Z`;
-    out.push(`  <path class=\"arrowhead\" transform=\"translate(${x},${y}) rotate(${rot})\" d=\"${path}\" />`);
-  } else if (kind === 'open') {
-    out.push(`  <circle class="openhead" cx="${x}" cy="${y}" r="4" />`);
-  } else if (kind === 'cross') {
-    const s = 4;
-    out.push(`  <g class="crosshead" transform="translate(${x},${y}) rotate(${rot})">`);
-    out.push(`    <path d="M ${-s} ${-s} L ${s} ${s}" />`);
-    out.push(`    <path d="M ${-s} ${s} L ${s} ${-s}" />`);
-    out.push('  </g>');
-  }
-}
+// drawMarker no longer used; arrowheads rendered via triangleAtEnd/triangleAtStart helpers
 
 function formatMessageLabel(text?: string, counter?: number): string | undefined {
   if (!text && counter == null) return undefined;

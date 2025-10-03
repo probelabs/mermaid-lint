@@ -30,7 +30,7 @@
   <line class="lifeline" x1="79" y1="62" x2="79" y2="98"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="98"/>
   <path class="msg-line solid" d="M 213 80 L 79 80" />
-  <path class="arrowhead" transform="translate(79,80) rotate(180.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M79,80 L87,77 L87,83 Z" fill="#333" />
   <rect class="msg-label-bg" x="101.5" y="62" width="89" height="16" rx="3"/>
   <text class="msg-label" x="146" y="70" text-anchor="middle">Check links</text>
   <g class="actor" transform="translate(24,98)">

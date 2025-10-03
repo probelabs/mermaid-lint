@@ -30,43 +30,37 @@
   <line class="lifeline" x1="79" y1="62" x2="79" y2="422"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="422"/>
   <path class="msg-line solid" d="M 79 80 L 213 80" />
-  <path class="arrowhead" transform="translate(79,80) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
-  <path class="arrowhead" transform="translate(213,80) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,80 L205,83 L205,77 Z" fill="#333" />
+  <path d="M71,80 L79,83 L79,77 Z" fill="#333" />
   <rect class="msg-label-bg" x="98" y="62" width="96" height="16" rx="3"/>
   <text class="msg-label" x="146" y="70" text-anchor="middle">Duplex async</text>
   <path class="msg-line dotted" d="M 79 116 L 213 116" />
-  <path class="arrowhead" transform="translate(79,116) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
-  <path class="arrowhead" transform="translate(213,116) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,116 L205,119 L205,113 Z" fill="#333" />
+  <path d="M71,116 L79,119 L79,113 Z" fill="#333" />
   <rect class="msg-label-bg" x="72.5" y="98" width="147" height="16" rx="3"/>
   <text class="msg-label" x="146" y="106" text-anchor="middle">Duplex async dotted</text>
   <path class="msg-line solid" d="M 79 152 L 213 152" />
-  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,152 L205,155 L205,149 Z" fill="#333" />
   <rect class="msg-label-bg" x="123" y="134" width="46" height="16" rx="3"/>
   <text class="msg-label" x="146" y="142" text-anchor="middle">Async</text>
   <path class="msg-line dotted" d="M 79 188 L 213 188" />
-  <path class="arrowhead" transform="translate(213,188) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,188 L205,191 L205,185 Z" fill="#333" />
   <rect class="msg-label-bg" x="98" y="170" width="96" height="16" rx="3"/>
   <text class="msg-label" x="146" y="178" text-anchor="middle">Async dotted</text>
   <path class="msg-line solid" d="M 79 224 L 213 224" />
-  <path class="arrowhead" transform="translate(213,224) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,224 L205,227 L205,221 Z" fill="#333" />
   <rect class="msg-label-bg" x="123" y="206" width="46" height="16" rx="3"/>
   <text class="msg-label" x="146" y="214" text-anchor="middle">Solid</text>
   <path class="msg-line dotted" d="M 79 260 L 213 260" />
-  <path class="arrowhead" transform="translate(213,260) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,260 L205,263 L205,257 Z" fill="#333" />
   <rect class="msg-label-bg" x="119.5" y="242" width="53" height="16" rx="3"/>
   <text class="msg-label" x="146" y="250" text-anchor="middle">Dotted</text>
   <path class="msg-line solid" d="M 79 296 L 213 296" />
-  <g class="crosshead" transform="translate(213,296) rotate(0.00)">
-    <path d="M -4 -4 L 4 4" />
-    <path d="M -4 4 L 4 -4" />
-  </g>
+  <g class="crosshead" transform="translate(213,296)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
   <rect class="msg-label-bg" x="123" y="278" width="46" height="16" rx="3"/>
   <text class="msg-label" x="146" y="286" text-anchor="middle">Cross</text>
   <path class="msg-line dotted" d="M 79 332 L 213 332" />
-  <g class="crosshead" transform="translate(213,332) rotate(0.00)">
-    <path d="M -4 -4 L 4 4" />
-    <path d="M -4 4 L 4 -4" />
-  </g>
+  <g class="crosshead" transform="translate(213,332)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
   <rect class="msg-label-bg" x="98" y="314" width="96" height="16" rx="3"/>
   <text class="msg-label" x="146" y="322" text-anchor="middle">Cross dotted</text>
   <path class="msg-line solid" d="M 79 368 L 213 368" />

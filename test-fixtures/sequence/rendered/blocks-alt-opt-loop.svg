@@ -27,42 +27,51 @@
     <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">Bob</text>
   </g>
+<g class="cluster-bg-layer" transform="translate(14,52)">
+  <rect class="cluster-bg" x="0" y="0" width="264" height="92" rx="4"/>
+</g>
+<g class="cluster-bg-layer" transform="translate(14,196)">
+  <rect class="cluster-bg" x="0" y="0" width="264" height="56" rx="4"/>
+</g>
+<g class="cluster-bg-layer" transform="translate(14,268)">
+  <rect class="cluster-bg" x="0" y="0" width="264" height="56" rx="4"/>
+</g>
   <line class="lifeline" x1="79" y1="62" x2="79" y2="350"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="350"/>
   <path class="msg-line solid" d="M 79 152 L 213 152" />
-  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,152 L205,155 L205,149 Z" fill="#333" />
   <rect class="msg-label-bg" x="98" y="134" width="96" height="16" rx="3"/>
   <text class="msg-label" x="146" y="142" text-anchor="middle">Good morning</text>
   <path class="msg-line solid" d="M 79 188 L 213 188" />
-  <path class="arrowhead" transform="translate(213,188) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,188 L205,191 L205,185 Z" fill="#333" />
   <rect class="msg-label-bg" x="98" y="170" width="96" height="16" rx="3"/>
   <text class="msg-label" x="146" y="178" text-anchor="middle">Good evening</text>
   <path class="msg-line dotted" d="M 213 260 L 79 260" />
-  <path class="arrowhead" transform="translate(79,260) rotate(180.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M79,260 L87,257 L87,263 Z" fill="#333" />
   <rect class="msg-label-bg" x="134" y="242" width="24" height="16" rx="3"/>
   <text class="msg-label" x="146" y="250" text-anchor="middle">OK</text>
   <path class="msg-line solid" d="M 79 332 L 213 332" />
-  <path class="arrowhead" transform="translate(213,332) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M213,332 L205,335 L205,329 Z" fill="#333" />
   <rect class="msg-label-bg" x="126.5" y="314" width="39" height="16" rx="3"/>
   <text class="msg-label" x="146" y="322" text-anchor="middle">Step</text>
-  <g class="group" transform="translate(14,52)">
-    <rect class="group-frame" width="264" height="92"/>
-    <rect class="group-title-bg" x="6" y="-2" width="132" height="18" rx="3"/>
-    <text class="group-title" x="72" y="11" text-anchor="middle">alt: Is morning ?</text>
-    <line x1="0" y1="46" x2="264" y2="46" class="group-frame" />
-    <rect class="group-title-bg" x="6" y="36" width="96" height="18" rx="3"/>
-    <text class="group-title" x="54" y="47" text-anchor="middle">Is evening ?</text>
-  </g>
-  <g class="group" transform="translate(14,196)">
-    <rect class="group-frame" width="264" height="56"/>
-    <rect class="group-title-bg" x="6" y="-2" width="147" height="18" rx="3"/>
-    <text class="group-title" x="79.5" y="11" text-anchor="middle">opt: Optional check</text>
-  </g>
-  <g class="group" transform="translate(14,268)">
-    <rect class="group-frame" width="264" height="56"/>
-    <rect class="group-title-bg" x="6" y="-2" width="125" height="18" rx="3"/>
-    <text class="group-title" x="68.5" y="11" text-anchor="middle">loop: Until done</text>
-  </g>
+<g class="cluster-overlay" transform="translate(14,52)">
+<rect class="cluster-border" x="0" y="0" width="264" height="92" rx="4"/>
+<rect class="cluster-title-bg" x="6" y="-2" width="132" height="18" rx="3"/>
+<text class="cluster-label-text" x="72" y="11" text-anchor="middle">alt: Is morning ?</text>
+<line x1="0" y1="46" x2="264" y2="46" class="cluster-border" />
+<rect class="cluster-title-bg" x="6" y="36" width="96" height="18" rx="3"/>
+<text class="cluster-label-text" x="54" y="47" text-anchor="middle">Is evening ?</text>
+</g>
+<g class="cluster-overlay" transform="translate(14,196)">
+<rect class="cluster-border" x="0" y="0" width="264" height="56" rx="4"/>
+<rect class="cluster-title-bg" x="6" y="-2" width="147" height="18" rx="3"/>
+<text class="cluster-label-text" x="79.5" y="11" text-anchor="middle">opt: Optional check</text>
+</g>
+<g class="cluster-overlay" transform="translate(14,268)">
+<rect class="cluster-border" x="0" y="0" width="264" height="56" rx="4"/>
+<rect class="cluster-title-bg" x="6" y="-2" width="125" height="18" rx="3"/>
+<text class="cluster-label-text" x="68.5" y="11" text-anchor="middle">loop: Until done</text>
+</g>
   <g class="actor" transform="translate(24,350)">
     <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">Alice</text>

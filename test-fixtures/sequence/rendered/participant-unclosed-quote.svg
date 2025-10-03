@@ -35,7 +35,7 @@
   <line class="lifeline" x1="213" y1="62" x2="213" y2="98"/>
   <line class="lifeline" x1="347" y1="62" x2="347" y2="98"/>
   <path class="msg-line solid" d="M 213 80 L 347 80" />
-  <path class="arrowhead" transform="translate(347,80) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <path d="M347,80 L339,83 L339,77 Z" fill="#333" />
   <rect class="msg-label-bg" x="268" y="62" width="24" height="16" rx="3"/>
   <text class="msg-label" x="280" y="70" text-anchor="middle">hi</text>
   <g class="actor" transform="translate(24,98)">
