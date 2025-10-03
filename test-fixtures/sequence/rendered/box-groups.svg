@@ -2,12 +2,13 @@
   <style>
     .actor-rect { fill: #ECECFF; stroke: #333; stroke-width: 1.5px; }
     .actor-label { font-family: Arial, sans-serif; font-size: 14px; fill: #111; }
-    .lifeline { stroke: #999; stroke-dasharray: 4 4; }
+    .lifeline { stroke: #999; stroke-dasharray: 3 3; }
     .activation { fill: #f2f2f2; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 4 3; }
     .msg-line.thick { stroke-width: 3px; }
     .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
@@ -15,6 +16,7 @@
     .note-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .group-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
   </style>
   <g class="actor" transform="translate(24,24)">
     <rect class="actor-rect" width="110" height="28" rx="4"/>
@@ -38,16 +40,20 @@
   <line class="lifeline" x1="481" y1="62" x2="481" y2="206"/>
   <path class="msg-line solid" d="M 79 152 L 213 152" />
   <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <text class="msg-label" x="146" y="156" text-anchor="middle">Sync</text>
+  <rect class="msg-label-bg" x="125.5" y="132" width="41" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="144" text-anchor="middle">Sync</text>
   <path class="msg-line dotted" d="M 347 188 L 481 188" />
   <path class="arrowhead" transform="translate(481,188) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <text class="msg-label" x="414" y="192" text-anchor="middle">Async</text>
+  <rect class="msg-label-bg" x="390" y="168" width="48" height="16" rx="3"/>
+  <text class="msg-label" x="414" y="180" text-anchor="middle">Async</text>
   <g class="group" transform="translate(14,52)">
     <rect class="group-frame" width="532" height="182"/>
-    <text class="group-title" x="8" y="14" text-anchor="start">box: LightBlue System A</text>
+    <rect class="group-title-bg" x="6" y="-2" width="176" height="18" rx="3"/>
+    <text class="group-title" x="94" y="11" text-anchor="middle">box: LightBlue System A</text>
   </g>
   <g class="group" transform="translate(14,88)">
     <rect class="group-frame" width="532" height="146"/>
-    <text class="group-title" x="8" y="14" text-anchor="start">box: LightGreen System B</text>
+    <rect class="group-title-bg" x="6" y="-2" width="183" height="18" rx="3"/>
+    <text class="group-title" x="97.5" y="11" text-anchor="middle">box: LightGreen System B</text>
   </g>
 </svg>

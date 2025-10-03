@@ -19,12 +19,13 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
   svgParts.push(`  <style>
     .actor-rect { fill: #ECECFF; stroke: #333; stroke-width: 1.5px; }
     .actor-label { font-family: Arial, sans-serif; font-size: 14px; fill: #111; }
-    .lifeline { stroke: #999; stroke-dasharray: 4 4; }
+    .lifeline { stroke: #999; stroke-dasharray: 3 3; }
     .activation { fill: #f2f2f2; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 4 3; }
     .msg-line.thick { stroke-width: 3px; }
     .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
@@ -32,6 +33,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     .note-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .group-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
   </style>`);
 
   // Participants
@@ -104,8 +106,12 @@ function formatMessageLabel(text?: string, counter?: number): string | undefined
 
 function drawMessageLabel(out: string[], m: LayoutMessage, label: string) {
   const xMid = (m.x1 + m.x2) / 2;
-  const y = m.y + 4;
-  out.push(`  <text class="msg-label" x="${xMid}" y="${y}" text-anchor="middle">${escapeXml(label)}</text>`);
+  const h = 16;
+  const w = Math.max(20, measureText(label, 12) + 12);
+  const x = xMid - w / 2;
+  const y = m.y - h - 4; // draw above the line
+  out.push(`  <rect class="msg-label-bg" x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/>`);
+  out.push(`  <text class="msg-label" x="${xMid}" y="${y + h/2 + 4}" text-anchor="middle">${escapeXml(label)}</text>`);
 }
 
 function drawNote(out: string[], n: LayoutNote) {
@@ -118,16 +124,19 @@ function drawNote(out: string[], n: LayoutNote) {
 function drawBlock(out: string[], b: LayoutBlock) {
   out.push(`  <g class="group" transform="translate(${b.x},${b.y})">`);
   out.push(`    <rect class="group-frame" width="${b.width}" height="${b.height}"/>`);
-  if (b.title) {
-    out.push(`    <text class="group-title" x="${8}" y="${14}" text-anchor="start">${escapeXml(b.type)}: ${escapeXml(b.title)}</text>`);
-  } else {
-    out.push(`    <text class="group-title" x="${8}" y="${14}" text-anchor="start">${escapeXml(b.type)}</text>`);
-  }
+  const titleText = b.title ? `${b.type}: ${b.title}` : b.type;
+  const titleW = Math.max(24, measureText(titleText, 12) + 10);
+  out.push(`    <rect class="group-title-bg" x="6" y="-2" width="${titleW}" height="18" rx="3"/>`);
+  out.push(`    <text class="group-title" x="${6 + titleW/2}" y="11" text-anchor="middle">${escapeXml(titleText)}</text>`);
   if (b.branches && b.branches.length) {
     for (const br of b.branches) {
       const yRel = br.y - b.y;
       out.push(`    <line x1="0" y1="${yRel}" x2="${b.width}" y2="${yRel}" class="group-frame" />`);
-      if (br.title) out.push(`    <text class="group-title" x="${8}" y="${yRel + 14}" text-anchor="start">${escapeXml(br.title)}</text>`);
+      if (br.title) {
+        const bw = Math.max(24, measureText(br.title, 12) + 10);
+        out.push(`    <rect class="group-title-bg" x="6" y="${yRel - 10}" width="${bw}" height="18" rx="3"/>`);
+        out.push(`    <text class="group-title" x="${6 + bw/2}" y="${yRel + 1}" text-anchor="middle">${escapeXml(br.title)}</text>`);
+      }
     }
   }
   out.push('  </g>');
@@ -157,4 +166,3 @@ function applySequenceTheme(svg: string, theme: Record<string, any>): string {
   if (theme.activationBorder) out = out.replace(/\.activation\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.activationBorder)};`));
   return out;
 }
-
