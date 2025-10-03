@@ -4,7 +4,7 @@
     .slice-label { font-family: Arial, sans-serif; font-size: 12px; fill: #333333; dominant-baseline: middle; }
     .leader { stroke: #444; stroke-width: 1; fill: none; }
     .pieCircle { stroke: black; stroke-width: 2px; opacity: 0.7; }
-    .pieOuterCircle { stroke: black; stroke-width: 2px; fill: none; }
+    .pieOuterCircle { stroke: black; stroke-width: 3px; fill: none; }
   </style>
   <text class="pie-title" x="273" y="32" text-anchor="middle" fill="#111111" font-size="18px">Themed Pets</text>
   <g class="pie" aria-label="pie">

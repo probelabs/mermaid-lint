@@ -290,17 +290,19 @@ export class MermaidRenderer {
 function applyPieTheme(svg: string, theme?: Record<string, any>): string {
   if (!theme) return svg;
   let out = svg;
-  // Apply rim styles (outer circle) via CSS when provided
-  if (theme.pieOuterStrokeWidth != null) {
-    const w = String(theme.pieOuterStrokeWidth);
-    // Insert or replace stroke-width on the rim circle tag
-    out = out.replace(/(<circle class="pie-rim"[^>]*)(stroke-width="[^"]*" )?/g, (_m, p1) => `${p1}stroke-width="${w}" `);
+  // Apply rim and slice outlines via CSS when provided
+  if (theme.pieOuterStrokeWidth != null || theme.pieStrokeColor) {
+    out = out.replace(/\.pieOuterCircle\s*\{[^}]*\}/, (m) => {
+      let rule = m;
+      if (theme.pieStrokeColor) rule = rule.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.pieStrokeColor)};`);
+      if (theme.pieOuterStrokeWidth != null) rule = rule.replace(/stroke-width:\s*[^;]+;/, `stroke-width: ${String(theme.pieOuterStrokeWidth)};`);
+      return rule;
+    });
+    if (theme.pieStrokeColor) {
+      out = out.replace(/\.pieCircle\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.pieStrokeColor)};`));
+    }
   }
-  if (theme.pieStrokeColor) {
-    const c = String(theme.pieStrokeColor);
-    out = out.replace(/(<circle class="pie-rim"[^>]*)(stroke="[^"]*" )?/g, (_m, p1) => `${p1}stroke="${c}" `);
-  }
-  // pieSectionTextColor
+// pieSectionTextColor
   if (theme.pieSectionTextColor) {
     const c = String(theme.pieSectionTextColor);
     // Replace the default style color for labels, and also add fill on <text> nodes

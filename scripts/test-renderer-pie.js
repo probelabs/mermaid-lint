@@ -15,10 +15,10 @@ async function main() {
   const file = path.resolve(__dirname, '..', 'test-fixtures/pie/valid/frontmatter-theme.mmd');
   const text = fs.readFileSync(file, 'utf8');
   const { svg } = renderMermaid(text);
-  // Expect outer rim stroke width overridden via theme (attribute or CSS)
-  const rimAttrOk = /<circle class=\"pie-rim[^\"]*\"[^>]*stroke-width=\"3px\"/.test(svg);
-  const cssOk = /\.pieOuterCircle\s*\{[^}]*stroke-width:\s*3px;/.test(svg);
-  if (!(rimAttrOk || cssOk)) throw new Error('Expected pie rim stroke-width 3px via attribute or CSS');
+  // Expect outer rim stroke width overridden via CSS (.pieOuterCircle)
+  if (!(/\.pieOuterCircle\s*\{[^}]*stroke-width:\s*3px;/.test(svg))) {
+    throw new Error('Expected pie rim stroke-width 3px via CSS');
+  }
   // Expect label color and size applied
   assert(/class="slice-label"[^>]*fill="#333333"/.test(svg), 'Expected slice-label fill #333333');
   assert(/class="slice-label"[^>]*font-size="13px"/.test(svg), 'Expected slice-label font-size 13px');
