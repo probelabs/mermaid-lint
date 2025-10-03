@@ -24,7 +24,8 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 2 2; }
     .msg-line.thick { stroke-width: 3px; }
-    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: central; }
+    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
@@ -88,16 +89,20 @@ function drawMessage(out: string[], m: LayoutMessage) {
   const x1 = m.x1, x2 = m.x2, y = m.y;
   out.push(`  <path class="${cls}" d="M ${x1} ${y} L ${x2} ${y}" />`);
   // Markers: start/end
-  if (m.startMarker !== 'none') drawMarker(out, m.startMarker, x1, y, x2 < x1 ? 0 : Math.PI, 'start', m.async);
-  if (m.endMarker !== 'none') drawMarker(out, m.endMarker, x2, y, x2 < x1 ? Math.PI : 0, 'end', m.async);
+  const ang = Math.atan2(0, x2 - x1); // horizontal line
+  if (m.startMarker !== 'none') drawMarker(out, m.startMarker, x1, y, ang, 'start', m.async, x2 < x1);
+  if (m.endMarker !== 'none') drawMarker(out, m.endMarker, x2, y, ang, 'end', m.async, x2 < x1);
 }
 
-function drawMarker(out: string[], kind: 'arrow'|'open'|'cross', x: number, y: number, angle: number, which: 'start'|'end', async?: boolean) {
+function drawMarker(out: string[], kind: 'arrow'|'open'|'cross', x: number, y: number, angle: number, which: 'start'|'end', async?: boolean, reversed?: boolean) {
   const size = 6;
-  const rot = (angle * 180 / Math.PI).toFixed(2);
+  // For horizontal lines, angle will be 0; reverse leftwards when needed
+  const theta = reversed ? Math.PI : 0;
+  const rot = ((theta) * 180 / Math.PI).toFixed(2);
   if (kind === 'arrow') {
-    const dx = which === 'start' ? size : -size;
-    out.push(`  <path class=\"arrowhead\" transform=\"translate(${x},${y}) rotate(${rot})\" d=\"M 0 0 L 0 ${-size} L ${dx} 0 Z\" />`);
+    // Triangle base behind endpoint so it points in the line direction
+    const path = `M 0 0 L -7 -4 L -7 4 Z`;
+    out.push(`  <path class=\"arrowhead\" transform=\"translate(${x},${y}) rotate(${rot})\" d=\"${path}\" />`);
   } else if (kind === 'open') {
     out.push(`  <circle class="openhead" cx="${x}" cy="${y}" r="4" />`);
   } else if (kind === 'cross') {
@@ -118,8 +123,12 @@ function formatMessageLabel(text?: string, counter?: number): string | undefined
 
 function drawMessageLabel(out: string[], m: LayoutMessage, label: string, _counter?: number) {
   const xMid = (m.x1 + m.x2) / 2;
-  const y = m.y;
-  out.push(`  <text class=\"msg-label\" x=\"${xMid}\" y=\"${y}\" text-anchor=\"middle\">${escapeXml(label)}</text>`);
+  const h = 16;
+  const w = Math.max(20, measureText(label, 12) + 10);
+  const x = xMid - w / 2;
+  const y = m.y - 10 - h / 2; // above the line
+  out.push(`  <rect class=\"msg-label-bg\" x=\"${x}\" y=\"${y}\" width=\"${w}\" height=\"${h}\" rx=\"3\"/>`);
+  out.push(`  <text class=\"msg-label\" x=\"${xMid}\" y=\"${y + h/2}\" text-anchor=\"middle\">${escapeXml(label)}</text>`);
 }
 
 

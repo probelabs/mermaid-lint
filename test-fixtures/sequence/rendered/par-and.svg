@@ -7,7 +7,8 @@
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 2 2; }
     .msg-line.thick { stroke-width: 3px; }
-    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: central; }
+    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
@@ -28,11 +29,13 @@
   <line class="lifeline" x1="79" y1="62" x2="79" y2="206"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="206"/>
   <path class="msg-line solid" d="M 79 152 L 213 152" />
-  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <text class="msg-label" x="146" y="152" text-anchor="middle">Get /user</text>
+  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <rect class="msg-label-bg" x="108.5" y="134" width="75" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="142" text-anchor="middle">Get /user</text>
   <path class="msg-line solid" d="M 79 188 L 213 188" />
-  <path class="arrowhead" transform="translate(213,188) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <text class="msg-label" x="146" y="188" text-anchor="middle">Get /settings</text>
+  <path class="arrowhead" transform="translate(213,188) rotate(0.00)" d="M 0 0 L -7 -4 L -7 4 Z" />
+  <rect class="msg-label-bg" x="94" y="170" width="104" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="178" text-anchor="middle">Get /settings</text>
   <g class="group" transform="translate(14,52)">
     <rect class="group-frame" width="264" height="92"/>
     <rect class="group-title-bg" x="6" y="-2" width="168" height="18" rx="3"/>
