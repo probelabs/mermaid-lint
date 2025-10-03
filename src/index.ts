@@ -33,6 +33,9 @@ export { MermaidRenderer, renderMermaid } from './renderer/index.js';
 export type { RenderOptions, RenderResult } from './renderer/index.js';
 export type { Graph, Node, Edge, NodeShape, ArrowType, Direction } from './renderer/types.js';
 
+// Mermaid.js-compatible API (drop-in replacement)
+export { createMermaidAPI } from './mermaid-compat.js';
+
 // Convenience: multi-pass fix for a single diagram string
 import type { FixLevel, ValidateOptions as Opts, ValidationError } from './core/types.js';
 import { validate as _validate } from './core/router.js';

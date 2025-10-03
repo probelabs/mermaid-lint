@@ -368,6 +368,13 @@
             </div>
         </div>
 
+        <div style="margin-top: 40px; padding: 24px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center;">
+            <div class="checkbox-group" style="display: inline-flex; margin: 0;">
+                <input type="checkbox" id="useMaidRenderer" checked>
+                <label for="useMaidRenderer">Use Maid's built-in renderer (experimental)</label>
+            </div>
+        </div>
+
         <footer style="margin-top: 60px; padding: 40px 20px; text-align: center; border-top: 1px solid #e5e7eb;">
             <p style="color: #666; margin-bottom: 16px; font-size: 1rem;">
                 Learn more about Maid and get started with the CLI
@@ -382,16 +389,20 @@
     </div>
 
     <script type="module">
-        import { validate, fixText, renderMermaid } from './maid.bundle.js';
+        import { validate, fixText, createMermaidAPI } from './maid.bundle.js';
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
         mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+        // Create Mermaid.js-compatible API for Maid (drop-in replacement!)
+        const maidRenderer = createMermaidAPI();
 
         const inputEl = document.getElementById('input');
         const outputEl = document.getElementById('output');
         const outputWithoutEl = document.getElementById('outputWithout');
         const renderPreviewEl = document.getElementById('renderPreview');
         const copyFixedBtn = document.getElementById('copyFixedBtn');
+        const useMaidRendererCheckbox = document.getElementById('useMaidRenderer');
 
         let debounceTimer = null;
         let currentFixedText = '';
@@ -592,15 +603,16 @@ ${formatOutput(validationResult, input)}
                     copyFixedBtn.style.display = 'block';
                 }
 
-                // TOP RIGHT PANEL: Render the fixed diagram with our renderer
+                // TOP RIGHT PANEL: Render the fixed diagram
+                const useMaidRenderer = useMaidRendererCheckbox.checked;
+                const rendererToUse = useMaidRenderer ? maidRenderer : mermaid;
+                const rendererName = useMaidRenderer ? "Maid's built-in renderer" : "Mermaid.js";
+
                 try {
-                    const renderResult = renderMermaid(fixedText);
-                    renderPreviewEl.innerHTML = `
-                        <div style="margin-bottom: 12px; padding: 8px; background: linear-gradient(135deg, #ff6b9d, #a855f7); color: white; border-radius: 6px; font-size: 0.85rem;">
-                            🎨 Rendered with Maid's built-in renderer (no external dependencies!)
-                        </div>
-                        ${renderResult.svg}
-                    `;
+                    const uniqueId = 'render-preview-' + Date.now();
+                    const { svg } = await rendererToUse.render(uniqueId, fixedText);
+
+                    renderPreviewEl.innerHTML = svg;
                 } catch (e) {
                     renderPreviewEl.innerHTML = `<div class="render-error">⚠️ Cannot render diagram<br><br>${e.message}</div>`;
                 }
@@ -633,6 +645,11 @@ ${formatOutput(validationResult, input)}
             debounceTimer = setTimeout(() => {
                 validateAndFix();
             }, 1000); // Wait 1 second after user stops typing
+        });
+
+        // Re-render when renderer toggle changes
+        useMaidRendererCheckbox.addEventListener('change', () => {
+            validateAndFix();
         });
 
         document.querySelectorAll('.btn-example').forEach(btn => {
