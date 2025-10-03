@@ -80,7 +80,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
 function drawParticipant(out: string[], p: LayoutParticipant) {
   out.push(`  <g class="actor" transform="translate(${p.x},${p.y})">`);
   out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="4" fill="#eaeaea" stroke="#666"/>`);
-  out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2 + 4}" text-anchor="middle">${escapeXml(p.display)}</text>`);
+  out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2}" text-anchor="middle" dominant-baseline="middle">${escapeXml(p.display)}</text>`);
   out.push('  </g>');
 }
 
@@ -90,7 +90,7 @@ function drawParticipantBottom(out: string[], p: LayoutParticipant, layout: Sequ
   const y = lifeline ? lifeline.y2 : (layout.height - 28);
   out.push(`  <g class="actor" transform="translate(${p.x},${y})">`);
   out.push(`    <rect class="actor-rect" width="${p.width}" height="${p.height}" rx="3" fill="#eaeaea" stroke="#666"/>`);
-  out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2 + 4}" text-anchor="middle">${escapeXml(p.display)}</text>`);
+  out.push(`    <text class="actor-label" x="${p.width / 2}" y="${p.height / 2}" text-anchor="middle" dominant-baseline="middle">${escapeXml(p.display)}</text>`);
   out.push('  </g>');
 }
 

@@ -44,7 +44,8 @@ export interface SequenceLayout {
 
 const MARGIN_X = 24;
 const MARGIN_Y = 24;
-const ACTOR_H = 28;
+const ACTOR_FONT_SIZE = 16;
+const ACTOR_H = 32;
 const ACTOR_PAD_X = 12;
 const COL_MIN = 110;
 const ROW_H = 36;
@@ -72,7 +73,7 @@ export function layoutSequence(model: SequenceModel): SequenceLayout {
   let x = MARGIN_X;
   for (const id of order) {
     const p = partById.get(id) || { id, display: id } as Participant;
-    const w = Math.max(COL_MIN, measureText(p.display, 14) + ACTOR_PAD_X * 2);
+    const w = Math.max(COL_MIN, measureText(p.display, ACTOR_FONT_SIZE) + ACTOR_PAD_X * 2);
     participants.push({ id, display: p.display, x, y: MARGIN_Y, width: w, height: ACTOR_H });
     x += w + MARGIN_X;
   }
