@@ -1,17 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="840" height="1365" viewBox="0 0 840 1365">
   <rect x="0" y="0" width="840" height="1365" fill="#ffffff" />
   <style>
-      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
-      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
-      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
-      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
-      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      /* Subgraph (cluster) styling */
-      .cluster-bg { fill: #ffffde; }
-      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
-      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-    </style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+  </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
@@ -23,7 +39,9 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <g class="subgraph-bg"><rect class="cluster-bg" x="21" y="21" width="789" height="1296" rx="4" ry="4" /></g>
+  <g class="subgraph-bg"><g class="cluster-bg-layer" transform="translate(21,21)">
+  <rect class="cluster-bg" x="0" y="0" width="789" height="1296" rx="0"/>
+</g></g>
   <g id="A">
     <rect class="node-shape"  x="218" y="69" width="240" height="56" rx="0" ry="0" />
     <text class="node-label" x="338" y="101.9" text-anchor="middle">Start processing API definition</text>
@@ -75,7 +93,8 @@
     <tspan x="660" y="1263.9" text-anchor="middle">middleware chain</tspan>
   </text>
   </g>
-  <path class="edge-path" d="M338,125 L338,135 C338,147 338,229 338,235 L338,245" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M338,125 L338,135 C338,147 338,229 338,235 L338,245" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M338,245 L335,237 L341,237 Z" fill="#555555" /></g>
   <g>
     <path class="edge-path" d="M235.23076923076923,469 L225.59615384615384,479.5 C214.03461538461536,492.1 171,693 171,705 L171,725" stroke-linecap="round" stroke-linejoin="round" />
     <rect class="edge-label-bg" x="161" y="591.5485985903947" width="20" height="14" rx="3" />
@@ -94,18 +113,19 @@
     <text class="edge-label-text" x="350.23149699138474" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle">No</text>
     <path d="M350,1037 L347,1029 L353,1029 Z" fill="#555555" />
   </g>
-  <path class="edge-path" d="M350,1093 L350,1103 C350,1115 350,1197 350,1203 L350,1213" stroke-linecap="round" stroke-linejoin="round" />
+  <g><path class="edge-path" d="M350,1093 L350,1103 C350,1115 350,1197 350,1203 L350,1213" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M350,1213 L347,1205 L353,1205 Z" fill="#555555" /></g>
   <g>
     <path class="edge-path" d="M609.2990654205607,897 L616.9042056074766,907.5 C626.0303738317756,920.1 660,1020.2 660,1026.5 L660,1037" stroke-linecap="round" stroke-linejoin="round" />
     <rect class="edge-label-bg" x="646.7685030086152" y="959.6803847989913" width="26" height="14" rx="3" />
     <text class="edge-label-text" x="659.7685030086152" y="966.6803847989913" text-anchor="middle" dominant-baseline="middle">Yes</text>
     <path d="M660,1037 L657,1029 L663,1029 Z" fill="#555555" />
   </g>
-  <path class="edge-path" d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke-linecap="round" stroke-linejoin="round" />
-  <g class="subgraph-borders"><rect class="cluster-border" x="21" y="21" width="789" height="1296" rx="4" ry="4" /></g>
-  <g class="subgraph-title-bg"><rect class="cluster-title-bg" x="305.5" y="29" width="220" height="16" rx="3" ry="3" /></g>
-  <g class="subgraph-titles"><text class="cluster-label-text" x="415.5" y="39" text-anchor="middle">API Loader : Custom Authentication Processing</text></g>
-  <path d="M338,245 L335,237 L341,237 Z" fill="#555555" />
-  <path d="M350,1213 L347,1205 L353,1205 Z" fill="#555555" />
-  <path d="M660,1222 L657,1214 L663,1214 Z" fill="#555555" />
+  <g><path class="edge-path" d="M660,1093 L660,1103 C660,1115 660,1205.44 660,1211.65 L660,1222" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M660,1222 L657,1214 L663,1214 Z" fill="#555555" /></g>
+  <g class="cluster-overlay" transform="translate(21,21)">
+<rect class="cluster-border" x="0" y="0" width="789" height="1296" rx="0"/>
+<rect class="cluster-title-bg" x="6" y="5" width="334" height="18" rx="3"/>
+<text class="cluster-label-text" x="173" y="18" text-anchor="middle">API Loader : Custom Authentication Processing</text>
+</g>
 </svg>

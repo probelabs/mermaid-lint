@@ -1,9 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="336" viewBox="-50 -10 370 336">
+  <style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+  </style>
+  <g class="actor" transform="translate(24,24)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">DB</text>
+  </g>
+  <g class="actor" transform="translate(158,24)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">API</text>
+  </g>
+<g class="cluster-bg-layer" transform="translate(16,40)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="64" rx="0"/>
+</g>
+<g class="cluster-bg-layer" transform="translate(16,76)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="100" rx="0"/>
+</g>
+<g class="cluster-bg-layer" transform="translate(16,148)">
+  <rect class="cluster-bg" x="0" y="0" width="260" height="64" rx="0"/>
+</g>
+  <line class="lifeline" x1="79" y1="60" x2="79" y2="240"/>
+  <line class="lifeline" x1="213" y1="60" x2="213" y2="240"/>
+  <path class="msg-line solid" d="M 213 222 L 79 222" />
+  <g class="crosshead" transform="translate(79,222)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
+  <rect class="msg-label-bg" x="112" y="204" width="68" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="212" text-anchor="middle">ROLLBACK</text>
+<g class="cluster-overlay" transform="translate(16,40)">
+<rect class="cluster-border" x="0" y="0" width="260" height="64" rx="0"/>
+<rect class="cluster-title-bg" x="6" y="-2" width="269" height="18" rx="3"/>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">rect: rgba ( 200 , 200 , 255 , 0 .3)</text>
+</g>
+<g class="cluster-overlay" transform="translate(16,76)">
+<rect class="cluster-border" x="0" y="0" width="260" height="100" rx="0"/>
+<rect class="cluster-title-bg" x="6" y="-2" width="161" height="18" rx="3"/>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">critical: Transaction</text>
+<line x1="0" y1="56" x2="260" y2="56" class="cluster-border" />
+<rect class="cluster-title-bg" x="6" y="46" width="46" height="18" rx="3"/>
+<text class="cluster-label-text" x="12" y="57" text-anchor="start">Retry</text>
+</g>
+<g class="cluster-overlay" transform="translate(16,148)">
+<rect class="cluster-border" x="0" y="0" width="260" height="64" rx="0"/>
+<rect class="cluster-title-bg" x="6" y="-2" width="132" height="18" rx="3"/>
+<text class="cluster-label-text" x="12" y="11" text-anchor="start">break: On failure</text>
+</g>
+  <g class="actor" transform="translate(24,240)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">DB</text>
+  </g>
+  <g class="actor" transform="translate(158,240)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">API</text>
+  </g>
 </svg>

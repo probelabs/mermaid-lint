@@ -1,9 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Unsupported diagram type. Currently only</tspan><tspan x="200" dy="15">flowchart diagrams are supported for</tspan><tspan x="200" dy="15">rendering.</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="516" viewBox="-50 -10 370 516">
+  <style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+  </style>
+  <g class="actor" transform="translate(24,24)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
+  </g>
+  <g class="actor" transform="translate(158,24)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
+  </g>
+  <line class="lifeline" x1="79" y1="60" x2="79" y2="420"/>
+  <line class="lifeline" x1="213" y1="60" x2="213" y2="420"/>
+  <path class="msg-line solid" d="M 79 78 L 213 78" />
+  <path d="M213,78 L205,81 L205,75 Z" fill="#333" />
+  <path d="M71,78 L79,81 L79,75 Z" fill="#333" />
+  <rect class="msg-label-bg" x="98" y="60" width="96" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="68" text-anchor="middle">Duplex async</text>
+  <path class="msg-line dotted" d="M 79 114 L 213 114" />
+  <path d="M213,114 L205,117 L205,111 Z" fill="#333" />
+  <path d="M71,114 L79,117 L79,111 Z" fill="#333" />
+  <rect class="msg-label-bg" x="72.5" y="96" width="147" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="104" text-anchor="middle">Duplex async dotted</text>
+  <path class="msg-line solid" d="M 79 150 L 213 150" />
+  <path d="M213,150 L205,153 L205,147 Z" fill="#333" />
+  <rect class="msg-label-bg" x="123" y="132" width="46" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="140" text-anchor="middle">Async</text>
+  <path class="msg-line dotted" d="M 79 186 L 213 186" />
+  <path d="M213,186 L205,189 L205,183 Z" fill="#333" />
+  <rect class="msg-label-bg" x="98" y="168" width="96" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="176" text-anchor="middle">Async dotted</text>
+  <path class="msg-line solid" d="M 79 222 L 213 222" />
+  <path d="M213,222 L205,225 L205,219 Z" fill="#333" />
+  <rect class="msg-label-bg" x="123" y="204" width="46" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="212" text-anchor="middle">Solid</text>
+  <path class="msg-line dotted" d="M 79 258 L 213 258" />
+  <path d="M213,258 L205,261 L205,255 Z" fill="#333" />
+  <rect class="msg-label-bg" x="119.5" y="240" width="53" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="248" text-anchor="middle">Dotted</text>
+  <path class="msg-line solid" d="M 79 294 L 213 294" />
+  <g class="crosshead" transform="translate(213,294)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
+  <rect class="msg-label-bg" x="123" y="276" width="46" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="284" text-anchor="middle">Cross</text>
+  <path class="msg-line dotted" d="M 79 330 L 213 330" />
+  <g class="crosshead" transform="translate(213,330)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
+  <rect class="msg-label-bg" x="98" y="312" width="96" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="320" text-anchor="middle">Cross dotted</text>
+  <path class="msg-line solid" d="M 79 366 L 213 366" />
+  <circle class="openhead" cx="213" cy="366" r="4" />
+  <rect class="msg-label-bg" x="126.5" y="348" width="39" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="356" text-anchor="middle">Open</text>
+  <path class="msg-line dotted" d="M 79 402 L 213 402" />
+  <circle class="openhead" cx="213" cy="402" r="4" />
+  <rect class="msg-label-bg" x="101.5" y="384" width="89" height="16" rx="0"/>
+  <text class="msg-label" x="146" y="392" text-anchor="middle">Open dotted</text>
+  <g class="actor" transform="translate(24,420)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
+  </g>
+  <g class="actor" transform="translate(158,420)">
+    <rect class="node-shape" width="110" height="32" rx="0"/>
+    <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
+  </g>
 </svg>

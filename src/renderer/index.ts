@@ -8,6 +8,8 @@ import type { ValidationError } from '../core/types.js';
 import type { ILayoutEngine, IRenderer } from './interfaces.js';
 import { buildPieModel } from './pie-builder.js';
 import { renderPie } from './pie-renderer.js';
+import { buildSequenceModel } from './sequence-builder.js';
+import { renderSequence } from './sequence-renderer.js';
 import { parseFrontmatter } from '../core/frontmatter.js';
 
 export interface RenderOptions {
@@ -186,9 +188,20 @@ export class MermaidRenderer {
         return { svg: this.generateErrorSvg(msg), graph: { nodes: [], edges: [], direction: 'TD' }, errors: err };
       }
     }
+    if (/^sequenceDiagram\b/.test(firstLine)) {
+      try {
+        const model = buildSequenceModel(content);
+        const svg = renderSequence(model, { theme });
+        return { svg, graph: { nodes: [], edges: [], direction: 'TD' }, errors: [] };
+      } catch (e: any) {
+        const msg = e?.message || 'Sequence render error';
+        const err = [{ line: 1, column: 1, message: msg, severity: 'error', code: 'SEQUENCE_RENDER' } as ValidationError];
+        return { svg: this.generateErrorSvg(msg), graph: { nodes: [], edges: [], direction: 'TD' }, errors: err };
+      }
+    }
 
     // Unsupported diagram type
-    const errorSvg = this.generateErrorSvg('Unsupported diagram type. Rendering supports flowchart and pie for now.');
+    const errorSvg = this.generateErrorSvg('Unsupported diagram type. Rendering supports flowchart, pie, and sequence for now.');
 
     return {
       svg: errorSvg,

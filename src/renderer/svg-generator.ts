@@ -1,4 +1,7 @@
 import type { Layout, LayoutNode, LayoutEdge, NodeShape, ArrowType } from './types.js';
+import { triangleAtEnd, triangleAtStart } from './arrow-utils.js';
+import { buildSharedCss } from './styles.js';
+import { blockBackground, blockOverlay } from './block-utils.js';
 import type { IRenderer } from './interfaces.js';
 
 /**
@@ -63,48 +66,24 @@ export class SVGRenderer implements IRenderer {
     // Add defs for markers (arrowheads)
     elements.push(this.generateDefs());
 
-    // Draw subgraphs (cluster backgrounds) behind edges and nodes
+    // Draw subgraphs (cluster backgrounds) behind edges and nodes, using shared block utils
     if ((layout as any).subgraphs && (layout as any).subgraphs.length) {
       const sgs = (layout as any).subgraphs as Array<{id:string;label?:string;x:number;y:number;width:number;height:number;parent?:string}>;
       const order = sgs.slice().sort((a,b) => (a.parent ? 1 : 0) - (b.parent ? 1 : 0));
-      const bgRects: string[] = [];
-      const borderRects: string[] = [];
-      const titleBgRects: string[] = [];
-      const titles: Array<{depth:number, svg:string}> = [];
-      const depthOf = (sg:any) => {
-        let d=0; let p=sg.parent; const map = new Map(order.map(o=>[o.id,o]));
-        while(p){ d++; p = map.get(p)?.parent; }
-        return d;
-      };
+      const map = new Map(order.map(o=>[o.id,o]));
+      const depthOf = (sg:any) => { let d=0; let p=sg.parent; while(p){ d++; p = map.get(p)?.parent; } return d; };
+      const bgs: string[] = [];
       for (const sg of order) {
         const x = sg.x + padX;
         const y = sg.y + padY;
-        const w = sg.width;
-        const h = sg.height;
-        // Separate background and border classes so overlays never hide children due to CSS fill
-        bgRects.push(`<rect class="cluster-bg" x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" />`);
-        borderRects.push(`<rect class="cluster-border" x="${x}" y="${y}" width="${w}" height="${h}" rx="4" ry="4" />`);
-        if (sg.label) {
-          const depth = depthOf(sg);
-          const dy = 18 + depth * 12; // push nested titles slightly lower to avoid overlap
-          const text = this.escapeXml(sg.label);
-          const est = Math.max(40, Math.min(220, text.length * 7 + 12));
-          const tx = x + w/2 - est/2;
-          const ty = y + dy - 10;
-          titleBgRects.push(`<rect class="cluster-title-bg" x="${tx}" y="${ty}" width="${est}" height="16" rx="3" ry="3" />`);
-          titles.push({ depth, svg: `<text class="cluster-label-text" x="${x + w/2}" y="${y + dy}" text-anchor="middle">${text}</text>` });
-        }
+        bgs.push(blockBackground(x, y, sg.width, sg.height, 0));
+        const depth = depthOf(sg);
+        const title = sg.label ? this.escapeXml(sg.label) : undefined;
+        // slight nested offset for titles to avoid overlap (matches previous behavior)
+        const titleYOffset = 7 + depth * 12;
+        overlays.push(blockOverlay(x, y, sg.width, sg.height, title, [], titleYOffset, 'center', 'left', 0));
       }
-      // Backgrounds behind everything
-      elements.push(`<g class="subgraph-bg">${bgRects.join('')}</g>`);
-      // Keep borders and titles to draw on top later
-      const borderGroup = `<g class="subgraph-borders">${borderRects.join('')}</g>`;
-      const titleBgs = `<g class="subgraph-title-bg">${titleBgRects.join('')}</g>`;
-      const titleGroup = `<g class="subgraph-titles">${titles.sort((a,b)=> a.depth - b.depth).map(t=>t.svg).join('')}</g>`;
-      // Stash overlay to draw after edges/nodes
-      overlays.push(borderGroup);
-      overlays.push(titleBgs);
-      overlays.push(titleGroup);
+      elements.push(`<g class="subgraph-bg">${bgs.join('')}</g>`);
     }
 
     // Build a padded node lookup for geometry intersections (include clusters)
@@ -130,20 +109,16 @@ export class SVGRenderer implements IRenderer {
       if (overlay) overlays.push(overlay);
     }
 
-    // White background + CSS classes for styling
+    // White background + shared CSS classes for styling
     const bg = `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff" />`;
-    const css = `<style>
-      .node-shape { fill: ${this.defaultFill}; stroke: ${this.defaultStroke}; stroke-width: 1px; }
-      .node-label { fill: #333; font-family: ${this.fontFamily}; font-size: ${this.fontSize}px; }
-      .edge-path { stroke: ${this.arrowStroke}; stroke-width: 2px; fill: none; }
-      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
-      .edge-label-text { fill: #333; font-family: ${this.fontFamily}; font-size: ${Math.max(10, this.fontSize - 2)}px; }
-      /* Subgraph (cluster) styling */
-      .cluster-bg { fill: #ffffde; }
-      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
-      .cluster-label-text { fill: #333; font-family: ${this.fontFamily}; font-size: 12px; }
-    </style>`;
+    const sharedCss = buildSharedCss({
+      fontFamily: this.fontFamily,
+      fontSize: this.fontSize,
+      nodeFill: this.defaultFill,
+      nodeStroke: this.defaultStroke,
+      edgeStroke: this.arrowStroke,
+    });
+    const css = `<style>${sharedCss}</style>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   ${bg}
   ${css}
@@ -650,18 +625,14 @@ export class SVGRenderer implements IRenderer {
       const baseXL = boundaryEnd.x - uxl * triLenL; const baseYL = boundaryEnd.y - uyl * triLenL;
       const p2xL = baseXL + nxl * (triWL/2), p2yL = baseYL + nyl * (triWL/2);
       const p3xL = baseXL - nxl * (triWL/2), p3yL = baseYL - nyl * (triWL/2);
-      const triEnd = `<path d="M${p1xL},${p1yL} L${p2xL},${p2yL} L${p3xL},${p3yL} Z" fill="${this.arrowStroke}" />`;
-      overlay += triEnd;
+      overlay += triangleAtEnd(prevEndL, boundaryEnd, this.arrowStroke);
       if (mStart === 'arrow' && points.length >= 2) {
         const firstLeg = points[1];
         const svx = boundaryStart.x - firstLeg.x; const svy = boundaryStart.y - firstLeg.y;
         const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
         const snx = -suy; const sny = sux;
         const sbaseX = boundaryStart.x - sux * triLenL; const sbaseY = boundaryStart.y - suy * triLenL;
-        const sp1x = boundaryStart.x, sp1y = boundaryStart.y;
-        const sp2x = sbaseX + snx * (triWL/2), sp2y = sbaseY + sny * (triWL/2);
-        const sp3x = sbaseX - snx * (triWL/2), sp3y = sbaseY - sny * (triWL/2);
-        overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
+        overlay += triangleAtStart(boundaryStart, firstLeg, this.arrowStroke);
       }
 
       const pathGroup = `<g>
@@ -691,12 +662,7 @@ export class SVGRenderer implements IRenderer {
     const p2x = baseX + nx * (triW/2), p2y = baseY + ny * (triW/2);
     const p3x = baseX - nx * (triW/2), p3y = baseY - ny * (triW/2);
 
-    const triangle = `<path d="M${p1x},${p1y} L${p2x},${p2y} L${p3x},${p3y} Z" fill="${this.arrowStroke}" />`;
-
-    // reuse mStart/mEnd from above
-    if (mEnd === 'arrow') {
-      overlay += triangle;
-    }
+    if (mEnd === 'arrow') overlay += triangleAtEnd(prevEnd, boundaryEnd, this.arrowStroke);
     // Optional: support start arrow overlay if needed
     if (mStart === 'arrow' && points.length >= 2) {
       const firstLeg = points[1];
@@ -704,14 +670,14 @@ export class SVGRenderer implements IRenderer {
       const slen = Math.hypot(svx, svy) || 1; const sux = svx/slen; const suy = svy/slen;
       const snx = -suy; const sny = sux;
       // Arrow points backward from boundaryStart toward firstLeg (start arrow points back toward source)
-      const sp1x = boundaryStart.x - sux * triLen, sp1y = boundaryStart.y - suy * triLen;
-      const sbaseX = boundaryStart.x; const sbaseY = boundaryStart.y;
-      const sp2x = sbaseX + snx * (triW/2), sp2y = sbaseY + sny * (triW/2);
-      const sp3x = sbaseX - snx * (triW/2), sp3y = sbaseY - sny * (triW/2);
-      overlay += `<path d="M${sp1x},${sp1y} L${sp2x},${sp2y} L${sp3x},${sp3y} Z" fill="${this.arrowStroke}" />`;
+      overlay += triangleAtStart(boundaryStart, firstLeg, this.arrowStroke);
     }
 
-    return { path: edgeElement, overlay: overlay || undefined };
+    if (overlay) {
+      const grouped = `<g>${edgeElement}\n${overlay}</g>`;
+      return { path: grouped };
+    }
+    return { path: edgeElement };
   }
 
   // --- helpers ---

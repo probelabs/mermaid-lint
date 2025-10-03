@@ -1,17 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="401" height="410" viewBox="0 0 401 410">
   <rect x="0" y="0" width="401" height="410" fill="#ffffff" />
   <style>
-      .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
-      .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
-      .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
-      .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
-      .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-      /* Subgraph (cluster) styling */
-      .cluster-bg { fill: #ffffde; }
-      .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
-      .cluster-title-bg { fill: rgba(255,255,255,0.8); }
-      .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
-    </style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+  </style>
   <defs>
     <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
@@ -23,7 +39,11 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
-  <g class="subgraph-bg"><rect class="cluster-bg" x="41" y="112" width="290" height="118" rx="4" ry="4" /><rect class="cluster-bg" x="41" y="272" width="290" height="118" rx="4" ry="4" /></g>
+  <g class="subgraph-bg"><g class="cluster-bg-layer" transform="translate(41,112)">
+  <rect class="cluster-bg" x="0" y="0" width="290" height="118" rx="0"/>
+</g><g class="cluster-bg-layer" transform="translate(41,272)">
+  <rect class="cluster-bg" x="0" y="0" width="290" height="118" rx="0"/>
+</g></g>
   <g id="A">
     <rect class="node-shape"  x="71" y="160" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="111" y="184.9" text-anchor="middle">A</text>
@@ -40,13 +60,20 @@
     <rect class="node-shape"  x="221" y="320" width="80" height="40" rx="0" ry="0" />
     <text class="node-label" x="261" y="344.9" text-anchor="middle">D</text>
   </g>
-  <path class="edge-path" d="M151,180 L161,180 C173,180 205,180 211,180 L221,180" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M151,340 L161,340 C173,340 205,340 211,340 L221,340" stroke-linecap="round" stroke-linejoin="round" />
-  <path class="edge-path" d="M331,171 L351,171 L126.6,171 L126.6,331 L41,331" stroke-linecap="round" stroke-linejoin="round" />
-  <g class="subgraph-borders"><rect class="cluster-border" x="41" y="112" width="290" height="118" rx="4" ry="4" /><rect class="cluster-border" x="41" y="272" width="290" height="118" rx="4" ry="4" /></g>
-  <g class="subgraph-title-bg"><rect class="cluster-title-bg" x="155.5" y="120" width="61" height="16" rx="3" ry="3" /><rect class="cluster-title-bg" x="155.5" y="280" width="61" height="16" rx="3" ry="3" /></g>
-  <g class="subgraph-titles"><text class="cluster-label-text" x="186" y="130" text-anchor="middle">Group A</text><text class="cluster-label-text" x="186" y="290" text-anchor="middle">Group B</text></g>
-  <path d="M221,180 L213,183 L213,177 Z" fill="#555555" />
-  <path d="M221,340 L213,343 L213,337 Z" fill="#555555" />
-  <path d="M41,331 L49,328 L49,334 Z" fill="#555555" />
+  <g><path class="edge-path" d="M151,180 L161,180 C173,180 205,180 211,180 L221,180" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M221,180 L213,183 L213,177 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M151,340 L161,340 C173,340 205,340 211,340 L221,340" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M221,340 L213,343 L213,337 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M331,171 L351,171 L126.6,171 L126.6,331 L41,331" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M41,331 L49,328 L49,334 Z" fill="#555555" /></g>
+  <g class="cluster-overlay" transform="translate(41,112)">
+<rect class="cluster-border" x="0" y="0" width="290" height="118" rx="0"/>
+<rect class="cluster-title-bg" x="6" y="5" width="60" height="18" rx="3"/>
+<text class="cluster-label-text" x="36" y="18" text-anchor="middle">Group A</text>
+</g>
+  <g class="cluster-overlay" transform="translate(41,272)">
+<rect class="cluster-border" x="0" y="0" width="290" height="118" rx="0"/>
+<rect class="cluster-title-bg" x="6" y="5" width="60" height="18" rx="3"/>
+<text class="cluster-label-text" x="36" y="18" text-anchor="middle">Group B</text>
+</g>
 </svg>
