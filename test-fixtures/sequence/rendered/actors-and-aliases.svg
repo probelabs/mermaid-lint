@@ -14,9 +14,10 @@
     .crosshead { stroke: #333; stroke-width: 1.5px; }
     .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
     .note-text { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; }
-    .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
-    .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
-    .group-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
+    /* Align sequence block styling with flowchart clusters */
+    .group-frame, .cluster-border { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
+    .group-title, .cluster-label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .group-title-bg, .cluster-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
   </style>
   <g class="actor" transform="translate(24,24)">
     <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
