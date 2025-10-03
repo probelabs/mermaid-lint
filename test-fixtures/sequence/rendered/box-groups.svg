@@ -1,63 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="230" viewBox="0 0 560 230">
+<svg xmlns="http://www.w3.org/2000/svg" width="610" height="298" viewBox="-50 -10 610 298">
   <style>
-    .actor-rect { fill: #ECECFF; stroke: #333; stroke-width: 1.5px; }
-    .actor-label { font-family: Arial, sans-serif; font-size: 14px; fill: #111; }
-    .lifeline { stroke: #999; stroke-dasharray: 3 3; }
-    .activation { fill: #f2f2f2; stroke: #666; stroke-width: 1px; }
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; fill: #111; }
+    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
-    .msg-line.dotted { stroke-dasharray: 4 3; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
     .msg-line.thick { stroke-width: 3px; }
-    .msg-label { font-family: Arial, sans-serif; font-size: 12px; fill: #111; dominant-baseline: hanging; }
-    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
-    .msg-badge { fill: #fff; stroke: #999; stroke-width: 1px; }
-    .msg-badge-text { font-family: Arial, sans-serif; font-size: 10px; fill: #333; dominant-baseline: middle; }
+    .msg-label { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; dominant-baseline: central; }
     .arrowhead { fill: #333; }
     .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
     .crosshead { stroke: #333; stroke-width: 1.5px; }
-    .note { fill: #fff8dc; stroke: #d2b48c; stroke-width: 1px; }
-    .note-text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { font-family: "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-frame { fill: none; stroke: #999; stroke-width: 1px; rx: 4; }
     .group-title { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
     .group-title-bg { fill: #ffffff; stroke: #999; stroke-width: 1px; rx: 3; }
   </style>
   <g class="actor" transform="translate(24,24)">
-    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">A1</text>
   </g>
   <g class="actor" transform="translate(158,24)">
-    <rect class="actor-rect" width="110" height="28" rx="4"/>
-    <text class="actor-label" x="55" y="18" text-anchor="middle">B1</text>
-  </g>
-  <g class="actor" transform="translate(292,24)">
-    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">A2</text>
   </g>
+  <g class="actor" transform="translate(292,24)">
+    <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B1</text>
+  </g>
   <g class="actor" transform="translate(426,24)">
-    <rect class="actor-rect" width="110" height="28" rx="4"/>
+    <rect class="actor-rect" width="110" height="28" rx="4" fill="#eaeaea" stroke="#666"/>
     <text class="actor-label" x="55" y="18" text-anchor="middle">B2</text>
   </g>
   <line class="lifeline" x1="79" y1="62" x2="79" y2="206"/>
   <line class="lifeline" x1="213" y1="62" x2="213" y2="206"/>
   <line class="lifeline" x1="347" y1="62" x2="347" y2="206"/>
   <line class="lifeline" x1="481" y1="62" x2="481" y2="206"/>
-  <path class="msg-line solid" d="M 79 152 L 213 152" />
-  <path class="arrowhead" transform="translate(213,152) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <path class="arrowhead" transform="translate(221,152) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <rect class="msg-label-bg" x="125.5" y="132" width="41" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="144" text-anchor="middle">Sync</text>
-  <path class="msg-line dotted" d="M 347 188 L 481 188" />
+  <path class="msg-line solid" d="M 79 152 L 347 152" />
+  <path class="arrowhead" transform="translate(347,152) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
+  <text class="msg-label" x="213" y="152" text-anchor="middle">Sync</text>
+  <path class="msg-line dotted" d="M 213 188 L 481 188" />
   <path class="arrowhead" transform="translate(481,188) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <path class="arrowhead" transform="translate(489,188) rotate(0.00)" d="M 0 0 L 0 -6 L -6 0 Z" />
-  <rect class="msg-label-bg" x="390" y="168" width="48" height="16" rx="3"/>
-  <text class="msg-label" x="414" y="180" text-anchor="middle">Async</text>
+  <text class="msg-label" x="347" y="188" text-anchor="middle">Async</text>
   <g class="group" transform="translate(14,52)">
-    <rect class="group-frame" width="532" height="182"/>
+    <rect class="group-frame" width="532" height="56"/>
     <rect class="group-title-bg" x="6" y="-2" width="176" height="18" rx="3"/>
     <text class="group-title" x="94" y="11" text-anchor="middle">box: LightBlue System A</text>
   </g>
   <g class="group" transform="translate(14,88)">
-    <rect class="group-frame" width="532" height="146"/>
+    <rect class="group-frame" width="532" height="56"/>
     <rect class="group-title-bg" x="6" y="-2" width="183" height="18" rx="3"/>
     <text class="group-title" x="97.5" y="11" text-anchor="middle">box: LightGreen System B</text>
+  </g>
+  <g class="actor" transform="translate(24,206)">
+    <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">A1</text>
+  </g>
+  <g class="actor" transform="translate(158,206)">
+    <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">A2</text>
+  </g>
+  <g class="actor" transform="translate(292,206)">
+    <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B1</text>
+  </g>
+  <g class="actor" transform="translate(426,206)">
+    <rect class="actor-rect" width="110" height="28" rx="3" fill="#eaeaea" stroke="#666"/>
+    <text class="actor-label" x="55" y="18" text-anchor="middle">B2</text>
   </g>
 </svg>
