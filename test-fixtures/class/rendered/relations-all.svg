@@ -48,13 +48,13 @@
     <text class="node-label class-title" x="60" y="22" text-anchor="middle" dominant-baseline="middle">D</text>
   </g>
 <polyline class="edge-path" points="97.79069767441861,106 165,38 190,38" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="165" y="30" text-anchor="middle">extends</text>
+<text class="edge-label-text" x="165" y="28" text-anchor="middle"><tspan x="165" dy="0">extends</tspan></text>
 <polyline class="edge-path" points="140,124 165,124 190,124" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="165" y="116" text-anchor="middle">has</text>
+<text class="edge-label-text" x="165" y="114" text-anchor="middle"><tspan x="165" dy="0">has</tspan></text>
 <polyline class="edge-path" points="97.79069767441861,142 165,210 190,210" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="165" y="202" text-anchor="middle">owns</text>
+<text class="edge-label-text" x="165" y="200" text-anchor="middle"><tspan x="165" dy="0">owns</tspan></text>
 <polyline class="edge-path" points="97.79069767441861,106 165,38 190,38" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="165" y="30" text-anchor="middle">uses</text>
+<text class="edge-label-text" x="165" y="28" text-anchor="middle"><tspan x="165" dy="0">uses</tspan></text>
 <polyline class="edge-path" points="97.79069767441861,106 165,38 190,38" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="165" y="30" text-anchor="middle">realizes</text>
+<text class="edge-label-text" x="165" y="28" text-anchor="middle"><tspan x="165" dy="0">realizes</tspan></text>
 </svg>

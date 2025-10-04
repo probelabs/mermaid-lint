@@ -139,7 +139,20 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
     }
     if (rel.label) {
       const mid = pts[Math.floor(pts.length/2)];
-      parts.push(`<text class="edge-label-text" x="${mid.x}" y="${mid.y - 8}" text-anchor="middle">${escapeXml(rel.label)}</text>`);
+      // Word-wrap label within ~200px using tspans
+      const words = String(rel.label).split(/\s+/);
+      const lines: string[] = [];
+      let cur = '';
+      const maxW = 200;
+      for (const w of words) {
+        const test = cur ? cur + ' ' + w : w;
+        if (measureText(test, 12) <= maxW) cur = test; else { if (cur) lines.push(cur); cur = w; }
+      }
+      if (cur) lines.push(cur);
+      const dy = 14; let y0 = mid.y - (lines.length - 1) * dy / 2 - 10;
+      parts.push(`<text class="edge-label-text" x="${mid.x}" y="${y0}" text-anchor="middle">` +
+        lines.map((ln, i) => `<tspan x="${mid.x}" dy="${i === 0 ? 0 : dy}">${escapeXml(ln)}</tspan>`).join('') +
+      `</text>`);
     }
 
     // Markers
@@ -153,8 +166,8 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
         parts.push(triangleHollowAt(pEnd, edgeColor, 12, 10, true));
         break;
       case 'dependency':
-        // Approximate with open triangle for now
-        parts.push(triangleOpenAt(pEnd, edgeColor, 10, 8, true));
+        // Open chevron (shorter) for dependency
+        parts.push(triangleOpenAt(pEnd, edgeColor, 10, 7, true));
         break;
       case 'aggregation':
         parts.push(diamondAt(pStart, edgeColor, false, 8, true));

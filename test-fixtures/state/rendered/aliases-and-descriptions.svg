@@ -56,4 +56,4 @@
   <g><path class="edge-path" d="M91.5,210 L91.5,220 C91.5,232 91.5,244 91.5,250 L91.5,260" stroke-linecap="round" stroke-linejoin="round" />
 <path d="M91.5,260 L89,254 L94,254 Z" fill="#555555" /></g>
   
-</svg>
+<style>.lane-divider{stroke:#aaaaaa;stroke-width:1;stroke-dasharray:4 3}.end-double{stroke:#3f3f3f;stroke-width:1}</style><g class="state-overlays"><circle class="end-double" cx="71.5" cy="280" r="37" fill="none" /></g></svg>

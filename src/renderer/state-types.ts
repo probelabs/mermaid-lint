@@ -20,5 +20,6 @@ export interface StateModel {
   nodes: StateNodeDef[];
   transitions: TransitionDef[];
   composites: Array<{ id: string; label?: string; nodes: string[]; parent?: string }>;
+  // Optional lane groups detected inside composites; lane.id encoded as `${parentId}__laneN`
+  lanes?: Array<{ parentId: string; id: string; nodes: string[] }>;
 }
-

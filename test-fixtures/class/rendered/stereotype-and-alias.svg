@@ -48,5 +48,5 @@
     <text class="node-label class-member" x="12" y="36" dominant-baseline="hanging">+ ( ) :</text>
   </g>
 <polyline class="edge-path" points="188,135 213,135 238,135" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="213" y="127" text-anchor="middle">implements</text>
+<text class="edge-label-text" x="213" y="125" text-anchor="middle"><tspan x="213" dy="0">implements</tspan></text>
 </svg>

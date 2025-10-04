@@ -55,6 +55,7 @@ export function buildStateModel(text: string): StateModel {
   const nodes = new Map<string, StateNodeDef>();
   const transitions: TransitionDef[] = [];
   const composites: Array<{ id: string; label?: string; nodes: string[]; parent?: string }> = [];
+  const lanes: Array<{ parentId: string; id: string; nodes: string[] }> = [];
 
   type CompCtx = { id: string; lane: number };
   const stack: CompCtx[] = [];
@@ -76,9 +77,12 @@ export function buildStateModel(text: string): StateModel {
         // Ensure parent composite exists
         if (!composites.find(c => c.id === parent)) composites.push({ id: parent, label: parent, nodes: [], parent: stack.length > 1 ? stack[stack.length-2].id : undefined });
         composites.push({ id: laneId, label: undefined, nodes: [], parent });
+        lanes.push({ parentId: parent, id: laneId, nodes: [] });
       }
       laneSg = composites.find(c => c.id === laneId)!;
       if (!laneSg.nodes.includes(def.id)) laneSg.nodes.push(def.id);
+      const laneRec = lanes.find(l => l.id === laneId);
+      if (laneRec && !laneRec.nodes.includes(def.id)) laneRec.nodes.push(def.id);
       def.parent = laneId;
     }
     return def;
@@ -189,5 +193,6 @@ export function buildStateModel(text: string): StateModel {
     nodes: Array.from(nodes.values()),
     transitions,
     composites,
+    lanes,
   };
 }

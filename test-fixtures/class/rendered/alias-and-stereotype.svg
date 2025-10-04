@@ -42,5 +42,5 @@
     <text class="node-label class-title" x="60" y="22" text-anchor="middle" dominant-baseline="middle">Service</text>
   </g>
 <polyline class="edge-path" points="80,78 80,103 80,128" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="80" y="95" text-anchor="middle">implements</text>
+<text class="edge-label-text" x="80" y="93" text-anchor="middle"><tspan x="80" dy="0">implements</tspan></text>
 </svg>
