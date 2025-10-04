@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="841" height="641" viewBox="0 0 841 641">
-  <rect x="0" y="0" width="841" height="641" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="175" height="280" viewBox="0 0 175 280">
+  <rect x="0" y="0" width="175" height="280" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -47,5 +47,26 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
+  <g id="A">
+    <rect class="node-shape"  x="75" y="40" width="80" height="40" rx="0" ry="0" />
+    
+    <text class="node-label" x="115" y="64.9" text-anchor="middle">Start</text>
+  </g>
+  <g id="B">
+    <rect class="node-shape"  x="40" y="130" width="80" height="40" rx="0" ry="0" />
+    
+    <text class="node-label" x="80" y="154.9" text-anchor="middle">Next</text>
+  </g>
+  <g id="C">
+    <rect class="node-shape"  x="75" y="220" width="80" height="40" rx="0" ry="0" />
+    
+    <text class="node-label" x="115" y="244.9" text-anchor="middle">End</text>
+  </g>
+  <g><path class="edge-path" d="M99.44444444444444,80 L93.30503830929524,87.89352217376326 C85.9377509471162,97.36574878227917 80,114 80,120 L80,130" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M80,130 L77.5,124 L82.5,124 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M80,170 L80,180 C80,192 89.62139462820572,207.37036452197876 93.30503830929524,212.10647782623673 L99.44444444444444,220" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M99.44444444444444,220 L93.78742021991411,216.79873822952933 L97.73418130679573,213.72903516195473 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M130.55555555555554,220 L136.69496169070476,212.10647782623673 C133.79629629629628,215.83333333333334 146.75925925925927,206.66666666666666 150,195 C153.24074074074073,183.33333333333334 150,165 150,150 C150,135 153.24074074074073,116.66666666666667 150,105 L130.55555555555554,80" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M130.55555555555554,80 L136.2125797800859,83.20126177047065 L132.26581869320427,86.27096483804526 Z" fill="#555555" /></g>
   
 </svg>
