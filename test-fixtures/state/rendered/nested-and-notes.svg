@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="599" height="320" viewBox="0 0 599 320">
-  <rect x="0" y="0" width="599" height="320" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="650" height="377" viewBox="0 0 650 377">
+  <rect x="0" y="0" width="650" height="377" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -39,43 +39,44 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
+  <g class="subgraph-bg"></g>
   <g id="Auth">
-    <rect class="node-shape"  x="340" y="240" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="380" y="264.9" text-anchor="middle">Auth</text>
+    <rect class="node-shape"  x="351" y="269" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="391" y="293.9" text-anchor="middle">Auth</text>
   </g>
   <g id="__start_44">
-    <circle class="node-shape"  cx="80" cy="80" r="40" />
-    <text class="node-label" x="80" y="84.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="91" cy="109" r="40" />
+    <text class="node-label" x="91" y="113.9" text-anchor="middle"></text>
   </g>
   <g id="Login">
-    <rect class="node-shape"  x="190" y="60" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="230" y="84.9" text-anchor="middle">Login</text>
+    <rect class="node-shape"  x="201" y="89" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="241" y="113.9" text-anchor="middle">Login</text>
   </g>
   <g id="MFA">
-    <rect class="node-shape"  x="340" y="60" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="380" y="84.9" text-anchor="middle">MFA</text>
+    <rect class="node-shape"  x="351" y="89" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="391" y="113.9" text-anchor="middle">MFA</text>
   </g>
   <g id="Success">
-    <rect class="node-shape"  x="490" y="60" width="89" height="40" rx="0" ry="0" />
-    <text class="node-label" x="534.5" y="84.9" text-anchor="middle">Success</text>
+    <rect class="node-shape"  x="501" y="89" width="89" height="40" rx="0" ry="0" />
+    <text class="node-label" x="545.5" y="113.9" text-anchor="middle">Success</text>
   </g>
   <g id="__start_101">
-    <circle class="node-shape"  cx="230" cy="260" r="40" />
-    <text class="node-label" x="230" y="264.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="241" cy="289" r="40" />
+    <text class="node-label" x="241" y="293.9" text-anchor="middle"></text>
   </g>
   <g id="__end_123">
-    <circle class="node-shape"  cx="534.5" cy="260" r="40" />
-    <text class="node-label" x="534.5" y="264.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="545.5" cy="289" r="40" />
+    <text class="node-label" x="545.5" y="293.9" text-anchor="middle"></text>
   </g>
-  <g><path class="edge-path" d="M120,80 L130,80 C142,80 174,80 180,80 L190,80" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M190,80 L184,82.5 L184,77.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M270,80 L280,80 C292,80 324,80 330,80 L340,80" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M340,80 L334,82.5 L334,77.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M420,80 L430,80 C442,80 474,80 480,80 L490,80" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M490,80 L484,82.5 L484,77.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M270,260 L280,260 C292,260 324,260 330,260 L340,260" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M340,260 L334,262.5 L334,257.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M420,260 L430,260 C442,260 478.5,260 484.5,260 L494.5,260" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M494.5,260 L488.5,262.5 L488.5,257.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M131,109 L141,109 C153,109 185,109 191,109 L201,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M201,109 L195,111.5 L195,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M281,109 L291,109 C303,109 335,109 341,109 L351,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M351,109 L345,111.5 L345,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M431,109 L441,109 C453,109 485,109 491,109 L501,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M501,109 L495,111.5 L495,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M281,289 L291,289 C303,289 335,289 341,289 L351,289" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M351,289 L345,291.5 L345,286.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M431,289 L441,289 C453,289 489.5,289 495.5,289 L505.5,289" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M505.5,289 L499.5,291.5 L499.5,286.5 Z" fill="#555555" /></g>
   
 <style>.lane-divider{stroke:#aaaaaa;stroke-width:1;stroke-dasharray:4 3}.end-double{stroke:#3f3f3f;stroke-width:1}</style><g class="state-overlays"><circle class="end-double" cx="514.5" cy="240" r="37" fill="none" /></g></svg>

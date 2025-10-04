@@ -74,6 +74,8 @@ export class SVGRenderer implements IRenderer {
       const depthOf = (sg:any) => { let d=0; let p=sg.parent; while(p){ d++; p = map.get(p)?.parent; } return d; };
       const bgs: string[] = [];
       for (const sg of order) {
+        // Skip lane subgraphs (layout-only) identified by id containing "__lane"
+        if (sg.id && sg.id.includes('__lane')) continue;
         const x = sg.x + padX;
         const y = sg.y + padY;
         bgs.push(blockBackground(x, y, sg.width, sg.height, 0));

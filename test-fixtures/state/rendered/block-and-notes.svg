@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="449" height="340" viewBox="0 0 449 340">
-  <rect x="0" y="0" width="449" height="340" fill="#ffffff" />
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="397" viewBox="0 0 500 397">
+  <rect x="0" y="0" width="500" height="397" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -39,37 +39,38 @@
       <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
     </marker>
   </defs>
+  <g class="subgraph-bg"></g>
   <g id="Auth">
-    <rect class="node-shape"  x="190" y="260" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="230" y="284.9" text-anchor="middle">Auth</text>
+    <rect class="node-shape"  x="201" y="289" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="241" y="313.9" text-anchor="middle">Auth</text>
   </g>
   <g id="__start_44">
-    <circle class="node-shape"  cx="80" cy="80" r="40" />
-    <text class="node-label" x="80" y="84.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="91" cy="109" r="40" />
+    <text class="node-label" x="91" y="113.9" text-anchor="middle"></text>
   </g>
   <g id="Login">
-    <rect class="node-shape"  x="190" y="60" width="80" height="40" rx="0" ry="0" />
-    <text class="node-label" x="230" y="84.9" text-anchor="middle">Login</text>
+    <rect class="node-shape"  x="201" y="89" width="80" height="40" rx="0" ry="0" />
+    <text class="node-label" x="241" y="113.9" text-anchor="middle">Login</text>
   </g>
   <g id="Success">
-    <rect class="node-shape"  x="340" y="60" width="89" height="40" rx="0" ry="0" />
-    <text class="node-label" x="384.5" y="84.9" text-anchor="middle">Success</text>
+    <rect class="node-shape"  x="351" y="89" width="89" height="40" rx="0" ry="0" />
+    <text class="node-label" x="395.5" y="113.9" text-anchor="middle">Success</text>
   </g>
   <g id="__start_85">
-    <circle class="node-shape"  cx="80" cy="280" r="40" />
-    <text class="node-label" x="80" y="284.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="91" cy="309" r="40" />
+    <text class="node-label" x="91" y="313.9" text-anchor="middle"></text>
   </g>
   <g id="__end_107">
-    <circle class="node-shape"  cx="384.5" cy="280" r="40" />
-    <text class="node-label" x="384.5" y="284.9" text-anchor="middle"></text>
+    <circle class="node-shape"  cx="395.5" cy="309" r="40" />
+    <text class="node-label" x="395.5" y="313.9" text-anchor="middle"></text>
   </g>
-  <g><path class="edge-path" d="M120,80 L130,80 C142,80 174,80 180,80 L190,80" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M190,80 L184,82.5 L184,77.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M270,80 L280,80 C292,80 324,80 330,80 L340,80" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M340,80 L334,82.5 L334,77.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M120,280 L130,280 C142,280 174,280 180,280 L190,280" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M190,280 L184,282.5 L184,277.5 Z" fill="#555555" /></g>
-  <g><path class="edge-path" d="M270,280 L280,280 C292,280 328.5,280 334.5,280 L344.5,280" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M344.5,280 L338.5,282.5 L338.5,277.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M131,109 L141,109 C153,109 185,109 191,109 L201,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M201,109 L195,111.5 L195,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M281,109 L291,109 C303,109 335,109 341,109 L351,109" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M351,109 L345,111.5 L345,106.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M131,309 L141,309 C153,309 185,309 191,309 L201,309" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M201,309 L195,311.5 L195,306.5 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M281,309 L291,309 C303,309 339.5,309 345.5,309 L355.5,309" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M355.5,309 L349.5,311.5 L349.5,306.5 Z" fill="#555555" /></g>
   
 <style>.lane-divider{stroke:#aaaaaa;stroke-width:1;stroke-dasharray:4 3}.end-double{stroke:#3f3f3f;stroke-width:1}</style><g class="state-overlays"><circle class="end-double" cx="364.5" cy="260" r="37" fill="none" /></g></svg>
