@@ -20,8 +20,8 @@ Flowchart
   - [x] Interactions extras: range usage `0:3` flagged (FL-LINKSTYLE-RANGE-UNSUPPORTED); duplicate indices warned (FL-LINKSTYLE-DUPLICATE-INDEX).
   - [ ] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
 - Renderer parity
-  - [ ] Edge–shape intersection: polygon/capsule intersection for stadium, parallelogram, trapezoid, hexagon; verify all joins.
-  - [ ] LR/RL nested subgraphs layout width/spacing tuning (reduce vertical stacking); elbows closer to Mermaid.
+  - [~] Edge–shape intersection: polygon/capsule intersection improved; round fallback added; verify stadium/parallelogram/trapezoid/hexagon across complex joins.
+  - [~] LR/RL nested subgraphs layout width/spacing tuning (first pass: network‑simplex + nodesep/ranksep + elbow bias).
   - [ ] Curve end flattening constants (link-styles) finalized; label pill size/placement match Mermaid (currently close but still tunable).
   - [ ] Complex markers both ends (<-->, o--o, x--x) on multi-bend edges; overlay ordering stable.
   - [ ] HTML in labels: <b>, <i>, <u>, <br/> normalized and rendered consistently.
@@ -100,7 +100,7 @@ Cross-Cutting
 Progress Snapshot (auto-updating intent)
 - Flowchart: CLI parity 100%; interactions validated and rendered (style); arrowheads scale with stroke-width.
 - Sequence: CLI parity 100%; advanced headers/details parsed; fixtures kept invalid pending CLI acceptance.
-- State: CLI parity 100%; renderer initial with lane dividers + markers (choice/fork/join) and end double circle; per‑lane layout/intersections TODO.
+- State: CLI parity 100%; renderer initial with lane dividers + markers (choice/fork/join) and end double circle; per‑lane layout & intersections landed; more fixtures pending.
 - Class: CLI parity 100%; renderer implemented; edge label wrapping done; dual‑end label placement and note collision avoidance pending; generics parsed but invalid in fixtures.
 
 Notes
