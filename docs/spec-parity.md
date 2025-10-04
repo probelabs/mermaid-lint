@@ -42,7 +42,7 @@ Sequence
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
   - [ ] Shared defaults with flowchart (node shapes/fonts/colors) — ensure 1:1 visuals.
-  - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding, title line, dividers (left-aligned) — initial tweaks.
+  - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding/title offset/dividers (left‑aligned) — first pass.
   - [~] Arrowheads (size), label gap above lines, lifeline spacing — first pass landed; rotation OK for horizontal lines.
   - [ ] Title rendering (from `title`) and accessible meta.
 - Fixtures/Tests

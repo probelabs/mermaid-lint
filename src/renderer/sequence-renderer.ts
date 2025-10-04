@@ -54,7 +54,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     const title = b.title ? `${b.type}: ${b.title}` : b.type;
     const branches = (b.branches || []).map(br => ({ y: br.y, title: br.title }));
     // Left-align title/branch labels to mirror Mermaid's sequence blocks
-    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches, 0, 'left', 'left', 0));
+    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches, 6, 'left', 'left', 0));
   }
 
   // Bottom actor boxes (Mermaid draws both top and bottom)

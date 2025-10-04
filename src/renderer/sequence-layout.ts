@@ -49,11 +49,11 @@ const ACTOR_H = 32;
 const LIFELINE_GAP = 6; // a touch more room
 const ACTOR_PAD_X = 12;
 const COL_MIN = 110;
-const ROW_H = 38; // slightly taller rows for better padding
+const ROW_H = 40; // slightly taller rows for better padding
 const NOTE_W = 160;
 const NOTE_PAD = 8;
-const BLOCK_PAD = 8;
-const TITLE_EXTRA_TOP = 12; // extra space to fit the title pill
+const BLOCK_PAD = 10;
+const TITLE_EXTRA_TOP = 14; // extra space to fit the title pill
 
 export function layoutSequence(model: SequenceModel): SequenceLayout {
   // Determine participant order by first mention (participantDecl/create/message/note)

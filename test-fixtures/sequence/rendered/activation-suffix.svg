@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="234" viewBox="-50 -10 370 234">
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="238" viewBox="-50 -10 370 238">
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -35,22 +35,22 @@
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
-  <line class="lifeline" x1="79" y1="62" x2="79" y2="138"/>
-  <line class="lifeline" x1="213" y1="62" x2="213" y2="138"/>
-  <rect class="activation" x="209" y="62" width="8" height="76" />
-  <path class="msg-line solid" d="M 79 81 L 213 81" />
-  <path d="M213,81 L204,84.5 L204,77.5 Z" fill="#333" />
-  <rect class="msg-label-bg" x="83.5" y="61" width="125" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="69" text-anchor="middle">call activates B</text>
-  <path class="msg-line dotted" d="M 213 119 L 79 119" />
-  <path d="M79,119 L88,115.5 L88,122.5 Z" fill="#333" />
-  <rect class="msg-label-bg" x="51" y="99" width="190" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="107" text-anchor="middle">returns and deactivates A</text>
-  <g class="actor" transform="translate(24,138)">
+  <line class="lifeline" x1="79" y1="62" x2="79" y2="142"/>
+  <line class="lifeline" x1="213" y1="62" x2="213" y2="142"/>
+  <rect class="activation" x="209" y="62" width="8" height="80" />
+  <path class="msg-line solid" d="M 79 82 L 213 82" />
+  <path d="M213,82 L204,85.5 L204,78.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="83.5" y="62" width="125" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="70" text-anchor="middle">call activates B</text>
+  <path class="msg-line dotted" d="M 213 122 L 79 122" />
+  <path d="M79,122 L88,118.5 L88,125.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="51" y="102" width="190" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="110" text-anchor="middle">returns and deactivates A</text>
+  <g class="actor" transform="translate(24,142)">
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
-  <g class="actor" transform="translate(158,138)">
+  <g class="actor" transform="translate(158,142)">
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>

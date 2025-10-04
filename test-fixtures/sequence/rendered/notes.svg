@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="272" viewBox="-50 -10 370 272">
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="278" viewBox="-50 -10 370 278">
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -35,25 +35,25 @@
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Bob</text>
   </g>
-  <line class="lifeline" x1="79" y1="62" x2="79" y2="176"/>
-  <line class="lifeline" x1="213" y1="62" x2="213" y2="176"/>
-  <path class="msg-line solid" d="M 79 119 L 213 119" />
-  <path d="M213,119 L204,122.5 L204,115.5 Z" fill="#333" />
-  <rect class="msg-label-bg" x="123" y="99" width="46" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="107" text-anchor="middle">Hello</text>
-  <g class="note" transform="translate(144,73)">
-    <rect width="160" height="30" rx="0"/>
-    <text class="note-text" x="80" y="19" text-anchor="middle">Thinking ...</text>
+  <line class="lifeline" x1="79" y1="62" x2="79" y2="182"/>
+  <line class="lifeline" x1="213" y1="62" x2="213" y2="182"/>
+  <path class="msg-line solid" d="M 79 122 L 213 122" />
+  <path d="M213,122 L204,125.5 L204,118.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="123" y="102" width="46" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="110" text-anchor="middle">Hello</text>
+  <g class="note" transform="translate(144,74)">
+    <rect width="160" height="32" rx="0"/>
+    <text class="note-text" x="80" y="20" text-anchor="middle">Thinking ...</text>
   </g>
-  <g class="note" transform="translate(71,149)">
-    <rect width="150" height="30" rx="0"/>
-    <text class="note-text" x="75" y="19" text-anchor="middle">A shared note</text>
+  <g class="note" transform="translate(71,154)">
+    <rect width="150" height="32" rx="0"/>
+    <text class="note-text" x="75" y="20" text-anchor="middle">A shared note</text>
   </g>
-  <g class="actor" transform="translate(24,176)">
+  <g class="actor" transform="translate(24,182)">
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Alice</text>
   </g>
-  <g class="actor" transform="translate(158,176)">
+  <g class="actor" transform="translate(158,182)">
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">Bob</text>
   </g>

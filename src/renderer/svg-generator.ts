@@ -822,6 +822,17 @@ export class SVGRenderer implements IRenderer {
       {x:node.x, y:node.y+node.height}
     ]);
     switch (shape) {
+      case 'round': {
+        // Approximate as rectangle for intersection; fall back to nearest boundary
+        const poly = [
+          {x:node.x, y:node.y},
+          {x:node.x+node.width, y:node.y},
+          {x:node.x+node.width, y:node.y+node.height},
+          {x:node.x, y:node.y+node.height}
+        ];
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
+      }
       case 'circle': {
         const cx = node.x + node.width/2; const cy = node.y + node.height/2; const r = Math.min(node.width, node.height)/2;
         return this.lineCircleIntersection(p1, p2, {cx, cy, r});
