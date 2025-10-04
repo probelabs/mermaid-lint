@@ -829,7 +829,8 @@ export class SVGRenderer implements IRenderer {
       case 'diamond': {
         const cx = node.x + node.width/2; const cy = node.y + node.height/2;
         const poly = [ {x:cx, y:node.y}, {x:node.x+node.width, y:cy}, {x:cx, y:node.y+node.height}, {x:node.x, y:cy} ];
-        return this.linePolygonIntersection(p1, p2, poly);
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
       }
       case 'hexagon': {
         const s = Math.max(10, node.width * 0.2);
@@ -841,7 +842,8 @@ export class SVGRenderer implements IRenderer {
           {x:node.x + s, y:node.y + node.height},
           {x:node.x, y:node.y + node.height/2}
         ];
-        return this.linePolygonIntersection(p1, p2, poly);
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
       }
       case 'parallelogram': {
         const o = Math.min(node.width*0.25, node.height*0.6);
@@ -851,7 +853,8 @@ export class SVGRenderer implements IRenderer {
           {x:node.x + node.width - o, y:node.y + node.height},
           {x:node.x, y:node.y + node.height}
         ];
-        return this.linePolygonIntersection(p1, p2, poly);
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
       }
       case 'trapezoid': { // top narrow
         const o = Math.min(node.width*0.2, node.height*0.5);
@@ -861,7 +864,8 @@ export class SVGRenderer implements IRenderer {
           {x:node.x + node.width, y:node.y + node.height},
           {x:node.x, y:node.y + node.height}
         ];
-        return this.linePolygonIntersection(p1, p2, poly);
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
       }
       case 'trapezoidAlt': { // bottom narrow
         const o = Math.min(node.width*0.2, node.height*0.5);
@@ -871,7 +875,8 @@ export class SVGRenderer implements IRenderer {
           {x:node.x + node.width - o, y:node.y + node.height},
           {x:node.x + o, y:node.y + node.height}
         ];
-        return this.linePolygonIntersection(p1, p2, poly);
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
       }
       case 'stadium': { // capsule: rectangle with semicircle caps left/right
         const r = Math.min(node.height/2, node.width/2);
@@ -894,11 +899,14 @@ export class SVGRenderer implements IRenderer {
           for (const pt of pts) if (pt) { const d = -( (pt.x - p2.x)**2 + (pt.y - p2.y)**2 ); if (d>bestd) { bestd=d; best=pt; } }
           return best;
         };
-        return pick(left, right);
+        const hit = pick(left, right);
+        return hit || this.nearestPointOnPolygon(p2, rect);
       }
       default: {
         // default to rectangle
-        return this.linePolygonIntersection(p1, p2, rectPoly());
+        const poly = rectPoly();
+        const hit = this.linePolygonIntersection(p1, p2, poly);
+        return hit || this.nearestPointOnPolygon(p2, poly);
       }
     }
   }
@@ -931,6 +939,26 @@ export class SVGRenderer implements IRenderer {
       }
     }
     return best;
+  }
+
+  // Fallback helpers when lines are colinear or miss due to smoothing
+  private nearestPointOnSegment(p:{x:number;y:number}, a:{x:number;y:number}, b:{x:number;y:number}): {x:number;y:number} {
+    const abx = b.x - a.x, aby = b.y - a.y;
+    const ab2 = abx*abx + aby*aby || 1;
+    const apx = p.x - a.x, apy = p.y - a.y;
+    let t = (apx*abx + apy*aby) / ab2; t = Math.max(0, Math.min(1, t));
+    return { x: a.x + abx*t, y: a.y + aby*t };
+  }
+
+  private nearestPointOnPolygon(to:{x:number;y:number}, poly:Array<{x:number;y:number}>): {x:number;y:number} {
+    let best = poly[0]; let bestD = Infinity;
+    for (let i=0;i<poly.length;i++){
+      const a = poly[i]; const b = poly[(i+1)%poly.length];
+      const p = this.nearestPointOnSegment(to, a, b);
+      const d = (p.x - to.x)*(p.x - to.x) + (p.y - to.y)*(p.y - to.y);
+      if (d < bestD) { bestD = d; best = p; }
+    }
+    return { x: best.x, y: best.y };
   }
 
   private segmentIntersection(p:{x:number;y:number}, p2:{x:number;y:number}, q:{x:number;y:number}, q2:{x:number;y:number}): {x:number;y:number;t:number;u:number}|null {

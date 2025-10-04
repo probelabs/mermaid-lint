@@ -82,7 +82,7 @@ State
   - [x] Lane dividers inside composites for `---` (overlay).
   - [x] Per‑lane layout: lanes are real subgraphs for Dagre; dividers drawn at midpoints between lane bounds; supports TD/BT and LR/RL.
   - [x] Choice/fork/join marker visuals; [x] end drawn as double circle overlay.
-  - [ ] Transition routing + boundary intersection polish (reuse flowchart helpers).
+  - [x] Transition routing + boundary intersection polish for diamonds/bars and composite borders (fallback to nearest boundary when colinear).
 - Fixtures/Tests
   - [ ] Nested concurrency, history states valid/invalid, marker edge cases.
   - [ ] Add invalid fixtures for misplaced concurrency at block start/end (multiple separators, empty regions).
