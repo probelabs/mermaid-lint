@@ -11,6 +11,8 @@ Flowchart
 - Parser
   - [x] Top-level `direction` statement outside header.
   - [x] Interactions lines parsed: `click`, `linkStyle`.
+  - [x] Click parsed into structured subrules (`href` / `call`) with clear CST.
+  - [x] LinkStyle parsed into index list + key:value style pairs; multiline supported.
   - [x] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser + renderer mapping (rect/round/diamond/hexagon/parallelogram lean-l/r/trapezoid/trapezoidAlt); basic image media rendering.
 - Semantics/Validation
   - [x] Enforce only keyword `direction` before a Direction inside subgraphs (FL-DIR-KW-INVALID).
@@ -20,6 +22,7 @@ Flowchart
   - [x] Interactions parsing: `click` now parsed into structured `href` / `call` subrules for clearer semantics and graph mapping.
   - [x] Interactions extras: range usage `0:3` flagged (FL-LINKSTYLE-RANGE-UNSUPPORTED); duplicate indices warned (FL-LINKSTYLE-DUPLICATE-INDEX).
   - [ ] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
+  - [ ] Typed-shape shape identifiers: consider narrowed tokens or guarded Identifier to reduce ambiguity (parser-level hinting; semantics remains authoritative).
 - Renderer parity
   - [~] Edge–shape intersection: polygon/capsule intersection improved; round fallback added; verify stadium/parallelogram/trapezoid/hexagon across complex joins.
   - [~] LR/RL nested subgraphs layout width/spacing tuning (first pass: network‑simplex + nodesep/ranksep + elbow bias).
@@ -39,7 +42,9 @@ Sequence
   - [x] Message `properties` / `details` lines parsed (fixtures invalid to match CLI).
 - Semantics/Validation
   - [x] `create` followed by a “creating message” to/from the created actor (warning if missing).
-  - [x] Activation balance checks; clearer diagnostics around `+`/`-` suffix (first part: unbalanced warnings).
+  - [x] Activation balance checks; suffix checks for message `+`/`-` (already active / no active to deactivate).
+  - [ ] Improve caret positions to point at suffix tokens for +/− diagnostics.
+  - [ ] Apply actorRef normalization utils across all validators (notes, par over header, create/destroy).
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
   - [~] Shared defaults with flowchart (node shapes/fonts/colors) — baseline CSS unified; continue fine‑tuning.
@@ -64,7 +69,7 @@ Class
   - [x] Leftward dependency/realization operators.
   - [~] Simple generic `<…>` tokenization for names/types; keep fixtures invalid to mirror CLI; add diagnostics for unbalanced `< >`.
   - [x] Notes on classes (`note for/on X: …`).
-  - [ ] Dual-end labels/cardinalities coverage (labels near both classes).
+  - [ ] Dual-end labels/cardinalities coverage (labels near both classes); ensure builder consumes labeled CST fields (leftCard/rightCard).
 - Renderer (new)
   - [x] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
   - [x] Wrap long edge labels into tspans (centered over edge).

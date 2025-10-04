@@ -192,9 +192,9 @@ export class ClassParser extends CstParser {
   // Foo ["1..*"] <op> ["0..1"] Bar [: Label]
   private relationStmt = this.RULE('relationStmt', () => {
     this.SUBRULE(this.classRef);
-    this.OPTION1(() => this.CONSUME(t.QuotedString));
+    this.OPTION1(() => this.CONSUME(t.QuotedString, { LABEL: 'leftCard' }));
     this.SUBRULE(this.relationOp);
-    this.OPTION2(() => this.CONSUME2(t.QuotedString));
+    this.OPTION2(() => this.CONSUME2(t.QuotedString, { LABEL: 'rightCard' }));
     this.SUBRULE2(this.classRef);
     this.OPTION3(() => {
       this.CONSUME(t.Colon);

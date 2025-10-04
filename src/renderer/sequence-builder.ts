@@ -2,6 +2,7 @@ import type { CstNode, IToken } from 'chevrotain';
 import { tokenize as lexSequence } from '../diagrams/sequence/lexer.js';
 import { parserInstance } from '../diagrams/sequence/parser.js';
 import type { SequenceModel, SequenceEvent, Participant, Message, Block, BlockBranch, Note, ArrowMarker, MessageLine } from './sequence-types.js';
+import { actorRefToText, lineRemainderToText } from '../diagrams/sequence/cst-utils.js';
 
 function textFromTokens(tokens: IToken[] | undefined): string {
   if (!tokens || tokens.length === 0) return '';
@@ -20,29 +21,7 @@ function textFromTokens(tokens: IToken[] | undefined): string {
   return parts.join(' ').replace(/\s+/g, ' ').trim();
 }
 
-function actorRefToText(refCst: CstNode): string {
-  const ch = (refCst.children || {}) as any;
-  const toks: IToken[] = [];
-  ['Identifier','QuotedString','NumberLiteral','Text'].forEach((k) => {
-    const a = ch[k] as IToken[] | undefined; a?.forEach(t => toks.push(t));
-  });
-  // Preserve original order by startOffset
-  toks.sort((a,b) => (a.startOffset ?? 0) - (b.startOffset ?? 0));
-  return textFromTokens(toks);
-}
-
-function lineRemainderToText(lineRem: CstNode | undefined): string | undefined {
-  if (!lineRem) return undefined;
-  const ch = (lineRem.children || {}) as any;
-  const toks: IToken[] = [];
-  const order = [
-    'Identifier','NumberLiteral','QuotedString','Text','Plus','Minus','Comma','Colon','LParen','RParen',
-    'AndKeyword','ElseKeyword','OptKeyword','OptionKeyword','LoopKeyword','ParKeyword','RectKeyword','CriticalKeyword','BreakKeyword','BoxKeyword','EndKeyword','NoteKeyword','LeftKeyword','RightKeyword','OverKeyword','OfKeyword','AutonumberKeyword','OffKeyword','LinkKeyword','LinksKeyword','CreateKeyword','DestroyKeyword','ParticipantKeyword','ActorKeyword','ActivateKeyword','DeactivateKeyword'
-  ];
-  for (const k of order) (ch[k] as IToken[] | undefined)?.forEach(t => toks.push(t));
-  toks.sort((a,b) => (a.startOffset ?? 0) - (b.startOffset ?? 0));
-  return textFromTokens(toks) || undefined;
-}
+// actorRefToText + lineRemainderToText are shared from cst-utils
 
 function canonicalId(raw: string): string {
   // Keep letters/digits/_; collapse spaces to _; strip quotes already handled

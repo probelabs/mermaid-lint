@@ -181,8 +181,9 @@ export class MermaidParser extends CstParser {
     private linkStyleStatement = this.RULE('linkStyleStatement', () => {
         this.CONSUME(tokens.LinkStyleKeyword);
         this.SUBRULE(this.linkStyleIndexList);
+        this.OPTION1(() => this.CONSUME1(tokens.Newline));
         this.SUBRULE(this.linkStylePairs);
-        this.OPTION(() => this.CONSUME(tokens.Newline));
+        this.OPTION2(() => this.CONSUME2(tokens.Newline));
     });
 
     private linkStyleIndexList = this.RULE('linkStyleIndexList', () => {
@@ -194,10 +195,11 @@ export class MermaidParser extends CstParser {
     });
 
     private linkStylePairs = this.RULE('linkStylePairs', () => {
-        // one or more key:value pairs, comma-separated
+        // one or more key:value pairs, comma/newline-separated
         this.SUBRULE(this.linkStylePair);
         this.MANY(() => {
             this.CONSUME(tokens.Comma);
+            this.OPTION(() => this.CONSUME(tokens.Newline));
             this.SUBRULE2(this.linkStylePair);
         });
     });

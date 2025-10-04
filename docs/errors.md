@@ -251,6 +251,16 @@ Tip: quoting inside labels
   - Message: "Actor 'X' is created but the next line is not a message involving it."
   - Hint: "Add a creating message to or from 'X' immediately after the create line."
 
+- SE-ACTIVATION-ALREADY-ACTIVE (warning)
+  - When: A message line includes a trailing `+` (activate) for a target that is already active.
+  - Message: "Message indicates '+ (activate)' but 'Target' is already active."
+  - Hint: "Remove '+' or deactivate first: deactivate Target"
+
+- SE-DEACTIVATE-NO-ACTIVE (warning)
+  - When: A message line includes a trailing `-` (deactivate) for a target that has no active activation.
+  - Message: "Message indicates '- (deactivate)' but 'Target' is not active."
+  - Hint: "Remove '-' or ensure 'activate Target' occurred before."
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID
