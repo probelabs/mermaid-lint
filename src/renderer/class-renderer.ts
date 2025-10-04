@@ -28,7 +28,7 @@ function triangleOpenAt(points: [Pt, Pt], color: string, length = 10, width = 8,
   const base = { x: b.x - ux * length, y: b.y - uy * length };
   const p2 = { x: base.x + nx*(width/2), y: base.y + ny*(width/2) };
   const p3 = { x: base.x - nx*(width/2), y: base.y - ny*(width/2) };
-  return `<path d="M${tip.x},${tip.y} L${p2.x},${p2.y} M${tip.x},${tip.y} L${p3.x},${p3.y}" stroke="${color}" fill="none" />`;
+  return `<path class="edge-marker" d="M${tip.x},${tip.y} L${p2.x},${p2.y} M${tip.x},${tip.y} L${p3.x},${p3.y}" stroke="${color}" fill="none" />`;
 }
 
 function triangleHollowAt(points: [Pt, Pt], color: string, length = 12, width = 10, atEnd = true): string {
@@ -39,7 +39,7 @@ function triangleHollowAt(points: [Pt, Pt], color: string, length = 12, width = 
   const p2 = { x: base.x + nx*(width/2), y: base.y + ny*(width/2) };
   const p3 = { x: base.x - nx*(width/2), y: base.y - ny*(width/2) };
   const d = `M${tip.x},${tip.y} L${p2.x},${p2.y} L${p3.x},${p3.y} Z`;
-  return `<path d="${d}" fill="white" stroke="${color}" />`;
+  return `<path class="edge-marker" d="${d}" fill="white" stroke="${color}" />`;
 }
 
 function diamondAt(points: [Pt, Pt], color: string, filled: boolean, size = 10, atStart = true): string {
@@ -51,13 +51,14 @@ function diamondAt(points: [Pt, Pt], color: string, filled: boolean, size = 10, 
   const pRight = { x: center.x - nx*(size/1.4), y: center.y - ny*(size/1.4) };
   const pBack = { x: center.x + ux*size, y: center.y + uy*size };
   const d = `M${pTip.x},${pTip.y} L${pLeft.x},${pLeft.y} L${pBack.x},${pBack.y} L${pRight.x},${pRight.y} Z`;
-  return filled ? `<path d="${d}" fill="${color}" stroke="${color}"/>` : `<path d="${d}" fill="white" stroke="${color}"/>`;
+  return filled ? `<path class="edge-marker edge-marker-fill" d="${d}" fill="${color}" stroke="${color}"/>` : `<path class="edge-marker" d="${d}" fill="white" stroke="${color}"/>`;
 }
 
 function polyline(points: Pt[], cls: string, dashed = false, stroke = '#555', strokeWidth = 2): string {
   const d = points.map(p => `${p.x},${p.y}`).join(' ');
   const dash = dashed ? ` stroke-dasharray="4 3"` : '';
-  return `<polyline class="${cls}" points="${d}" stroke="${stroke}" stroke-width="${strokeWidth}" fill="none"${dash}/>`;
+  // Use CSS-driven color via .edge-path; keep dash inline for variant
+  return `<polyline class="edge-path ${cls}" points="${d}" fill="none"${dash}/>`;
 }
 
 export function renderClass(model: ClassModel, opts: { theme?: Record<string, any> } = {}): string {
@@ -204,10 +205,10 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
         break;
       case 'lollipop-left':
         // Circle near start
-        parts.push(`<circle cx="${pStart[0].x}" cy="${pStart[0].y}" r="5" fill="white" stroke="${edgeColor}" />`);
+        parts.push(`<circle class="edge-marker" cx="${pStart[0].x}" cy="${pStart[0].y}" r="5" fill="white" stroke="${edgeColor}" />`);
         break;
       case 'lollipop-right':
-        parts.push(`<circle cx="${pEnd[1].x}" cy="${pEnd[1].y}" r="5" fill="white" stroke="${edgeColor}" />`);
+        parts.push(`<circle class="edge-marker" cx="${pEnd[1].x}" cy="${pEnd[1].y}" r="5" fill="white" stroke="${edgeColor}" />`);
         break;
       case 'association':
       default:

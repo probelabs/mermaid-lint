@@ -19,6 +19,8 @@ export function buildSharedCss(opts: SharedStyleOptions = {}): string {
     .edge-path { stroke: ${edgeStroke}; stroke-width: 2px; fill: none; }
     .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
     .edge-label-text { fill: #333; font-family: ${fontFamily}; font-size: ${Math.max(10, fontSize - 2)}px; }
+    .edge-marker { stroke: ${edgeStroke}; }
+    .edge-marker-fill { fill: ${edgeStroke}; }
 
     /* Cluster (flowchart + sequence blocks) */
     .cluster-bg { fill: #ffffde; }
@@ -38,8 +40,14 @@ export function buildSharedCss(opts: SharedStyleOptions = {}): string {
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 2 2; }
     .msg-line.thick { stroke-width: 3px; }
+    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
+    .crosshead path { stroke: #333; stroke-width: 1.5px; }
     .msg-label { fill: #333; font-family: ${fontFamily}; font-size: 12px; dominant-baseline: middle; }
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+
+    /* State overlays */
+    .lane-divider { stroke: #aaaaaa; stroke-width: 1px; stroke-dasharray: 4 3; }
+    .end-double { stroke: #3f3f3f; stroke-width: 1px; fill: none; }
   `;
 }
 
@@ -60,6 +68,14 @@ export function applyFlowLikeTheme(svg: string, theme?: Record<string, any>): st
   }
   if (theme.lineColor) {
     out = out.replace(/\.edge-path\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lineColor)};`));
+  }
+  if (theme.arrowheadColor) {
+    // Class/state markers via CSS classes
+    out = out.replace(/\.edge-marker\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.arrowheadColor)};`));
+    out = out.replace(/\.edge-marker-fill\s*\{[^}]*\}/, (m) => m.includes('fill:') ? m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.arrowheadColor)};`) : m.replace(/\}/, ` fill: ${String(theme.arrowheadColor)}; }`));
+    // Sequence heads via classes
+    out = out.replace(/\.openhead\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.arrowheadColor)};`));
+    out = out.replace(/\.crosshead path\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.arrowheadColor)};`));
   }
   if (theme.clusterBkg) out = out.replace(/\.cluster-bg\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`));
   if (theme.clusterBorder) out = out.replace(/\.cluster-border\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`));

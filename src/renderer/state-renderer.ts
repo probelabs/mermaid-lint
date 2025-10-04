@@ -81,9 +81,9 @@ export function renderState(model: StateModel): string {
     overlays.push(`<circle class="end-double" cx="${cx}" cy="${cy}" r="${r}" fill="none" />`);
   }
   if (overlays.length) {
-    const style = `<style>.lane-divider{stroke:#aaaaaa;stroke-width:1;stroke-dasharray:4 3}.end-double{stroke:#3f3f3f;stroke-width:1}</style>`;
-    svg = svg.replace('</svg>', `${style}<g class="state-overlays">${overlays.join('\n')}</g></svg>`);
+    svg = svg.replace('</svg>', `<g class="state-overlays">${overlays.join('\n')}</g></svg>`);
   }
+  // Ensure shared CSS present
   if (!/<style>/.test(svg)) {
     const css = buildSharedCss();
     svg = svg.replace('<svg ', `<svg `).replace('</svg>', `<style>${css}</style></svg>`);
