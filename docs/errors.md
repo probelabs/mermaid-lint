@@ -224,6 +224,23 @@ Tip: quoting inside labels
   - Message: "Malformed note: missing colon before note text."
   - Hint: "Example: Note right of A: message"
 
+## Sequence (SE-*) — additional parity guards
+
+- SE-META-UNSUPPORTED
+  - When: A `title`, `accTitle`, or `accDescr` line appears in a sequence diagram.
+  - Message: "Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams."
+  - Hint: "Remove this line to match mermaid-cli."
+
+- SE-PROPERTIES-UNSUPPORTED
+  - When: A `properties:` line appears in a sequence diagram.
+  - Message: "'properties' is not accepted by current Mermaid CLI for sequence diagrams."
+  - Hint: "Remove the `properties:` line to match mermaid-cli."
+
+- SE-DETAILS-UNSUPPORTED
+  - When: A `details:` line appears in a sequence diagram.
+  - Message: "'details' is not accepted by current Mermaid CLI for sequence diagrams."
+  - Hint: "Remove the `details:` line to match mermaid-cli."
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID
