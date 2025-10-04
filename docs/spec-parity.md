@@ -41,10 +41,10 @@ Sequence
   - [ ] Activation balance checks; clearer diagnostics around `+`/`-` suffix.
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
-  - [ ] Shared defaults with flowchart (node shapes/fonts/colors) — ensure 1:1 visuals.
+  - [~] Shared defaults with flowchart (node shapes/fonts/colors) — baseline CSS unified; continue fine‑tuning.
   - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding/title offset/dividers (left‑aligned) — first pass.
   - [~] Arrowheads (size), label gap above lines, lifeline spacing — first pass landed; rotation OK for horizontal lines.
-  - [ ] Title rendering (from `title`) and accessible meta.
+  - [x] Title rendering (from `title`) and accessible meta (<title>/<desc> in SVG).
 - Fixtures/Tests
   - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.
   - [ ] Add fixtures for nested blocks with `par over` + `and` branches (both valid and invalid placements).
@@ -93,7 +93,7 @@ Cross-Cutting
   - [x] Sequence theming applied via applySequenceTheme.
   - [ ] Expand theme coverage where helpful (cluster title background sizing, arrowhead outlines).
 - [ ] Interactions rendering (flowchart first): reflect linkStyle stroke/width/opacity and click targets in rendered anchors.
-- [ ] PNG/SVG parity harness extended to class/state once renderers exist; keep structural + visual checks (add a couple of golden PNGs).
+- [~] PNG/SVG parity harness extended to class/state (batch script updated); consider CI + golden PNGs.
 - [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics and renderer coverage.
 - [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
 

@@ -49,13 +49,13 @@ This file contains invalid sequence test fixtures with:
 | 10 | [create missing name](#10-create-missing-name) | INVALID | INVALID | — |
 | 11 | [critical else](#11-critical-else) | INVALID | INVALID | ✅ safe |
 | 12 | [destroy malformed](#12-destroy-malformed) | INVALID | INVALID | — |
-| 13 | [details and properties](#13-details-and-properties) | INVALID | VALID | — |
+| 13 | [details and properties](#13-details-and-properties) | INVALID | INVALID | — |
 | 14 | [else outside alt](#14-else-outside-alt) | INVALID | INVALID | — |
 | 15 | [missing colon](#15-missing-colon) | INVALID | INVALID | ✅ safe |
 | 16 | [note malformed](#16-note-malformed) | INVALID | INVALID | ✅ safe |
 | 17 | [option in par](#17-option-in-par) | INVALID | INVALID | — |
 | 18 | [option outside critical](#18-option-outside-critical) | INVALID | INVALID | — |
-| 19 | [title and accessibility](#19-title-and-accessibility) | INVALID | VALID | — |
+| 19 | [title and accessibility](#19-title-and-accessibility) | INVALID | INVALID | — |
 | 20 | [unmatched end](#20-unmatched-end) | INVALID | INVALID | — |
 | 21 | [wrong arrow](#21-wrong-arrow) | INVALID | INVALID | — |
 
@@ -1088,7 +1088,33 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: VALID
+### maid Result: INVALID
+
+```
+error[SE-META-UNSUPPORTED]: Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams.
+at test-fixtures/sequence/invalid/details-and-properties.mmd:2:3
+  1 | sequenceDiagram
+  2 |   title Order Flow
+    |   ^^^^^
+  3 |   participant A
+hint: Remove this line (e.g., 'title …') to match mermaid-cli.
+
+error[SE-PROPERTIES-UNSUPPORTED]: 'properties' is not accepted by current Mermaid CLI for sequence diagrams.
+at test-fixtures/sequence/invalid/details-and-properties.mmd:5:3
+  4 |   participant B
+  5 |   properties: retry=3, timeout=5s
+    |   ^^^^^^^^^^
+  6 |   details: This scenario covers failed payment retry.
+hint: Remove the 'properties:' line to match mermaid-cli.
+
+error[SE-DETAILS-UNSUPPORTED]: 'details' is not accepted by current Mermaid CLI for sequence diagrams.
+at test-fixtures/sequence/invalid/details-and-properties.mmd:6:3
+  5 |   properties: retry=3, timeout=5s
+  6 |   details: This scenario covers failed payment retry.
+    |   ^^^^^^^
+  7 |   A->>B: Pay
+hint: Remove the 'details:' line to match mermaid-cli.
+```
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1541,7 +1567,33 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: VALID
+### maid Result: INVALID
+
+```
+error[SE-META-UNSUPPORTED]: Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams.
+at test-fixtures/sequence/invalid/title-and-accessibility.mmd:2:3
+  1 | sequenceDiagram
+  2 |   title Checkout Flow
+    |   ^^^^^
+  3 |   accTitle Accessible Title
+hint: Remove this line (e.g., 'title …') to match mermaid-cli.
+
+error[SE-META-UNSUPPORTED]: Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams.
+at test-fixtures/sequence/invalid/title-and-accessibility.mmd:3:3
+  2 |   title Checkout Flow
+  3 |   accTitle Accessible Title
+    |   ^^^^^^^^
+  4 |   accDescr This diagram describes the checkout steps.
+hint: Remove this line (e.g., 'title …') to match mermaid-cli.
+
+error[SE-META-UNSUPPORTED]: Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams.
+at test-fixtures/sequence/invalid/title-and-accessibility.mmd:4:3
+  3 |   accTitle Accessible Title
+  4 |   accDescr This diagram describes the checkout steps.
+    |   ^^^^^^^^
+  5 |   participant A as Alice
+hint: Remove this line (e.g., 'title …') to match mermaid-cli.
+```
 
 ### maid Auto-fix (`--fix`) Preview
 

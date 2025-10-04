@@ -59,6 +59,8 @@
     "compare:renderers:sequence": "npm run build && node scripts/compare-renderers-batch.js sequence",
     "compare:renderers:pie": "npm run build && node scripts/compare-renderers-batch.js pie",
     "compare:renderers:flowchart": "npm run build && node scripts/compare-renderers-batch.js flowchart",
+    "compare:renderers:class": "npm run build && node scripts/compare-renderers-batch.js class",
+    "compare:renderers:state": "npm run build && node scripts/compare-renderers-batch.js state",
     "palette:extract": "node scripts/extract-mermaid-palette.js",
     "lint:valid": "for file in test-fixtures/flowchart/valid/*.mmd; do node out/cli.js \"$file\" || exit 1; done",
     "lint:invalid": "for file in test-fixtures/flowchart/invalid/*.mmd; do node out/cli.js \"$file\" 2>/dev/null && exit 1 || true; done",
