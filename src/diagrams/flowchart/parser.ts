@@ -144,33 +144,74 @@ export class MermaidParser extends CstParser {
         this.CONSUME(tokens.ClickKeyword);
         // target id
         this.CONSUME(tokens.Identifier, { LABEL: 'clickTarget' });
-        // rest of the line: href/callback, tooltip, target, etc.
-        this.MANY(() => {
-            this.OR([
-                { ALT: () => this.CONSUME2(tokens.Identifier) },
-                { ALT: () => this.CONSUME(tokens.Text) },
-                { ALT: () => this.CONSUME(tokens.QuotedString) },
-                { ALT: () => this.CONSUME(tokens.NumberLiteral) },
-            ]);
-        });
+        // Structured modes: href/call; keep permissive semantics in diagnostics
+        this.OR([
+            { 
+              GATE: () => this.LA(1).tokenType === tokens.Identifier && /^(href)$/i.test((this.LA(1) as any).image || ''),
+              ALT: () => this.SUBRULE(this.clickHref)
+            },
+            { 
+              GATE: () => this.LA(1).tokenType === tokens.Identifier && /^(call|callback)$/i.test((this.LA(1) as any).image || ''),
+              ALT: () => this.SUBRULE(this.clickCall)
+            }
+        ]);
         this.OPTION(() => this.CONSUME(tokens.Newline));
+    });
+
+    private clickHref = this.RULE('clickHref', () => {
+        // mode identifier (usually 'href')
+        this.CONSUME(tokens.Identifier, { LABEL: 'mode' });
+        // required URL
+        this.CONSUME(tokens.QuotedString, { LABEL: 'url' });
+        // optional tooltip
+        this.OPTION(() => this.CONSUME2(tokens.QuotedString, { LABEL: 'tooltip' }));
+        // optional target (_blank/_self/etc.)
+        this.OPTION2(() => this.CONSUME2(tokens.Identifier, { LABEL: 'target' }));
+    });
+
+    private clickCall = this.RULE('clickCall', () => {
+        // mode identifier (usually 'call' or 'callback')
+        this.CONSUME(tokens.Identifier, { LABEL: 'mode' });
+        // function name (identifier), optional
+        this.OPTION(() => this.CONSUME2(tokens.Identifier, { LABEL: 'fn' }));
+        // optional tooltip as quoted string
+        this.OPTION2(() => this.CONSUME(tokens.QuotedString, { LABEL: 'tooltip' }));
     });
 
     private linkStyleStatement = this.RULE('linkStyleStatement', () => {
         this.CONSUME(tokens.LinkStyleKeyword);
-        // indices or ranges followed by style tokens
-        this.MANY(() => {
-            this.OR([
-                { ALT: () => this.CONSUME(tokens.NumberLiteral) },
-                { ALT: () => this.CONSUME(tokens.Comma) },
-                { ALT: () => this.CONSUME(tokens.Identifier) },
-                { ALT: () => this.CONSUME(tokens.Text) },
-                { ALT: () => this.CONSUME(tokens.ColorValue) },
-                { ALT: () => this.CONSUME(tokens.Colon) },
-                { ALT: () => this.CONSUME(tokens.QuotedString) },
-            ]);
-        });
+        this.SUBRULE(this.linkStyleIndexList);
+        this.SUBRULE(this.linkStylePairs);
         this.OPTION(() => this.CONSUME(tokens.Newline));
+    });
+
+    private linkStyleIndexList = this.RULE('linkStyleIndexList', () => {
+        this.CONSUME(tokens.NumberLiteral, { LABEL: 'index' });
+        this.MANY(() => {
+            this.CONSUME(tokens.Comma);
+            this.CONSUME2(tokens.NumberLiteral, { LABEL: 'index' });
+        });
+    });
+
+    private linkStylePairs = this.RULE('linkStylePairs', () => {
+        // one or more key:value pairs, comma-separated
+        this.SUBRULE(this.linkStylePair);
+        this.MANY(() => {
+            this.CONSUME(tokens.Comma);
+            this.SUBRULE2(this.linkStylePair);
+        });
+    });
+
+    private linkStylePair = this.RULE('linkStylePair', () => {
+        this.CONSUME1(tokens.Identifier, { LABEL: 'key' });
+        this.CONSUME(tokens.Colon);
+        this.OR([
+            { ALT: () => this.CONSUME(tokens.ColorValue, { LABEL: 'valueColor' }) },
+            { ALT: () => this.CONSUME(tokens.QuotedString, { LABEL: 'valueQuoted' }) },
+            { ALT: () => this.CONSUME(tokens.NumberLiteral, { LABEL: 'valueNum' }) },
+            { ALT: () => this.CONSUME2(tokens.Identifier, { LABEL: 'valueId' }) },
+            { ALT: () => this.CONSUME(tokens.Text, { LABEL: 'valueText' }) },
+        ]);
     });
     
     // All possible node shapes

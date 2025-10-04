@@ -114,29 +114,39 @@ export class GraphBuilder {
     const tgtTok = (ch.clickTarget?.[0] as IToken | undefined);
     if (!tgtTok) return;
     const id = tgtTok.image;
-    const idents: IToken[] = (ch.Identifier as IToken[] | undefined) || [];
-    const texts: IToken[] = (ch.Text as IToken[] | undefined) || [];
-    const quotes: IToken[] = (ch.QuotedString as IToken[] | undefined) || [];
-    // Determine mode and parameters
-    const modeTok = idents.find(t => /^(href|call|callback)$/i.test(t.image));
-    const mode = modeTok?.image?.toLowerCase();
     const link: { href?: string; target?: string; tooltip?: string; call?: string } = {};
-    if (mode === 'href') {
-      const urlTok = quotes[0];
-      const tipTok = quotes[1];
-      const targetTok = idents.find(t => /^_(blank|self|parent|top)$/i.test(t.image));
-      if (urlTok) link.href = this.unquote(urlTok.image);
-      if (tipTok) link.tooltip = this.unquote(tipTok.image);
-      if (targetTok) link.target = targetTok.image;
-    } else if (mode === 'call' || mode === 'callback') {
-      // Best-effort: collect first identifier after mode that isn't a reserved target; include free text
-      const reserved = new Set(['href','call','callback','_blank','_self','_parent','_top']);
-      const after = idents.filter(t => (t.startOffset ?? 0) > (modeTok?.startOffset ?? -1));
-      const nameTok = after.find(t => !reserved.has(t.image.toLowerCase()));
-      const tstr = texts.map(t => t.image).join(' ').trim();
-      link.call = nameTok ? nameTok.image + (tstr ? ` ${tstr}` : '') : (tstr || undefined);
-      const tipTok = quotes[0];
-      if (tipTok) link.tooltip = this.unquote(tipTok.image);
+    if (ch.clickHref && ch.clickHref[0]) {
+      const hrefCh = (ch.clickHref[0].children || {}) as any;
+      if (hrefCh.url && hrefCh.url[0]) link.href = this.unquote((hrefCh.url[0] as IToken).image);
+      if (hrefCh.tooltip && hrefCh.tooltip[0]) link.tooltip = this.unquote((hrefCh.tooltip[0] as IToken).image);
+      if (hrefCh.target && hrefCh.target[0]) link.target = (hrefCh.target[0] as IToken).image;
+    } else if (ch.clickCall && ch.clickCall[0]) {
+      const callCh = (ch.clickCall[0].children || {}) as any;
+      if (callCh.fn && callCh.fn[0]) link.call = (callCh.fn[0] as IToken).image;
+      if (callCh.tooltip && callCh.tooltip[0]) link.tooltip = this.unquote((callCh.tooltip[0] as IToken).image);
+    } else {
+      // Legacy fallback
+      const idents: IToken[] = (ch.Identifier as IToken[] | undefined) || [];
+      const texts: IToken[] = (ch.Text as IToken[] | undefined) || [];
+      const quotes: IToken[] = (ch.QuotedString as IToken[] | undefined) || [];
+      const modeTok = idents.find(t => /^(href|call|callback)$/i.test(t.image));
+      const mode = modeTok?.image?.toLowerCase();
+      if (mode === 'href') {
+        const urlTok = quotes[0];
+        const tipTok = quotes[1];
+        const targetTok = idents.find(t => /^_(blank|self|parent|top)$/i.test(t.image));
+        if (urlTok) link.href = this.unquote(urlTok.image);
+        if (tipTok) link.tooltip = this.unquote(tipTok.image);
+        if (targetTok) link.target = targetTok.image;
+      } else if (mode === 'call' || mode === 'callback') {
+        const reserved = new Set(['href','call','callback','_blank','_self','_parent','_top']);
+        const after = idents.filter(t => (t.startOffset ?? 0) > (modeTok?.startOffset ?? -1));
+        const nameTok = after.find(t => !reserved.has(t.image.toLowerCase()));
+        const tstr = texts.map(t => t.image).join(' ').trim();
+        link.call = nameTok ? nameTok.image + (tstr ? ` ${tstr}` : '') : (tstr || undefined);
+        const tipTok = quotes[0];
+        if (tipTok) link.tooltip = this.unquote(tipTok.image);
+      }
     }
     if (Object.keys(link).length) this.nodeLinks.set(id, { ...(this.nodeLinks.get(id) || {}), ...link });
   }
@@ -700,10 +710,33 @@ export class GraphBuilder {
   }
 
   private processLinkStyle(cst: CstNode) {
-    // Collect indices
+    const ch = (cst.children || {}) as any;
+    // Prefer structured: linkStyleIndexList + linkStylePairs
+    if (ch.linkStyleIndexList && ch.linkStylePairs) {
+      const idxNode = ch.linkStyleIndexList[0] as CstNode;
+      const pairNode = ch.linkStylePairs[0] as CstNode;
+      const idxToks: IToken[] = ((idxNode.children || {}) as any).index || [];
+      const indices = idxToks.map(t => parseInt(t.image, 10)).filter(n => Number.isFinite(n));
+      // Extract key:value pairs
+      const pairs: CstNode[] = ((pairNode.children || {}) as any).linkStylePair || [];
+      const props: Record<string,string> = {};
+      for (const p of pairs) {
+        const pch = (p.children || {}) as any;
+        const keyTok = pch.key?.[0] as IToken | undefined;
+        const vTok = (pch.valueColor?.[0] || pch.valueQuoted?.[0] || pch.valueNum?.[0] || pch.valueId?.[0] || pch.valueText?.[0]) as IToken | undefined;
+        if (!keyTok || !vTok) continue;
+        let val = vTok.image;
+        if ((vTok.tokenType?.name === 'QuotedString') && (val.startsWith('"') || val.startsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        props[keyTok.image] = val;
+      }
+      this.pendingLinkStyles.push({ indices, props });
+      return;
+    }
+    // Fallback: legacy token sweep
     const nums = (cst.children?.NumberLiteral as IToken[] | undefined) || [];
     const indices = nums.map(n => parseInt(n.image, 10)).filter(n => Number.isFinite(n));
-    // Collect style props similar to node style parsing
     const props = this.collectStyleProps(cst);
     this.pendingLinkStyles.push({ indices, props });
   }

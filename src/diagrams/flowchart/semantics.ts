@@ -34,6 +34,43 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 
   clickStatement(ctx: any) {
+    // Prefer structured subrules when available
+    const href = (ctx as any).clickHref?.[0] as CstNode | undefined;
+    const call = !href ? ((ctx as any).clickCall?.[0] as CstNode | undefined) : undefined;
+    if (href) {
+      const ch: any = (href.children || {});
+      const modeTok = ch.mode?.[0];
+      const urlTok = ch.url?.[0];
+      const tipTok = ch.tooltip?.[0];
+      const tgtTok = ch.target?.[0];
+      const mode = String(modeTok?.image || '').toLowerCase();
+      if (mode !== 'href') {
+        this.ctx.errors.push({ line: modeTok?.startLine ?? 1, column: modeTok?.startColumn ?? 1, severity: 'error', code: 'FL-CLICK-MODE-INVALID', message: `Unknown click mode '${modeTok?.image}'. Use 'href' or 'call'.`, hint: 'Examples: href "…" | call fn()' });
+        return;
+      }
+      if (!urlTok) {
+        this.ctx.errors.push({ line: modeTok?.startLine ?? 1, column: modeTok?.startColumn ?? 1, severity: 'error', code: 'FL-CLICK-HREF-URL-MISSING', message: "'click … href' requires a quoted URL.", hint: 'Example: click A href "https://example.com" "Open" _blank' });
+      }
+      if (tgtTok && !/^_(blank|self|parent|top)$/i.test(String(tgtTok.image || ''))) {
+        this.ctx.errors.push({ line: tgtTok.startLine ?? 1, column: tgtTok.startColumn ?? 1, severity: 'warning', code: 'FL-CLICK-TARGET-UNKNOWN', message: `Unknown target '${tgtTok.image}'. Use _blank/_self/_parent/_top.`, hint: 'Example: … _blank' });
+      }
+      return;
+    }
+    if (call) {
+      const ch: any = (call.children || {});
+      const modeTok = ch.mode?.[0];
+      const mode = String(modeTok?.image || '').toLowerCase();
+      if (!(mode === 'call' || mode === 'callback')) {
+        this.ctx.errors.push({ line: modeTok?.startLine ?? 1, column: modeTok?.startColumn ?? 1, severity: 'error', code: 'FL-CLICK-MODE-INVALID', message: `Unknown click mode '${modeTok?.image}'. Use 'href' or 'call'.`, hint: 'Examples: href "…" | call fn()' });
+        return;
+      }
+      const fnTok = ch.fn?.[0];
+      if (!fnTok) {
+        this.ctx.errors.push({ line: modeTok?.startLine ?? 1, column: modeTok?.startColumn ?? 1, severity: 'error', code: 'FL-CLICK-CALL-NAME-MISSING', message: "'click … call' requires a function name.", hint: 'Example: click A call doThing() "Tooltip"' });
+      }
+      return;
+    }
+    // Fallback (legacy permissive parsing)
     const ids: any[] = (ctx as any).Identifier || [];
     const q: any[] = (ctx as any).QuotedString || [];
     const t0 = ids[0];
@@ -99,82 +136,39 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 
   linkStyleStatement(ctx: any) {
-    const nums: number[] = ((ctx as any).NumberLiteral || []).map((t: any) => parseInt(t.image, 10)).filter((n: number) => Number.isFinite(n));
+    // Prefer structured indexList/pairs if available
+    const idxNode = (ctx as any).linkStyleIndexList?.[0] as CstNode | undefined;
+    const pairNode = (ctx as any).linkStylePairs?.[0] as CstNode | undefined;
+    const getTokens = (node: CstNode | undefined, name: string) => (node ? (((node.children || {}) as any)[name] as IToken[] | undefined) || [] : []);
+
+    const idxToks = getTokens(idxNode, 'index');
+    const nums: number[] = idxToks.map(t => parseInt(t.image, 10)).filter(n => Number.isFinite(n));
     if (nums.length === 0) {
-      const anyTok: any = (ctx as any).LinkStyleKeyword?.[0] || (ctx as any).Identifier?.[0] || (ctx as any).NumberLiteral?.[0];
-      this.ctx.errors.push({
-        line: anyTok?.startLine ?? 1,
-        column: anyTok?.startColumn ?? 1,
-        severity: 'error',
-        code: 'FL-LINKSTYLE-NO-INDICES',
-        message: "'linkStyle' requires one or more link indices (comma separated).",
-        hint: 'Example: linkStyle 0,1 stroke:#f66,stroke-width:2px'
-      });
+      const anyTok: any = (ctx as any).LinkStyleKeyword?.[0] || idxToks[0];
+      this.ctx.errors.push({ line: anyTok?.startLine ?? 1, column: anyTok?.startColumn ?? 1, severity: 'error', code: 'FL-LINKSTYLE-NO-INDICES', message: "'linkStyle' requires one or more link indices (comma separated).", hint: 'Example: linkStyle 0,1 stroke:#f66,stroke-width:2px' });
       return;
     }
-    const hasStyle = ((ctx as any).ColorValue && (ctx as any).ColorValue.length > 0) || ((ctx as any).Colon && (ctx as any).Colon.length > 0);
-    if (!hasStyle) {
-      const firstNum: any = (ctx as any).NumberLiteral?.[0];
-      this.ctx.errors.push({
-        line: firstNum?.startLine ?? 1,
-        column: firstNum?.startColumn ?? 1,
-        severity: 'error',
-        code: 'FL-LINKSTYLE-MISSING-STYLE',
-        message: "Missing style declarations after indices.",
-        hint: 'Example: linkStyle 0 stroke:#f00,stroke-width:2px'
-      });
+    // Extract pairs and validate presence
+    const pairChildren = (pairNode?.children || {}) as any;
+    const pairCount = (pairChildren.linkStylePair || []).length;
+    if (!pairCount) {
+      const firstNum: any = idxToks[0];
+      this.ctx.errors.push({ line: firstNum?.startLine ?? 1, column: firstNum?.startColumn ?? 1, severity: 'error', code: 'FL-LINKSTYLE-MISSING-STYLE', message: 'Missing style declarations after indices.', hint: 'Example: linkStyle 0 stroke:#f00,stroke-width:2px' });
     }
-
-    // Detect ranges like 0:3 among the tokens (unsupported for now)
-    const allTok: any[] = ([] as any[])
-      .concat((ctx as any).NumberLiteral || [])
-      .concat((ctx as any).Colon || [])
-      .concat((ctx as any).Comma || []);
-    const ordered = allTok
-      .filter(t => typeof t?.startOffset === 'number')
-      .sort((a, b) => (a.startOffset - b.startOffset));
-    for (let i = 0; i < ordered.length - 2; i++) {
-      const a = ordered[i]; const mid = ordered[i+1]; const b = ordered[i+2];
-      if (a.tokenType?.name === 'NumberLiteral' && mid.tokenType?.name === 'Colon' && b.tokenType?.name === 'NumberLiteral') {
-        this.ctx.errors.push({
-          line: mid.startLine ?? 1,
-          column: mid.startColumn ?? 1,
-          severity: 'error',
-          code: 'FL-LINKSTYLE-RANGE-UNSUPPORTED',
-          message: "Ranges like '0:3' are not supported in linkStyle indices.",
-          hint: 'List indices explicitly: linkStyle 0,1,2,3 …'
-        });
-        break;
-      }
-    }
-
     // Duplicate indices
     const seen = new Set<number>();
     for (const n of nums) {
       if (seen.has(n)) {
-        const numTok: any = (ctx as any).NumberLiteral?.find((t: any) => parseInt(t.image, 10) === n);
-        this.ctx.errors.push({
-          line: numTok?.startLine ?? 1,
-          column: numTok?.startColumn ?? 1,
-          severity: 'warning',
-          code: 'FL-LINKSTYLE-DUPLICATE-INDEX',
-          message: `Duplicate linkStyle index ${n}.`,
-          hint: 'Remove duplicates.'
-        });
+        const numTok: any = idxToks.find((t: any) => parseInt(t.image, 10) === n);
+        this.ctx.errors.push({ line: numTok?.startLine ?? 1, column: numTok?.startColumn ?? 1, severity: 'warning', code: 'FL-LINKSTYLE-DUPLICATE-INDEX', message: `Duplicate linkStyle index ${n}.`, hint: 'Remove duplicates.' });
       }
       seen.add(n);
     }
+    // Out-of-range indices
     for (const n of nums) {
       if (!(n >= 0 && n < this.edgeCount)) {
-        const numTok: any = (ctx as any).NumberLiteral?.find((t: any) => parseInt(t.image, 10) === n);
-        this.ctx.errors.push({
-          line: numTok?.startLine ?? 1,
-          column: numTok?.startColumn ?? 1,
-          severity: 'error',
-          code: 'FL-LINKSTYLE-INDEX-OUT-OF-RANGE',
-          message: `linkStyle index ${n} is out of range (0..${Math.max(0, this.edgeCount - 1)}).`,
-          hint: `Use an index between 0 and ${Math.max(0, this.edgeCount - 1)} or add more links first.`
-        });
+        const numTok: any = idxToks.find((t: any) => parseInt(t.image, 10) === n);
+        this.ctx.errors.push({ line: numTok?.startLine ?? 1, column: numTok?.startColumn ?? 1, severity: 'error', code: 'FL-LINKSTYLE-INDEX-OUT-OF-RANGE', message: `linkStyle index ${n} is out of range (0..${Math.max(0, this.edgeCount - 1)}).`, hint: `Use an index between 0 and ${Math.max(0, this.edgeCount - 1)} or add more links first.` });
       }
     }
   }
