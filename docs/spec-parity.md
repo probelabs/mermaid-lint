@@ -30,10 +30,10 @@ Flowchart
   - [~] LR/RL nested subgraphs layout width/spacing tuning (first pass: network‑simplex + nodesep/ranksep + elbow bias).
   - [ ] Curve end flattening constants (link-styles) finalized; label pill size/placement match Mermaid (currently close but still tunable).
   - [ ] Complex markers both ends (<-->, o--o, x--x) on multi-bend edges; overlay ordering stable.
-  - [ ] HTML in labels: <b>, <i>, <u>, <br/> normalized and rendered consistently.
+  - [~] HTML in labels: <b>, <i>, <u>, <br/> fixtures added; renderer normalization pending.
   - [x] Apply linkStyle to renderer: path stroke/width/opacity/dasharray; overlay arrowheads pick up color and scale with stroke-width.
 - Fixtures/Tests
-  - [ ] Expand `typed-shapes-basic.mmd` to cover all shapes + negative cases (lean-l/r, image/icon variants).
+  - [x] Expand coverage: `typed-shapes-all.mmd` (all shapes) + `typed-shapes-bad-units.mmd` (negatives for units/label).
   - [x] Add `interactions-linkstyle-ranges.mmd` (invalid; range unsupported today).
   - [x] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices (including multiline styles and varying whitespace).
 

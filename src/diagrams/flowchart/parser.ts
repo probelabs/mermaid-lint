@@ -215,11 +215,26 @@ export class MermaidParser extends CstParser {
 
     private clickCall = this.RULE('clickCall', () => {
         // mode identifier (usually 'call' or 'callback')
-        this.CONSUME(tokens.Identifier, { LABEL: 'mode' });
+        this.CONSUME1(tokens.Identifier, { LABEL: 'mode' });
         // function name (identifier), optional
-        this.OPTION(() => this.CONSUME2(tokens.Identifier, { LABEL: 'fn' }));
+        this.OPTION1(() => {
+            this.CONSUME2(tokens.Identifier, { LABEL: 'fn' });
+            // Optional empty parentheses or simple () after function name to match CLI examples
+            this.OPTION2(() => {
+                this.CONSUME3(tokens.RoundOpen);
+                this.OPTION3(() => {
+                    // Accept a permissive single token inside parens if present (identifier/number/text)
+                    this.OR([
+                        { ALT: () => this.CONSUME4(tokens.Identifier) },
+                        { ALT: () => this.CONSUME5(tokens.NumberLiteral) },
+                        { ALT: () => this.CONSUME6(tokens.Text) },
+                    ]);
+                });
+                this.CONSUME7(tokens.RoundClose);
+            });
+        });
         // optional tooltip as quoted string
-        this.OPTION2(() => this.CONSUME(tokens.QuotedString, { LABEL: 'tooltip' }));
+        this.OPTION4(() => this.CONSUME8(tokens.QuotedString, { LABEL: 'tooltip' }));
     });
 
     private linkStyleStatement = this.RULE('linkStyleStatement', () => {

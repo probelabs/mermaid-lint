@@ -68,6 +68,11 @@ class FlowSemanticsVisitor extends BaseVisitor {
       if (!fnTok) {
         this.ctx.errors.push({ line: modeTok?.startLine ?? 1, column: modeTok?.startColumn ?? 1, severity: 'error', code: 'FL-CLICK-CALL-NAME-MISSING', message: "'click … call' requires a function name.", hint: 'Example: click A call doThing() "Tooltip"' });
       }
+      // Current Mermaid CLI rejects tooltip/target text following call(...)
+      const tipTok = ch.tooltip?.[0];
+      if (tipTok) {
+        this.ctx.errors.push({ line: tipTok.startLine ?? 1, column: tipTok.startColumn ?? 1, severity: 'error', code: 'FL-CLICK-CALL-EXTRA-TEXT', message: "Tooltip/text after 'call()' is not supported by Mermaid CLI.", hint: 'Use: click A call doThing()' });
+      }
       return;
     }
     // Fallback (legacy permissive parsing)
@@ -262,6 +267,19 @@ class FlowSemanticsVisitor extends BaseVisitor {
               message: `Unknown shape '${v}' in '@{ shape: … }'.`,
               hint: 'Use one of: rect, round, stadium, subroutine, circle, cylinder, diamond, trapezoid, parallelogram, hexagon, lean-l, lean-r, icon, image'
             });
+          } else {
+            // Parity with mermaid-cli: only a subset of typed-shape values are supported today
+            const supportedByCli = new Set(['rect','round','rounded','diamond','circle','cylinder','stadium','subroutine','lean-l','lean-r']);
+            if (!supportedByCli.has(v)) {
+              this.ctx.errors.push({
+                line: valTok.startLine ?? 1,
+                column: valTok.startColumn ?? 1,
+                severity: 'error',
+                code: 'FL-TYPED-SHAPE-UNSUPPORTED',
+                message: `Typed shape '${v}' is not supported by current Mermaid CLI.`,
+                hint: 'Use one of: rect, rounded, diamond, circle, cylinder, stadium, subroutine, "lean-l", "lean-r"'
+              });
+            }
           }
         }
         if (key === 'label' && valTok && valTok.tokenType?.name !== 'QuotedString') {

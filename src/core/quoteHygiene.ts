@@ -44,12 +44,19 @@ export function detectDoubleInDouble(
       if (t.tokenType?.name !== 'QuotedString') continue;
       // If start tokens are specified, ensure one appears earlier on this line before first quote
       if (starts.size > 0) {
-        let hasStart = false;
-        for (let k = 0; k < i; k++) {
+        // Find the nearest scope-start token before this quote
+        let startIdx = -1;
+        for (let k = i - 1; k >= 0; k--) {
           const s = arr[k];
-          if (starts.has(s.tokenType?.name || '')) { hasStart = true; break; }
+          if (starts.has(s.tokenType?.name || '')) { startIdx = k; break; }
         }
-        if (!hasStart) continue;
+        if (startIdx === -1) continue;
+        // Exclude typed-shape attribute objects: '@' followed by '{' (DiamondOpen)
+        const sTok = arr[startIdx];
+        const prevTok = arr[startIdx - 1];
+        if ((sTok.tokenType?.name === 'DiamondOpen') && (prevTok?.tokenType?.name === 'AtSign')) {
+          continue;
+        }
       }
       // Scan forward until scope end
       for (let j = i + 1; j < arr.length; j++) {
