@@ -42,8 +42,8 @@ Sequence
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
   - [ ] Shared defaults with flowchart (node shapes/fonts/colors) — ensure 1:1 visuals.
-  - [ ] Block containers (alt/opt/loop/par/critical/break/rect/box): padding, title line, dividers positions.
-  - [ ] Arrowheads (size, rotation), label gap above lines; lifeline spacing/height; multi-line notes centering.
+  - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding, title line, dividers (left-aligned) — initial tweaks.
+  - [~] Arrowheads (size), label gap above lines, lifeline spacing — first pass landed; rotation OK for horizontal lines.
   - [ ] Title rendering (from `title`) and accessible meta.
 - Fixtures/Tests
   - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.

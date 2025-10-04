@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="516" viewBox="-50 -10 370 516">
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="538" viewBox="-50 -10 370 538">
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -35,55 +35,55 @@
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>
-  <line class="lifeline" x1="79" y1="60" x2="79" y2="420"/>
-  <line class="lifeline" x1="213" y1="60" x2="213" y2="420"/>
-  <path class="msg-line solid" d="M 79 78 L 213 78" />
-  <path d="M213,78 L205,81 L205,75 Z" fill="#333" />
-  <path d="M71,78 L79,81 L79,75 Z" fill="#333" />
-  <rect class="msg-label-bg" x="98" y="60" width="96" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="68" text-anchor="middle">Duplex async</text>
-  <path class="msg-line dotted" d="M 79 114 L 213 114" />
-  <path d="M213,114 L205,117 L205,111 Z" fill="#333" />
-  <path d="M71,114 L79,117 L79,111 Z" fill="#333" />
-  <rect class="msg-label-bg" x="72.5" y="96" width="147" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="104" text-anchor="middle">Duplex async dotted</text>
-  <path class="msg-line solid" d="M 79 150 L 213 150" />
-  <path d="M213,150 L205,153 L205,147 Z" fill="#333" />
-  <rect class="msg-label-bg" x="123" y="132" width="46" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="140" text-anchor="middle">Async</text>
-  <path class="msg-line dotted" d="M 79 186 L 213 186" />
-  <path d="M213,186 L205,189 L205,183 Z" fill="#333" />
-  <rect class="msg-label-bg" x="98" y="168" width="96" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="176" text-anchor="middle">Async dotted</text>
-  <path class="msg-line solid" d="M 79 222 L 213 222" />
-  <path d="M213,222 L205,225 L205,219 Z" fill="#333" />
-  <rect class="msg-label-bg" x="123" y="204" width="46" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="212" text-anchor="middle">Solid</text>
-  <path class="msg-line dotted" d="M 79 258 L 213 258" />
-  <path d="M213,258 L205,261 L205,255 Z" fill="#333" />
-  <rect class="msg-label-bg" x="119.5" y="240" width="53" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="248" text-anchor="middle">Dotted</text>
-  <path class="msg-line solid" d="M 79 294 L 213 294" />
-  <g class="crosshead" transform="translate(213,294)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
-  <rect class="msg-label-bg" x="123" y="276" width="46" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="284" text-anchor="middle">Cross</text>
-  <path class="msg-line dotted" d="M 79 330 L 213 330" />
-  <g class="crosshead" transform="translate(213,330)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
-  <rect class="msg-label-bg" x="98" y="312" width="96" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="320" text-anchor="middle">Cross dotted</text>
-  <path class="msg-line solid" d="M 79 366 L 213 366" />
-  <circle class="openhead" cx="213" cy="366" r="4" />
-  <rect class="msg-label-bg" x="126.5" y="348" width="39" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="356" text-anchor="middle">Open</text>
-  <path class="msg-line dotted" d="M 79 402 L 213 402" />
-  <circle class="openhead" cx="213" cy="402" r="4" />
-  <rect class="msg-label-bg" x="101.5" y="384" width="89" height="16" rx="0"/>
-  <text class="msg-label" x="146" y="392" text-anchor="middle">Open dotted</text>
-  <g class="actor" transform="translate(24,420)">
+  <line class="lifeline" x1="79" y1="62" x2="79" y2="442"/>
+  <line class="lifeline" x1="213" y1="62" x2="213" y2="442"/>
+  <path class="msg-line solid" d="M 79 81 L 213 81" />
+  <path d="M213,81 L204,84.5 L204,77.5 Z" fill="#333" />
+  <path d="M70,81 L79,84.5 L79,77.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="98" y="61" width="96" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="69" text-anchor="middle">Duplex async</text>
+  <path class="msg-line dotted" d="M 79 119 L 213 119" />
+  <path d="M213,119 L204,122.5 L204,115.5 Z" fill="#333" />
+  <path d="M70,119 L79,122.5 L79,115.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="72.5" y="99" width="147" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="107" text-anchor="middle">Duplex async dotted</text>
+  <path class="msg-line solid" d="M 79 157 L 213 157" />
+  <path d="M213,157 L204,160.5 L204,153.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="123" y="137" width="46" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="145" text-anchor="middle">Async</text>
+  <path class="msg-line dotted" d="M 79 195 L 213 195" />
+  <path d="M213,195 L204,198.5 L204,191.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="98" y="175" width="96" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="183" text-anchor="middle">Async dotted</text>
+  <path class="msg-line solid" d="M 79 233 L 213 233" />
+  <path d="M213,233 L204,236.5 L204,229.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="123" y="213" width="46" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="221" text-anchor="middle">Solid</text>
+  <path class="msg-line dotted" d="M 79 271 L 213 271" />
+  <path d="M213,271 L204,274.5 L204,267.5 Z" fill="#333" />
+  <rect class="msg-label-bg" x="119.5" y="251" width="53" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="259" text-anchor="middle">Dotted</text>
+  <path class="msg-line solid" d="M 79 309 L 213 309" />
+  <g class="crosshead" transform="translate(213,309)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
+  <rect class="msg-label-bg" x="123" y="289" width="46" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="297" text-anchor="middle">Cross</text>
+  <path class="msg-line dotted" d="M 79 347 L 213 347" />
+  <g class="crosshead" transform="translate(213,347)"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>
+  <rect class="msg-label-bg" x="98" y="327" width="96" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="335" text-anchor="middle">Cross dotted</text>
+  <path class="msg-line solid" d="M 79 385 L 213 385" />
+  <circle class="openhead" cx="213" cy="385" r="4" />
+  <rect class="msg-label-bg" x="126.5" y="365" width="39" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="373" text-anchor="middle">Open</text>
+  <path class="msg-line dotted" d="M 79 423 L 213 423" />
+  <circle class="openhead" cx="213" cy="423" r="4" />
+  <rect class="msg-label-bg" x="101.5" y="403" width="89" height="16" rx="3"/>
+  <text class="msg-label" x="146" y="411" text-anchor="middle">Open dotted</text>
+  <g class="actor" transform="translate(24,442)">
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">A</text>
   </g>
-  <g class="actor" transform="translate(158,420)">
+  <g class="actor" transform="translate(158,442)">
     <rect class="node-shape" width="110" height="32" rx="0"/>
     <text class="node-label" x="55" y="16" text-anchor="middle" dominant-baseline="middle">B</text>
   </g>

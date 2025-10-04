@@ -90,8 +90,9 @@ function drawMessage(out: string[], m: LayoutMessage) {
   out.push(`  <path class="${cls}" d="M ${x1} ${y} L ${x2} ${y}" />`);
   // Markers: start/end
   const start = { x: x1, y } as const; const end = { x: x2, y } as const;
-  if (m.endMarker === 'arrow') out.push('  ' + triangleAtEnd(start, end));
-  if (m.startMarker === 'arrow') out.push('  ' + triangleAtStart(start, end));
+  // Slightly larger overlay triangles for sequence arrows
+  if (m.endMarker === 'arrow') out.push('  ' + triangleAtEnd(start, end, undefined as any, 9, 7));
+  if (m.startMarker === 'arrow') out.push('  ' + triangleAtStart(start, end, undefined as any, 9, 7));
   if (m.endMarker === 'open') out.push(`  <circle class="openhead" cx="${x2}" cy="${y}" r="4" />`);
   if (m.startMarker === 'open') out.push(`  <circle class="openhead" cx="${x1}" cy="${y}" r="4" />`);
   if (m.endMarker === 'cross') out.push(`  <g class="crosshead" transform="translate(${x2},${y})"><path d="M -4 -4 L 4 4"/><path d="M -4 4 L 4 -4"/></g>`);
@@ -112,8 +113,8 @@ function drawMessageLabel(out: string[], m: LayoutMessage, label: string, _count
   const h = 16;
   const w = Math.max(20, measureText(label, 12) + 10);
   const x = xMid - w / 2;
-  const y = m.y - 10 - h / 2; // above the line
-  out.push(`  <rect class=\"msg-label-bg\" x=\"${x}\" y=\"${y}\" width=\"${w}\" height=\"${h}\" rx=\"0\"/>`);
+  const y = m.y - 12 - h / 2; // a bit more above the line
+  out.push(`  <rect class=\"msg-label-bg\" x=\"${x}\" y=\"${y}\" width=\"${w}\" height=\"${h}\" rx=\"3\"/>`);
   out.push(`  <text class=\"msg-label\" x=\"${xMid}\" y=\"${y + h/2}\" text-anchor=\"middle\">${escapeXml(label)}</text>`);
 }
 
