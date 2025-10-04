@@ -4,7 +4,7 @@ import { layoutSequence } from './sequence-layout.js';
 import { escapeXml, measureText } from './utils.js';
 import { triangleAtEnd, triangleAtStart } from './arrow-utils.js';
 import { blockBackground, blockOverlay } from './block-utils.js';
-import { buildSharedCss } from './styles.js';
+import { buildSharedCss, applyFlowLikeTheme } from './styles.js';
 
 export interface SequenceRenderOptions {
   width?: number; // not used, layout is intrinsic
@@ -27,6 +27,19 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     edgeStroke: '#555555',
   });
   svgParts.push(`  <style>${sharedCss}</style>`);
+
+  // Accessible <title>/<desc> and visible title
+  const accTitle = model.accTitle || model.title || undefined;
+  const accDesc = model.accDescr || undefined;
+  if (accTitle) svgParts.push(`  <title>${escapeXml(accTitle)}</title>`);
+  if (accDesc) svgParts.push(`  <desc>${escapeXml(accDesc)}</desc>`);
+  if (model.title) {
+    const t = escapeXml(model.title);
+    const tW = Math.max(20, measureText(model.title, 16));
+    const xMid = width / 2;
+    // place near top, above participant boxes
+    svgParts.push(`  <text class="node-label" x="${xMid}" y="0" text-anchor="middle" font-size="16">${t}</text>`);
+  }
 
   // Participants
   for (const p of layout.participants) drawParticipant(svgParts, p);
@@ -62,7 +75,8 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
 
   svgParts.push('</svg>');
   let svg = svgParts.join('\n');
-  if (opts.theme) svg = applySequenceTheme(svg, opts.theme);
+  // Apply baseline flow-like theme, then sequence-specific overrides
+  if (opts.theme) svg = applySequenceTheme(applyFlowLikeTheme(svg, opts.theme), opts.theme);
   return svg;
 }
 
@@ -149,16 +163,14 @@ function drawBlock(out: string[], b: LayoutBlock) {
 
 function applySequenceTheme(svg: string, theme: Record<string, any>): string {
   let out = svg;
-  // actor colors
-  if (theme.actorBkg) out = out.replace(/\.actor-rect\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.actorBkg)};`));
-  if (theme.actorBorder) out = out.replace(/\.actor-rect\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.actorBorder)};`));
-  if (theme.actorTextColor) out = out.replace(/\.actor-label\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.actorTextColor)};`));
+  // Participant colors piggyback on .node-shape/.node-label via applyFlowLikeTheme;
   // lifeline color
   if (theme.lifelineColor) out = out.replace(/\.lifeline\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lifelineColor)};`));
   // message line + arrowhead
   if (theme.lineColor) out = out.replace(/\.msg-line\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lineColor)};`));
   if (theme.arrowheadColor) {
-    out = out.replace(/\.arrowhead\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.arrowheadColor)};`));
+    // Replace inline triangle fills (overlay arrowheads)
+    out = out.replace(/(<path d=\"M[0-9.,\s-]+Z\" fill=\")[^\"]+(\")/g, (_m, p1, p2) => `${p1}${String(theme.arrowheadColor)}${p2}`);
     out = out.replace(/\.openhead\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.arrowheadColor)};`));
     out = out.replace(/\.crosshead\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.arrowheadColor)};`));
   }

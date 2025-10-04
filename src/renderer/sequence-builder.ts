@@ -86,6 +86,9 @@ export function buildSequenceModel(text: string): SequenceModel {
   const byDisplay = new Map<string, string>();
   const events: SequenceEvent[] = [];
   let autonumber = { on: false } as any;
+  let title: string | undefined;
+  let accTitle: string | undefined;
+  let accDescr: string | undefined;
 
   const diagramChildren = (cst.children || {}) as any;
   const lines = (diagramChildren.line as CstNode[] | undefined) || [];
@@ -94,6 +97,17 @@ export function buildSequenceModel(text: string): SequenceModel {
 
   function processLineNode(ln: CstNode) {
     const ch = (ln.children || {}) as any;
+
+    // metaStmt: title / accTitle / accDescr
+    if (ch.metaStmt) {
+      const m = ch.metaStmt[0] as CstNode;
+      const mch = (m.children || {}) as any;
+      const value = lineRemainderToText(mch.lineRemainder?.[0]) || '';
+      if (mch.TitleKeyword) title = value;
+      if (mch.AccTitleKeyword) accTitle = value;
+      if (mch.AccDescrKeyword) accDescr = value;
+      return;
+    }
 
     // participantDecl
     if (ch.participantDecl) {
@@ -270,6 +284,9 @@ export function buildSequenceModel(text: string): SequenceModel {
   return {
     participants: Array.from(participantsMap.values()),
     events,
-    autonumber: (autonumber as any).on === true || (autonumber as any).on === false ? (autonumber as any) : { on: false }
+    autonumber: (autonumber as any).on === true || (autonumber as any).on === false ? (autonumber as any) : { on: false },
+    title,
+    accTitle,
+    accDescr,
   };
 }
