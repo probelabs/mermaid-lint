@@ -131,9 +131,53 @@ export class MermaidParser extends CstParser {
     private attrPair = this.RULE('attrPair', () => {
         this.CONSUME(tokens.Identifier, { LABEL: 'attrKey' });
         this.CONSUME(tokens.Colon);
+        // Parser-level guard for shape values to reduce ambiguity (semantics remains authoritative)
         this.OR([
+            {
+                GATE: () => {
+                    const prev = this.LA( -1 ) as any; // colon
+                    const keyTok = this.LA( -2 ) as any; // Identifier key
+                    return keyTok && /^(shape)$/i.test(String(keyTok.image || ''));
+                },
+                ALT: () => this.SUBRULE(this.attrShapeValue)
+            },
             { ALT: () => this.CONSUME(tokens.QuotedString) },
             { ALT: () => this.CONSUME2(tokens.Identifier) },
+            { ALT: () => this.CONSUME(tokens.NumberLiteral) },
+            { ALT: () => this.CONSUME(tokens.Text) },
+        ]);
+    });
+
+    private attrShapeValue = this.RULE('attrShapeValue', () => {
+        // Accept only known shapes when possible; otherwise still consume a generic token to keep parsing.
+        const isKnownShapeId = () => {
+            const la: any = this.LA(1);
+            if (!la || la.tokenType !== tokens.Identifier) return false;
+            const v = String(la.image || '').toLowerCase();
+            return (
+                v === 'rect' || v === 'round' || v === 'rounded' || v === 'stadium' || v === 'subroutine' ||
+                v === 'circle' || v === 'cylinder' || v === 'diamond' || v === 'trapezoid' || v === 'trapezoidalt' ||
+                v === 'parallelogram' || v === 'hexagon' || v === 'lean-l' || v === 'lean-r' || v === 'icon' || v === 'image'
+            );
+        };
+        const isKnownShapeQuoted = () => {
+            const la: any = this.LA(1);
+            if (!la || la.tokenType !== tokens.QuotedString) return false;
+            const raw = String(la.image || '');
+            const unq = raw.length >= 2 && (raw.startsWith('"') || raw.startsWith("'")) ? raw.slice(1, -1) : raw;
+            const v = unq.toLowerCase();
+            return (
+                v === 'rect' || v === 'round' || v === 'rounded' || v === 'stadium' || v === 'subroutine' ||
+                v === 'circle' || v === 'cylinder' || v === 'diamond' || v === 'trapezoid' || v === 'trapezoidalt' ||
+                v === 'parallelogram' || v === 'hexagon' || v === 'lean-l' || v === 'lean-r' || v === 'icon' || v === 'image'
+            );
+        };
+        this.OR([
+            { GATE: isKnownShapeId, ALT: () => this.CONSUME(tokens.Identifier, { LABEL: 'shapeId' }) },
+            { GATE: isKnownShapeQuoted, ALT: () => this.CONSUME(tokens.QuotedString, { LABEL: 'shapeQuoted' }) },
+            // Fallback: accept any identifier/quoted/number/text so parse continues; semantics will flag unknowns
+            { ALT: () => this.CONSUME2(tokens.Identifier) },
+            { ALT: () => this.CONSUME2(tokens.QuotedString) },
             { ALT: () => this.CONSUME(tokens.NumberLiteral) },
             { ALT: () => this.CONSUME(tokens.Text) },
         ]);
@@ -207,13 +251,25 @@ export class MermaidParser extends CstParser {
     private linkStylePair = this.RULE('linkStylePair', () => {
         this.CONSUME1(tokens.Identifier, { LABEL: 'key' });
         this.CONSUME(tokens.Colon);
-        this.OR([
-            { ALT: () => this.CONSUME(tokens.ColorValue, { LABEL: 'valueColor' }) },
-            { ALT: () => this.CONSUME(tokens.QuotedString, { LABEL: 'valueQuoted' }) },
-            { ALT: () => this.CONSUME(tokens.NumberLiteral, { LABEL: 'valueNum' }) },
-            { ALT: () => this.CONSUME2(tokens.Identifier, { LABEL: 'valueId' }) },
-            { ALT: () => this.CONSUME(tokens.Text, { LABEL: 'valueText' }) },
-        ]);
+        this.SUBRULE(this.linkStyleValueChunk);
+    });
+
+    private linkStyleValueChunk = this.RULE('linkStyleValueChunk', () => {
+        this.AT_LEAST_ONE({
+            GATE: () => {
+                const la: any = this.LA(1);
+                return la && la.tokenType !== tokens.Comma && la.tokenType !== tokens.Newline;
+            },
+            DEF: () => {
+                this.OR([
+                    { ALT: () => this.CONSUME(tokens.ColorValue) },
+                    { ALT: () => this.CONSUME(tokens.QuotedString) },
+                    { ALT: () => this.CONSUME(tokens.NumberLiteral) },
+                    { ALT: () => this.CONSUME(tokens.Identifier) },
+                    { ALT: () => this.CONSUME(tokens.Text) },
+                ]);
+            }
+        });
     });
     
     // All possible node shapes

@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="188" viewBox="-50 -10 370 188">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="841" height="641" viewBox="0 0 841 641">
+  <rect x="0" y="0" width="841" height="641" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
@@ -35,26 +36,16 @@
     .lane-divider { stroke: #aaaaaa; stroke-width: 1px; stroke-dasharray: 4 3; }
     .end-double { stroke: #3f3f3f; stroke-width: 1px; fill: none; }
   </style>
-  <g class="actor" transform="translate(24,24)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">&quot;Eve</text>
-  </g>
-  <g class="actor" transform="translate(158,24)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">B</text>
-  </g>
-  <line class="lifeline" x1="79" y1="58" x2="79" y2="94"/>
-  <line class="lifeline" x1="213" y1="58" x2="213" y2="94"/>
-  <path class="msg-line solid" d="M 79 76 L 213 76" />
-  <path d="M213,76 L204,79.5 L204,72.5 Z" fill="#333" />
-  <rect class="msg-label-bg" x="134" y="54" width="24" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="62" text-anchor="middle">hi</text>
-  <g class="actor" transform="translate(24,94)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">&quot;Eve</text>
-  </g>
-  <g class="actor" transform="translate(158,94)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">B</text>
-  </g>
+  <defs>
+    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
+    </marker>
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
+    </marker>
+  </defs>
+  
 </svg>

@@ -115,9 +115,9 @@ export function analyzeSequence(_cst: CstNode, _tokens: IToken[]): ValidationErr
       const to = grabActorRef(arr, arrowIdx+1);
       if (from || to) {
         // suffix checks: presence of Plus/Minus tokens on the line
-        const hasPlus = arr.some(tk => tk.tokenType === t.Plus);
-        const hasMinus = arr.some(tk => tk.tokenType === t.Minus);
-        (events as any).push({ kind:'message', line: ln, from, to, plus: hasPlus, minus: hasMinus });
+        const plusTok = arr.find(tk => tk.tokenType === t.Plus);
+        const minusTok = arr.find(tk => tk.tokenType === t.Minus);
+        (events as any).push({ kind:'message', line: ln, from, to, plus: Boolean(plusTok), minus: Boolean(minusTok), plusTok, minusTok });
       }
     }
   }
@@ -132,10 +132,13 @@ export function analyzeSequence(_cst: CstNode, _tokens: IToken[]): ValidationErr
       const target = (ev as any).to as string;
       const plus = Boolean((ev as any).plus);
       const minus = Boolean((ev as any).minus);
+      const plusTok: IToken | undefined = (ev as any).plusTok;
+      const minusTok: IToken | undefined = (ev as any).minusTok;
       if (plus) {
         const a = actStack.get(target) || [];
         if (a.length > 0) {
-          errs.push({ line: ev.line, column: 1, severity: 'warning', code: 'SE-ACTIVATION-ALREADY-ACTIVE', message: `Message indicates '+ (activate)' but '${target}' is already active.`, hint: `Remove '+' or deactivate first: deactivate ${target}`, length: target.length });
+          const col = plusTok?.startColumn ?? 1;
+          errs.push({ line: ev.line, column: col, severity: 'warning', code: 'SE-ACTIVATION-ALREADY-ACTIVE', message: `Message indicates '+ (activate)' but '${target}' is already active.`, hint: `Remove '+' or deactivate first: deactivate ${target}`, length: 1 });
         } else {
           a.push({ line: ev.line }); actStack.set(target, a);
         }
@@ -143,7 +146,8 @@ export function analyzeSequence(_cst: CstNode, _tokens: IToken[]): ValidationErr
       if (minus) {
         const a = actStack.get(target) || [];
         if (a.length === 0) {
-          errs.push({ line: ev.line, column: 1, severity: 'warning', code: 'SE-DEACTIVATE-NO-ACTIVE', message: `Message indicates '- (deactivate)' but '${target}' is not active.`, hint: `Remove '-' or ensure 'activate ${target}' occurred before.`, length: target.length });
+          const col = minusTok?.startColumn ?? 1;
+          errs.push({ line: ev.line, column: col, severity: 'warning', code: 'SE-DEACTIVATE-NO-ACTIVE', message: `Message indicates '- (deactivate)' but '${target}' is not active.`, hint: `Remove '-' or ensure 'activate ${target}' occurred before.`, length: 1 });
         } else {
           a.pop(); actStack.set(target, a);
         }

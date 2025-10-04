@@ -5,6 +5,8 @@
     .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
     .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
     .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    .edge-marker { stroke: #555555; }
+    .edge-marker-fill { fill: #555555; }
 
     /* Cluster (flowchart + sequence blocks) */
     .cluster-bg { fill: #ffffde; }
@@ -24,8 +26,14 @@
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 2 2; }
     .msg-line.thick { stroke-width: 3px; }
+    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
+    .crosshead path { stroke: #333; stroke-width: 1.5px; }
     .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
     .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+
+    /* State overlays */
+    .lane-divider { stroke: #aaaaaa; stroke-width: 1px; stroke-dasharray: 4 3; }
+    .end-double { stroke: #3f3f3f; stroke-width: 1px; fill: none; }
   </style>
   <g class="actor" transform="translate(24,24)">
     <rect class="node-shape" width="110" height="30" rx="0"/>
@@ -47,7 +55,7 @@
   </g>
   <g class="note" transform="translate(71,140)">
     <rect width="150" height="28" rx="0"/>
-    <text class="note-text" x="75" y="18" text-anchor="middle">A shared note</text>
+    <text class="note-text" x="75" y="18" text-anchor="middle">A shared</text>
   </g>
   <g class="actor" transform="translate(24,166)">
     <rect class="node-shape" width="110" height="30" rx="0"/>

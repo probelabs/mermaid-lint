@@ -112,9 +112,11 @@ export function buildClassModel(text: string): ClassModel {
       const node = ch.relationStmt[0] as CstNode; const rch = (node.children || {}) as any;
       const leftName = classRefToText(rch.classRef?.[0]); const rightName = classRefToText(rch.classRef?.[1]);
       const left = ensureClass(leftName).id; const right = ensureClass(rightName).id;
-      // Cardinalities (optional quoted strings around op)
-      const leftCard = rch.QuotedString?.[0]?.image ? (rch.QuotedString[0].image as string).slice(1,-1) : undefined;
-      const rightCard = rch.QuotedString?.[1]?.image ? (rch.QuotedString[1].image as string).slice(1,-1) : undefined;
+      // Cardinalities: use labeled CST fields when present
+      const leftCardTok: IToken | undefined = rch.leftCard?.[0];
+      const rightCardTok: IToken | undefined = rch.rightCard?.[0];
+      const leftCard = leftCardTok?.image ? (leftCardTok.image as string).slice(1, -1) : undefined;
+      const rightCard = rightCardTok?.image ? (rightCardTok.image as string).slice(1, -1) : undefined;
       // Label after colon (one or more labelText entries)
       let label: string | undefined;
       if (rch.labelText) {

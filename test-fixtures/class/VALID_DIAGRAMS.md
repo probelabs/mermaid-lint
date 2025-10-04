@@ -20,9 +20,10 @@ This file contains all valid class test fixtures rendered with both Mermaid and 
 5. [notes on class](#5-notes-on-class)
 6. [relations advanced](#6-relations-advanced)
 7. [relations all](#7-relations-all)
-8. [relations leftward](#8-relations-leftward)
-9. [simple](#9-simple)
-10. [stereotype and alias](#10-stereotype-and-alias)
+8. [relations dual end labels](#8-relations-dual-end-labels)
+9. [relations leftward](#9-relations-leftward)
+10. [simple](#10-simple)
+11. [stereotype and alias](#11-stereotype-and-alias)
 
 ---
 
@@ -407,7 +408,62 @@ A ..|> B : realizes
 
 ---
 
-## 8. Relations Leftward
+## 8. Relations Dual End Labels
+
+📄 **Source**: [`relations-dual-end-labels.mmd`](./valid/relations-dual-end-labels.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+classDiagram
+  class User {
+    +id: string
+    +email: string
+  }
+  class Order {
+    +id: string
+  }
+  User "1" -- "*" Order : places
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/relations-dual-end-labels.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+  class User {
+    +id: string
+    +email: string
+  }
+  class Order {
+    +id: string
+  }
+  User "1" -- "*" Order : places
+
+```
+</details>
+
+---
+
+## 9. Relations Leftward
 
 📄 **Source**: [`relations-leftward.mmd`](./valid/relations-leftward.mmd)
 
@@ -468,7 +524,7 @@ IService <|.. Impl
 
 ---
 
-## 9. Simple
+## 10. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -521,7 +577,7 @@ class Bar
 
 ---
 
-## 10. Stereotype And Alias
+## 11. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 

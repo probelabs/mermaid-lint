@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="563" height="587" viewBox="0 0 563 587">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="563" height="587" viewBox="0 0 563 587">
   <rect x="0" y="0" width="563" height="587" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
@@ -50,34 +50,42 @@
   <g class="subgraph-bg"></g>
   <g id="Composite">
     <rect class="node-shape"  x="260" y="269" width="103" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="311.5" y="293.9" text-anchor="middle">Composite</text>
   </g>
   <g id="__start_40">
     <circle class="node-shape"  cx="150" cy="109" r="40" />
+    
     <text class="node-label" x="150" y="113.9" text-anchor="middle"></text>
   </g>
   <g id="S1">
     <rect class="node-shape"  x="110" y="269" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="150" y="293.9" text-anchor="middle">S1</text>
   </g>
   <g id="__hist_62">
     <circle class="node-shape"  cx="150" cy="469" r="40" />
+    
     <text class="node-label" x="150" y="473.9" text-anchor="middle">H</text>
   </g>
   <g id="__histdeep_70">
     <circle class="node-shape"  cx="473" cy="109" r="40" />
+    
     <text class="node-label" x="473" y="113.9" text-anchor="middle">H*</text>
   </g>
   <g id="S2">
     <rect class="node-shape"  x="433" y="269" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="473" y="293.9" text-anchor="middle">S2</text>
   </g>
   <g id="__start_88">
     <circle class="node-shape"  cx="311.5" cy="109" r="40" />
+    
     <text class="node-label" x="311.5" y="113.9" text-anchor="middle"></text>
   </g>
   <g id="__end_122">
     <circle class="node-shape"  cx="311.5" cy="469" r="40" />
+    
     <text class="node-label" x="311.5" y="473.9" text-anchor="middle"></text>
   </g>
   <g><path class="edge-path" d="M150,149 L150,159 C150,171 150,253 150,259 L150,269" stroke-linecap="round" stroke-linejoin="round" />

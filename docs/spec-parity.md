@@ -14,6 +14,8 @@ Flowchart
   - [x] Click parsed into structured subrules (`href` / `call`) with clear CST.
   - [x] LinkStyle parsed into index list + key:value style pairs; multiline supported.
   - [x] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser + renderer mapping (rect/round/diamond/hexagon/parallelogram lean-l/r/trapezoid/trapezoidAlt); basic image media rendering.
+  - [x] Typed-shape shape identifiers: consider narrowed tokens or guarded Identifier to reduce ambiguity (parser-level hinting; semantics remains authoritative).
+    - Done when: shape values in `@{ shape: … }` accept a guarded set at parse time (rect, round, stadium, subroutine, circle, cylinder, diamond, trapezoid, trapezoidAlt, parallelogram, lean-l, lean-r, hexagon); unknowns still surface as FL-TYPED-SHAPE-UNKNOWN from semantics.
 - Semantics/Validation
   - [x] Enforce only keyword `direction` before a Direction inside subgraphs (FL-DIR-KW-INVALID).
   - [x] Conflict warning when both bracket shape and `@{ shape: … }` present (FL-TYPED-SHAPE-CONFLICT).
@@ -21,7 +23,7 @@ Flowchart
   - [x] Interactions validation: `click` mode/url/call/target checks; `linkStyle` indices and style presence (FL-CLICK-*, FL-LINKSTYLE-*).
   - [x] Interactions parsing: `click` now parsed into structured `href` / `call` subrules for clearer semantics and graph mapping.
   - [x] Interactions extras: range usage `0:3` flagged (FL-LINKSTYLE-RANGE-UNSUPPORTED); duplicate indices warned (FL-LINKSTYLE-DUPLICATE-INDEX).
-  - [ ] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
+  - [x] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
   - [ ] Typed-shape shape identifiers: consider narrowed tokens or guarded Identifier to reduce ambiguity (parser-level hinting; semantics remains authoritative).
 - Renderer parity
   - [~] Edge–shape intersection: polygon/capsule intersection improved; round fallback added; verify stadium/parallelogram/trapezoid/hexagon across complex joins.
@@ -33,17 +35,18 @@ Flowchart
 - Fixtures/Tests
   - [ ] Expand `typed-shapes-basic.mmd` to cover all shapes + negative cases (lean-l/r, image/icon variants).
   - [x] Add `interactions-linkstyle-ranges.mmd` (invalid; range unsupported today).
-  - [ ] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices.
+  - [x] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices (including multiline styles and varying whitespace).
 
 Sequence
 - Parser
   - [x] `title`, `accTitle`, `accDescr` at top (kept invalid fixtures to mirror CLI behavior).
   - [x] `par over A,B` form.
   - [x] Message `properties` / `details` lines parsed (fixtures invalid to match CLI).
+  - [x] Apply actorRef normalization utilities across validators (notes, `par over` header, create/destroy, message ends) so diagnostics print consistent names.
 - Semantics/Validation
   - [x] `create` followed by a “creating message” to/from the created actor (warning if missing).
   - [x] Activation balance checks; suffix checks for message `+`/`-` (already active / no active to deactivate).
-  - [ ] Improve caret positions to point at suffix tokens for +/− diagnostics.
+  - [x] Improve caret positions to point at suffix tokens for +/− diagnostics.
   - [ ] Apply actorRef normalization utils across all validators (notes, par over header, create/destroy).
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
@@ -54,6 +57,7 @@ Sequence
 - Fixtures/Tests
   - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.
   - [ ] Add fixtures for nested blocks with `par over` + `and` branches (both valid and invalid placements).
+  - [x] Add `suffix-balance.mmd` (valid) and `suffix-misuse.mmd` (invalid) to exercise `+`/`-` checks and caret placement.
 
 Pie
 - Semantics/Validation
@@ -69,7 +73,7 @@ Class
   - [x] Leftward dependency/realization operators.
   - [~] Simple generic `<…>` tokenization for names/types; keep fixtures invalid to mirror CLI; add diagnostics for unbalanced `< >`.
   - [x] Notes on classes (`note for/on X: …`).
-  - [ ] Dual-end labels/cardinalities coverage (labels near both classes); ensure builder consumes labeled CST fields (leftCard/rightCard).
+  - [x] Dual-end labels/cardinalities coverage (labels near both classes); ensure builder consumes labeled CST fields (leftCard/rightCard).
 - Renderer (new)
   - [x] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
   - [x] Wrap long edge labels into tspans (centered over edge).
@@ -77,6 +81,7 @@ Class
   - [~] Dependency chevron shape/size tuning for short segments (initial tweak landed).
 - Fixtures/Tests
   - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end label/cardinality cases.
+  - [ ] Add `relations-dual-end-labels.mmd` (valid) covering both-end cardinalities and labels.
 
 State
 - Parser/Semantics
@@ -91,7 +96,7 @@ State
   - [x] Transition routing + boundary intersection polish for diamonds/bars and composite borders (fallback to nearest boundary when colinear).
 - Fixtures/Tests
   - [ ] Nested concurrency, history states valid/invalid, marker edge cases.
-  - [ ] Add invalid fixtures for misplaced concurrency at block start/end (multiple separators, empty regions).
+  - [x] Add invalid fixtures for misplaced concurrency at block start/end (multiple separators, empty regions).
 
 Cross-Cutting
 - [~] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
@@ -102,6 +107,7 @@ Cross-Cutting
 - [x] PNG/SVG parity harness extended to class/state (batch script + npm scripts). Golden PNGs optional.
 - [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics and renderer coverage.
 - [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
+ - [ ] README: add “Parsing parity” commands and note structured click/linkStyle CST for contributors (compare-linters, test-errors, where CST fields live).
 
 Progress Snapshot (auto-updating intent)
 - Flowchart: CLI parity 100%; interactions validated and rendered (style); arrowheads scale with stroke-width.

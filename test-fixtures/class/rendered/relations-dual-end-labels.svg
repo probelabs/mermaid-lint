@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="370" height="188" viewBox="-50 -10 370 188">
-  <style>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="262" viewBox="-20 -20 200 262">
+<style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
     .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
     .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
@@ -34,27 +34,26 @@
     /* State overlays */
     .lane-divider { stroke: #aaaaaa; stroke-width: 1px; stroke-dasharray: 4 3; }
     .end-double { stroke: #3f3f3f; stroke-width: 1px; fill: none; }
+  
+    .class-title { font-weight: 600; }
+    .class-divider { stroke: #aaa; stroke-width: 1; }
+    .class-member { font-size: 12px; }
   </style>
-  <g class="actor" transform="translate(24,24)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">&quot;Eve</text>
+  <g transform="translate(20,20)">
+    <rect class="node-shape" width="120" height="74" rx="0"/>
+    <text class="node-label class-title" x="60" y="22" text-anchor="middle" dominant-baseline="middle">User</text>
+    <line class="class-divider" x1="0" y1="28" x2="120" y2="28"/>
+    <text class="node-label class-member" x="12" y="36" dominant-baseline="hanging">+ :</text>
+    <text class="node-label class-member" x="12" y="52" dominant-baseline="hanging">+ :</text>
   </g>
-  <g class="actor" transform="translate(158,24)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">B</text>
+  <g transform="translate(20,144)">
+    <rect class="node-shape" width="120" height="58" rx="0"/>
+    <text class="node-label class-title" x="60" y="22" text-anchor="middle" dominant-baseline="middle">Order</text>
+    <line class="class-divider" x1="0" y1="28" x2="120" y2="28"/>
+    <text class="node-label class-member" x="12" y="36" dominant-baseline="hanging">+ :</text>
   </g>
-  <line class="lifeline" x1="79" y1="58" x2="79" y2="94"/>
-  <line class="lifeline" x1="213" y1="58" x2="213" y2="94"/>
-  <path class="msg-line solid" d="M 79 76 L 213 76" />
-  <path d="M213,76 L204,79.5 L204,72.5 Z" fill="#333" />
-  <rect class="msg-label-bg" x="134" y="54" width="24" height="16" rx="3"/>
-  <text class="msg-label" x="146" y="62" text-anchor="middle">hi</text>
-  <g class="actor" transform="translate(24,94)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">&quot;Eve</text>
-  </g>
-  <g class="actor" transform="translate(158,94)">
-    <rect class="node-shape" width="110" height="30" rx="0"/>
-    <text class="node-label" x="55" y="15" text-anchor="middle" dominant-baseline="middle">B</text>
-  </g>
+<polyline class="edge-path edge-path" points="80,94 80,119 80,144" fill="none"/>
+<text class="edge-label-text" x="72" y="88" text-anchor="end">1</text>
+<text class="edge-label-text" x="88" y="150" text-anchor="start">*</text>
+<text class="edge-label-text" x="80" y="109" text-anchor="middle"><tspan x="80" dy="0">places</tspan></text>
 </svg>

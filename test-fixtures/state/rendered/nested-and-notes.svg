@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="650" height="460" viewBox="0 0 650 460">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="650" height="460" viewBox="0 0 650 460">
   <rect x="0" y="0" width="650" height="460" fill="#ffffff" />
   <style>
     .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
@@ -50,30 +50,37 @@
   <g class="subgraph-bg"></g>
   <g id="Auth">
     <rect class="node-shape"  x="201" y="380" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="241" y="404.9" text-anchor="middle">Auth</text>
   </g>
   <g id="__start_44">
     <circle class="node-shape"  cx="91" cy="200" r="40" />
+    
     <text class="node-label" x="91" y="204.9" text-anchor="middle"></text>
   </g>
   <g id="Login">
     <rect class="node-shape"  x="201" y="180" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="241" y="204.9" text-anchor="middle">Login</text>
   </g>
   <g id="MFA">
     <rect class="node-shape"  x="351" y="180" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="391" y="204.9" text-anchor="middle">MFA</text>
   </g>
   <g id="Success">
     <rect class="node-shape"  x="501" y="180" width="89" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="545.5" y="204.9" text-anchor="middle">Success</text>
   </g>
   <g id="__start_101">
     <circle class="node-shape"  cx="91" cy="400" r="40" />
+    
     <text class="node-label" x="91" y="404.9" text-anchor="middle"></text>
   </g>
   <g id="__end_123">
     <circle class="node-shape"  cx="391" cy="400" r="40" />
+    
     <text class="node-label" x="391" y="404.9" text-anchor="middle"></text>
   </g>
   <g><path class="edge-path" d="M131,200 L141,200 C153,200 185,200 191,200 L201,200" stroke-linecap="round" stroke-linejoin="round" />

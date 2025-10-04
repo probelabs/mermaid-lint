@@ -9,15 +9,17 @@ This file contains invalid state test fixtures with:
 
 ## Table of Contents
 
-1. [Concurrency Outside Block](#1-concurrency-outside-block)
-2. [Concurrency Two Regions](#2-concurrency-two-regions)
-3. [Header Missing](#3-header-missing)
-4. [Invalid Arrow](#4-invalid-arrow)
-5. [Markers And Concurrency](#5-markers-and-concurrency)
-6. [Missing Rbrace](#6-missing-rbrace)
-7. [Note Glued To Previous](#7-note-glued-to-previous)
-8. [Note Missing Colon](#8-note-missing-colon)
-9. [Note Over Missing Colon](#9-note-over-missing-colon)
+1. [Concurrency At End](#1-concurrency-at-end)
+2. [Concurrency At Start](#2-concurrency-at-start)
+3. [Concurrency Outside Block](#3-concurrency-outside-block)
+4. [Concurrency Two Regions](#4-concurrency-two-regions)
+5. [Header Missing](#5-header-missing)
+6. [Invalid Arrow](#6-invalid-arrow)
+7. [Markers And Concurrency](#7-markers-and-concurrency)
+8. [Missing Rbrace](#8-missing-rbrace)
+9. [Note Glued To Previous](#9-note-glued-to-previous)
+10. [Note Missing Colon](#10-note-missing-colon)
+11. [Note Over Missing Colon](#11-note-over-missing-colon)
 
 ---
 
@@ -25,19 +27,187 @@ This file contains invalid state test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [concurrency outside block](#1-concurrency-outside-block) | INVALID | INVALID | — |
-| 2 | [concurrency two regions](#2-concurrency-two-regions) | INVALID | INVALID | — |
-| 3 | [header missing](#3-header-missing) | INVALID | INVALID | — |
-| 4 | [invalid arrow](#4-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 5 | [markers and concurrency](#5-markers-and-concurrency) | INVALID | INVALID | — |
-| 6 | [missing rbrace](#6-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 7 | [note glued to previous](#7-note-glued-to-previous) | INVALID | INVALID | — |
-| 8 | [note missing colon](#8-note-missing-colon) | INVALID | INVALID | ✅ safe |
-| 9 | [note over missing colon](#9-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
+| 1 | [concurrency at end](#1-concurrency-at-end) | INVALID | INVALID | — |
+| 2 | [concurrency at start](#2-concurrency-at-start) | INVALID | INVALID | — |
+| 3 | [concurrency outside block](#3-concurrency-outside-block) | INVALID | INVALID | — |
+| 4 | [concurrency two regions](#4-concurrency-two-regions) | INVALID | INVALID | — |
+| 5 | [header missing](#5-header-missing) | INVALID | INVALID | — |
+| 6 | [invalid arrow](#6-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 7 | [markers and concurrency](#7-markers-and-concurrency) | INVALID | INVALID | — |
+| 8 | [missing rbrace](#8-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 9 | [note glued to previous](#9-note-glued-to-previous) | INVALID | INVALID | — |
+| 10 | [note missing colon](#10-note-missing-colon) | INVALID | INVALID | ✅ safe |
+| 11 | [note over missing colon](#11-note-over-missing-colon) | INVALID | INVALID | ✅ safe |
 
 ---
 
-## 1. Concurrency Outside Block
+## 1. Concurrency At End
+
+📄 **Source**: [`concurrency-at-end.mmd`](./invalid/concurrency-at-end.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+stateDiagram-v2
+  state Composite {
+    [*] --> A
+    A --> B
+    ---
+  }
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Lexical error on line 5. Unrecognized text.
+...A    A --> B    ---  }
+---------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
+at test-fixtures/state/invalid/concurrency-at-end.mmd:5:1
+  4 |     A --> B
+  5 |     ---
+    | ^
+  6 |   }
+hint: Remove '---' or split logic into separate composite states.
+
+error[ST-CONCURRENCY-MISPLACED]: Concurrency separator '---' must be between regions, not at the start or end of a block.
+at test-fixtures/state/invalid/concurrency-at-end.mmd:5:1
+  4 |     A --> B
+  5 |     ---
+    | ^
+  6 |   }
+hint: Place '---' between two sets of state lines inside the same block.
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+  state Composite {
+    [*] --> A
+    A --> B
+    ---
+  }
+
+
+```
+</details>
+
+---
+
+## 2. Concurrency At Start
+
+📄 **Source**: [`concurrency-at-start.mmd`](./invalid/concurrency-at-start.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+stateDiagram-v2
+  state Composite {
+    ---
+    [*] --> A
+    A --> B
+  }
+
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Lexical error on line 3. Unrecognized text.
+...e Composite {    ---    [*] --> A    
+----------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
+at test-fixtures/state/invalid/concurrency-at-start.mmd:3:1
+  2 |   state Composite {
+  3 |     ---
+    | ^
+  4 |     [*] --> A
+hint: Remove '---' or split logic into separate composite states.
+
+error[ST-CONCURRENCY-MISPLACED]: Concurrency separator '---' must be between regions, not at the start or end of a block.
+at test-fixtures/state/invalid/concurrency-at-start.mmd:3:1
+  2 |   state Composite {
+  3 |     ---
+    | ^
+  4 |     [*] --> A
+hint: Place '---' between two sets of state lines inside the same block.
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+stateDiagram-v2
+  state Composite {
+    ---
+    [*] --> A
+    A --> B
+  }
+
+
+```
+</details>
+
+---
+
+## 3. Concurrency Outside Block
 
 📄 **Source**: [`concurrency-outside-block.mmd`](./invalid/concurrency-outside-block.mmd)
 
@@ -108,7 +278,7 @@ A --> [*]
 
 ---
 
-## 2. Concurrency Two Regions
+## 4. Concurrency Two Regions
 
 📄 **Source**: [`concurrency-two-regions.mmd`](./invalid/concurrency-two-regions.mmd)
 
@@ -183,7 +353,7 @@ stateDiagram-v2
 
 ---
 
-## 3. Header Missing
+## 5. Header Missing
 
 📄 **Source**: [`header-missing.mmd`](./invalid/header-missing.mmd)
 
@@ -247,7 +417,7 @@ A --> B
 
 ---
 
-## 4. Invalid Arrow
+## 6. Invalid Arrow
 
 📄 **Source**: [`invalid-arrow.mmd`](./invalid/invalid-arrow.mmd)
 
@@ -320,7 +490,7 @@ Idle -> Running : start
 
 ---
 
-## 5. Markers And Concurrency
+## 7. Markers And Concurrency
 
 📄 **Source**: [`markers-and-concurrency.mmd`](./invalid/markers-and-concurrency.mmd)
 
@@ -395,7 +565,7 @@ state Auth {
 
 ---
 
-## 6. Missing Rbrace
+## 8. Missing Rbrace
 
 📄 **Source**: [`missing-rbrace.mmd`](./invalid/missing-rbrace.mmd)
 
@@ -475,7 +645,7 @@ state Foo {
 
 ---
 
-## 7. Note Glued To Previous
+## 9. Note Glued To Previous
 
 📄 **Source**: [`note-glued-to-previous.mmd`](./invalid/note-glued-to-previous.mmd)
 
@@ -546,7 +716,7 @@ Auth --> [*]Note over Auth: Handles user auth
 
 ---
 
-## 8. Note Missing Colon
+## 10. Note Missing Colon
 
 📄 **Source**: [`note-missing-colon.mmd`](./invalid/note-missing-colon.mmd)
 
@@ -621,7 +791,7 @@ A --> B : ok
 
 ---
 
-## 9. Note Over Missing Colon
+## 11. Note Over Missing Colon
 
 📄 **Source**: [`note-over-missing-colon.mmd`](./invalid/note-over-missing-colon.mmd)
 
