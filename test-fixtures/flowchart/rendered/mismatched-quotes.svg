@@ -49,6 +49,7 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="40" width="240" height="56" rx="0" ry="0" />
+    
     <text class="node-label">
     <tspan x="160" y="63.9" text-anchor="middle">Mismatched label&apos;] --&gt; B
  </tspan>
@@ -57,6 +58,7 @@
   </g>
   <g id="D">
     <rect class="node-shape"  x="120" y="146" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="160" y="170.9" text-anchor="middle">D</text>
   </g>
   <g><path class="edge-path" d="M160,96 L160,106 C160,118 160,130 160,136 L160,146" stroke-linecap="round" stroke-linejoin="round" />

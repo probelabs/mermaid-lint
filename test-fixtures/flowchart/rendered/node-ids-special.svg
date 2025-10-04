@@ -49,22 +49,27 @@
   </defs>
   <g id="id1">
     <rect class="node-shape"  x="40" y="40" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="81" y="64.9" text-anchor="middle">Node 1</text>
   </g>
   <g id="id-2">
     <rect class="node-shape"  x="40" y="130" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="81" y="154.9" text-anchor="middle">Node 2</text>
   </g>
   <g id="id_3">
     <rect class="node-shape"  x="40" y="220" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="81" y="244.9" text-anchor="middle">Node 3</text>
   </g>
   <g id="ID4">
     <rect class="node-shape"  x="40" y="310" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="81" y="334.9" text-anchor="middle">Node 4</text>
   </g>
   <g id="_id5">
     <rect class="node-shape"  x="40" y="400" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="81" y="424.9" text-anchor="middle">Node 5</text>
   </g>
   <g><path class="edge-path" d="M81,80 L81,90 C81,102 81,114 81,120 L81,130" stroke-linecap="round" stroke-linejoin="round" />

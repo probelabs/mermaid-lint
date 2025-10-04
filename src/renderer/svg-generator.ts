@@ -176,15 +176,19 @@ export class SVGRenderer implements IRenderer {
     const stroke = (node.style?.stroke ?? undefined);
     const fill = (node.style?.fill ?? undefined);
     const styleAttr = this.buildNodeStyleAttrs({ stroke, strokeWidth, fill });
+    const typed = (node as any).typed as (undefined | { padding?: number; cornerRadius?: number; lean?: 'l'|'r'; media?: { icon?: string; image?: string } });
+    const innerPad = Math.max(0, (typed?.padding ?? 10));
 
     switch (node.shape) {
       case 'rectangle':
         shape = `<rect class="node-shape" ${styleAttr} x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="0" ry="0" />`;
         break;
 
-      case 'round':
-        shape = `<rect class="node-shape" ${styleAttr} x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="5" ry="5" />`;
+      case 'round': {
+        const rx = Math.max(0, typed?.cornerRadius ?? 5);
+        shape = `<rect class="node-shape" ${styleAttr} x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${rx}" ry="${rx}" />`;
         break;
+      }
 
       case 'stadium':
         const radius = node.height / 2;
@@ -223,12 +227,20 @@ export class SVGRenderer implements IRenderer {
 
       case 'parallelogram': {
         const skew = node.width * 0.15;
-        const points = [
-          `${x + skew},${y}`,                       // top-left
-          `${x + node.width},${y}`,                 // top-right
-          `${x + node.width - skew},${y + node.height}`, // bottom-right
-          `${x},${y + node.height}`                 // bottom-left
-        ].join(' ');
+        const leftLean = typed?.lean === 'l';
+        const points = (leftLean
+          ? [
+              `${x},${y}`,
+              `${x + node.width - skew},${y}`,
+              `${x + node.width},${y + node.height}`,
+              `${x + skew},${y + node.height}`
+            ]
+          : [
+              `${x + skew},${y}`,
+              `${x + node.width},${y}`,
+              `${x + node.width - skew},${y + node.height}`,
+              `${x},${y + node.height}`
+            ]).join(' ');
         shape = `<polygon class="node-shape" ${styleAttr} points="${points}" />`;
         break;
       }
@@ -300,10 +312,21 @@ export class SVGRenderer implements IRenderer {
     }
 
     // Add text label with wrapping
-    const text = this.generateWrappedText(node.label, cx, labelCenterY, node.width - 20);
+    const text = this.generateWrappedText(node.label, cx, labelCenterY, node.width - innerPad * 2);
+
+    // Optional typed media (image) near left edge
+    let media = '';
+    if (typed?.media?.image) {
+      const iw = Math.min(24, Math.max(12, node.height - 10));
+      const ih = iw;
+      const ix = x + 4;
+      const iy = y + (node.height - ih) / 2;
+      media = `<image xlink:href="${this.escapeXml(typed.media.image)}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" />`;
+    }
 
     const baseGroup = `<g id="${node.id}">
     ${shape}
+    ${media}
     ${text}
   </g>`;
     const link = (node as any).link as (undefined | { href?: string; target?: string; tooltip?: string; call?: string });

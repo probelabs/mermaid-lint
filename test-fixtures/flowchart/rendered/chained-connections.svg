@@ -49,34 +49,42 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="40" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="80" y="64.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="40" y="130" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="80" y="154.9" text-anchor="middle">B</text>
   </g>
   <g id="C">
     <rect class="node-shape"  x="40" y="220" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="80" y="244.9" text-anchor="middle">C</text>
   </g>
   <g id="D">
     <rect class="node-shape"  x="40" y="310" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="80" y="334.9" text-anchor="middle">D</text>
   </g>
   <g id="E">
     <rect class="node-shape"  x="175" y="40" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="215" y="64.9" text-anchor="middle">E</text>
   </g>
   <g id="F">
     <rect class="node-shape"  x="305" y="40" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="345" y="64.9" text-anchor="middle">F</text>
   </g>
   <g id="G">
     <rect class="node-shape"  x="170" y="130" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="210" y="154.9" text-anchor="middle">G</text>
   </g>
   <g id="H">
     <rect class="node-shape"  x="310" y="130" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="350" y="154.9" text-anchor="middle">H</text>
   </g>
   <g><path class="edge-path" d="M80,80 L80,90 C80,102 80,114 80,120 L80,130" stroke-linecap="round" stroke-linejoin="round" />

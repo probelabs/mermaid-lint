@@ -269,7 +269,7 @@ export class GraphBuilder {
       return null;
     }
 
-    // Extract shape and label
+    // Extract shape and label (bracket-based)
     let shape: NodeShape = 'rectangle';
     let label = id; // Default label is the ID
 
@@ -280,6 +280,31 @@ export class GraphBuilder {
       if (result.label) label = result.label;
     }
 
+    // Typed-shape attribute object after node id (A@{ ... })
+    const attrNode = (children as any).attrObject?.[0] as CstNode | undefined;
+    let typedShape: { shape?: string; label?: string; padding?: number; cornerRadius?: number; icon?: string; image?: string; lean?: 'l'|'r' } | undefined;
+    if (attrNode && !shapeNode) {
+      typedShape = this.parseTypedAttrObject(attrNode);
+      if (typedShape.shape) {
+        const m = typedShape.shape;
+        if (m === 'rect') shape = 'rectangle';
+        else if (m === 'round' || m === 'rounded') shape = 'round';
+        else if (m === 'stadium') shape = 'stadium';
+        else if (m === 'subroutine') shape = 'subroutine';
+        else if (m === 'circle') shape = 'circle';
+        else if (m === 'cylinder') shape = 'cylinder';
+        else if (m === 'diamond') shape = 'diamond';
+        else if (m === 'trapezoid') shape = 'trapezoid';
+        else if (m === 'trapezoidAlt') shape = 'trapezoidAlt';
+        else if (m === 'parallelogram' || m === 'lean-l' || m === 'lean-r') { shape = 'parallelogram'; typedShape.lean = (m === 'lean-l' ? 'l' : (m === 'lean-r' ? 'r' : undefined)); }
+        else if (m === 'hexagon') shape = 'hexagon';
+        else if (m === 'icon' || m === 'image') shape = 'rectangle';
+      }
+      if (typeof typedShape.label === 'string' && typedShape.label.length > 0) {
+        label = typedShape.label;
+      }
+    }
+
     // Capture inline class annotation if present
     const clsTok = (children as any).nodeClass?.[0] as IToken | undefined;
     if (clsTok) {
@@ -288,7 +313,47 @@ export class GraphBuilder {
       this.nodeClasses.set(id, set);
     }
 
-    return { id, label, shape };
+    const out: any = { id, label, shape } as Node;
+    if (typedShape) {
+      const padding = typedShape.padding;
+      const cornerRadius = typedShape.cornerRadius;
+      const lean = typedShape.lean;
+      const media = (typedShape.icon || typedShape.image) ? { icon: typedShape.icon, image: typedShape.image } : undefined;
+      out.typed = { padding, cornerRadius, lean, media };
+    }
+    return out;
+  }
+
+  private parseTypedAttrObject(attrNode: CstNode): { shape?: string; label?: string; padding?: number; cornerRadius?: number; icon?: string; image?: string } {
+    const ch = (attrNode.children || {}) as any;
+    const pairs: CstNode[] = (ch.attrPair || []) as CstNode[];
+    const out: any = {};
+    for (const p of pairs) {
+      const keyTok = (p.children?.attrKey?.[0] as IToken | undefined);
+      if (!keyTok) continue;
+      const k = keyTok.image;
+      const vTok = (p.children?.QuotedString?.[0] || p.children?.Identifier?.[0] || p.children?.NumberLiteral?.[0] || p.children?.Text?.[0]) as IToken | undefined;
+      if (!vTok) continue;
+      let raw = vTok.image;
+      if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) raw = raw.slice(1, -1);
+      switch (k) {
+        case 'shape': out.shape = raw; break;
+        case 'label': out.label = raw; break;
+        case 'padding': {
+          const n = parseFloat(raw);
+          if (Number.isFinite(n)) out.padding = n;
+          break;
+        }
+        case 'cornerRadius': {
+          const n = parseFloat(raw);
+          if (Number.isFinite(n)) out.cornerRadius = n;
+          break;
+        }
+        case 'icon': out.icon = raw; break;
+        case 'image': out.image = raw; break;
+      }
+    }
+    return out;
   }
 
   private extractShapeAndLabel(shapeNode: CstNode): { shape: NodeShape; label: string } {

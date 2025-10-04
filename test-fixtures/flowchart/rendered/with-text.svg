@@ -49,22 +49,27 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="85" width="131" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="105.5" y="109.9" text-anchor="middle">Start Process</text>
   </g>
   <g id="B">
     <polygon class="node-shape"  points="278.5,47.5 336,105 278.5,162.5 221,105" />
+    
     <text class="node-label" x="278.5" y="109.9" text-anchor="middle">Decision</text>
   </g>
   <g id="C">
     <rect class="node-shape"  x="427.5" y="40" width="124" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="489.5" y="64.9" text-anchor="middle">Do something</text>
   </g>
   <g id="D">
     <rect class="node-shape"  x="410" y="130" width="159" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="489.5" y="154.9" text-anchor="middle">Do something else</text>
   </g>
   <g id="E">
     <rect class="node-shape"  x="619" y="85" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="659" y="109.9" text-anchor="middle">End</text>
   </g>
   <g><path class="edge-path" d="M171,105 L181,105 C193,105 205,105 211,105 L221,105" stroke-linecap="round" stroke-linejoin="round" />

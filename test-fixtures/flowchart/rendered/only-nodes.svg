@@ -49,14 +49,17 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="40" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="81" y="64.9" text-anchor="middle">Node A</text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="172" y="40" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="213" y="64.9" text-anchor="middle">Node B</text>
   </g>
   <g id="C">
     <rect class="node-shape"  x="304" y="40" width="82" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="345" y="64.9" text-anchor="middle">Node C</text>
   </g>
   

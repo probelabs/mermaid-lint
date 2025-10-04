@@ -22,6 +22,12 @@ export interface Node {
     tooltip?: string;
     call?: string; // for 'call' mode; informational only in static SVG
   };
+  typed?: {
+    padding?: number;
+    cornerRadius?: number;
+    lean?: 'l' | 'r';
+    media?: { icon?: string; image?: string };
+  };
 }
 
 export interface Edge {

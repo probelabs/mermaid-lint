@@ -52,14 +52,17 @@
 </g></g>
   <g id="A">
     <rect class="node-shape"  x="190" y="69" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="230" y="93.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="190" y="229" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="230" y="253.9" text-anchor="middle">B</text>
   </g>
   <g id="C">
     <rect class="node-shape"  x="40" y="229" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="80" y="253.9" text-anchor="middle">C</text>
   </g>
   <g><path class="edge-path" d="M230,109 L230,119 C230,131 230,213 230,219 L230,229" stroke-linecap="round" stroke-linejoin="round" />

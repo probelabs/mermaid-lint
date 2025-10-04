@@ -54,22 +54,27 @@
 </g></g>
   <g id="A">
     <rect class="node-shape"  x="51" y="300" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="91" y="324.9" text-anchor="middle">A</text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="201" y="300" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="241" y="324.9" text-anchor="middle">B</text>
   </g>
   <g id="C">
     <rect class="node-shape"  x="51" y="460" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="91" y="484.9" text-anchor="middle">C</text>
   </g>
   <g id="D">
     <rect class="node-shape"  x="201" y="460" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="241" y="484.9" text-anchor="middle">D</text>
   </g>
   <g id="E">
     <rect class="node-shape"  x="201" y="40" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="241" y="64.9" text-anchor="middle">E</text>
   </g>
   <g><path class="edge-path" d="M131,320 L141,320 C153,320 185,320 191,320 L201,320" stroke-linecap="round" stroke-linejoin="round" />

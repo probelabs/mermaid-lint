@@ -49,6 +49,7 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="40" width="240" height="74" rx="0" ry="0" />
+    
     <text class="node-label">
     <tspan x="160" y="63.9" text-anchor="middle">This is a very long text that</tspan>
     <tspan x="160" y="81.9" text-anchor="middle">spans quite a bit of space in</tspan>
@@ -57,6 +58,7 @@
   </g>
   <g id="B">
     <rect class="node-shape"  x="40" y="164" width="240" height="56" rx="0" ry="0" />
+    
     <text class="node-label" x="160" y="196.9" text-anchor="middle">Another long piece of text here</text>
   </g>
   <g><path class="edge-path" d="M160,114 L160,124 C160,136 160,148 160,154 L160,164" stroke-linecap="round" stroke-linejoin="round" />

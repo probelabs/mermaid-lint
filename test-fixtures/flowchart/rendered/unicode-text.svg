@@ -49,14 +49,17 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="40" width="96" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="88" y="64.9" text-anchor="middle">Hello 世界</text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="186" y="40" width="96" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="234" y="64.9" text-anchor="middle">Emoji 😀</text>
   </g>
   <g id="C">
     <rect class="node-shape"  x="332" y="40" width="124" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="394" y="64.9" text-anchor="middle">Symbols ★☆♦♠</text>
   </g>
   <g><path class="edge-path" d="M136,60 L146,60 C158,60 170,60 176,60 L186,60" stroke-linecap="round" stroke-linejoin="round" />

@@ -49,11 +49,13 @@
   </defs>
   <g id="A">
     <rect class="node-shape"  x="40" y="40" width="124" height="56" rx="0" ry="0" />
+    
     <text font-family="Arial, sans-serif" font-size="14" fill="#333"><tspan x="102" y="63.9" text-anchor="middle"><tspan >Load Prompt </tspan></tspan>
     <tspan x="102" y="81.9" text-anchor="middle"><tspan > from file</tspan></tspan></text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="62" y="146" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="102" y="170.9" text-anchor="middle">End</text>
   </g>
   <g><path class="edge-path" d="M102,96 L102,106 C102,118 102,130 102,136 L102,146" stroke-linecap="round" stroke-linejoin="round" />

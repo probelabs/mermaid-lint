@@ -52,14 +52,17 @@
 </g></g>
   <g id="A">
     <rect class="node-shape"  x="110" y="69" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="150" y="93.9" text-anchor="middle">Alpha</text>
   </g>
   <g id="B">
     <rect class="node-shape"  x="110" y="229" width="80" height="40" rx="0" ry="0" />
+    
     <text class="node-label" x="150" y="253.9" text-anchor="middle">Beta</text>
   </g>
   <g id="C">
     <polygon class="node-shape"  points="150,389 198,437 150,485 102,437" />
+    
     <text class="node-label" x="150" y="441.9" text-anchor="middle">Gamma</text>
   </g>
   <g><path class="edge-path" d="M150,109 L150,119 C150,131 150,213 150,219 L150,229" stroke-linecap="round" stroke-linejoin="round" />
