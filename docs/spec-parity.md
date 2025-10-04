@@ -24,7 +24,9 @@ Flowchart
   - [x] Interactions parsing: `click` now parsed into structured `href` / `call` subrules for clearer semantics and graph mapping.
   - [x] Interactions extras: range usage `0:3` flagged (FL-LINKSTYLE-RANGE-UNSUPPORTED); duplicate indices warned (FL-LINKSTYLE-DUPLICATE-INDEX).
   - [x] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
-  - [ ] Typed-shape shape identifiers: consider narrowed tokens or guarded Identifier to reduce ambiguity (parser-level hinting; semantics remains authoritative).
+  - [x] Interactions call(): reject extra tooltip/target after `call()` to match CLI; fixtures added.
+  - [x] Class/style targets: warn on unknown ids (forward refs allowed via pre-collection).
+  - [x] Typed-shape support matrix enforced (unsupported -> error); docs/fixtures updated.
 - Renderer parity
   - [~] Edge–shape intersection: polygon/capsule intersection improved; round fallback added; verify stadium/parallelogram/trapezoid/hexagon across complex joins.
   - [~] LR/RL nested subgraphs layout width/spacing tuning (first pass: network‑simplex + nodesep/ranksep + elbow bias).
@@ -33,7 +35,9 @@ Flowchart
   - [~] HTML in labels: <b>, <i>, <u>, <br/> fixtures added; renderer normalization pending.
   - [x] Apply linkStyle to renderer: path stroke/width/opacity/dasharray; overlay arrowheads pick up color and scale with stroke-width.
 - Fixtures/Tests
-  - [x] Expand coverage: `typed-shapes-all.mmd` (all shapes) + `typed-shapes-bad-units.mmd` (negatives for units/label).
+  - [x] Expand coverage: `typed-shapes-all.mmd` (unsupported matrix, invalid) + `typed-shapes-bad-units.mmd` (valid with warnings for units/label).
+  - [x] Add `html-in-labels.mmd` (valid) covering <b>, <i>, <u>, <br/> cases.
+  - [x] Add call() parity invalids: `interactions-click-call-parens.mmd`, `interactions-click-call-missing-fn.mmd`.
   - [x] Add `interactions-linkstyle-ranges.mmd` (invalid; range unsupported today).
   - [x] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices (including multiline styles and varying whitespace).
 

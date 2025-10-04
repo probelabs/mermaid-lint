@@ -10,16 +10,56 @@ const BaseVisitor: any = (parserInstance as any).getBaseCstVisitorConstructorWit
 class FlowSemanticsVisitor extends BaseVisitor {
   private ctx: Ctx;
   private edgeCount = 0;
+  private knownIds: Set<string>;
 
-  constructor(ctx: Ctx) {
+  constructor(ctx: Ctx, knownIds: Set<string>) {
     super();
     this.validateVisitor();
     this.ctx = ctx;
+    this.knownIds = knownIds;
   }
 
   // Entry point
   diagram(ctx: any) {
     if (ctx.statement) ctx.statement.forEach((s: CstNode) => this.visit(s));
+  }
+
+  classStatement(ctx: any) {
+    // Warn when class applies to unknown node ids (forward references permitted via pre-collection)
+    const ids: IToken[] = (ctx.Identifier as IToken[] | undefined) || [];
+    // Exclude the className token (labeled)
+    const classNameTok: IToken | undefined = (ctx.className && ctx.className[0]) as IToken | undefined;
+    for (const idTok of ids) {
+      if (classNameTok && idTok.startOffset === classNameTok.startOffset) continue;
+      const id = String(idTok.image);
+      if (!this.knownIds.has(id)) {
+        this.ctx.errors.push({
+          line: idTok.startLine ?? 1,
+          column: idTok.startColumn ?? 1,
+          severity: 'warning',
+          code: 'FL-CLASS-TARGET-UNKNOWN',
+          message: `Unknown node id '${id}' in class statement.`,
+          hint: 'Define the node before applying classes, or move the class line after the node.'
+        });
+      }
+    }
+  }
+
+  styleStatement(ctx: any) {
+    const idTok: IToken | undefined = (ctx.Identifier && ctx.Identifier[0]) as IToken | undefined;
+    if (idTok) {
+      const id = String(idTok.image);
+      if (!this.knownIds.has(id)) {
+        this.ctx.errors.push({
+          line: idTok.startLine ?? 1,
+          column: idTok.startColumn ?? 1,
+          severity: 'warning',
+          code: 'FL-STYLE-TARGET-UNKNOWN',
+          message: `Unknown node id '${id}' in style statement.`,
+          hint: 'Define the node before styling it, or move the style line after the node definition.'
+        });
+      }
+    }
   }
 
   statement(ctx: any) {
@@ -505,9 +545,32 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 }
 
+// Pre-pass to collect node ids (so we can allow forward references in class/style)
+class NodeIdCollector extends BaseVisitor {
+  public ids = new Set<string>();
+  constructor() { super(); this.validateVisitor(); }
+  node(ctx: any) {
+    const idTok: IToken | undefined = (ctx.nodeId && ctx.nodeId[0]) as IToken | undefined;
+    const idNumTok: IToken | undefined = (ctx.nodeIdNum && ctx.nodeIdNum[0]) as IToken | undefined;
+    if (idTok) this.ids.add(String(idTok.image));
+    else if (idNumTok) this.ids.add(String(idNumTok.image));
+  }
+  nodeOrParallelGroup(ctx: any) { if (ctx.node) ctx.node.forEach((n: CstNode) => this.visit(n)); }
+  nodeStatement(ctx: any) { if (ctx.nodeOrParallelGroup) ctx.nodeOrParallelGroup.forEach((n: CstNode) => this.visit(n)); }
+  statement(ctx: any) {
+    for (const k of Object.keys(ctx)) {
+      const arr = (ctx as any)[k];
+      if (Array.isArray(arr)) arr.forEach((n) => { if (n && typeof (n as any).name === 'string') this.visit(n); });
+    }
+  }
+  diagram(ctx: any) { if (ctx.statement) ctx.statement.forEach((s: CstNode) => this.visit(s)); }
+}
+
 export function analyzeFlowchart(cst: CstNode, _tokens: IToken[], opts?: { strict?: boolean }): ValidationError[] {
   const ctx: Ctx = { errors: [], strict: opts?.strict };
-  const v = new FlowSemanticsVisitor(ctx);
+  const collector = new NodeIdCollector();
+  collector.visit(cst);
+  const v = new FlowSemanticsVisitor(ctx, collector.ids);
   v.visit(cst);
   return ctx.errors;
 }

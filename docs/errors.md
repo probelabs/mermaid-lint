@@ -445,3 +445,22 @@ Severity note: By default, quoting issues in participant/actor names are warning
   - When: `create` ends without a participant/actor name.
   - Message: "Missing name after 'create'."
   - Hint: "Use: create participant A  or  create actor B"
+- FL-CLICK-CALL-EXTRA-TEXT
+  - When: `click … call fn()` is followed by tooltip/target text (Mermaid CLI rejects extras after `call()`).
+  - Message: "Tooltip/text after 'call()' is not supported by Mermaid CLI."
+  - Hint: "Use: click A call doThing()"
+
+- FL-CLASS-TARGET-UNKNOWN (warning)
+  - When: `class` applies to a node id that does not exist in the diagram (forward references are allowed; we pre-collect ids).
+  - Message: "Unknown node id 'X' in class statement."
+  - Hint: "Define the node before applying classes, or move the class line after the node."
+
+- FL-STYLE-TARGET-UNKNOWN (warning)
+  - When: `style` targets a node id that does not exist.
+  - Message: "Unknown node id 'X' in style statement."
+  - Hint: "Define the node before styling it, or move the style line after the node definition."
+
+- FL-TYPED-SHAPE-UNSUPPORTED
+  - When: A typed shape in `@{ shape: … }` is recognized by Maid but not supported by current Mermaid CLI.
+  - Message: "Typed shape 'X' is not supported by current Mermaid CLI."
+  - Hint: "Use one of: rect, rounded, diamond, circle, cylinder, stadium, subroutine, \"lean-l\", \"lean-r\""
