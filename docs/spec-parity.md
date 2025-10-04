@@ -11,7 +11,7 @@ Flowchart
 - Parser
   - [x] Top-level `direction` statement outside header.
   - [x] Interactions lines parsed: `click`, `linkStyle`.
-  - [~] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser+basic keys done; extend to full shape set (icon/image specifics + renderer mapping).
+  - [x] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser + renderer mapping (rect/round/diamond/hexagon/parallelogram lean-l/r/trapezoid/trapezoidAlt); basic image media rendering.
 - Semantics/Validation
   - [x] Enforce only keyword `direction` before a Direction inside subgraphs (FL-DIR-KW-INVALID).
   - [x] Conflict warning when both bracket shape and `@{ shape: … }` present (FL-TYPED-SHAPE-CONFLICT).
@@ -27,7 +27,7 @@ Flowchart
   - [ ] HTML in labels: <b>, <i>, <u>, <br/> normalized and rendered consistently.
   - [x] Apply linkStyle to renderer: path stroke/width/opacity/dasharray; overlay arrowheads pick up color and scale with stroke-width.
 - Fixtures/Tests
-  - [ ] Expand `typed-shapes-basic.mmd` to cover all shapes + negative cases.
+  - [ ] Expand `typed-shapes-basic.mmd` to cover all shapes + negative cases (lean-l/r, image/icon variants).
   - [x] Add `interactions-linkstyle-ranges.mmd` (invalid; range unsupported today).
   - [ ] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices.
 
@@ -37,8 +37,8 @@ Sequence
   - [x] `par over A,B` form.
   - [x] Message `properties` / `details` lines parsed (fixtures invalid to match CLI).
 - Semantics/Validation
-  - [ ] `create` followed by a “creating message” to/from the created actor (warning if missing).
-  - [ ] Activation balance checks; clearer diagnostics around `+`/`-` suffix.
+  - [x] `create` followed by a “creating message” to/from the created actor (warning if missing).
+  - [x] Activation balance checks; clearer diagnostics around `+`/`-` suffix (first part: unbalanced warnings).
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
   - [~] Shared defaults with flowchart (node shapes/fonts/colors) — baseline CSS unified; continue fine‑tuning.

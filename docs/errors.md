@@ -241,6 +241,16 @@ Tip: quoting inside labels
   - Message: "'details' is not accepted by current Mermaid CLI for sequence diagrams."
   - Hint: "Remove the `details:` line to match mermaid-cli."
 
+- SE-ACTIVATION-UNBALANCED (warning)
+  - When: An `activate` is not balanced by a matching `deactivate` for the same actor.
+  - Message: "Unbalanced activation: 'A' was activated but not deactivated."
+  - Hint: "Add `deactivate A` after the active section."
+
+- SE-CREATE-NO-CREATING-MESSAGE (warning)
+  - When: A `create` line is not immediately followed by a message involving the created actor.
+  - Message: "Actor 'X' is created but the next line is not a message involving it."
+  - Hint: "Add a creating message to or from 'X' immediately after the create line."
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID

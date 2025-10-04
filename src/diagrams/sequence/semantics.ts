@@ -63,5 +63,98 @@ export function analyzeSequence(_cst: CstNode, _tokens: IToken[]): ValidationErr
       });
     }
   }
+  // Additional human-friendly warnings: activation balance and create -> creating message
+  type Ev = { kind:'activate'|'deactivate'|'message'|'create'; line:number; actor?:string; from?:string; to?:string };
+  const lines: Map<number, IToken[]> = new Map();
+  for (const tk of _tokens) {
+    if (tk.tokenType === t.Newline) continue;
+    const ln = tk.startLine ?? 1;
+    (lines.get(ln) || lines.set(ln, []).get(ln)!).push(tk);
+  }
+  const events: Ev[] = [];
+  const tokensByLine = Array.from(lines.entries()).sort((a,b)=>a[0]-b[0]);
+  const grabActorRef = (arr: IToken[], startIdx: number): string => {
+    const parts: string[] = [];
+    for (let i=startIdx;i<arr.length;i++){
+      const tk=arr[i];
+      if (tk.tokenType === t.Colon || tk.tokenType === t.Newline) break;
+      if (tk.tokenType === t.Identifier || tk.tokenType === t.QuotedString || tk.tokenType === t.NumberLiteral || tk.tokenType === t.Text) parts.push(tk.image);
+      if (tk.tokenType === t.Async || tk.tokenType === t.Solid || tk.tokenType === t.Dotted || tk.tokenType === t.DottedAsync || tk.tokenType === t.BidirAsync || tk.tokenType === t.BidirAsyncDotted) break;
+    }
+    const raw = parts.join(' ').trim();
+    return raw.replace(/^"|"$/g,'');
+  };
+  for (const [ln, arr] of tokensByLine){
+    // classify line
+    if (arr.some(tk => tk.tokenType === t.ActivateKeyword)) {
+      const idx = arr.findIndex(tk => tk.tokenType === t.ActivateKeyword);
+      const actor = grabActorRef(arr, idx+1);
+      if (actor) events.push({ kind:'activate', line: ln, actor});
+      continue;
+    }
+    if (arr.some(tk => tk.tokenType === t.DeactivateKeyword)) {
+      const idx = arr.findIndex(tk => tk.tokenType === t.DeactivateKeyword);
+      const actor = grabActorRef(arr, idx+1);
+      if (actor) events.push({ kind:'deactivate', line: ln, actor});
+      continue;
+    }
+    if (arr.some(tk => tk.tokenType === t.CreateKeyword)) {
+      const idx = arr.findIndex(tk => tk.tokenType === t.CreateKeyword);
+      // after 'create' there may be participant/actor keyword then actorRef
+      const after = arr.slice(idx+1);
+      const aidx = after.findIndex(tk => tk.tokenType === t.ParticipantKeyword || tk.tokenType === t.ActorKeyword);
+      const actor = aidx >= 0 ? grabActorRef(after, aidx+1) : grabActorRef(arr, idx+1);
+      if (actor) events.push({ kind:'create', line: ln, actor});
+      continue;
+    }
+    // message line: detect arrow token
+    const arrowIdx = arr.findIndex(tk => [t.Async,t.DottedAsync,t.Solid,t.Dotted,t.Cross,t.DottedCross,t.DottedOpen,t.Open,t.BidirAsync,t.BidirAsyncDotted].includes(tk.tokenType as any));
+    if (arrowIdx > 0) {
+      const from = grabActorRef(arr, 0);
+      const to = grabActorRef(arr, arrowIdx+1);
+      if (from || to) events.push({ kind:'message', line: ln, from, to });
+    }
+  }
+  // activation balance
+  const actStack = new Map<string, { line:number }[]>();
+  for (const ev of events){
+    if (ev.kind === 'activate' && ev.actor){
+      const a = actStack.get(ev.actor) || []; a.push({ line: ev.line }); actStack.set(ev.actor, a);
+    } else if (ev.kind === 'deactivate' && ev.actor){
+      const a = actStack.get(ev.actor) || []; a.pop(); actStack.set(ev.actor, a);
+    }
+  }
+  for (const [actor, arr] of actStack.entries()){
+    if (arr.length){
+      const top = arr[arr.length-1];
+      errs.push({
+        line: top.line,
+        column: 1,
+        severity: 'warning',
+        code: 'SE-ACTIVATION-UNBALANCED',
+        message: `Unbalanced activation: '${actor}' was activated but not deactivated.`,
+        hint: `Add 'deactivate ${actor}' after the active section.`,
+        length: actor.length
+      });
+    }
+  }
+  // create -> next creating message involving the new actor
+  for (let i=0;i<events.length;i++){
+    const ev = events[i];
+    if (ev.kind === 'create' && ev.actor){
+      const next = events[i+1];
+      if (!(next && next.kind === 'message' && (next.from === ev.actor || next.to === ev.actor))){
+        errs.push({
+          line: ev.line,
+          column: 1,
+          severity: 'warning',
+          code: 'SE-CREATE-NO-CREATING-MESSAGE',
+          message: `Actor '${ev.actor}' is created but the next line is not a message involving it.`,
+          hint: `Add a creating message to or from '${ev.actor}' immediately after the create line.`,
+          length: ev.actor.length
+        });
+      }
+    }
+  }
   return errs;
 }
