@@ -65,6 +65,11 @@ export function applyFlowLikeTheme(svg: string, theme?: Record<string, any>): st
   }
   if (theme.nodeTextColor) {
     out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeTextColor)};`));
+    out = out.replace(/\.edge-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.nodeTextColor)};`));
+  }
+  if ((theme as any).edgeLabelTextColor) {
+    const c = String((theme as any).edgeLabelTextColor);
+    out = out.replace(/\.edge-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${c};`));
   }
   if (theme.lineColor) {
     out = out.replace(/\.edge-path\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.lineColor)};`));
@@ -80,7 +85,23 @@ export function applyFlowLikeTheme(svg: string, theme?: Record<string, any>): st
   if (theme.clusterBkg) out = out.replace(/\.cluster-bg\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterBkg)};`));
   if (theme.clusterBorder) out = out.replace(/\.cluster-border\s*\{[^}]*\}/, (m) => m.replace(/stroke:\s*[^;]+;/, `stroke: ${String(theme.clusterBorder)};`));
   if (theme.clusterTextColor) out = out.replace(/\.cluster-label-text\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${String(theme.clusterTextColor)};`));
-  if (theme.fontFamily) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${String(theme.fontFamily)};`));
-  if (theme.fontSize) out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${String(theme.fontSize)};`));
+  if ((theme as any).clusterTitleBg || (theme as any).clusterTitleBackground) {
+    const c = String((theme as any).clusterTitleBg || (theme as any).clusterTitleBackground);
+    out = out.replace(/\.cluster-title-bg\s*\{[^}]*\}/, (m) => m.replace(/fill:\s*[^;]+;/, `fill: ${c};`));
+  }
+  if (theme.fontFamily) {
+    const f = String(theme.fontFamily);
+    out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${f};`));
+    out = out.replace(/\.edge-label-text\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${f};`));
+    out = out.replace(/\.note-text\s*\{[^}]*\}/, (m) => m.replace(/font-family:\s*[^;]+;/, `font-family: ${f};`));
+  }
+  if (theme.fontSize) {
+    const s = String(theme.fontSize);
+    out = out.replace(/\.node-label\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${s}px;`));
+    // Keep edge/note slightly smaller than node labels
+    const sub = Math.max(10, Number(theme.fontSize) - 2);
+    out = out.replace(/\.edge-label-text\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${sub}px;`));
+    out = out.replace(/\.note-text\s*\{[^}]*\}/, (m) => m.replace(/font-size:\s*[^;]+;/, `font-size: ${sub}px;`));
+  }
   return out;
 }

@@ -91,7 +91,7 @@ Cross-Cutting
 - [~] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
   - [x] Class/state share CSS and applyFlowchartTheme (node/edge/cluster, edge‑label text, notes).
   - [x] Sequence theming applied via applySequenceTheme.
-  - [~] Expand theme coverage where helpful (cluster title background sizing, arrowhead outlines) — arrowheads now colored via CSS classes across sequence/class/state.
+  - [~] Expand theme coverage where helpful (cluster title background sizing, arrowhead outlines) — arrowheads now colored via CSS classes across sequence/class/state; edge label text color + cluster title bg now themeable.
 - [ ] Interactions rendering (flowchart first): reflect linkStyle stroke/width/opacity and click targets in rendered anchors.
 - [x] PNG/SVG parity harness extended to class/state (batch script + npm scripts). Golden PNGs optional.
 - [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics and renderer coverage.
