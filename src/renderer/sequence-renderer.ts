@@ -67,7 +67,7 @@ export function renderSequence(model: SequenceModel, opts: SequenceRenderOptions
     const title = b.title ? `${b.type}: ${b.title}` : b.type;
     const branches = (b.branches || []).map(br => ({ y: br.y, title: br.title }));
     // Left-align title/branch labels to mirror Mermaid's sequence blocks
-    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches, 6, 'left', 'left', 0));
+    svgParts.push(blockOverlay(b.x, b.y, b.width, b.height, title, branches.map(br => ({...br, y: br.y + 0.5})), 8, 'left', 'left', 0));
   }
 
   // Bottom actor boxes (Mermaid draws both top and bottom)
@@ -127,7 +127,7 @@ function drawMessageLabel(out: string[], m: LayoutMessage, label: string, _count
   const h = 16;
   const w = Math.max(20, measureText(label, 12) + 10);
   const x = xMid - w / 2;
-  const y = m.y - 12 - h / 2; // a bit more above the line
+  const y = m.y - 14 - h / 2; // a bit more above the line
   out.push(`  <rect class=\"msg-label-bg\" x=\"${x}\" y=\"${y}\" width=\"${w}\" height=\"${h}\" rx=\"3\"/>`);
   out.push(`  <text class=\"msg-label\" x=\"${xMid}\" y=\"${y + h/2}\" text-anchor=\"middle\">${escapeXml(label)}</text>`);
 }

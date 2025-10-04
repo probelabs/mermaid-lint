@@ -33,7 +33,7 @@ export function buildSharedCss(opts: SharedStyleOptions = {}): string {
     /* Sequence-specific add-ons (safe for flowcharts too) */
     .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
     .actor-label { fill: #111; font-family: ${fontFamily}; font-size: 16px; }
-    .lifeline { stroke: #999; stroke-width: 0.5px; }
+    .lifeline { stroke: #999; stroke-width: 1px; }
     .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
     .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
     .msg-line.dotted { stroke-dasharray: 2 2; }

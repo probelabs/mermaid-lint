@@ -10,6 +10,7 @@ import { buildPieModel } from './pie-builder.js';
 import { renderPie } from './pie-renderer.js';
 import { buildSequenceModel } from './sequence-builder.js';
 import { renderSequence } from './sequence-renderer.js';
+import { applyFlowLikeTheme } from './styles.js';
 import { buildStateModel } from './state-builder.js';
 import { renderState } from './state-renderer.js';
 import { parseFrontmatter } from '../core/frontmatter.js';
@@ -207,7 +208,7 @@ export class MermaidRenderer {
       try {
         const model = buildClassModel(content);
         const svg = renderClass(model, { theme });
-        const themed = theme ? applyFlowchartTheme(svg, theme) : svg;
+        const themed = theme ? applyFlowLikeTheme(svg, theme) : svg;
         return { svg: themed, graph: { nodes: [], edges: [], direction: model.direction }, errors: [] };
       } catch (e: any) {
         const msg = e?.message || 'Class render error';
@@ -219,7 +220,7 @@ export class MermaidRenderer {
       try {
         const model = buildStateModel(content);
         const svg = renderState(model);
-        const themed = theme ? applyFlowchartTheme(svg, theme) : svg;
+        const themed = theme ? applyFlowLikeTheme(svg, theme) : svg;
         return { svg: themed, graph: { nodes: [], edges: [], direction: model.direction }, errors: [] };
       } catch (e: any) {
         const msg = e?.message || 'State render error';
