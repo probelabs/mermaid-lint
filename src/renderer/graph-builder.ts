@@ -16,6 +16,7 @@ export class GraphBuilder {
   private classStyles: Map<string, Record<string,string>> = new Map();
   private nodeStyles: Map<string, Record<string,string>> = new Map();
   private nodeClasses: Map<string, Set<string>> = new Map();
+  private nodeLinks: Map<string, { href?: string; target?: string; tooltip?: string; call?: string }> = new Map();
 
   build(cst: CstNode | undefined): Graph {
     this.reset();
@@ -32,6 +33,12 @@ export class GraphBuilder {
 
     const direction = this.extractDirection(cst);
     this.processStatements(cst);
+
+    // Apply any collected node links onto nodes (if node exists)
+    for (const [id, link] of this.nodeLinks.entries()) {
+      const node = this.nodes.get(id);
+      if (node) node.link = link;
+    }
 
     return {
       nodes: Array.from(this.nodes.values()),
@@ -52,6 +59,7 @@ export class GraphBuilder {
     this.nodeStyles.clear();
     this.nodeClasses.clear();
     this.pendingLinkStyles = [];
+    this.nodeLinks.clear();
   }
 
   private extractDirection(cst: CstNode): Direction {
@@ -85,12 +93,52 @@ export class GraphBuilder {
         this.processStyle(stmt.children.styleStatement[0] as CstNode);
       } else if (stmt.children?.linkStyleStatement) {
         this.processLinkStyle(stmt.children.linkStyleStatement[0] as CstNode);
+      } else if (stmt.children?.clickStatement) {
+        this.processClick(stmt.children.clickStatement[0] as CstNode);
       }
       // Skip class, style, and other statements for now
     }
 
     // Apply pending link styles to edges after all edges have been created
     this.applyLinkStyles();
+  }
+
+  private unquote(s: string | undefined): string | undefined {
+    if (!s) return s;
+    if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) return s.slice(1, -1);
+    return s;
+  }
+
+  private processClick(cst: CstNode) {
+    const ch = (cst.children || {}) as any;
+    const tgtTok = (ch.clickTarget?.[0] as IToken | undefined);
+    if (!tgtTok) return;
+    const id = tgtTok.image;
+    const idents: IToken[] = (ch.Identifier as IToken[] | undefined) || [];
+    const texts: IToken[] = (ch.Text as IToken[] | undefined) || [];
+    const quotes: IToken[] = (ch.QuotedString as IToken[] | undefined) || [];
+    // Determine mode and parameters
+    const modeTok = idents.find(t => /^(href|call|callback)$/i.test(t.image));
+    const mode = modeTok?.image?.toLowerCase();
+    const link: { href?: string; target?: string; tooltip?: string; call?: string } = {};
+    if (mode === 'href') {
+      const urlTok = quotes[0];
+      const tipTok = quotes[1];
+      const targetTok = idents.find(t => /^_(blank|self|parent|top)$/i.test(t.image));
+      if (urlTok) link.href = this.unquote(urlTok.image);
+      if (tipTok) link.tooltip = this.unquote(tipTok.image);
+      if (targetTok) link.target = targetTok.image;
+    } else if (mode === 'call' || mode === 'callback') {
+      // Best-effort: collect first identifier after mode that isn't a reserved target; include free text
+      const reserved = new Set(['href','call','callback','_blank','_self','_parent','_top']);
+      const after = idents.filter(t => (t.startOffset ?? 0) > (modeTok?.startOffset ?? -1));
+      const nameTok = after.find(t => !reserved.has(t.image.toLowerCase()));
+      const tstr = texts.map(t => t.image).join(' ').trim();
+      link.call = nameTok ? nameTok.image + (tstr ? ` ${tstr}` : '') : (tstr || undefined);
+      const tipTok = quotes[0];
+      if (tipTok) link.tooltip = this.unquote(tipTok.image);
+    }
+    if (Object.keys(link).length) this.nodeLinks.set(id, { ...(this.nodeLinks.get(id) || {}), ...link });
   }
 
   private processNodeStatement(stmt: CstNode) {

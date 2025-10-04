@@ -16,6 +16,12 @@ export interface Node {
   width?: number;
   height?: number;
   style?: NodeStyle;
+  link?: {
+    href?: string;
+    target?: string;
+    tooltip?: string;
+    call?: string; // for 'call' mode; informational only in static SVG
+  };
 }
 
 export interface Edge {

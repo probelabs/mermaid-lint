@@ -121,7 +121,7 @@ export class SVGRenderer implements IRenderer {
       edgeStroke: this.arrowStroke,
     });
     const css = `<style>${sharedCss}</style>`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   ${bg}
   ${css}
   ${elements.join('\n  ')}
@@ -302,10 +302,23 @@ export class SVGRenderer implements IRenderer {
     // Add text label with wrapping
     const text = this.generateWrappedText(node.label, cx, labelCenterY, node.width - 20);
 
-    return `<g id="${node.id}">
+    const baseGroup = `<g id="${node.id}">
     ${shape}
     ${text}
   </g>`;
+    const link = (node as any).link as (undefined | { href?: string; target?: string; tooltip?: string; call?: string });
+    if (link && link.href) {
+      const tt = link.tooltip ? `<title>${this.escapeXml(link.tooltip)}</title>` : '';
+      const tgt = link.target ? ` target="${this.escapeXml(link.target)}" rel="noopener noreferrer"` : '';
+      return `<a xlink:href="${this.escapeXml(link.href)}"${tgt} class="node-link">${tt}${baseGroup}</a>`;
+    }
+    if (link && link.tooltip) {
+      return `<g class="node-call">
+<title>${this.escapeXml(link.tooltip)}</title>
+${baseGroup}
+</g>`;
+    }
+    return baseGroup;
   }
 
   private generateWrappedText(text: string, x: number, y: number, maxWidth: number): string {
@@ -609,8 +622,9 @@ export class SVGRenderer implements IRenderer {
       edgeElement += ` stroke="${styleStroke}"`;
     }
     // Apply explicit markers from edge if present
-    const startMarkUrl = mStart === 'arrow' ? 'url(#arrow)' : mStart === 'circle' ? 'url(#circle-marker)' : mStart === 'cross' ? 'url(#cross-marker)' : '';
-    const endMarkUrl = mEnd === 'arrow' ? 'url(#arrow)' : mEnd === 'circle' ? 'url(#circle-marker)' : mEnd === 'cross' ? 'url(#cross-marker)' : (markerEnd || '');
+    // Use overlay shapes for arrow/circle/cross; avoid marker URLs so per-edge color applies
+    const startMarkUrl = '';
+    const endMarkUrl = (markerEnd || '');
     // No tangent fix needed: last command is a straight L into the node boundary
     // Prefer overlay triangles for arrowheads; keep circle/cross as markers
     if (startMarkUrl && mStart !== 'arrow') edgeElement += ` marker-start="${startMarkUrl}"`;
@@ -694,6 +708,14 @@ export class SVGRenderer implements IRenderer {
       // Arrow points backward from boundaryStart toward firstLeg (start arrow points back toward source)
       overlay += triangleAtStart(boundaryStart, firstLeg, (styleStroke || this.arrowStroke), triLen, triW);
     }
+    // Circle/Cross overlays for both ends
+    const owStroke = (styleStroke || this.arrowStroke);
+    const addCircle = (at:{x:number;y:number}) => `<circle cx=\"${at.x}\" cy=\"${at.y}\" r=\"4.5\" fill=\"none\" stroke=\"${owStroke}\" stroke-width=\"${ow2}\" />`;
+    const addCross = (at:{x:number;y:number}) => `<g transform=\"translate(${at.x},${at.y})\"><path d=\"M -4 -4 L 4 4\" stroke=\"${owStroke}\" stroke-width=\"${ow2}\"/><path d=\"M -4 4 L 4 -4\" stroke=\"${owStroke}\" stroke-width=\"${ow2}\"/></g>`;
+    if (mEnd === 'circle') overlay += addCircle(boundaryEnd);
+    if (mEnd === 'cross') overlay += addCross(boundaryEnd);
+    if (mStart === 'circle') overlay += addCircle(boundaryStart);
+    if (mStart === 'cross') overlay += addCross(boundaryStart);
 
     if (overlay) {
       const grouped = `<g>${edgeElement}\n${overlay}</g>`;
