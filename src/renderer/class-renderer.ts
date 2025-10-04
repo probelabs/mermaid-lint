@@ -129,13 +129,24 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
     parts.push(polyline(pts, 'edge-path', dashed, edgeColor, 2));
 
     // Cardinalities near ends
-    if (rel.leftCard) {
-      const p = pts[0];
-      parts.push(`<text class="edge-label-text" x="${p.x - 6}" y="${p.y - 6}" text-anchor="end">${escapeXml(rel.leftCard)}</text>`);
-    }
-    if (rel.rightCard) {
-      const p = pts[pts.length - 1];
-      parts.push(`<text class="edge-label-text" x="${p.x + 6}" y="${p.y - 6}" text-anchor="start">${escapeXml(rel.rightCard)}</text>`);
+    // Endpoint cardinalities near first/last leg with small perpendicular offset
+    const placeEndpoint = (pt:{x:number;y:number}, next:{x:number;y:number}, text:string, side:'start'|'end') => {
+      const vx = next.x - pt.x; const vy = next.y - pt.y; const vlen = Math.hypot(vx, vy) || 1;
+      const ux = vx / vlen; const uy = vy / vlen;
+      // Perpendicular normal
+      const nx = -uy; const ny = ux;
+      // Offset slightly along negative edge direction and perpendicular outwards
+      const away = -6; // pull back from node center along edge
+      const perp = 8;  // shift outward
+      const x = pt.x + ux * away + nx * perp;
+      const y = pt.y + uy * away + ny * perp;
+      const anchor = side === 'start' ? 'end' : 'start';
+      parts.push(`<text class="edge-label-text" x="${x}" y="${y}" text-anchor="${anchor}">${escapeXml(text)}</text>`);
+    };
+    if (rel.leftCard && pts.length >= 2) placeEndpoint(pts[0], pts[1], rel.leftCard, 'start');
+    if (rel.rightCard && pts.length >= 2) {
+      const a = pts[pts.length - 1]; const b = pts[pts.length - 2];
+      placeEndpoint(a, b, rel.rightCard, 'end');
     }
     if (rel.label) {
       const mid = pts[Math.floor(pts.length/2)];
@@ -214,7 +225,11 @@ export function renderClass(model: ClassModel, opts: { theme?: Record<string, an
     if (!anchor) continue;
     const count = (seenAnchorCount[note.target] = (seenAnchorCount[note.target] || 0) + 1);
     const nx = anchor.x + anchor.width + dx;
-    const ny = anchor.y + (count - 1) * (noteH + 8);
+    let ny = anchor.y + (count - 1) * (noteH + 8);
+    // Simple collision avoidance with other nodes: push down until no overlap
+    const overlaps = (x:number, y:number) => layout.nodes.some(n => !(x+noteW < n.x || x > n.x + n.width || y+noteH < n.y || y > n.y + n.height));
+    let guard = 0;
+    while (overlaps(nx, ny) && guard < 50) { ny += noteH + 6; guard++; }
     parts.push(`  <g class="note" transform="translate(${nx},${ny})">`);
     parts.push(`    <rect width="${noteW}" height="${noteH}" rx="0"/>`);
     parts.push(`    <text class="note-text" x="${noteW/2}" y="${noteH/2 + 4}" text-anchor="middle">${escapeXml(note.text)}</text>`);

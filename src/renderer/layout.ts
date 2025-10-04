@@ -43,8 +43,11 @@ export class DagreLayoutEngine implements ILayoutEngine {
     };
     // With clusters + horizontal layouts, encourage wider graphs and fewer vertical ranks.
     if (hasClusters && (dir === 'LR' || dir === 'RL')) {
-      graphConfig.ranker = 'longest-path';
+      // Favor wider, flatter layouts for horizontal directions
+      graphConfig.ranker = 'network-simplex';
       graphConfig.acyclicer = 'greedy';
+      nodesep += 40; // more horizontal separation
+      ranksep = Math.max(30, ranksep - 20); // slightly tighter vertical ranks
     }
 
     // Enable compound mode if there are subgraphs
@@ -203,7 +206,7 @@ export class DagreLayoutEngine implements ILayoutEngine {
             const inX = end.x + (rankdir === 'LR' ? -PAD : PAD);
             const startOut = { x: srcSg ? outX : start.x, y: start.y };
             const endPre = { x: dstSg ? inX : end.x, y: end.y };
-            const alpha = 0.68;
+            const alpha = 0.72; // bias elbows slightly closer to target for smoother end approach
             const midX = startOut.x + (endPre.x - startOut.x) * alpha;
             const m1 = { x: midX, y: startOut.y };
             const m2 = { x: midX, y: endPre.y };

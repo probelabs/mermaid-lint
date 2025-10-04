@@ -64,7 +64,7 @@
     <text class="node-label" x="210" y="244.9" text-anchor="middle">F</text>
   </g>
   <g><path class="edge-path" d="M120,60 L130,60 C142,60 154,60 160,60 L170,60" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M170,60 L162,63 L162,57 Z" fill="#555555" /><path d="M112,60 L120,63 L120,57 Z" fill="#555555" /></g>
+<path d="M170,60 L164,62.5 L164,57.5 Z" fill="#555555" /><path d="M114,60 L120,62.5 L120,57.5 Z" fill="#555555" /></g>
   <path class="edge-path" d="M120,150 L130,150 C142,150 154,150 160,150 L170,150" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#circle-marker)" marker-end="url(#circle-marker)" />
   <path class="edge-path" d="M120,240 L130,240 C142,240 154,240 160,240 L170,240" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#cross-marker)" marker-end="url(#cross-marker)" />
   

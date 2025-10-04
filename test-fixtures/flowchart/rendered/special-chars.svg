@@ -55,8 +55,8 @@
     <text class="node-label" x="515" y="72.9" text-anchor="middle">Plain text</text>
   </g>
   <g><path class="edge-path" d="M280,68 L290,68 C302,68 314,68 320,68 L330,68" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M330,68 L322,71 L322,65 Z" fill="#555555" /></g>
+<path d="M330,68 L324,70.5 L324,65.5 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M410,68 L420,68 C432,68 444,68 450,68 L460,68" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M460,68 L452,71 L452,65 Z" fill="#555555" /></g>
+<path d="M460,68 L454,70.5 L454,65.5 Z" fill="#555555" /></g>
   
 </svg>

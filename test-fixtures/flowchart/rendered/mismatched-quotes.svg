@@ -52,6 +52,6 @@
     <text class="node-label" x="160" y="170.9" text-anchor="middle">D</text>
   </g>
   <g><path class="edge-path" d="M160,96 L160,106 C160,118 160,130 160,136 L160,146" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M160,146 L157,138 L163,138 Z" fill="#555555" /></g>
+<path d="M160,146 L157.5,140 L162.5,140 Z" fill="#555555" /></g>
   
 </svg>

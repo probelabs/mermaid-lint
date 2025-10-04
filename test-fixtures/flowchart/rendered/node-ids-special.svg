@@ -60,12 +60,12 @@
     <text class="node-label" x="81" y="424.9" text-anchor="middle">Node 5</text>
   </g>
   <g><path class="edge-path" d="M81,80 L81,90 C81,102 81,114 81,120 L81,130" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M81,130 L78,122 L84,122 Z" fill="#555555" /></g>
+<path d="M81,130 L78.5,124 L83.5,124 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M81,170 L81,180 C81,192 81,204 81,210 L81,220" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M81,220 L78,212 L84,212 Z" fill="#555555" /></g>
+<path d="M81,220 L78.5,214 L83.5,214 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M81,260 L81,270 C81,282 81,294 81,300 L81,310" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M81,310 L78,302 L84,302 Z" fill="#555555" /></g>
+<path d="M81,310 L78.5,304 L83.5,304 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M81,350 L81,360 C81,372 81,384 81,390 L81,400" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M81,400 L78,392 L84,392 Z" fill="#555555" /></g>
+<path d="M81,400 L78.5,394 L83.5,394 Z" fill="#555555" /></g>
   
 </svg>

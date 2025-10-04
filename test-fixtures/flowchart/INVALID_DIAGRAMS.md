@@ -45,7 +45,7 @@ This file contains invalid flowchart test fixtures with:
 | 7 | [invalid class](#7-invalid-class) | INVALID | INVALID | — |
 | 8 | [invalid node syntax](#8-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
 | 9 | [invalid subgraph](#9-invalid-subgraph) | INVALID | INVALID | — |
-| 10 | [missing arrow](#10-missing-arrow) | INVALID | INVALID | — |
+| 10 | [missing arrow](#10-missing-arrow) | INVALID | INVALID | ❌ all |
 | 11 | [mixed brackets](#11-mixed-brackets) | INVALID | INVALID | ✅ safe |
 | 12 | [no diagram type](#12-no-diagram-type) | INVALID | INVALID | — |
 | 13 | [quotes double inside single](#13-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
@@ -779,51 +779,12 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error: Expecting: one of these possible Token sequences:
-  1. [NumberLiteral]
-  2. [Identifier, NumberLiteral]
-  3. [Identifier, AtSign]
-  4. [Identifier, SquareOpen]
-  5. [Identifier, DoubleSquareOpen]
-  6. [Identifier, RoundOpen]
-  7. [Identifier, DoubleRoundOpen]
-  8. [Identifier, DiamondOpen]
-  9. [Identifier, HexagonOpen]
-  10. [Identifier, StadiumOpen]
-  11. [Identifier, CylinderOpen]
-  12. [Identifier, TripleColon]
-  13. [Identifier, Ampersand]
-  14. [Identifier, DottedLine]
-  15. [Identifier, ThickLine]
-  16. [Identifier, TwoDashes]
-  17. [Identifier, Text]
-  18. [Identifier, BiDirectionalArrow]
-  19. [Identifier, CircleEndLine]
-  20. [Identifier, CrossEndLine]
-  21. [Identifier, ArrowRight]
-  22. [Identifier, ArrowLeft]
-  23. [Identifier, DottedArrowRight]
-  24. [Identifier, DottedArrowLeft]
-  25. [Identifier, ThickArrowRight]
-  26. [Identifier, ThickArrowLeft]
-  27. [Identifier, Line]
-  28. [Identifier, InvalidArrow]
-  29. [Identifier, Semicolon]
-  30. [Identifier, Newline]
-  31. [Identifier, EOF]
-  32. [SubgraphKeyword]
-  33. [Identifier, Direction]
-  34. [ClassKeyword]
-  35. [StyleKeyword]
-  36. [ClassDefKeyword]
-  37. [ClickKeyword]
-  38. [LinkStyleKeyword]
-  39. [Newline]
-but found: 'A'
+error[FL-LINK-MISSING]: Two nodes on one line must be connected with an arrow before 'A'.
 at test-fixtures/flowchart/invalid/missing-arrow.mmd:2:5
   1 | flowchart TD
   2 |     A B
     |     ^
+hint: Insert --> between nodes, e.g., A --> B.
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -832,7 +793,10 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+     --> A B
+```
 
 <details>
 <summary>View source code</summary>

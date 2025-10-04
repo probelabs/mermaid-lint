@@ -66,10 +66,10 @@
 <polyline class="edge-path" points="590,56 590,81 590,106" stroke="#555" stroke-width="2" fill="none"/>
 <polyline class="edge-path" points="590,142 590,167 590,192" stroke="#555" stroke-width="2" fill="none"/>
 <polyline class="edge-path" points="190,53.17647058823529 80,81 80,106" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="184" y="47.17647058823529" text-anchor="end">1</text>
-<text class="edge-label-text" x="86" y="100" text-anchor="start">many</text>
+<text class="edge-label-text" x="193.8550604963626" y="43.949417506704634" text-anchor="end">1</text>
+<text class="edge-label-text" x="88" y="112" text-anchor="start">many</text>
 <polyline class="edge-path" points="250,56 250,81 250,106" stroke="#555" stroke-width="2" fill="none"/>
-<text class="edge-label-text" x="244" y="50" text-anchor="end">0..1</text>
-<text class="edge-label-text" x="256" y="100" text-anchor="start">1</text>
+<text class="edge-label-text" x="242" y="50" text-anchor="end">0..1</text>
+<text class="edge-label-text" x="258" y="112" text-anchor="start">1</text>
 <polyline class="edge-path" points="590,56 590,81 590,106" stroke="#555" stroke-width="2" fill="none"/>
 </svg>

@@ -39,11 +39,11 @@
     <rect class="node-shape" width="120" height="36" rx="0"/>
     <text class="node-label class-title" x="60" y="22" text-anchor="middle" dominant-baseline="middle">Customer</text>
   </g>
-  <g class="note" transform="translate(160,20)">
+  <g class="note" transform="translate(160,70)">
     <rect width="140" height="44" rx="0"/>
     <text class="note-text" x="70" y="26" text-anchor="middle">Domain aggregate</text>
   </g>
-<line x1="140" y1="36" x2="160" y2="42" stroke="#999" stroke-dasharray="4 3"/>
+<line x1="140" y1="36" x2="160" y2="92" stroke="#999" stroke-dasharray="4 3"/>
   <g class="note" transform="translate(330,20)">
     <rect width="140" height="44" rx="0"/>
     <text class="note-text" x="70" y="26" text-anchor="middle">Preferred</text>

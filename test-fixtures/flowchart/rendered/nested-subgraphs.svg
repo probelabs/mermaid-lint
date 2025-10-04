@@ -65,9 +65,9 @@
     <text class="node-label" x="80" y="253.9" text-anchor="middle">E</text>
   </g>
   <g><path class="edge-path" d="M260,109 L260,119 C260,131 260,213 260,219 L260,229" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M260,229 L257,221 L263,221 Z" fill="#555555" /></g>
+<path d="M260,229 L257.5,223 L262.5,223 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M410,109 L410,119 C410,131 410,213 410,219 L410,229" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M410,229 L407,221 L413,221 Z" fill="#555555" /></g>
+<path d="M410,229 L407.5,223 L412.5,223 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M335,299 L335,279 L335,245 L80,245 L80,229 L80,229" stroke-linecap="round" stroke-linejoin="round" />
 <path d="M80,229 L80,229 L80,229 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(190,21)">

@@ -67,7 +67,7 @@ Class
 - Renderer (new)
   - [x] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
   - [x] Wrap long edge labels into tspans (centered over edge).
-  - [ ] Dual-end label/cardinality placement polish (exact positioning rules); collision avoidance near nodes.
+  - [~] Dual-end label/cardinality placement (perpendicular offset from endpoints) and simple note collision avoidance landed; refine rules and add fixtures.
   - [~] Dependency chevron shape/size tuning for short segments (initial tweak landed).
 - Fixtures/Tests
   - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end label/cardinality cases.

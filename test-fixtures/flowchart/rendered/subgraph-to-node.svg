@@ -55,7 +55,7 @@
     <text class="node-label" x="80" y="253.9" text-anchor="middle">C</text>
   </g>
   <g><path class="edge-path" d="M230,109 L230,119 C230,131 230,213 230,219 L230,229" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M230,229 L227,221 L233,221 Z" fill="#555555" /></g>
+<path d="M230,229 L227.5,223 L232.5,223 Z" fill="#555555" /></g>
   <g><path class="edge-path" d="M230,299 L230,279 L230,245 L80,245 L80,229 L80,229" stroke-linecap="round" stroke-linejoin="round" />
 <path d="M80,229 L80,229 L80,229 Z" fill="#555555" /></g>
   <g class="cluster-overlay" transform="translate(160,21)">

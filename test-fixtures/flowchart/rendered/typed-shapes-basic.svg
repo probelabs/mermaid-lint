@@ -60,18 +60,18 @@
     <text class="node-label" x="234" y="244.9" text-anchor="middle">E</text>
   </g>
   <g><path class="edge-path" d="M120,60 L130,60 C142,60 178,60 184,60 L194,60" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M194,60 L186,63 L186,57 Z" fill="#555555" /></g>
+<path d="M194,60 L188,62.5 L188,57.5 Z" fill="#555555" /></g>
   <g>
     <path class="edge-path" d="M114.22222222222223,175 L122.85594166348828,169.95431980705231 C133.21640499300753,163.8995035755151 178,150 184,150 L194,150" stroke-linecap="round" stroke-linejoin="round" />
     <rect class="edge-label-bg" x="142.31961906297641" y="143.98204080735144" width="26" height="14" rx="3" />
     <text class="edge-label-text" x="155.31961906297641" y="150.98204080735144" text-anchor="middle" dominant-baseline="middle">Yes</text>
-    <path d="M194,150 L186,153 L186,147 Z" fill="#555555" />
+    <path d="M194,150 L188,152.5 L188,147.5 Z" fill="#555555" />
   </g>
   <g>
     <path class="edge-path" d="M114.22222222222223,215 L122.85594166348828,220.04568019294769 C133.21640499300753,226.1004964244849 178,240 184,240 L194,240" stroke-linecap="round" stroke-linejoin="round" />
     <rect class="edge-label-bg" x="145.31961906297641" y="232.01795919264856" width="20" height="14" rx="3" />
     <text class="edge-label-text" x="155.31961906297641" y="239.01795919264856" text-anchor="middle" dominant-baseline="middle">No</text>
-    <path d="M194,240 L186,243 L186,237 Z" fill="#555555" />
+    <path d="M194,240 L188,242.5 L188,237.5 Z" fill="#555555" />
   </g>
   
 </svg>
