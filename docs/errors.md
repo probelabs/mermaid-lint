@@ -15,6 +15,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` inside quoted labels. |
 | FL-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | FL-LABEL-DOUBLE-IN-SINGLE | Safe | Replace inner `"` with `&quot;` in single-quoted labels. |
+| FL-LABEL-BACKTICK | Safe | Remove backticks `\`` inside labels (keep text). |
 | FL-LABEL-QUOTE-IN-UNQUOTED | Safe | Wrap label content with double quotes and normalize inner quotes to `&quot;` (single-line heuristic). |
 | FL-DIR-MISSING | Safe | Insert default direction ` TD` after header. |
 | FL-DIR-INVALID | None | No change (ambiguous); suggests valid tokens. |

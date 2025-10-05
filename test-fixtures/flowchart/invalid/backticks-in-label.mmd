@@ -1,6 +1,6 @@
 graph TD
     subgraph "Old Logic: Implicit Detection"
-        A[Start] --> B{"`GITHUB_ACTIONS` env is 'true' AND no `--cli` flag?"};
+        A[Start] --> B{"GITHUB_ACTIONS env is 'true' AND no --cli flag?"};
         B -- Yes --> C[GitHub Action Mode];
         B -- No --> D[CLI Mode];
     end

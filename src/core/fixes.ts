@@ -86,6 +86,11 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
       continue;
     }
+    if (is('FL-LABEL-BACKTICK', e)) {
+      // Remove the offending backtick. Keep content otherwise unchanged.
+      edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
+      continue;
+    }
     // Flowchart: fix inner quotes inside a double-quoted label within shapes ([], (), {}, [[ ]], (( ))).
     if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {
       const lineText = lineTextAt(text, e.line);
