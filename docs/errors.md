@@ -15,6 +15,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` inside quoted labels. |
 | FL-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | FL-LABEL-DOUBLE-IN-SINGLE | Safe | Replace inner `"` with `&quot;` in single-quoted labels. |
+| FL-LABEL-BACKTICK | Safe | Remove backticks `\`` inside labels (keep text). |
 | FL-LABEL-QUOTE-IN-UNQUOTED | Safe | Wrap label content with double quotes and normalize inner quotes to `&quot;` (single-line heuristic). |
 | FL-DIR-MISSING | Safe | Insert default direction ` TD` after header. |
 | FL-DIR-INVALID | None | No change (ambiguous); suggests valid tokens. |
@@ -28,6 +29,8 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-SUBGRAPH-MISSING-HEADER | None | No change (requires header choice). |
 | FL-END-WITHOUT-SUBGRAPH | None | No change (structural intent needed). |
 | FL-STRICT-LABEL-QUOTES-REQUIRED | All | Wrap label content with double quotes on the line (same heuristic as FL-LABEL-QUOTE-IN-UNQUOTED). |
+| FL-LINKSTYLE-ID-UNKNOWN | None | No change (id must be defined by using e1@--> earlier). |
+| FL-EDGE-ATTR-ID-UNKNOWN | None | No change (id must be defined by using e1@--> earlier). |
 | PI-LABEL-REQUIRES-QUOTES | Safe | Wrap label before `:` in double quotes; normalize inner quotes to `&quot;`. |
 | PI-MISSING-COLON | Safe | Insert ` : ` between label and number. |
 | PI-MISSING-NUMBER | None | No change (don’t invent values). |
@@ -224,6 +227,43 @@ Tip: quoting inside labels
   - Message: "Malformed note: missing colon before note text."
   - Hint: "Example: Note right of A: message"
 
+## Sequence (SE-*) — additional parity guards
+
+- SE-META-UNSUPPORTED
+  - When: A `title`, `accTitle`, or `accDescr` line appears in a sequence diagram.
+  - Message: "Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams."
+  - Hint: "Remove this line to match mermaid-cli."
+
+- SE-PROPERTIES-UNSUPPORTED
+  - When: A `properties:` line appears in a sequence diagram.
+  - Message: "'properties' is not accepted by current Mermaid CLI for sequence diagrams."
+  - Hint: "Remove the `properties:` line to match mermaid-cli."
+
+- SE-DETAILS-UNSUPPORTED
+  - When: A `details:` line appears in a sequence diagram.
+  - Message: "'details' is not accepted by current Mermaid CLI for sequence diagrams."
+  - Hint: "Remove the `details:` line to match mermaid-cli."
+
+- SE-ACTIVATION-UNBALANCED (warning)
+  - When: An `activate` is not balanced by a matching `deactivate` for the same actor.
+  - Message: "Unbalanced activation: 'A' was activated but not deactivated."
+  - Hint: "Add `deactivate A` after the active section."
+
+- SE-CREATE-NO-CREATING-MESSAGE (warning)
+  - When: A `create` line is not immediately followed by a message involving the created actor.
+  - Message: "Actor 'X' is created but the next line is not a message involving it."
+  - Hint: "Add a creating message to or from 'X' immediately after the create line."
+
+- SE-ACTIVATION-ALREADY-ACTIVE (warning)
+  - When: A message line includes a trailing `+` (activate) for a target that is already active.
+  - Message: "Message indicates '+ (activate)' but 'Target' is already active."
+  - Hint: "Remove '+' or deactivate first: deactivate Target"
+
+- SE-DEACTIVATE-NO-ACTIVE (warning)
+  - When: A message line includes a trailing `-` (deactivate) for a target that has no active activation.
+  - Message: "Message indicates '- (deactivate)' but 'Target' is not active."
+  - Hint: "Remove '-' or ensure 'activate Target' occurred before."
+
 ## General (GEN-*)
 
 - GEN-HEADER-INVALID
@@ -408,3 +448,32 @@ Severity note: By default, quoting issues in participant/actor names are warning
   - When: `create` ends without a participant/actor name.
   - Message: "Missing name after 'create'."
   - Hint: "Use: create participant A  or  create actor B"
+- FL-CLICK-CALL-EXTRA-TEXT
+  - When: `click … call fn()` is followed by tooltip/target text (Mermaid CLI rejects extras after `call()`).
+  - Message: "Tooltip/text after 'call()' is not supported by Mermaid CLI."
+  - Hint: "Use: click A call doThing()"
+
+- FL-CLASS-TARGET-UNKNOWN (warning)
+  - When: `class` applies to a node id that does not exist in the diagram (forward references are allowed; we pre-collect ids).
+  - Message: "Unknown node id 'X' in class statement."
+  - Hint: "Define the node before applying classes, or move the class line after the node."
+
+- FL-STYLE-TARGET-UNKNOWN (warning)
+  - When: `style` targets a node id that does not exist.
+  - Message: "Unknown node id 'X' in style statement."
+  - Hint: "Define the node before styling it, or move the style line after the node definition."
+
+- FL-LINKSTYLE-ID-UNKNOWN
+  - When: `linkStyle` references an edge id that does not exist.
+  - Message: "Unknown edge id 'X' in linkStyle statement."
+  - Hint: "Define the edge id using 'e1@-->' before styling it, or use numeric indices."
+
+- FL-EDGE-ATTR-ID-UNKNOWN
+  - When: An edge attribute statement `e1@{ ... }` references a non-existent edge id.
+  - Message: "Unknown edge id 'X' in edge attribute statement."
+  - Hint: "Attach the id to a link first: A e1@--> B"
+
+- FL-TYPED-SHAPE-UNSUPPORTED
+  - When: A typed shape in `@{ shape: … }` is recognized by Maid but not supported by current Mermaid CLI.
+  - Message: "Typed shape 'X' is not supported by current Mermaid CLI."
+  - Hint: "Use one of: rect, rounded, diamond, circle, cylinder, stadium, subroutine, \"lean-l\", \"lean-r\""

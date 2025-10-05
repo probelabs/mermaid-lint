@@ -51,11 +51,56 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
         hint: 'Example: A["He said &quot;Hi&quot;"]',
         scopeEndTokenNames: [
           'SquareClose','RoundClose','DiamondClose','DoubleSquareClose','DoubleRoundClose','StadiumClose','CylinderClose','HexagonClose'
+        ],
+        scopeStartTokenNames: [
+          'SquareOpen','RoundOpen','DiamondOpen','DoubleSquareOpen','DoubleRoundOpen','StadiumOpen','CylinderOpen','HexagonOpen'
         ]
       }).filter(e => !seenDoubleLines.has(e.line) && !escapedLinesAll.has(e.line));
       const errs = escWarn.concat(dbl);
+      // Heuristic: map generic parser error for two identifiers on one line (missing arrow)
+      const generic = (prevErrors || []).filter(e => e.severity === 'error' && !('code' in e) && typeof e.message === 'string');
+      for (const ge of generic) {
+        const msg = String((ge as any).message || '');
+        if (msg.includes('Newline') && msg.includes('EOF')) {
+          errs.push({
+            line: (ge as any).line ?? 1,
+            column: (ge as any).column ?? 1,
+            severity: 'error',
+            code: 'FL-LINK-MISSING',
+            message: "Two nodes on one line must be connected with an arrow.",
+            hint: 'Insert --> between nodes, e.g., A --> B.'
+          });
+        }
+      }
+      // Heuristic: explicit missing arrow when two node-like refs are on one line with only whitespace between
+      {
+        const lines = text.split(/\r?\n/);
+        const nodeRef = String.raw`[A-Za-z0-9_]+(?:\[[^\]]*\]|\([^\)]*\)|\{[^}]*\}|\[\[[^\]]*\]\]|\(\([^\)]*\)\))?`;
+        const re = new RegExp(String.raw`^\s*(${nodeRef})\s+(${nodeRef})\s*;?\s*$`);
+        const skipStart = /^(?:\s*)(style|classDef|class|click|linkStyle|subgraph|end|graph|flowchart|direction)\b/;
+        for (let i = 0; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          const ln = i + 1;
+          if (!raw.trim()) continue;
+          if (skipStart.test(raw)) continue;
+          const m = re.exec(raw);
+          if (m) {
+            const idxSecond = raw.indexOf(m[2]);
+            const col = idxSecond >= 0 ? (idxSecond + 1) : 1;
+            errs.push({
+              line: ln,
+              column: col,
+              severity: 'error',
+              code: 'FL-LINK-MISSING',
+              message: 'Two nodes on one line must be connected with an arrow.',
+              hint: 'Insert --> between nodes, e.g., A --> B.'
+            });
+          }
+        }
+      }
+
       // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
-      // per-line mismatches as OK as long as the file balances quotes overall).
+        // per-line mismatches as OK as long as the file balances quotes overall).
       const dblEsc = (text.match(/\\\"/g) || []).length;
       const dq = (text.match(/\"/g) || []).length - dblEsc;
       const sq = (text.match(/'/g) || []).length;

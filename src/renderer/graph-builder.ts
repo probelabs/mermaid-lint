@@ -11,10 +11,14 @@ export class GraphBuilder {
   private edgeCounter = 0;
   private subgraphs: Subgraph[] = [];
   private currentSubgraphStack: string[] = [];
+  private pendingLinkStyles: Array<{ indices: number[]; props: Record<string,string> }>= [];
   // Styling support (classDef/class/style)
   private classStyles: Map<string, Record<string,string>> = new Map();
   private nodeStyles: Map<string, Record<string,string>> = new Map();
   private nodeClasses: Map<string, Set<string>> = new Map();
+  private edgeClasses: Map<string, Set<string>> = new Map();
+  private edgeStyles: Map<string, Record<string,string>> = new Map();
+  private nodeLinks: Map<string, { href?: string; target?: string; tooltip?: string; call?: string }> = new Map();
 
   build(cst: CstNode | undefined): Graph {
     this.reset();
@@ -31,6 +35,12 @@ export class GraphBuilder {
 
     const direction = this.extractDirection(cst);
     this.processStatements(cst);
+
+    // Apply any collected node links onto nodes (if node exists)
+    for (const [id, link] of this.nodeLinks.entries()) {
+      const node = this.nodes.get(id);
+      if (node) node.link = link;
+    }
 
     return {
       nodes: Array.from(this.nodes.values()),
@@ -50,6 +60,10 @@ export class GraphBuilder {
     this.classStyles.clear();
     this.nodeStyles.clear();
     this.nodeClasses.clear();
+    this.edgeClasses.clear();
+    this.edgeStyles.clear();
+    this.pendingLinkStyles = [];
+    this.nodeLinks.clear();
   }
 
   private extractDirection(cst: CstNode): Direction {
@@ -81,9 +95,66 @@ export class GraphBuilder {
         this.processClassAssign(stmt.children.classStatement[0] as CstNode);
       } else if (stmt.children?.styleStatement) {
         this.processStyle(stmt.children.styleStatement[0] as CstNode);
+      } else if (stmt.children?.linkStyleStatement) {
+        this.processLinkStyle(stmt.children.linkStyleStatement[0] as CstNode);
+      } else if (stmt.children?.clickStatement) {
+        this.processClick(stmt.children.clickStatement[0] as CstNode);
+      } else if ((stmt.children as any)?.edgeAttrStatement) {
+        this.processEdgeAttr((stmt.children as any).edgeAttrStatement[0] as CstNode);
       }
       // Skip class, style, and other statements for now
     }
+
+    // Apply pending link styles to edges after all edges have been created
+    this.applyLinkStyles();
+  }
+
+  private unquote(s: string | undefined): string | undefined {
+    if (!s) return s;
+    if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) return s.slice(1, -1);
+    return s;
+  }
+
+  private processClick(cst: CstNode) {
+    const ch = (cst.children || {}) as any;
+    const tgtTok = (ch.clickTarget?.[0] as IToken | undefined);
+    if (!tgtTok) return;
+    const id = tgtTok.image;
+    const link: { href?: string; target?: string; tooltip?: string; call?: string } = {};
+    if (ch.clickHref && ch.clickHref[0]) {
+      const hrefCh = (ch.clickHref[0].children || {}) as any;
+      if (hrefCh.url && hrefCh.url[0]) link.href = this.unquote((hrefCh.url[0] as IToken).image);
+      if (hrefCh.tooltip && hrefCh.tooltip[0]) link.tooltip = this.unquote((hrefCh.tooltip[0] as IToken).image);
+      if (hrefCh.target && hrefCh.target[0]) link.target = (hrefCh.target[0] as IToken).image;
+    } else if (ch.clickCall && ch.clickCall[0]) {
+      const callCh = (ch.clickCall[0].children || {}) as any;
+      if (callCh.fn && callCh.fn[0]) link.call = (callCh.fn[0] as IToken).image;
+      if (callCh.tooltip && callCh.tooltip[0]) link.tooltip = this.unquote((callCh.tooltip[0] as IToken).image);
+    } else {
+      // Legacy fallback
+      const idents: IToken[] = (ch.Identifier as IToken[] | undefined) || [];
+      const texts: IToken[] = (ch.Text as IToken[] | undefined) || [];
+      const quotes: IToken[] = (ch.QuotedString as IToken[] | undefined) || [];
+      const modeTok = idents.find(t => /^(href|call|callback)$/i.test(t.image));
+      const mode = modeTok?.image?.toLowerCase();
+      if (mode === 'href') {
+        const urlTok = quotes[0];
+        const tipTok = quotes[1];
+        const targetTok = idents.find(t => /^_(blank|self|parent|top)$/i.test(t.image));
+        if (urlTok) link.href = this.unquote(urlTok.image);
+        if (tipTok) link.tooltip = this.unquote(tipTok.image);
+        if (targetTok) link.target = targetTok.image;
+      } else if (mode === 'call' || mode === 'callback') {
+        const reserved = new Set(['href','call','callback','_blank','_self','_parent','_top']);
+        const after = idents.filter(t => (t.startOffset ?? 0) > (modeTok?.startOffset ?? -1));
+        const nameTok = after.find(t => !reserved.has(t.image.toLowerCase()));
+        const tstr = texts.map(t => t.image).join(' ').trim();
+        link.call = nameTok ? nameTok.image + (tstr ? ` ${tstr}` : '') : (tstr || undefined);
+        const tipTok = quotes[0];
+        if (tipTok) link.tooltip = this.unquote(tipTok.image);
+      }
+    }
+    if (Object.keys(link).length) this.nodeLinks.set(id, { ...(this.nodeLinks.get(id) || {}), ...link });
   }
 
   private processNodeStatement(stmt: CstNode) {
@@ -91,6 +162,30 @@ export class GraphBuilder {
     const links = stmt.children?.link as CstNode[] | undefined;
 
     if (!groups || groups.length === 0) return;
+
+    // Detect a lone "id@{ ... }" line (no links, single node in group) and treat as edge attribute update if the id matches an existing edge.
+    if ((!links || links.length === 0) && groups.length === 1) {
+      const g0 = groups[0];
+      const nodes = (g0.children?.node as CstNode[] | undefined) || [];
+      if (nodes.length === 1) {
+        const n = nodes[0];
+        const hasAttr = !!((n.children as any).attrObject && (n.children as any).attrObject.length);
+        const hasShape = !!(n.children?.nodeShape);
+        if (hasAttr && !hasShape) {
+          const idTok = ((n.children as any).nodeId?.[0] as IToken | undefined) || ((n.children as any).Identifier?.[0] as IToken | undefined) || undefined;
+          if (idTok) {
+            const id = idTok.image;
+            const exists = this.edges.some(e => e.id === id);
+            if (exists) {
+              // Reuse edge attr processing logic by synthesizing a small CST-like node containing edgeId + attrObject
+              const edgeAttrFake: any = { children: { edgeId: [{ image: id } as any], attrObject: (n.children as any).attrObject } };
+              this.processEdgeAttr(edgeAttrFake as CstNode);
+              return; // do not process as a node statement
+            }
+          }
+        }
+      }
+    }
 
     // Process first group of nodes
     const sourceNodes = this.processNodeGroup(groups[0]);
@@ -104,7 +199,7 @@ export class GraphBuilder {
       for (const source of sourceNodes) {
         for (const target of targetNodes) {
           this.edges.push({
-            id: `e${this.edgeCounter++}`,
+            id: (linkInfo as any).edgeId || `e${this.edgeCounter++}`,
             source,
             target,
             label: linkInfo.label,
@@ -123,7 +218,7 @@ export class GraphBuilder {
         for (const source of targetNodes) {
           for (const target of nextNodes) {
             this.edges.push({
-              id: `e${this.edgeCounter++}`,
+              id: (nextLink as any).edgeId || `e${this.edgeCounter++}`,
               source,
               target,
               label: nextLink.label,
@@ -214,7 +309,7 @@ export class GraphBuilder {
       return null;
     }
 
-    // Extract shape and label
+    // Extract shape and label (bracket-based)
     let shape: NodeShape = 'rectangle';
     let label = id; // Default label is the ID
 
@@ -225,6 +320,31 @@ export class GraphBuilder {
       if (result.label) label = result.label;
     }
 
+    // Typed-shape attribute object after node id (A@{ ... })
+    const attrNode = (children as any).attrObject?.[0] as CstNode | undefined;
+    let typedShape: { shape?: string; label?: string; padding?: number; cornerRadius?: number; icon?: string; image?: string; lean?: 'l'|'r' } | undefined;
+    if (attrNode && !shapeNode) {
+      typedShape = this.parseTypedAttrObject(attrNode);
+      if (typedShape.shape) {
+        const m = typedShape.shape;
+        if (m === 'rect') shape = 'rectangle';
+        else if (m === 'round' || m === 'rounded') shape = 'round';
+        else if (m === 'stadium') shape = 'stadium';
+        else if (m === 'subroutine') shape = 'subroutine';
+        else if (m === 'circle') shape = 'circle';
+        else if (m === 'cylinder') shape = 'cylinder';
+        else if (m === 'diamond') shape = 'diamond';
+        else if (m === 'trapezoid') shape = 'trapezoid';
+        else if (m === 'trapezoidAlt') shape = 'trapezoidAlt';
+        else if (m === 'parallelogram' || m === 'lean-l' || m === 'lean-r') { shape = 'parallelogram'; typedShape.lean = (m === 'lean-l' ? 'l' : (m === 'lean-r' ? 'r' : undefined)); }
+        else if (m === 'hexagon') shape = 'hexagon';
+        else if (m === 'icon' || m === 'image') shape = 'rectangle';
+      }
+      if (typeof typedShape.label === 'string' && typedShape.label.length > 0) {
+        label = typedShape.label;
+      }
+    }
+
     // Capture inline class annotation if present
     const clsTok = (children as any).nodeClass?.[0] as IToken | undefined;
     if (clsTok) {
@@ -233,7 +353,47 @@ export class GraphBuilder {
       this.nodeClasses.set(id, set);
     }
 
-    return { id, label, shape };
+    const out: any = { id, label, shape } as Node;
+    if (typedShape) {
+      const padding = typedShape.padding;
+      const cornerRadius = typedShape.cornerRadius;
+      const lean = typedShape.lean;
+      const media = (typedShape.icon || typedShape.image) ? { icon: typedShape.icon, image: typedShape.image } : undefined;
+      out.typed = { padding, cornerRadius, lean, media };
+    }
+    return out;
+  }
+
+  private parseTypedAttrObject(attrNode: CstNode): { shape?: string; label?: string; padding?: number; cornerRadius?: number; icon?: string; image?: string } {
+    const ch = (attrNode.children || {}) as any;
+    const pairs: CstNode[] = (ch.attrPair || []) as CstNode[];
+    const out: any = {};
+    for (const p of pairs) {
+      const keyTok = (p.children?.attrKey?.[0] as IToken | undefined);
+      if (!keyTok) continue;
+      const k = keyTok.image;
+      const vTok = (p.children?.QuotedString?.[0] || p.children?.Identifier?.[0] || p.children?.NumberLiteral?.[0] || p.children?.Text?.[0]) as IToken | undefined;
+      if (!vTok) continue;
+      let raw = vTok.image;
+      if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) raw = raw.slice(1, -1);
+      switch (k) {
+        case 'shape': out.shape = raw; break;
+        case 'label': out.label = raw; break;
+        case 'padding': {
+          const n = parseFloat(raw);
+          if (Number.isFinite(n)) out.padding = n;
+          break;
+        }
+        case 'cornerRadius': {
+          const n = parseFloat(raw);
+          if (Number.isFinite(n)) out.cornerRadius = n;
+          break;
+        }
+        case 'icon': out.icon = raw; break;
+        case 'image': out.image = raw; break;
+      }
+    }
+    return out;
   }
 
   private extractShapeAndLabel(shapeNode: CstNode): { shape: NodeShape; label: string } {
@@ -365,12 +525,13 @@ export class GraphBuilder {
     return parts.join(' ').trim();
   }
 
-  private extractLinkInfo(link: CstNode): { type: ArrowType; label?: string; markerStart?: 'none'|'arrow'|'circle'|'cross'; markerEnd?: 'none'|'arrow'|'circle'|'cross' } {
+  private extractLinkInfo(link: CstNode): { type: ArrowType; label?: string; markerStart?: 'none'|'arrow'|'circle'|'cross'; markerEnd?: 'none'|'arrow'|'circle'|'cross'; edgeId?: string } {
     const children = link.children;
     let type: ArrowType = 'arrow';
     let label: string | undefined;
     let markerStart: 'none'|'arrow'|'circle'|'cross' = 'none';
     let markerEnd: 'none'|'arrow'|'circle'|'cross' = 'none';
+    const eidTok = (children as any).edgeId?.[0] as IToken | undefined;
 
     // Determine arrow type
     if ((children as any).BiDirectionalArrow) {
@@ -437,7 +598,7 @@ export class GraphBuilder {
       label = strip(raw);
     }
 
-    return { type, label, markerStart, markerEnd };
+    return { type, label, markerStart, markerEnd, edgeId: eidTok ? eidTok.image : undefined };
   }
 
   private processSubgraph(subgraph: CstNode) {
@@ -522,12 +683,16 @@ export class GraphBuilder {
     // Last Identifier is className per grammar (LABEL: className)
     const classNameTok = (cst.children as any).className?.[0] as IToken | undefined;
     const className = classNameTok?.image || ids[ids.length - 1].image;
-    const nodeIds = classNameTok ? ids.slice(0, -1) : ids.slice(0, -1); // conservative
-    for (const tok of nodeIds) {
+    const targetIds = classNameTok ? ids.slice(0, -1) : ids.slice(0, -1); // conservative
+    for (const tok of targetIds) {
       const id = tok.image;
-      const set = this.nodeClasses.get(id) || new Set<string>();
-      set.add(className);
-      this.nodeClasses.set(id, set);
+      // Assign to both nodes and edges; whichever exists will consume it
+      const nset = this.nodeClasses.get(id) || new Set<string>();
+      nset.add(className);
+      this.nodeClasses.set(id, nset);
+      const eset = this.edgeClasses.get(id) || new Set<string>();
+      eset.add(className);
+      this.edgeClasses.set(id, eset);
       // If node already exists, merge style now
       const node = this.nodes.get(id);
       if (node) {
@@ -577,6 +742,109 @@ export class GraphBuilder {
       if (k && v) props[k.trim()] = v.trim();
     }
     return props;
+  }
+
+  private processEdgeAttr(cst: CstNode) {
+    const eidTok = (cst.children as any).edgeId?.[0] as IToken | undefined;
+    if (!eidTok) return;
+    const id = eidTok.image;
+    const attrNode = (cst.children as any).attrObject?.[0] as CstNode | undefined;
+    if (!attrNode) return;
+    const ch = (attrNode.children || {}) as any;
+    const pairs: CstNode[] = (ch.attrPair || []) as CstNode[];
+    const props: Record<string,string> = {};
+    for (const p of pairs) {
+      const keyTok = (p.children as any).attrKey?.[0] as IToken | undefined;
+      const vTok = ((p.children as any).QuotedString?.[0] || (p.children as any).Identifier?.[0] || (p.children as any).NumberLiteral?.[0] || (p.children as any).Text?.[0]) as IToken | undefined;
+      if (!keyTok || !vTok) continue;
+      let val = vTok.image;
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) val = val.slice(1, -1);
+      const k = keyTok.image;
+      if (k === 'animate') {
+        // Default animation presets; user can override via animation key
+        const truthy = /^(true|1|yes|on|fast|slow)$/i.test(val);
+        if (truthy) {
+          props['animation'] = (/^slow$/i.test(val) ? 'dash 8s linear infinite' : (/^fast$/i.test(val) ? 'dash 2s linear infinite' : 'dash 4s linear infinite'));
+          if (!props['stroke-dasharray']) props['stroke-dasharray'] = '5 5';
+        }
+      } else {
+        props[k] = val;
+      }
+    }
+    const cur = this.edgeStyles.get(id) || {};
+    this.edgeStyles.set(id, { ...cur, ...props });
+  }
+
+  private computeEdgeStyle(edgeId: string): Record<string, any> {
+    const out: Record<string, any> = {};
+    const classes = this.edgeClasses.get(edgeId);
+    if (classes) {
+      for (const c of classes) {
+        const s = this.classStyles.get(c);
+        if (s) Object.assign(out, this.normalizeStyle(s));
+      }
+    }
+    const direct = this.edgeStyles.get(edgeId);
+    if (direct) Object.assign(out, this.normalizeStyle(direct));
+    return out;
+  }
+
+  private processLinkStyle(cst: CstNode) {
+    const ch = (cst.children || {}) as any;
+    // Prefer structured: linkStyleIndexList + linkStylePairs
+    if (ch.linkStyleIndexList && ch.linkStylePairs) {
+      const idxNode = ch.linkStyleIndexList[0] as CstNode;
+      const pairNode = ch.linkStylePairs[0] as CstNode;
+      const idxToks: IToken[] = (((idxNode.children || {}) as any).index || []) as IToken[];
+      const indices = idxToks.map(t => parseInt(t.image, 10)).filter(n => Number.isFinite(n));
+      // Extract key:value pairs
+      const pairs: CstNode[] = ((pairNode.children || {}) as any).linkStylePair || [];
+      const props: Record<string,string> = {};
+      for (const p of pairs) {
+        const pch = (p.children || {}) as any;
+        const keyTok = pch.key?.[0] as IToken | undefined;
+        const vTok = (pch.valueColor?.[0] || pch.valueQuoted?.[0] || pch.valueNum?.[0] || pch.valueId?.[0] || pch.valueText?.[0]) as IToken | undefined;
+        if (!keyTok || !vTok) continue;
+        let val = vTok.image;
+        if ((vTok.tokenType?.name === 'QuotedString') && (val.startsWith('"') || val.startsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        props[keyTok.image] = val;
+      }
+      this.pendingLinkStyles.push({ indices, props });
+      return;
+    }
+    // Fallback: legacy token sweep
+    const nums = (cst.children?.NumberLiteral as IToken[] | undefined) || [];
+    const indices = nums.map(n => parseInt(n.image, 10)).filter(n => Number.isFinite(n));
+    const props = this.collectStyleProps(cst);
+    this.pendingLinkStyles.push({ indices, props });
+  }
+
+  private applyLinkStyles() {
+    if (!this.pendingLinkStyles.length || !this.edges.length) return;
+    const normalize = (s: Record<string,string>): Record<string, any> => {
+      const out: Record<string, any> = {};
+      for (const [kRaw, vRaw] of Object.entries(s)) {
+        const k = kRaw.trim().toLowerCase(); const v = vRaw.trim();
+        if (k === 'stroke') out.stroke = v;
+        else if (k === 'stroke-width') { const num = parseFloat(v); if (!Number.isNaN(num)) out.strokeWidth = num; }
+        else if (k === 'opacity' || k === 'stroke-opacity') { const num = parseFloat(v); if (!Number.isNaN(num)) out.strokeOpacity = num; }
+        else if (k === 'stroke-dasharray') out.dasharray = v;
+      }
+      return out;
+    };
+    for (const cmd of this.pendingLinkStyles) {
+      const style = normalize(cmd.props);
+      for (const idx of cmd.indices) {
+        if (idx >= 0 && idx < this.edges.length) {
+          const e = this.edges[idx] as any;
+          e.style = { ...(e.style || {}), stroke: style.stroke ?? (e.style?.stroke), strokeWidth: style.strokeWidth ?? (e.style?.strokeWidth), strokeOpacity: style.strokeOpacity ?? (e.style?.strokeOpacity) };
+          if (style.dasharray) e.dasharray = style.dasharray;
+          if ((style as any).animation) e.animation = (style as any).animation;
+        }
+      }
+    }
   }
 
   private computeNodeStyle(nodeId: string): Record<string, any> {

@@ -83,6 +83,72 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
           errors.push({ line: Math.max(1, lines.length), column: 1, severity: 'error', code: 'ST-BLOCK-MISSING-RBRACE', message: "Missing '}' to close a state block.", hint: "Close the block: state Foo { ... }" });
         }
       }
+      // Concurrency placement: '---' must be inside state { } and not the first/last content line
+      // We apply a simple text-based state block scanner to evaluate placement.
+      // reuse 'lines' defined above
+      type Block = { start: number; content: number[]; seps: number[] };
+      const stack: Block[] = [];
+      const pushBlock = (ln: number) => stack.push({ start: ln, content: [], seps: [] });
+      const top = () => stack[stack.length - 1];
+      for (let i = 0; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        const ln = i + 1;
+        if (/^\s*state\b.*\{\s*$/.test(raw)) { pushBlock(ln); continue; }
+        if (/^\s*\}\s*$/.test(raw)) {
+          const blk = stack.pop();
+          if (blk) {
+            // Evaluate separators with stricter rule: each '---' must have at least one content line
+            // above it since the previous separator/start, and at least one content line below it
+            // before the next separator/end.
+            const all = [...blk.content.map(l => ({ ln: l, kind: 'content' as const })), ...blk.seps.map(l => ({ ln: l, kind: 'sep' as const }))]
+              .sort((a, b) => a.ln - b.ln);
+            const sepIdxs = all.map((x, i) => ({ i, x })).filter(z => z.x.kind === 'sep').map(z => z.i);
+            for (const si of sepIdxs) {
+              const sepLn = all[si].ln;
+              // scan backward to previous sep or start, and check for any content
+              let hasBefore = false;
+              for (let k = si - 1; k >= 0; k--) {
+                if (all[k].kind === 'sep') break;
+                if (all[k].kind === 'content') { hasBefore = true; break; }
+              }
+              // scan forward to next sep or end, and check for any content
+              let hasAfter = false;
+              for (let k = si + 1; k < all.length; k++) {
+                if (all[k].kind === 'sep') break;
+                if (all[k].kind === 'content') { hasAfter = true; break; }
+              }
+              if (!hasBefore || !hasAfter) {
+                errors.push({
+                  line: sepLn,
+                  column: 1,
+                  severity: 'error',
+                  code: 'ST-CONCURRENCY-MISPLACED',
+                  message: "Concurrency separator '---' must be between regions, not at the start or end of a block.",
+                  hint: "Place '---' between two sets of state lines inside the same block.",
+                });
+              }
+            }
+          }
+          continue;
+        }
+        if (stack.length > 0) {
+          if (/^\s*---\s*$/.test(raw)) { 
+            top().seps.push(ln);
+            // Current CLI treats concurrency as unsupported; surface a clear error code
+            if (!has('ST-CONCURRENCY-UNSUPPORTED', ln)) {
+              errors.push({
+                line: ln,
+                column: 1,
+                severity: 'error',
+                code: 'ST-CONCURRENCY-UNSUPPORTED',
+                message: "Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.",
+                hint: "Remove '---' or split logic into separate composite states.",
+              });
+            }
+          }
+          else if (raw.trim() !== '') top().content.push(ln);
+        }
+      }
       return errors;
     }
   });
