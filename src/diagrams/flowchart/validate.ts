@@ -72,34 +72,24 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           });
         }
       }
-      // Heuristic: explicit missing arrow when two node-like tokens appear on the same line with no arrow
+      // Heuristic: explicit missing arrow when two node-like refs are on one line with only whitespace between
       {
-        const byLine = new Map<number, IToken[]>();
-        for (const tk of (tokens as IToken[])) {
-          if (tk.tokenType.name === 'Newline') continue;
-          const ln = tk.startLine ?? 1;
-          if (!byLine.has(ln)) byLine.set(ln, []);
-          byLine.get(ln)!.push(tk);
-        }
-        const arrowTokenNames = new Set([
-          'ArrowRight','ArrowLeft','DottedArrowRight','DottedArrowLeft','ThickArrowRight','ThickArrowLeft','BiDirectionalArrow','CircleEndLine','CrossEndLine','Line','DottedLine','ThickLine','TwoDashes'
-        ]);
-        const skipLineStartKw = new Set(['StyleKeyword','ClassKeyword','ClassDefKeyword','ClickKeyword','LinkStyleKeyword','SubgraphKeyword','EndKeyword','GraphKeyword','FlowchartKeyword']);
-        for (const [ln, arr] of byLine.entries()) {
-          if (!arr.length) continue;
-          const startsWithKw = skipLineStartKw.has(arr[0].tokenType.name);
-          if (startsWithKw) continue;
-          const hasArrow = arr.some(tk => arrowTokenNames.has(tk.tokenType.name));
-          if (hasArrow) continue;
-          // Only fire when the whole line is just identifiers/numbers (simple 'A B').
-          const allSimple = arr.every(tk => tk.tokenType.name === 'Identifier' || tk.tokenType.name === 'NumberLiteral');
-          if (!allSimple) continue;
-          const nodeish = arr.filter(tk => tk.tokenType.name === 'Identifier' || tk.tokenType.name === 'NumberLiteral');
-          if (nodeish.length >= 2) {
-            const second = nodeish[1];
+        const lines = text.split(/\r?\n/);
+        const nodeRef = String.raw`[A-Za-z0-9_]+(?:\[[^\]]*\]|\([^\)]*\)|\{[^}]*\}|\[\[[^\]]*\]\]|\(\([^\)]*\)\))?`;
+        const re = new RegExp(String.raw`^\s*(${nodeRef})\s+(${nodeRef})\s*;?\s*$`);
+        const skipStart = /^(?:\s*)(style|classDef|class|click|linkStyle|subgraph|end|graph|flowchart|direction)\b/;
+        for (let i = 0; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          const ln = i + 1;
+          if (!raw.trim()) continue;
+          if (skipStart.test(raw)) continue;
+          const m = re.exec(raw);
+          if (m) {
+            const idxSecond = raw.indexOf(m[2]);
+            const col = idxSecond >= 0 ? (idxSecond + 1) : 1;
             errs.push({
               line: ln,
-              column: second.startColumn ?? 1,
+              column: col,
               severity: 'error',
               code: 'FL-LINK-MISSING',
               message: 'Two nodes on one line must be connected with an arrow.',
