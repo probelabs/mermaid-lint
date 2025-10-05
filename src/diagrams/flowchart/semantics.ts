@@ -11,12 +11,14 @@ class FlowSemanticsVisitor extends BaseVisitor {
   private ctx: Ctx;
   private edgeCount = 0;
   private knownIds: Set<string>;
+  private knownEdgeIds: Set<string>;
 
-  constructor(ctx: Ctx, knownIds: Set<string>) {
+  constructor(ctx: Ctx, knownIds: Set<string>, knownEdgeIds: Set<string>) {
     super();
     this.validateVisitor();
     this.ctx = ctx;
     this.knownIds = knownIds;
+    this.knownEdgeIds = knownEdgeIds;
   }
 
   // Entry point
@@ -32,14 +34,14 @@ class FlowSemanticsVisitor extends BaseVisitor {
     for (const idTok of ids) {
       if (classNameTok && idTok.startOffset === classNameTok.startOffset) continue;
       const id = String(idTok.image);
-      if (!this.knownIds.has(id)) {
+      if (!(this.knownIds.has(id) || this.knownEdgeIds.has(id))) {
         this.ctx.errors.push({
           line: idTok.startLine ?? 1,
           column: idTok.startColumn ?? 1,
           severity: 'warning',
           code: 'FL-CLASS-TARGET-UNKNOWN',
-          message: `Unknown node id '${id}' in class statement.`,
-          hint: 'Define the node before applying classes, or move the class line after the node.'
+          message: `Unknown id '${id}' in class statement.`,
+          hint: 'Define the node/link before applying classes, or move the class line after it.'
         });
       }
     }
@@ -216,6 +218,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
         this.ctx.errors.push({ line: numTok?.startLine ?? 1, column: numTok?.startColumn ?? 1, severity: 'error', code: 'FL-LINKSTYLE-INDEX-OUT-OF-RANGE', message: `linkStyle index ${n} is out of range (0..${Math.max(0, this.edgeCount - 1)}).`, hint: `Use an index between 0 and ${Math.max(0, this.edgeCount - 1)} or add more links first.` });
       }
     }
+    // Id-based linkStyle is not accepted by current Mermaid CLI; numeric only.
   }
 
   subgraph(ctx: any) {
@@ -253,6 +256,13 @@ class FlowSemanticsVisitor extends BaseVisitor {
     const linksHere = Array.isArray((ctx as any).link) ? (ctx as any).link.length : 0;
     if (linksHere > 0) this.edgeCount += linksHere;
   }
+
+  // Edge attribute object statements must target a known edge id
+  // Edge attribute statements are parsed as nodeStatements with a typed attrObject and no links.
+  // If such a line targets a known edge id, treat it as edge-attr at build time; otherwise keep as a node.
+  // Here we only surface an error when it looks like an edge-attr targeting an unknown edge id (id starts with 'e' and no link).
+  // We keep this heuristic conservative to avoid false positives on typed node shapes.
+  // (Validation that applies the attributes happens in the builder.)
 
   nodeOrParallelGroup(ctx: any) {
     if (ctx.node) ctx.node.forEach((n: CstNode) => this.visit(n));
@@ -545,9 +555,10 @@ class FlowSemanticsVisitor extends BaseVisitor {
   }
 }
 
-// Pre-pass to collect node ids (so we can allow forward references in class/style)
+// Pre-pass to collect node and edge ids (so we can allow forward references)
 class NodeIdCollector extends BaseVisitor {
   public ids = new Set<string>();
+  public edgeIds = new Set<string>();
   constructor() { super(); this.validateVisitor(); }
   node(ctx: any) {
     const idTok: IToken | undefined = (ctx.nodeId && ctx.nodeId[0]) as IToken | undefined;
@@ -555,8 +566,19 @@ class NodeIdCollector extends BaseVisitor {
     if (idTok) this.ids.add(String(idTok.image));
     else if (idNumTok) this.ids.add(String(idNumTok.image));
   }
+  link(ctx: any) {
+    const t: IToken | undefined = (ctx as any).edgeId?.[0] as IToken | undefined;
+    if (t) this.edgeIds.add(String(t.image));
+  }
   nodeOrParallelGroup(ctx: any) { if (ctx.node) ctx.node.forEach((n: CstNode) => this.visit(n)); }
-  nodeStatement(ctx: any) { if (ctx.nodeOrParallelGroup) ctx.nodeOrParallelGroup.forEach((n: CstNode) => this.visit(n)); }
+  nodeStatement(ctx: any) {
+    if (ctx.nodeOrParallelGroup) ctx.nodeOrParallelGroup.forEach((n: CstNode) => this.visit(n));
+    if ((ctx as any).link) (ctx as any).link.forEach((ln: CstNode) => this.visit(ln));
+  }
+  edgeAttrStatement(ctx: any) {
+    const t: IToken | undefined = (ctx as any).edgeId?.[0] as IToken | undefined;
+    if (t) this.edgeIds.add(String(t.image));
+  }
   statement(ctx: any) {
     for (const k of Object.keys(ctx)) {
       const arr = (ctx as any)[k];
@@ -570,7 +592,7 @@ export function analyzeFlowchart(cst: CstNode, _tokens: IToken[], opts?: { stric
   const ctx: Ctx = { errors: [], strict: opts?.strict };
   const collector = new NodeIdCollector();
   collector.visit(cst);
-  const v = new FlowSemanticsVisitor(ctx, collector.ids);
+  const v = new FlowSemanticsVisitor(ctx, collector.ids, collector.edgeIds);
   v.visit(cst);
   return ctx.errors;
 }

@@ -630,6 +630,9 @@ ${baseGroup}
     const styleStrokeWidth = (edge as any).style?.strokeWidth as (number|undefined);
     const styleStrokeOpacity = (edge as any).style?.strokeOpacity as (number|undefined);
     if ((edge as any).dasharray) strokeDasharray = String((edge as any).dasharray);
+    // If animation is requested but dasharray missing, supply a reasonable default to make motion visible
+    const anim = (edge as any).animation as (string|undefined);
+    if (!strokeDasharray && anim) strokeDasharray = '5 5';
     if (strokeDasharray) {
       edgeElement += ` stroke-dasharray="${strokeDasharray}"`;
     }
@@ -645,7 +648,8 @@ ${baseGroup}
       edgeElement += ` stroke="${styleStroke}"`;
     }
     // We avoid marker URLs and use per-edge overlay shapes (triangles/circles/crosses)
-    edgeElement += ' />';
+    const inlineAnim = anim ? ` style="animation:${anim}"` : '';
+    edgeElement += inlineAnim + ' />';
 
     // Add edge label if present
     if (edge.label) {

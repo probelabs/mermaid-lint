@@ -65,5 +65,11 @@
   ],
   "wrong-arrow.mmd": [
     "SE-ARROW-INVALID"
+  ],
+  "and-in-alt-nested.mmd": [
+    "SE-BRANCH-IN-WRONG-BLOCK"
+  ],
+  "else-in-par-nested.mmd": [
+    "SE-BRANCH-IN-WRONG-BLOCK"
   ]
 }

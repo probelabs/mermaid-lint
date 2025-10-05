@@ -22,6 +22,9 @@ export function buildSharedCss(opts: SharedStyleOptions = {}): string {
     .edge-marker { stroke: ${edgeStroke}; }
     .edge-marker-fill { fill: ${edgeStroke}; }
 
+    /* Basic stroke dash animation used by flowchart link animation presets */
+    @keyframes dash { to { stroke-dashoffset: -1000; } }
+
     /* Cluster (flowchart + sequence blocks) */
     .cluster-bg { fill: #ffffde; }
     .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }

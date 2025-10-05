@@ -39,6 +39,8 @@ export interface Edge {
   markerStart?: 'none' | 'arrow' | 'circle' | 'cross';
   markerEnd?: 'none' | 'arrow' | 'circle' | 'cross';
   style?: NodeStyle; // reuse basic stroke/strokeWidth/strokeOpacity
+  dasharray?: string;
+  animation?: string;
 }
 
 export interface Graph {

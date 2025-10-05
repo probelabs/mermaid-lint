@@ -19,5 +19,19 @@
   ],
   "markers-and-concurrency.mmd": [
     "ST-CONCURRENCY-UNSUPPORTED"
+  ],
+  "concurrency-at-start.mmd": [
+    "ST-CONCURRENCY-UNSUPPORTED",
+    "ST-CONCURRENCY-MISPLACED"
+  ],
+  "concurrency-at-end.mmd": [
+    "ST-CONCURRENCY-UNSUPPORTED",
+    "ST-CONCURRENCY-MISPLACED"
+  ],
+  "concurrency-adjacent.mmd": [
+    "ST-CONCURRENCY-UNSUPPORTED",
+    "ST-CONCURRENCY-UNSUPPORTED",
+    "ST-CONCURRENCY-MISPLACED",
+    "ST-CONCURRENCY-MISPLACED"
   ]
 }

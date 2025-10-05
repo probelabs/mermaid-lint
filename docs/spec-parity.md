@@ -1,124 +1,84 @@
-Spec Parity TODO (Mermaid → Maid)
+Spec Parity (Mermaid → Maid)
 
-Purpose: track what’s left to fully support Mermaid features across all diagram types we handle. Keep bullets short and actionable. Update as items land.
+Purpose: single place to see where our parsers and renderers diverge from Mermaid’s docs. Use this to drive work; keep it current as we land changes.
 
-Status Legend
-- [x] complete (merged on feat/spec-parity-round1)
-- [ ] pending (planned next)
-- [~] partial (parser present; CLI parity or renderer pending)
+Legend
+- ✅ supported
+- ⚠️ partial (works with gaps or needs polish)
+- ❌ not yet
 
 Flowchart
-- Parser
-  - [x] Top-level `direction` statement outside header.
-  - [x] Interactions lines parsed: `click`, `linkStyle`.
-  - [x] Click parsed into structured subrules (`href` / `call`) with clear CST.
-  - [x] LinkStyle parsed into index list + key:value style pairs; multiline supported.
-  - [x] Typed-shape attribute object after node id: `A@{ shape: …, label, padding, cornerRadius, icon, image }` — parser + renderer mapping (rect/round/diamond/hexagon/parallelogram lean-l/r/trapezoid/trapezoidAlt); basic image media rendering.
-  - [x] Typed-shape shape identifiers: consider narrowed tokens or guarded Identifier to reduce ambiguity (parser-level hinting; semantics remains authoritative).
-    - Done when: shape values in `@{ shape: … }` accept a guarded set at parse time (rect, round, stadium, subroutine, circle, cylinder, diamond, trapezoid, trapezoidAlt, parallelogram, lean-l, lean-r, hexagon); unknowns still surface as FL-TYPED-SHAPE-UNKNOWN from semantics.
-- Semantics/Validation
-  - [x] Enforce only keyword `direction` before a Direction inside subgraphs (FL-DIR-KW-INVALID).
-  - [x] Conflict warning when both bracket shape and `@{ shape: … }` present (FL-TYPED-SHAPE-CONFLICT).
-  - [x] Typed-shape validation: unknown keys/values, numeric fields, label string (FL-TYPED-KEY-UNKNOWN, FL-TYPED-SHAPE-UNKNOWN, FL-TYPED-NUMERIC-EXPECTED, FL-TYPED-LABEL-NOT-STRING).
-  - [x] Interactions validation: `click` mode/url/call/target checks; `linkStyle` indices and style presence (FL-CLICK-*, FL-LINKSTYLE-*).
-  - [x] Interactions parsing: `click` now parsed into structured `href` / `call` subrules for clearer semantics and graph mapping.
-  - [x] Interactions extras: range usage `0:3` flagged (FL-LINKSTYLE-RANGE-UNSUPPORTED); duplicate indices warned (FL-LINKSTYLE-DUPLICATE-INDEX).
-  - [x] Interactions: add fixtures for multi-line linkStyle, whitespace-heavy forms, and mixed valid/invalid indices; refine hints accordingly.
-  - [x] Interactions call(): reject extra tooltip/target after `call()` to match CLI; fixtures added.
-  - [x] Class/style targets: warn on unknown ids (forward refs allowed via pre-collection).
-  - [x] Typed-shape support matrix enforced (unsupported -> error); docs/fixtures updated.
-- Renderer parity
-  - [~] Edge–shape intersection: polygon/capsule intersection improved; round fallback added; verify stadium/parallelogram/trapezoid/hexagon across complex joins.
-  - [~] LR/RL nested subgraphs layout width/spacing tuning (first pass: network‑simplex + nodesep/ranksep + elbow bias).
-  - [ ] Curve end flattening constants (link-styles) finalized; label pill size/placement match Mermaid (currently close but still tunable).
-  - [ ] Complex markers both ends (<-->, o--o, x--x) on multi-bend edges; overlay ordering stable.
-  - [~] HTML in labels: <b>, <i>, <u>, <br/> fixtures added; renderer normalization pending.
-  - [x] Apply linkStyle to renderer: path stroke/width/opacity/dasharray; overlay arrowheads pick up color and scale with stroke-width.
-- Fixtures/Tests
-  - [x] Expand coverage: `typed-shapes-all.mmd` (unsupported matrix, invalid) + `typed-shapes-bad-units.mmd` (valid with warnings for units/label).
-  - [x] Add `html-in-labels.mmd` (valid) covering <b>, <i>, <u>, <br/> cases.
-  - [x] Add call() parity invalids: `interactions-click-call-parens.mmd`, `interactions-click-call-missing-fn.mmd`.
-  - [x] Add `interactions-linkstyle-ranges.mmd` (invalid; range unsupported today).
-  - [x] Add `interactions-linkstyle-multi.mmd` with multiple linkStyle lines and mixed indices (including multiline styles and varying whitespace).
+
+| Spec Feature | Parsing | Rendering | Notes / Next Actions |
+| - | - | - | - |
+| Direction header (TB/LR/BT/RL) | ✅ | ✅ | Top‑level and subgraph `direction` supported; invalid keywords flagged inside subgraphs (FL-DIR-KW-INVALID). |
+| Nodes/shapes (rect, round, circle/double, stadium, subroutine, cylinder, diamond, hexagon, parallelogram, trapezoid/alt) | ✅ | ⚠️ | All parsed; renderer supports all with improved intersections; polish polygon/capsule edge intersections on steep/short edges. |
+| Subgraphs (nested) + inner direction | ✅ | ⚠️ | Layout for LR/RL nested clusters needs spacing/elbow tuning. |
+| Edge types (solid, dotted, thick, arrowheads, both‑ends) | ✅ | ⚠️ | Parsing complete. Renderer supports markers and overlays; multi‑bend both‑end markers need ordering polish. |
+| Edge labels and min link length | ✅ | ⚠️ | Labels render; min‑length behavior depends on layout heuristics; fine‑tune pill size/placement and end‑flattening constants. |
+| linkStyle (indices, styles, multiline) | ✅ | ✅ | Stroke/width/opacity/dasharray applied; overlay markers colored. Ranges `0:3` intentionally unsupported (error). |
+| click href/call | ✅ | N/A | Parsed + validated; not a rendering concern. |
+| class/classDef/style | ✅ | ✅ | Unknown targets warned; inline style precedence handled. |
+| HTML in labels (<b>, <i>, <u>, <br/>) | ✅ | ⚠️ | Normalized to tspans; spacing/underline metrics can be improved. |
+| Edge IDs and animation | ✅ | ✅ | Edge ids via `e1@-->`; per-edge animation via `e1@{ animate: true }` or class styles (`animation:`). |
+| Markdown strings | ⚠️ | ⚠️ | Treated as text; no markdown rendering semantics. Clarify spec scope and decide. |
+| Maid extension: typed‑shape `@{…}` | ✅ | ⚠️ | Non‑spec feature. Parser guards + diagnostics done; image/icon mapping rendered partially; keep separate from spec parity. |
 
 Sequence
-- Parser
-  - [x] `title`, `accTitle`, `accDescr` at top (kept invalid fixtures to mirror CLI behavior).
-  - [x] `par over A,B` form.
-  - [x] Message `properties` / `details` lines parsed (fixtures invalid to match CLI).
-  - [x] Apply actorRef normalization utilities across validators (notes, `par over` header, create/destroy, message ends) so diagnostics print consistent names.
-- Semantics/Validation
-  - [x] `create` followed by a “creating message” to/from the created actor (warning if missing).
-  - [x] Activation balance checks; suffix checks for message `+`/`-` (already active / no active to deactivate).
-  - [x] Improve caret positions to point at suffix tokens for +/− diagnostics.
-  - [ ] Apply actorRef normalization utils across all validators (notes, par over header, create/destroy).
-  - [x] Box-only participants rule with clear messages.
-- Renderer parity
-  - [x] Per‑edge markers via overlays (arrow/circle/cross) colored by lineColor/arrowheadColor; sized to stroke‑width.
-  - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding/title offset/dividers (left‑aligned).
-  - [~] Arrowheads (size), label gap above lines, lifeline spacing — tuned; rotation OK for horizontal lines.
-  - [x] Title rendering (from `title`) and accessible meta (<title>/<desc> in SVG).
-- Fixtures/Tests
-  - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.
-  - [ ] Add fixtures for nested blocks with `par over` + `and` branches (both valid and invalid placements).
-  - [x] Add `suffix-balance.mmd` (valid) and `suffix-misuse.mmd` (invalid) to exercise `+`/`-` checks and caret placement.
 
-Pie
-- Semantics/Validation
-  - [ ] Decide behavior for negative and zero values; add clear errors or acceptance with notes.
-  - [ ] Label/percent formatting options parity; tiny-slice leader lines edge cases.
-- Renderer parity
-  - [ ] Theme variables coverage: ensure pieOpacity/section text color variants; percent decimals alignment; legend spacing on narrow canvases.
-- Fixtures/Tests
-  - [ ] `negative-and-zero-values.mmd`, `large-decimals.mmd`.
+| Spec Feature | Parsing | Rendering | Notes / Next Actions |
+| - | - | - | - |
+| participants/actor + alias (`A as Alice`) | ✅ | ✅ | Participants render with shared node styles. |
+| autonumber (on/off, start, step) | ✅ | ✅ | Numbers prefixed in labels; diagnostics for malformed/extra tokens. |
+| Messages (sync/async, dashed, lost) with suffix `+`/`-` | ✅ | ⚠️ | Suffix diagnostics implemented; caret points at token; arrowhead sizing/rotation polish. |
+| Notes (left of/right of/over A,B) | ✅ | ✅ | Multi‑line sizing implemented; continue tuning centering and width. |
+| Blocks: alt/opt/loop/critical/break/rect/box | ✅ | ⚠️ | Containers render with shared block styles; padding/title/divider positions still need tuning. |
+| `par` and `par over A,B` with `and` branches | ✅ | ⚠️ | Branch diagnostics implemented; divider Y placement polish. |
+| title, accTitle, accDescr | ✅ | N/A | Parsed; we mirror CLI acceptance. |
+| links/properties/details (spec variants) | ⚠️ | N/A | Parser recognizes; kept invalid to mirror current CLI behavior; revisit when CLI supports. |
+| Create/Destroy + activations | ✅ | ⚠️ | Warnings for invalid sequences; activation bar geometry polish. |
 
 Class
-- Parser/Semantics
-  - [x] Leftward dependency/realization operators.
-  - [~] Simple generic `<…>` tokenization for names/types; keep fixtures invalid to mirror CLI; add diagnostics for unbalanced `< >`.
-  - [x] Notes on classes (`note for/on X: …`).
-  - [x] Dual-end labels/cardinalities coverage (labels near both classes); ensure builder consumes labeled CST fields (leftCard/rightCard).
-- Renderer (new)
-  - [x] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
-  - [x] Wrap long edge labels into tspans (centered over edge).
-  - [x] Per‑edge marker overlays colored by relation style (triangles/diamonds/lollipops).
-  - [~] Dual-end label/cardinality placement (perpendicular offset from endpoints) and simple note collision avoidance landed; refine rules and add fixtures.
-  - [~] Dependency chevron shape/size tuning for short segments (initial tweak landed).
-- Fixtures/Tests
-  - [ ] `generics-and-types.mmd` stays invalid until CLI supports; add `notes-multiline.mmd`, dual-end label/cardinality cases.
-  - [ ] Add `relations-dual-end-labels.mmd` (valid) covering both-end cardinalities and labels.
+
+| Spec Feature | Parsing | Rendering | Notes / Next Actions |
+| - | - | - | - |
+| Classes with members/methods | ✅ | ✅ | Titles/members rendered with wrapping. |
+| Relationships: extension, realization, dependency, aggregation, composition | ✅ | ✅ | Markers (triangles/diamonds/chevrons) in place; dashed for dependency/realization. |
+| Leftward variants + lollipop | ✅ | ✅ | Supported both sides. |
+| Labels and both‑end cardinalities | ✅ | ⚠️ | Parser exposes labeled fields; endpoint label placement on multi‑bend edges needs overlap avoidance improvements. |
+| Generics `<…>` in names | ⚠️ | N/A | Tokenized; semantics/rendering TBD; fixture kept invalid to match CLI. |
 
 State
-- Parser/Semantics
-  - [x] Concurrency regions `---` inside composite states (with placement checks); fixtures invalid to mirror CLI.
-  - [x] History states `H` / `H*` (shallow/deep); fixtures valid as per CLI.
-  - [ ] Additional markers parity (choice/fork/join/end double circle visuals).
-- Renderer (new)
-  - [~] Implement state diagram renderer: nodes, transitions, composite states, notes, start/history markers.
-  - [x] Lane dividers inside composites for `---` (overlay).
-  - [x] Per‑lane layout: lanes are real subgraphs for Dagre; dividers drawn at midpoints between lane bounds; supports TD/BT and LR/RL.
-  - [x] Choice/fork/join marker visuals; [x] end drawn as double circle overlay.
-  - [x] Transition routing + boundary intersection polish for diamonds/bars and composite borders (fallback to nearest boundary when colinear).
-- Fixtures/Tests
-  - [ ] Nested concurrency, history states valid/invalid, marker edge cases.
-  - [x] Add invalid fixtures for misplaced concurrency at block start/end (multiple separators, empty regions).
 
-Cross-Cutting
-- [~] Frontmatter config + themeVariables applied uniformly (sequence/class/state), unify CSS classes.
-  - [x] Class/state share CSS and applyFlowchartTheme (node/edge/cluster, edge‑label text, notes).
-  - [x] Sequence theming applied via applySequenceTheme.
-  - [~] Expand theme coverage where helpful (cluster title background sizing, arrowhead outlines) — arrowheads now colored via CSS classes across sequence/class/state; edge label text color + cluster title bg now themeable.
-- [x] Interactions rendering (flowchart): linkStyle applied to edges; `click … href` renders anchors with target/tooltip.
-- [x] PNG/SVG parity harness extended to class/state (batch script + npm scripts). Golden PNGs optional.
-- [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics and renderer coverage.
-- [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
-- [x] README: add “Parsing parity” commands and note structured click/linkStyle CST for contributors (compare-linters, test-errors, where CST fields live).
+| Spec Feature | Parsing | Rendering | Notes / Next Actions |
+| - | - | - | - |
+| Basic states, transitions, notes | ✅ | ✅ | Transition intersections polished. |
+| Composite states `{ }` | ✅ | ✅ | Title gap under headers to avoid divider overlap. |
+| Concurrency separators `---` | ✅ | ⚠️ | Parsed; diagnostics for placement; renderer draws lane dividers; confirm CLI parity and keep warnings where CLI rejects. |
+| History nodes `[H]` and `[H*]` | ✅ | ✅ | Supported. |
+| Choice / Fork / Join / End | ✅ | ✅ | Visuals present; alignment tweaks may remain in LR/RL. |
 
-Progress Snapshot (auto-updating intent)
-- Flowchart: CLI parity 100%; interactions validated and rendered (style); arrowheads scale with stroke-width.
-- Sequence: CLI parity 100%; advanced headers/details parsed; fixtures kept invalid pending CLI acceptance.
-- State: CLI parity 100%; renderer initial with lane dividers + markers (choice/fork/join) and end double circle; per‑lane layout & intersections landed; more fixtures pending.
-- Class: CLI parity 100%; renderer implemented; edge label wrapping done; dual‑end label placement and note collision avoidance pending; generics parsed but invalid in fixtures.
+Pie
 
-Notes
-- Treat this as the single source of truth for spec gaps. Update checkboxes as features land; link PRs next to items when closed.
+| Spec Feature | Parsing | Rendering | Notes / Next Actions |
+| - | - | - | - |
+| `pie` header + `showData` | ✅ | ✅ | Works with front‑matter theming. |
+| `title` | ✅ | ✅ | Inline and header‑follow variants supported. |
+| Slices: quoted label + number | ✅ | ✅ | Strict quotes enforced (matches mermaid‑cli). |
+| Internal quotes in labels | ⚠️ | ⚠️ | Advise `&quot;` inside quotes; add more fixtures if mermaid‑cli behavior changes. |
+
+Maid Extensions (Non‑spec)
+
+- Typed‑shape `@{…}` on flowchart nodes with diagnostics and partial rendering for media/icon.
+
+How to read this file
+- Parsing status reflects our Chevrotain lexers/parsers + diagnostics behavior.
+- Rendering status reflects our SVG generators. “Partial” means working with visible differences vs Mermaid’s renderer.
+- We use Mermaid docs as the north star; if Mermaid supports it, we must too. If Mermaid rejects it, we don’t accept it either.
+
+Next actions snapshot
+- Flowchart: finalize curve end/label pill constants; multi‑bend both‑end markers ordering; polygon/capsule intersections at extremes.
+- Sequence: tune container padding/dividers; arrowhead sizing; activation bar geometry.
+- Class: endpoint label/cardinality placement on multi‑bend edges; smarter overlap avoidance.
+- State: confirm CLI stance on `---`; keep placement diagnostics and divider gaps aligned with docs.
+- Pie: add more fixtures around internal quotes; keep parity with mermaid‑cli behavior.

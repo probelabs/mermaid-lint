@@ -396,6 +396,11 @@ export class MermaidParser extends CstParser {
     
     // Links between nodes - all variations
     private link = this.RULE("link", () => {
+        // Optional edge ID before the link operator, e.g., e1@-->
+        this.OPTION1(() => {
+            this.CONSUME(tokens.Identifier, { LABEL: 'edgeId' });
+            this.CONSUME(tokens.AtSign);
+        });
         this.OR([
             // Arrows with inline text (e.g., -.text.-> or ==text==>)
             {
@@ -437,7 +442,7 @@ export class MermaidParser extends CstParser {
         ]);
         
         // Optional link text in pipes |text|
-        this.OPTION(() => {
+        this.OPTION2(() => {
             this.CONSUME(tokens.Pipe);
             this.SUBRULE(this.linkText);
             this.CONSUME2(tokens.Pipe);
@@ -529,6 +534,7 @@ export class MermaidParser extends CstParser {
         this.CONSUME(tokens.Direction);
         this.OPTION(() => this.CONSUME(tokens.Newline));
     });
+    
     
     // Class statement: class nodeId,nodeId2 className
     private classStatement = this.RULE("classStatement", () => {

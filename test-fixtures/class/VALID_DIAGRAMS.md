@@ -21,9 +21,10 @@ This file contains all valid class test fixtures rendered with both Mermaid and 
 6. [relations advanced](#6-relations-advanced)
 7. [relations all](#7-relations-all)
 8. [relations dual end labels](#8-relations-dual-end-labels)
-9. [relations leftward](#9-relations-leftward)
-10. [simple](#10-simple)
-11. [stereotype and alias](#11-stereotype-and-alias)
+9. [relations dual end steep](#9-relations-dual-end-steep)
+10. [relations leftward](#10-relations-leftward)
+11. [simple](#11-simple)
+12. [stereotype and alias](#12-stereotype-and-alias)
 
 ---
 
@@ -463,7 +464,54 @@ classDiagram
 
 ---
 
-## 9. Relations Leftward
+## 9. Relations Dual End Steep
+
+📄 **Source**: [`relations-dual-end-steep.mmd`](./valid/relations-dual-end-steep.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+classDiagram
+  class A
+  class B
+  A "1..*" -- "0..1" B : uses
+
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/relations-dual-end-steep.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+  class A
+  class B
+  A "1..*" -- "0..1" B : uses
+
+
+```
+</details>
+
+---
+
+## 10. Relations Leftward
 
 📄 **Source**: [`relations-leftward.mmd`](./valid/relations-leftward.mmd)
 
@@ -524,7 +572,7 @@ IService <|.. Impl
 
 ---
 
-## 10. Simple
+## 11. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -577,7 +625,7 @@ class Bar
 
 ---
 
-## 11. Stereotype And Alias
+## 12. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 

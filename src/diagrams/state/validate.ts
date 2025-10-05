@@ -97,12 +97,27 @@ export function validateState(text: string, _options: ValidateOptions = {}): Val
         if (/^\s*\}\s*$/.test(raw)) {
           const blk = stack.pop();
           if (blk) {
-            // Evaluate separators
-            const content = blk.content.filter(l => !/^\s*---\s*$/.test(lines[l-1] || ''));
-            for (const sepLn of blk.seps) {
-              const before = content.find(l => l < sepLn);
-              const after = content.find(l => l > sepLn);
-              if (!before || !after) {
+            // Evaluate separators with stricter rule: each '---' must have at least one content line
+            // above it since the previous separator/start, and at least one content line below it
+            // before the next separator/end.
+            const all = [...blk.content.map(l => ({ ln: l, kind: 'content' as const })), ...blk.seps.map(l => ({ ln: l, kind: 'sep' as const }))]
+              .sort((a, b) => a.ln - b.ln);
+            const sepIdxs = all.map((x, i) => ({ i, x })).filter(z => z.x.kind === 'sep').map(z => z.i);
+            for (const si of sepIdxs) {
+              const sepLn = all[si].ln;
+              // scan backward to previous sep or start, and check for any content
+              let hasBefore = false;
+              for (let k = si - 1; k >= 0; k--) {
+                if (all[k].kind === 'sep') break;
+                if (all[k].kind === 'content') { hasBefore = true; break; }
+              }
+              // scan forward to next sep or end, and check for any content
+              let hasAfter = false;
+              for (let k = si + 1; k < all.length; k++) {
+                if (all[k].kind === 'sep') break;
+                if (all[k].kind === 'content') { hasAfter = true; break; }
+              }
+              if (!hasBefore || !hasAfter) {
                 errors.push({
                   line: sepLn,
                   column: 1,

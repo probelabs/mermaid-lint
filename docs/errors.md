@@ -28,6 +28,8 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-SUBGRAPH-MISSING-HEADER | None | No change (requires header choice). |
 | FL-END-WITHOUT-SUBGRAPH | None | No change (structural intent needed). |
 | FL-STRICT-LABEL-QUOTES-REQUIRED | All | Wrap label content with double quotes on the line (same heuristic as FL-LABEL-QUOTE-IN-UNQUOTED). |
+| FL-LINKSTYLE-ID-UNKNOWN | None | No change (id must be defined by using e1@--> earlier). |
+| FL-EDGE-ATTR-ID-UNKNOWN | None | No change (id must be defined by using e1@--> earlier). |
 | PI-LABEL-REQUIRES-QUOTES | Safe | Wrap label before `:` in double quotes; normalize inner quotes to `&quot;`. |
 | PI-MISSING-COLON | Safe | Insert ` : ` between label and number. |
 | PI-MISSING-NUMBER | None | No change (don’t invent values). |
@@ -459,6 +461,16 @@ Severity note: By default, quoting issues in participant/actor names are warning
   - When: `style` targets a node id that does not exist.
   - Message: "Unknown node id 'X' in style statement."
   - Hint: "Define the node before styling it, or move the style line after the node definition."
+
+- FL-LINKSTYLE-ID-UNKNOWN
+  - When: `linkStyle` references an edge id that does not exist.
+  - Message: "Unknown edge id 'X' in linkStyle statement."
+  - Hint: "Define the edge id using 'e1@-->' before styling it, or use numeric indices."
+
+- FL-EDGE-ATTR-ID-UNKNOWN
+  - When: An edge attribute statement `e1@{ ... }` references a non-existent edge id.
+  - Message: "Unknown edge id 'X' in edge attribute statement."
+  - Hint: "Attach the id to a link first: A e1@--> B"
 
 - FL-TYPED-SHAPE-UNSUPPORTED
   - When: A typed shape in `@{ shape: … }` is recognized by Maid but not supported by current Mermaid CLI.

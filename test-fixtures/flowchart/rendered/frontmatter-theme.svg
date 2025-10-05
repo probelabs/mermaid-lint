@@ -9,6 +9,9 @@
     .edge-marker { stroke: #555555; }
     .edge-marker-fill { fill: #555555; }
 
+    /* Basic stroke dash animation used by flowchart link animation presets */
+    @keyframes dash { to { stroke-dashoffset: -1000; } }
+
     /* Cluster (flowchart + sequence blocks) */
     .cluster-bg { fill: #FFFBE6; }
     .cluster-border { fill: none; stroke: #AAAA33; stroke-width: 1px; }
