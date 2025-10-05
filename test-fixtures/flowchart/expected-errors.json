@@ -46,6 +46,9 @@
   "unescaped-quotes-in-decision.mmd": [
     "FL-LABEL-DOUBLE-IN-DOUBLE"
   ],
+  "backticks-in-label.mmd": [
+    "FL-LABEL-BACKTICK"
+  ],
   "wrong-direction.mmd": [
     "FL-DIR-INVALID"
   ]

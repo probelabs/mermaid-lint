@@ -515,6 +515,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
       this.checkEmptyContent(openTok, contentNodes.length ? contentNodes : undefined);
       // Mermaid accepts backslash-escaped quotes inside labels; do not flag as error.
       this.checkDoubleInSingleQuoted(contentNodes);
+      this.checkBackticksInContent(contentNodes);
       this.warnParensInUnquoted(contentNodes);
 
       // Strict mode: require quoted labels inside shapes
@@ -551,6 +552,36 @@ class FlowSemanticsVisitor extends BaseVisitor {
           });
         }
       }
+    }
+  }
+
+  private checkBackticksInContent(contentNodes: CstNode[] | undefined) {
+    if (!contentNodes) return;
+    for (const cn of contentNodes) {
+      const ch: any = (cn as any).children || {};
+      const inspectTok = (tk: IToken | undefined) => {
+        if (!tk) return false;
+        const img = String(tk.image || '');
+        const idx = img.indexOf('`');
+        if (idx >= 0) {
+          const col = (tk.startColumn ?? 1) + idx;
+          this.ctx.errors.push({
+            line: tk.startLine ?? 1,
+            column: col,
+            severity: 'error',
+            code: 'FL-LABEL-BACKTICK',
+            message: 'Backticks (`…`) inside node labels are not supported by Mermaid.',
+            hint: 'Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".',
+            length: 1
+          });
+          return true;
+        }
+        return false;
+      };
+      const texts: IToken[] = ch.Text || [];
+      for (const tk of texts) { if (inspectTok(tk)) return; }
+      const qs: IToken[] = ch.QuotedString || [];
+      for (const tk of qs) { if (inspectTok(tk)) return; }
     }
   }
 }
