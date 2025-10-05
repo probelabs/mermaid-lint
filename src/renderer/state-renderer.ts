@@ -63,11 +63,11 @@ export function renderState(model: StateModel): string {
         const prevMaxX = Math.max(...prev.nodes.map(n => n.x + n.width));
         const nextMinX = Math.min(...next.nodes.map(n => n.x));
         const x = Math.max(parent.x, Math.min(parent.x + parent.width, (prevMaxX + nextMinX) / 2));
-        overlays.push(`<line class="lane-divider" x1="${x}" y1="${parent.y}" x2="${x}" y2="${parent.y + parent.height}" />`);
+        overlays.push(`<line class="lane-divider" x1="${x}" y1="${parent.y + 14}" x2="${x}" y2="${parent.y + parent.height}" />`);
       } else {
         const prevMaxY = Math.max(...prev.nodes.map(n => n.y + n.height));
         const nextMinY = Math.min(...next.nodes.map(n => n.y));
-        const y = Math.max(parent.y, Math.min(parent.y + parent.height, (prevMaxY + nextMinY) / 2));
+        const y = Math.max(parent.y + 14, Math.min(parent.y + parent.height, (prevMaxY + nextMinY) / 2));
         overlays.push(`<line class="lane-divider" x1="${parent.x}" y1="${y}" x2="${parent.x + parent.width}" y2="${y}" />`);
       }
     }

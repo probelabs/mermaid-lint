@@ -54,9 +54,9 @@ Sequence
   - [ ] Apply actorRef normalization utils across all validators (notes, par over header, create/destroy).
   - [x] Box-only participants rule with clear messages.
 - Renderer parity
-  - [~] Shared defaults with flowchart (node shapes/fonts/colors) — baseline CSS unified; continue fine‑tuning.
-  - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding/title offset/dividers (left‑aligned) — first pass.
-  - [~] Arrowheads (size), label gap above lines, lifeline spacing — first pass landed; rotation OK for horizontal lines.
+  - [x] Per‑edge markers via overlays (arrow/circle/cross) colored by lineColor/arrowheadColor; sized to stroke‑width.
+  - [~] Block containers (alt/opt/loop/par/critical/break/rect/box): padding/title offset/dividers (left‑aligned).
+  - [~] Arrowheads (size), label gap above lines, lifeline spacing — tuned; rotation OK for horizontal lines.
   - [x] Title rendering (from `title`) and accessible meta (<title>/<desc> in SVG).
 - Fixtures/Tests
   - [ ] Promote `title-and-accessibility.mmd` and `details-and-properties.mmd` to valid when CLI accepts; until then ensure invalid diagnostics are actionable.
@@ -81,6 +81,7 @@ Class
 - Renderer (new)
   - [x] Implement class diagram renderer: class box, members/methods layout, stereotypes, notes, relations/markers.
   - [x] Wrap long edge labels into tspans (centered over edge).
+  - [x] Per‑edge marker overlays colored by relation style (triangles/diamonds/lollipops).
   - [~] Dual-end label/cardinality placement (perpendicular offset from endpoints) and simple note collision avoidance landed; refine rules and add fixtures.
   - [~] Dependency chevron shape/size tuning for short segments (initial tweak landed).
 - Fixtures/Tests
@@ -107,11 +108,11 @@ Cross-Cutting
   - [x] Class/state share CSS and applyFlowchartTheme (node/edge/cluster, edge‑label text, notes).
   - [x] Sequence theming applied via applySequenceTheme.
   - [~] Expand theme coverage where helpful (cluster title background sizing, arrowhead outlines) — arrowheads now colored via CSS classes across sequence/class/state; edge label text color + cluster title bg now themeable.
-- [ ] Interactions rendering (flowchart first): reflect linkStyle stroke/width/opacity and click targets in rendered anchors.
+- [x] Interactions rendering (flowchart): linkStyle applied to edges; `click … href` renders anchors with target/tooltip.
 - [x] PNG/SVG parity harness extended to class/state (batch script + npm scripts). Golden PNGs optional.
 - [ ] README “Diagram Type Coverage” kept current; docs/errors.md entries for new diagnostics and renderer coverage.
 - [ ] Auto-fix suggestions (safe) for minor issues where unambiguous (e.g., insert missing colon in notes, normalize <br/>).
- - [ ] README: add “Parsing parity” commands and note structured click/linkStyle CST for contributors (compare-linters, test-errors, where CST fields live).
+- [x] README: add “Parsing parity” commands and note structured click/linkStyle CST for contributors (compare-linters, test-errors, where CST fields live).
 
 Progress Snapshot (auto-updating intent)
 - Flowchart: CLI parity 100%; interactions validated and rendered (style); arrowheads scale with stroke-width.
