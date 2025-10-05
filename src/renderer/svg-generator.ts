@@ -644,14 +644,7 @@ ${baseGroup}
     if (styleStroke) {
       edgeElement += ` stroke="${styleStroke}"`;
     }
-    // Apply explicit markers from edge if present
-    // Use overlay shapes for arrow/circle/cross; avoid marker URLs so per-edge color applies
-    const startMarkUrl = '';
-    const endMarkUrl = (markerEnd || '');
-    // No tangent fix needed: last command is a straight L into the node boundary
-    // Prefer overlay triangles for arrowheads; keep circle/cross as markers
-    if (startMarkUrl && mStart !== 'arrow') edgeElement += ` marker-start="${startMarkUrl}"`;
-    if (endMarkUrl && mEnd !== 'arrow') edgeElement += ` marker-end="${endMarkUrl}"`;
+    // We avoid marker URLs and use per-edge overlay shapes (triangles/circles/crosses)
     edgeElement += ' />';
 
     // Add edge label if present
