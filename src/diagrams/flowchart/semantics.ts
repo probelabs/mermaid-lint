@@ -568,7 +568,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
           this.ctx.errors.push({
             line: tk.startLine ?? 1,
             column: col,
-            severity: 'error',
+            severity: 'warning',
             code: 'FL-LABEL-BACKTICK',
             message: 'Backticks (`…`) inside node labels are not supported by Mermaid.',
             hint: 'Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".',

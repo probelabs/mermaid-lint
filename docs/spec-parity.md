@@ -77,8 +77,10 @@ How to read this file
 - We use Mermaid docs as the north star; if Mermaid supports it, we must too. If Mermaid rejects it, we don’t accept it either.
 
 Next actions snapshot
-- Flowchart: finalize curve end/label pill constants; multi‑bend both‑end markers ordering; polygon/capsule intersections at extremes.
-- Sequence: tune container padding/dividers; arrowhead sizing; activation bar geometry.
-- Class: endpoint label/cardinality placement on multi‑bend edges; smarter overlap avoidance.
-- State: confirm CLI stance on `---`; keep placement diagnostics and divider gaps aligned with docs.
-- Pie: add more fixtures around internal quotes; keep parity with mermaid‑cli behavior.
+- High priority: none — parsing parity with mermaid‑cli is achieved across flowchart/sequence/class/state on our suite.
+- Rendering polish (optional/iterative):
+  - Flowchart: finalize curve end/label pill constants; multi‑bend both‑end markers ordering; polygon/capsule intersections at extremes.
+  - Sequence: tune container padding/dividers; arrowhead sizing; activation bar geometry.
+  - Class: endpoint label/cardinality placement on multi‑bend edges; smarter overlap avoidance.
+  - State: minor alignment tweaks under LR/RL; divider visuals where titles overlap.
+  - Pie: add fixtures around internal quotes; keep parity with mermaid‑cli behavior.
