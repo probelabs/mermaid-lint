@@ -20,6 +20,67 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
       continue;
     }
+    // Fix quoted edge labels to use pipe syntax
+    if (is('FL-EDGE-LABEL-QUOTED', e)) {
+      const lineText = lineTextAt(text, e.line);
+      const col = Math.max(0, e.column - 1);
+
+      // Find the quoted string
+      const quoteStart = lineText.indexOf('"', col);
+      if (quoteStart !== -1) {
+        const quoteEnd = lineText.indexOf('"', quoteStart + 1);
+        if (quoteEnd !== -1) {
+          const labelText = lineText.slice(quoteStart + 1, quoteEnd);
+
+          // Find the connector pattern before the quote
+          const beforeQuote = lineText.slice(0, quoteStart).trim();
+          const afterQuote = lineText.slice(quoteEnd + 1).trim();
+
+          // Detect the full arrow pattern (start --> end)
+          let linkStart = '--';
+          let linkEnd = '-->';
+
+          if (beforeQuote.endsWith('==')) {
+            linkStart = '==';
+            linkEnd = '==>';
+          } else if (beforeQuote.endsWith('-.-')) {
+            linkStart = '-.-';
+            linkEnd = '.->';
+          } else if (beforeQuote.endsWith('-.')) {
+            linkStart = '-.';
+            linkEnd = '.->';
+          }
+
+          // Find where the link starts (including leading spaces)
+          const beforeQuoteUntrimmed = lineText.slice(0, quoteStart);
+          const linkStartIdx = beforeQuoteUntrimmed.lastIndexOf(linkStart);
+          if (linkStartIdx === -1) continue;
+
+          // Extract parts (preserve spaces and node before link)
+          const prefix = lineText.slice(0, linkStartIdx);
+
+          // The suffix should start after the arrow part (not include it)
+          let suffix = afterQuote;
+          if (suffix.startsWith('-->')) suffix = suffix.slice(3).trim();
+          else if (suffix.startsWith('==>')) suffix = suffix.slice(3).trim();
+          else if (suffix.startsWith('.->')) suffix = suffix.slice(3).trim();
+          else if (suffix.startsWith('->')) suffix = suffix.slice(2).trim();
+
+          // Add space before suffix node if needed
+          if (suffix && !suffix.startsWith(' ')) suffix = ' ' + suffix;
+
+          // Construct the fixed line
+          const fixedLine = `${prefix}${linkStart}|${labelText}|${linkEnd}${suffix}`;
+
+          edits.push({
+            start: { line: e.line, column: 1 },
+            end: { line: e.line, column: lineText.length + 1 },
+            newText: fixedLine
+          });
+        }
+      }
+      continue;
+    }
     if (is('CL-NAME-DOUBLE-QUOTED', e)) {
       // Safer transform:
       // - If alias present: class "Label" as ID  => class ID["Label"]
