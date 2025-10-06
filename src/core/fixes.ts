@@ -502,13 +502,25 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
             // Check if this shape contains the caret position (the parenthesis)
             if (openIdx <= caret0 && caret0 < closeIdx) {
               const inner = lineText.slice(contentStart, closeIdx);
-              // Check if already quoted or if this is a round-paren node shape (not a label paren)
+              // Check if already quoted
               const trimmed = inner.trim();
               if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
                 break; // Already quoted
               }
               // For round-paren shapes like (text), the caret points to the shape's own parens, skip
               if (shape.open === '(' && (caret0 === openIdx || caret0 === closeIdx - 1)) {
+                break;
+              }
+              // Check for parallelogram/trapezoid shapes [/.../], [\...\], [/...\], [\.../]
+              // These should NOT be wrapped in quotes (the slashes are part of the shape syntax)
+              const ltrim = inner.match(/^\s*/)?.[0] ?? '';
+              const rtrim = inner.match(/\s*$/)?.[0] ?? '';
+              const core = inner.slice(ltrim.length, inner.length - rtrim.length);
+              const left = core.slice(0, 1);
+              const right = core.slice(-1);
+              const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
+              if (core.length >= 2 && isSlashPair(left, right)) {
+                // This is a parallelogram/trapezoid shape - do not wrap in quotes
                 break;
               }
               // Wrap the content in quotes
