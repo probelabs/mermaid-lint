@@ -58,7 +58,7 @@ This file contains invalid flowchart test fixtures with:
 | 13 | [linkstyle id unknown](#13-linkstyle-id-unknown) | INVALID | INVALID | — |
 | 14 | [missing arrow](#14-missing-arrow) | INVALID | INVALID | ✅ all |
 | 15 | [mixed brackets](#15-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 16 | [mixed quotes in labels](#16-mixed-quotes-in-labels) | INVALID | INVALID | ❌ safe |
+| 16 | [mixed quotes in labels](#16-mixed-quotes-in-labels) | INVALID | INVALID | ✅ safe |
 | 17 | [no diagram type](#17-no-diagram-type) | INVALID | INVALID | — |
 | 18 | [quotes double inside single](#18-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 19 | [typed shapes all](#19-typed-shapes-all) | INVALID | INVALID | — |
@@ -1238,14 +1238,6 @@ at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:39
      |                                       ^
    4 |         S2 --> S3{Was 'D' skipped?};
 hint: Example: A[Label] --> B
-
-error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.
-at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:78
-   2 |     subgraph "Dependency Skip Evaluation"
-   3 |         S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
-     |                                                                              ^
-   4 |         S2 --> S3{Was 'D' skipped?};
-hint: Example: A["He said &quot;Hi&quot;"]
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1253,10 +1245,10 @@ hint: Example: A["He said &quot;Hi&quot;"]
 ```mermaid
 flowchart TD
     subgraph "Dependency Skip Evaluation"
-        S1[Start Evaluation for Check ]C'] --> S2{For each dependency 'D&quot; of &quot;C&quot;};
-        S2 --> S3{Was 'D' skipped?};
-        S3 -- Yes --> S4[Mark 'D' as failed];
-        S3 -- No --> S5{Did 'D' have a fatal error?};
+        S1["Start Evaluation for Check 'C'"] --> S2{"For each dependency 'D' of &quot;C&quot;"};
+        S2 --> S3{"Was 'D' skipped?"};
+        S3 -- Yes --> S4["Mark 'D' as failed"];
+        S3 -- No --> S5{"Did 'D' have a fatal error?"};
         S5 -- Yes --> S4;
         S5 -- No --> S2;
         S4 --> S6{Any dependencies marked as failed?};
