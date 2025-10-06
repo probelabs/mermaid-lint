@@ -294,42 +294,76 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
 
-        // First, find the actual opener bracket before caret
-        const opens = [
-          { open: '{{', close: '}}', idx: lineText.lastIndexOf('{{', caret0), len: 2 },
-          { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), len: 2 },
-          { open: '([', close: '])', idx: lineText.lastIndexOf('([', caret0), len: 2 },
-          { open: '[(', close: ')]', idx: lineText.lastIndexOf('[(', caret0), len: 2 },
-          { open: '{',  close: '}',  idx: lineText.lastIndexOf('{',  caret0), len: 1 },
-          { open: '(',  close: ')',  idx: lineText.lastIndexOf('(',  caret0), len: 1 },
-          { open: '[',  close: ']',  idx: lineText.lastIndexOf('[',  caret0), len: 1 },
-        ];
-        let opened = opens.filter(o => o.idx !== -1).sort((a,b)=> a.idx - b.idx).pop();
-        // Prefer double/open-pair tokens over their single-char counterparts when adjacent
-        if (opened) {
-          if (opened.open === '{') {
-            const dj = lineText.lastIndexOf('{{', caret0);
-            if (dj !== -1 && dj + 1 === opened.idx) opened = { open: '{{', close: '}}', idx: dj, len: 2 } as any;
-          } else if (opened.open === '[') {
-            const jj = lineText.lastIndexOf('[[', caret0);
-            const cj = lineText.lastIndexOf('[(', caret0);
-            if (jj !== -1 && jj === opened.idx) opened = { open: '[[', close: ']]', idx: jj, len: 2 } as any;
-            else if (cj !== -1 && cj === opened.idx) opened = { open: '[(', close: ')]', idx: cj, len: 2 } as any;
-          } else if (opened.open === '(') {
-            const jj = lineText.lastIndexOf('((', caret0);
-            const sj = lineText.lastIndexOf('([', caret0);
-            const cj2 = lineText.lastIndexOf('[(', caret0);
-            if (jj !== -1 && jj === opened.idx) opened = { open: '((', close: '))', idx: jj, len: 2 } as any;
-            else if (sj !== -1 && sj === opened.idx - 1) opened = { open: '([', close: '])', idx: sj, len: 2 } as any;
-            else if (cj2 !== -1 && cj2 === opened.idx - 1) opened = { open: '[(', close: ')]', idx: cj2, len: 2 } as any;
-          }
+        // Determine the expected bracket type from the error message
+        // e.g., "Unclosed '['." or "Unclosed '{' ."
+        const msg = e.message || '';
+        const bracketMatch = msg.match(/Unclosed '(.+?)'/);
+        const expectedOpener = bracketMatch ? bracketMatch[1] : null;
 
-          // Now try to find the closer on the same line
+        // Map opener to closer
+        const bracketMap: Record<string, string> = {
+          '[': ']', '{': '}', '(': ')',
+          '[[': ']]', '{{': '}}', '((': '))',
+          '([': '])', '[(': ')]'
+        };
+        const expectedCloser = expectedOpener ? bracketMap[expectedOpener] : null;
+
+        // Find the last occurrence of the expected opener before caret
+        let opened: { open: string; close: string; idx: number; len: number } | null = null;
+        if (expectedOpener && expectedCloser) {
+          const idx = lineText.lastIndexOf(expectedOpener, caret0);
+          if (idx !== -1) {
+            opened = { open: expectedOpener, close: expectedCloser, idx, len: expectedOpener.length };
+          }
+        }
+
+        // Fallback: search for any opener if we couldn't determine from message
+        if (!opened) {
+          const opens = [
+            { open: '{{', close: '}}', idx: lineText.lastIndexOf('{{', caret0), len: 2 },
+            { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), len: 2 },
+            { open: '([', close: '])', idx: lineText.lastIndexOf('([', caret0), len: 2 },
+            { open: '[(', close: ')]', idx: lineText.lastIndexOf('[(', caret0), len: 2 },
+            { open: '{',  close: '}',  idx: lineText.lastIndexOf('{',  caret0), len: 1 },
+            { open: '(',  close: ')',  idx: lineText.lastIndexOf('(',  caret0), len: 1 },
+            { open: '[',  close: ']',  idx: lineText.lastIndexOf('[',  caret0), len: 1 },
+          ];
+          opened = opens.filter(o => o.idx !== -1).sort((a,b)=> a.idx - b.idx).pop() || null;
+          // Prefer double/open-pair tokens over their single-char counterparts when adjacent
           if (opened) {
+            if (opened.open === '{') {
+              const dj = lineText.lastIndexOf('{{', caret0);
+              if (dj !== -1 && dj + 1 === opened.idx) opened = { open: '{{', close: '}}', idx: dj, len: 2 } as any;
+            } else if (opened.open === '[') {
+              const jj = lineText.lastIndexOf('[[', caret0);
+              const cj = lineText.lastIndexOf('[(', caret0);
+              if (jj !== -1 && jj === opened.idx) opened = { open: '[[', close: ']]', idx: jj, len: 2 } as any;
+              else if (cj !== -1 && cj === opened.idx) opened = { open: '[(', close: ')]', idx: cj, len: 2 } as any;
+            } else if (opened.open === '(') {
+              const jj = lineText.lastIndexOf('((', caret0);
+              const sj = lineText.lastIndexOf('([', caret0);
+              const cj2 = lineText.lastIndexOf('[(', caret0);
+              if (jj !== -1 && jj === opened.idx) opened = { open: '((', close: '))', idx: jj, len: 2 } as any;
+              else if (sj !== -1 && sj === opened.idx - 1) opened = { open: '([', close: '])', idx: sj, len: 2 } as any;
+              else if (cj2 !== -1 && cj2 === opened.idx - 1) opened = { open: '[(', close: ')]', idx: cj2, len: 2 } as any;
+            }
+          }
+        }
+
+        // Now try to find the closer on the same line
+        if (opened) {
             const closerIdx = lineText.indexOf(opened.close, caret0);
             if (closerIdx !== -1) {
               // Extract the content between opener and closer
               const innerSeg = lineText.slice(opened.idx + opened.len, closerIdx);
+              // DEBUG
+              if (process.env.DEBUG_FIXES) {
+                console.log('DEBUG FL-NODE-UNCLOSED-BRACKET:');
+                console.log('  opened.idx:', opened.idx, 'opened.len:', opened.len, 'opened.open:', opened.open, 'opened.close:', opened.close);
+                console.log('  closerIdx:', closerIdx);
+                console.log('  innerSeg:', innerSeg);
+                console.log('  caret0:', caret0, 'lineText[caret0]:', lineText[caret0]);
+              }
               // Check if there are quotes inside
               if (innerSeg.includes('"') || innerSeg.includes("'")) {
                 // Wrap the label in double quotes and escape inner double quotes
@@ -353,7 +387,6 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
                 continue;
               }
             }
-          }
         }
 
         // Fallback: if no opener found or no closer found or no quotes inside, just replace current char with closer
