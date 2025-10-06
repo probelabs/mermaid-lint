@@ -471,6 +471,71 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    // Flowchart: wrap unquoted labels containing parentheses in quotes
+    if (is('FL-LABEL-PARENS-UNQUOTED', e)) {
+      if (level === 'safe' || level === 'all') {
+        if (patchedLines.has(e.line)) continue; // Already patched this line
+        const lineText = lineTextAt(text, e.line);
+        const caret0 = Math.max(0, e.column - 1);
+        // Find ALL shape openers/closers on this line to identify label boundaries
+        const shapes = [
+          { open: '{{', close: '}}' },
+          { open: '[[', close: ']]' },
+          { open: '((', close: '))' },
+          { open: '([', close: '])' },
+          { open: '[(', close: ')]' },
+          { open: '{',  close: '}' },
+          { open: '[',  close: ']' },
+          { open: '(',  close: ')' }
+        ];
+
+        // Find which shape contains the problematic parenthesis
+        for (const shape of shapes) {
+          let searchStart = 0;
+          while (true) {
+            const openIdx = lineText.indexOf(shape.open, searchStart);
+            if (openIdx === -1) break;
+            const contentStart = openIdx + shape.open.length;
+            const closeIdx = lineText.indexOf(shape.close, contentStart);
+            if (closeIdx === -1) break;
+
+            // Check if this shape contains the caret position (the parenthesis)
+            if (openIdx <= caret0 && caret0 < closeIdx) {
+              const inner = lineText.slice(contentStart, closeIdx);
+              // Check if already quoted
+              const trimmed = inner.trim();
+              if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+                break; // Already quoted
+              }
+              // For round-paren shapes like (text), the caret points to the shape's own parens, skip
+              if (shape.open === '(' && (caret0 === openIdx || caret0 === closeIdx - 1)) {
+                break;
+              }
+              // Check for parallelogram/trapezoid shapes [/.../], [\...\], [/...\], [\.../]
+              // These should NOT be wrapped in quotes (the slashes are part of the shape syntax)
+              const ltrim = inner.match(/^\s*/)?.[0] ?? '';
+              const rtrim = inner.match(/\s*$/)?.[0] ?? '';
+              const core = inner.slice(ltrim.length, inner.length - rtrim.length);
+              const left = core.slice(0, 1);
+              const right = core.slice(-1);
+              const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
+              if (core.length >= 2 && isSlashPair(left, right)) {
+                // This is a parallelogram/trapezoid shape - do not wrap in quotes
+                break;
+              }
+              // Wrap the content in quotes
+              const newInner = '"' + inner + '"';
+              edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
+              patchedLines.add(e.line);
+              break;
+            }
+            searchStart = openIdx + 1;
+          }
+          if (patchedLines.has(e.line)) break; // Found and patched, stop searching
+        }
+      }
+      continue;
+    }
 
 
     // Pie fixes

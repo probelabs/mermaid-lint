@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="209" height="940" viewBox="0 0 209 940">
+  <rect x="0" y="0" width="209" height="940" fill="#ffffff" />
+  <style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    .edge-marker { stroke: #555555; }
+    .edge-marker-fill { fill: #555555; }
+
+    /* Basic stroke dash animation used by flowchart link animation presets */
+    @keyframes dash { to { stroke-dashoffset: -1000; } }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 1px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
+    .crosshead path { stroke: #333; stroke-width: 1.5px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+
+    /* State overlays */
+    .lane-divider { stroke: #aaaaaa; stroke-width: 1px; stroke-dasharray: 4 3; }
+    .end-double { stroke: #3f3f3f; stroke-width: 1px; fill: none; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 11 11" markerWidth="11" markerHeight="11" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L0,11 L11,6 z" fill="#555555" />
+    </marker>
+    <marker id="circle-marker" viewBox="0 0 9 9" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="4.5" fill="#555555" />
+    </marker>
+    <marker id="cross-marker" viewBox="0 0 12 12" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1.5,1.5 L10.5,10.5 M10.5,1.5 L1.5,10.5" stroke="#555555" stroke-width="2.25" />
+    </marker>
+  </defs>
+  <g id="A">
+    <polygon class="node-shape"  points="114.5,40 176.5,102 114.5,164 52.5,102" />
+    
+    <text class="node-label" x="114.5" y="106.9" text-anchor="middle">of stdout</text>
+  </g>
+  <g id="B">
+    <rect class="node-shape"  x="74.5" y="214" width="80" height="40" rx="0" ry="0" />
+    
+    <text class="node-label" x="114.5" y="238.9" text-anchor="middle">data</text>
+  </g>
+  <g id="C">
+    <circle class="node-shape"  cx="114.5" cy="344" r="40" />
+    
+    <text class="node-label" x="114.5" y="348.9" text-anchor="middle">C</text>
+  </g>
+  <g id="D">
+    <polygon class="node-shape"  points="67.6,434 181.5,434 161.4,474 47.5,474" />
+    
+    <text class="node-label" x="114.5" y="458.9" text-anchor="middle">direction</text>
+  </g>
+  <g id="E">
+    <polygon class="node-shape"  points="114.5,524 189,598.5 114.5,673 40,598.5" />
+    
+    <text class="node-label" x="114.5" y="603.4" text-anchor="middle">Is defined ?</text>
+  </g>
+  <g id="F">
+    <rect class="node-shape"  x="59.5" y="723" width="110" height="40" rx="0" ry="0" />
+    
+    <text class="node-label" x="114.5" y="747.9" text-anchor="middle">properties</text>
+  </g>
+  <g id="G">
+    <polygon class="node-shape"  points="114.5,813 168,866.5 114.5,920 61,866.5" />
+    
+    <text class="node-label" x="114.5" y="871.4" text-anchor="middle">handler</text>
+  </g>
+  <g><path class="edge-path" d="M114.5,164 L114.5,174 C114.5,186 114.5,198 114.5,204 L114.5,214" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M114.5,214 L112,208 L117,208 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M114.5,254 L114.5,264 C114.5,276 114.5,288 114.5,294 L114.5,304" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M114.5,304 L112,298 L117,298 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M114.5,384 L114.5,394 C114.5,406 114.5,418 114.5,424 L114.5,434" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M114.5,434 L112,428 L117,428 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M114.5,474 L114.5,484 C114.5,496 114.5,508 114.5,514 L114.5,524" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M114.5,524 L112,518 L117,518 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M114.5,673 L114.5,683 C114.5,695 114.5,707 114.5,713 L114.5,723" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M114.5,723 L112,717 L117,717 Z" fill="#555555" /></g>
+  <g><path class="edge-path" d="M114.5,763 L114.5,773 C114.5,785 114.5,797 114.5,803 L114.5,813" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M114.5,813 L112,807 L117,807 Z" fill="#555555" /></g>
+  
+</svg>

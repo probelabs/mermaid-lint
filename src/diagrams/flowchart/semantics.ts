@@ -473,6 +473,25 @@ class FlowSemanticsVisitor extends BaseVisitor {
       const ch: any = (cn as any).children || {};
       const hasQuoted: boolean = Array.isArray(ch.QuotedString) && ch.QuotedString.length > 0;
       if (hasQuoted) continue; // wrapped, fine
+
+      // Check for parallelogram/trapezoid shapes: [/.../], [\...\], [/...\], [\.../]
+      // These shapes use slashes as syntax delimiters, not content
+      const allChildren: IToken[] = [];
+      for (const key of Object.keys(ch)) {
+        if (Array.isArray(ch[key])) allChildren.push(...ch[key]);
+      }
+      allChildren.sort((a, b) => (a.startOffset ?? 0) - (b.startOffset ?? 0));
+
+      if (allChildren.length >= 2) {
+        const first = allChildren[0];
+        const last = allChildren[allChildren.length - 1];
+        const isSlash = (t: IToken) => t.image === '/' || t.image === '\\';
+        if (isSlash(first) && isSlash(last)) {
+          // This is a parallelogram/trapezoid shape - parentheses are allowed
+          continue;
+        }
+      }
+
       const opens: IToken[] = ch.RoundOpen || [];
       const closes: IToken[] = ch.RoundClose || [];
       const offenders = [...opens, ...closes];
@@ -481,9 +500,9 @@ class FlowSemanticsVisitor extends BaseVisitor {
         this.ctx.errors.push({
           line: t.startLine ?? 1,
           column: t.startColumn ?? 1,
-          severity: 'warning',
+          severity: 'error',
           code: 'FL-LABEL-PARENS-UNQUOTED',
-          message: 'Parentheses inside an unquoted label may be ambiguous. Wrap the label in quotes.',
+          message: 'Parentheses inside an unquoted label are not supported by Mermaid. Wrap the label in quotes.',
           hint: 'Example: A["Calls func(arg)"]'
         });
       }
