@@ -224,6 +224,15 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
   // 4) Unclosed/mismatched brackets inside a node
   if (isInRule(err, 'nodeShape') && err.name === 'MismatchedTokenException') {
     if (expecting(err, 'SquareClose')) {
+      // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
+      if (tokType === 'QuotedString') {
+        return {
+          line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
+          message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
+          hint: 'Example: I[Log &quot;processing N items&quot;] or I["Log \\"processing N items\\""]',
+          length: len
+        };
+      }
       const q = findInnerQuoteIssue('[');
       if (q?.kind === 'escaped') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE', message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.', hint: 'Prefer "He said &quot;Hi&quot;".', length: 2 };
@@ -234,6 +243,15 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '['. Add a matching ']' before the arrow or newline.", hint: "Example: A[Label] --> B", length: 1 };
     }
     if (expecting(err, 'RoundClose')) {
+      // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
+      if (tokType === 'QuotedString') {
+        return {
+          line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
+          message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
+          hint: 'Example: E(Log &quot;message&quot;) or E["Log \\"message\\""]',
+          length: len
+        };
+      }
       const q = findInnerQuoteIssue('(');
       if (q?.kind === 'escaped') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE', message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.', hint: 'Prefer "He said &quot;Hi&quot;".', length: 2 };
@@ -244,6 +262,15 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
       return { line, column, severity: 'error', code: 'FL-NODE-UNCLOSED-BRACKET', message: "Unclosed '('. Add a matching ')'.", hint: "Example: B(Label)", length: 1 };
     }
     if (expecting(err, 'DiamondClose')) {
+      // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
+      if (tokType === 'QuotedString') {
+        return {
+          line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
+          message: 'Quotes are not allowed inside unquoted node labels. Use &apos; for single quotes or &quot; for double quotes.',
+          hint: "Example: B{Does &apos;B&apos; depend on a forEach check &apos;A&apos;?}",
+          length: len
+        };
+      }
       // Try to recognize common quote issues inside decision labels and map them to clearer errors
       const q = findInnerQuoteIssue('{');
       if (q?.kind === 'escaped') {

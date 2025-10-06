@@ -1,0 +1,28 @@
+graph TD
+    subgraph CheckExecutionEngine
+        A[Start processing check] --> B{"Does 'B' depend on a forEach check 'A'?"};
+        B -->|No| C[Execute 'B' normally];
+        B -->|Yes| D[Get forEach items from 'A's output];
+        D --> E{Is the items array empty?};
+
+        subgraph "New Logic Path (This PR)"
+            E -->|Yes| F[Log "skipping check..."];
+            F --> G[Return special empty result with forEach markers];
+            G --> H[Propagate skip to downstream checks];
+        end
+
+        subgraph Existing Logic Path
+            E -->|No| I[Log "processing N items..."];
+            I --> J[Create and execute a task for each item];
+            J --> K[Aggregate results];
+            K --> L[Return combined results];
+        end
+
+        C --> Z[End];
+        H --> Z;
+        L --> Z;
+    end
+
+    style F fill:#d4edda,stroke:#c3e6cb
+    style G fill:#d4edda,stroke:#c3e6cb
+    style H fill:#d4edda,stroke:#c3e6cb
