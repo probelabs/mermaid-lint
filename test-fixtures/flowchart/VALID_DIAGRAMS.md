@@ -19,41 +19,43 @@ This file contains all valid flowchart test fixtures rendered with both Mermaid 
 4. [class style unknown targets](#4-class-style-unknown-targets)
 5. [comments](#5-comments)
 6. [complex shapes](#6-complex-shapes)
-7. [custom auth subgraph](#7-custom-auth-subgraph)
-8. [duplicate ids redefine](#8-duplicate-ids-redefine)
-9. [duplicate subgraph](#9-duplicate-subgraph)
-10. [edge attr id unknown](#10-edge-attr-id-unknown)
-11. [edge attrs animate](#11-edge-attrs-animate)
-12. [edge ids and animation](#12-edge-ids-and-animation)
-13. [empty diagram](#13-empty-diagram)
-14. [frontmatter theme](#14-frontmatter-theme)
-15. [html in labels](#15-html-in-labels)
-16. [interactions linkstyle multi](#16-interactions-linkstyle-multi)
-17. [link styles](#17-link-styles)
-18. [long text](#18-long-text)
-19. [mismatched quotes](#19-mismatched-quotes)
-20. [multidirectional arrows](#20-multidirectional-arrows)
-21. [nested subgraphs lr](#21-nested-subgraphs-lr)
-22. [nested subgraphs](#22-nested-subgraphs)
-23. [node ids special](#23-node-ids-special)
-24. [node to subgraph](#24-node-to-subgraph)
-25. [only nodes](#25-only-nodes)
-26. [quotes single inside double](#26-quotes-single-inside-double)
-27. [simple flow](#27-simple-flow)
-28. [special arrows](#28-special-arrows)
-29. [special chars](#29-special-chars)
-30. [styling classes](#30-styling-classes)
-31. [subgraph nested direction](#31-subgraph-nested-direction)
-32. [subgraph quoted title](#32-subgraph-quoted-title)
-33. [subgraph to node](#33-subgraph-to-node)
-34. [subgraph to subgraph lr](#34-subgraph-to-subgraph-lr)
-35. [subgraph to subgraph](#35-subgraph-to-subgraph)
-36. [subgraphs](#36-subgraphs)
-37. [typed shapes bad units](#37-typed-shapes-bad-units)
-38. [typed shapes basic](#38-typed-shapes-basic)
-39. [undefined node](#39-undefined-node)
-40. [unicode text](#40-unicode-text)
-41. [with text](#41-with-text)
+7. [complex text with keywords](#7-complex-text-with-keywords)
+8. [custom auth subgraph](#8-custom-auth-subgraph)
+9. [duplicate ids redefine](#9-duplicate-ids-redefine)
+10. [duplicate subgraph](#10-duplicate-subgraph)
+11. [edge attr id unknown](#11-edge-attr-id-unknown)
+12. [edge attrs animate](#12-edge-attrs-animate)
+13. [edge ids and animation](#13-edge-ids-and-animation)
+14. [empty diagram](#14-empty-diagram)
+15. [frontmatter theme](#15-frontmatter-theme)
+16. [html in labels](#16-html-in-labels)
+17. [interactions linkstyle multi](#17-interactions-linkstyle-multi)
+18. [keywords in labels](#18-keywords-in-labels)
+19. [link styles](#19-link-styles)
+20. [long text](#20-long-text)
+21. [mismatched quotes](#21-mismatched-quotes)
+22. [multidirectional arrows](#22-multidirectional-arrows)
+23. [nested subgraphs lr](#23-nested-subgraphs-lr)
+24. [nested subgraphs](#24-nested-subgraphs)
+25. [node ids special](#25-node-ids-special)
+26. [node to subgraph](#26-node-to-subgraph)
+27. [only nodes](#27-only-nodes)
+28. [quotes single inside double](#28-quotes-single-inside-double)
+29. [simple flow](#29-simple-flow)
+30. [special arrows](#30-special-arrows)
+31. [special chars](#31-special-chars)
+32. [styling classes](#32-styling-classes)
+33. [subgraph nested direction](#33-subgraph-nested-direction)
+34. [subgraph quoted title](#34-subgraph-quoted-title)
+35. [subgraph to node](#35-subgraph-to-node)
+36. [subgraph to subgraph lr](#36-subgraph-to-subgraph-lr)
+37. [subgraph to subgraph](#37-subgraph-to-subgraph)
+38. [subgraphs](#38-subgraphs)
+39. [typed shapes bad units](#39-typed-shapes-bad-units)
+40. [typed shapes basic](#40-typed-shapes-basic)
+41. [undefined node](#41-undefined-node)
+42. [unicode text](#42-unicode-text)
+43. [with text](#43-with-text)
 
 ---
 
@@ -349,7 +351,84 @@ flowchart TB
 
 ---
 
-## 7. Custom Auth Subgraph
+## 7. Complex Text With Keywords
+
+📄 **Source**: [`complex-text-with-keywords.mmd`](./valid/complex-text-with-keywords.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart TD
+    subgraph "CommandCheckProvider: Output Processing"
+        A[Execute Command] --> B{Get stdout};
+        B --> C{"Attempt JSON.parse(stdout)"};
+        C -- Success --> E[Output is Parsed JSON];
+        C -- Fails --> D{"Extract JSON from end of stdout"};
+        D -- Found --> F{"Attempt JSON.parse(extracted)"};
+        D -- Not Found --> G[Output is Raw String];
+        F -- Success --> E;
+        F -- Fails --> G;
+        E --> H["Apply transform_js/liquid"];
+        G --> H;
+    end
+
+    style A fill:#cde4ff
+    style C fill:#ffe4b2
+    style D fill:#ffe4b2
+    style F fill:#ffe4b2
+    style E fill:#d4edda
+    style G fill:#f8d7da
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/complex-text-with-keywords.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    subgraph "CommandCheckProvider: Output Processing"
+        A[Execute Command] --> B{Get stdout};
+        B --> C{"Attempt JSON.parse(stdout)"};
+        C -- Success --> E[Output is Parsed JSON];
+        C -- Fails --> D{"Extract JSON from end of stdout"};
+        D -- Found --> F{"Attempt JSON.parse(extracted)"};
+        D -- Not Found --> G[Output is Raw String];
+        F -- Success --> E;
+        F -- Fails --> G;
+        E --> H["Apply transform_js/liquid"];
+        G --> H;
+    end
+
+    style A fill:#cde4ff
+    style C fill:#ffe4b2
+    style D fill:#ffe4b2
+    style F fill:#ffe4b2
+    style E fill:#d4edda
+    style G fill:#f8d7da
+
+```
+</details>
+
+---
+
+## 8. Custom Auth Subgraph
 
 📄 **Source**: [`custom-auth-subgraph.mmd`](./valid/custom-auth-subgraph.mmd)
 
@@ -408,7 +487,7 @@ flowchart TD
 
 ---
 
-## 8. Duplicate Ids Redefine
+## 9. Duplicate Ids Redefine
 
 📄 **Source**: [`duplicate-ids-redefine.mmd`](./valid/duplicate-ids-redefine.mmd)
 
@@ -455,7 +534,7 @@ flowchart LR
 
 ---
 
-## 9. Duplicate Subgraph
+## 10. Duplicate Subgraph
 
 📄 **Source**: [`duplicate-subgraph.mmd`](./valid/duplicate-subgraph.mmd)
 
@@ -504,7 +583,7 @@ flowchart TD
 
 ---
 
-## 10. Edge Attr Id Unknown
+## 11. Edge Attr Id Unknown
 
 📄 **Source**: [`edge-attr-id-unknown.mmd`](./valid/edge-attr-id-unknown.mmd)
 
@@ -549,7 +628,7 @@ flowchart TD
 
 ---
 
-## 11. Edge Attrs Animate
+## 12. Edge Attrs Animate
 
 📄 **Source**: [`edge-attrs-animate.mmd`](./valid/edge-attrs-animate.mmd)
 
@@ -594,7 +673,7 @@ flowchart LR
 
 ---
 
-## 12. Edge Ids And Animation
+## 13. Edge Ids And Animation
 
 📄 **Source**: [`edge-ids-and-animation.mmd`](./valid/edge-ids-and-animation.mmd)
 
@@ -639,7 +718,7 @@ flowchart TD
 
 ---
 
-## 13. Empty Diagram
+## 14. Empty Diagram
 
 📄 **Source**: [`empty-diagram.mmd`](./valid/empty-diagram.mmd)
 
@@ -680,7 +759,7 @@ flowchart TD
 
 ---
 
-## 14. Frontmatter Theme
+## 15. Frontmatter Theme
 
 📄 **Source**: [`frontmatter-theme.mmd`](./valid/frontmatter-theme.mmd)
 
@@ -755,7 +834,7 @@ flowchart TD
 
 ---
 
-## 15. Html In Labels
+## 16. Html In Labels
 
 📄 **Source**: [`html-in-labels.mmd`](./valid/html-in-labels.mmd)
 
@@ -800,7 +879,7 @@ flowchart LR
 
 ---
 
-## 16. Interactions Linkstyle Multi
+## 17. Interactions Linkstyle Multi
 
 📄 **Source**: [`interactions-linkstyle-multi.mmd`](./valid/interactions-linkstyle-multi.mmd)
 
@@ -851,7 +930,74 @@ flowchart TD
 
 ---
 
-## 17. Link Styles
+## 18. Keywords In Labels
+
+📄 **Source**: [`keywords-in-labels.mmd`](./valid/keywords-in-labels.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+flowchart TD
+    A{end of stdout}
+    B[subgraph data]
+    C((flowchart style))
+    D[/graph direction/]
+    E{Is class defined?}
+    F[style properties]
+    G{click handler}
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/keywords-in-labels.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A{end of stdout}
+    B[subgraph data]
+    C((flowchart style))
+    D[/graph direction/]
+    E{Is class defined?}
+    F[style properties]
+    G{click handler}
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+
+```
+</details>
+
+---
+
+## 19. Link Styles
 
 📄 **Source**: [`link-styles.mmd`](./valid/link-styles.mmd)
 
@@ -902,7 +1048,7 @@ flowchart LR
 
 ---
 
-## 18. Long Text
+## 20. Long Text
 
 📄 **Source**: [`long-text.mmd`](./valid/long-text.mmd)
 
@@ -941,7 +1087,7 @@ flowchart TD
 
 ---
 
-## 19. Mismatched Quotes
+## 21. Mismatched Quotes
 
 📄 **Source**: [`mismatched-quotes.mmd`](./valid/mismatched-quotes.mmd)
 
@@ -986,7 +1132,7 @@ flowchart TD
 
 ---
 
-## 20. Multidirectional Arrows
+## 22. Multidirectional Arrows
 
 📄 **Source**: [`multidirectional-arrows.mmd`](./valid/multidirectional-arrows.mmd)
 
@@ -1029,7 +1175,7 @@ flowchart LR
 
 ---
 
-## 21. Nested Subgraphs Lr
+## 23. Nested Subgraphs Lr
 
 📄 **Source**: [`nested-subgraphs-lr.mmd`](./valid/nested-subgraphs-lr.mmd)
 
@@ -1084,7 +1230,7 @@ flowchart LR
 
 ---
 
-## 22. Nested Subgraphs
+## 24. Nested Subgraphs
 
 📄 **Source**: [`nested-subgraphs.mmd`](./valid/nested-subgraphs.mmd)
 
@@ -1135,7 +1281,7 @@ flowchart TD
 
 ---
 
-## 23. Node Ids Special
+## 25. Node Ids Special
 
 📄 **Source**: [`node-ids-special.mmd`](./valid/node-ids-special.mmd)
 
@@ -1190,7 +1336,7 @@ flowchart TD
 
 ---
 
-## 24. Node To Subgraph
+## 26. Node To Subgraph
 
 📄 **Source**: [`node-to-subgraph.mmd`](./valid/node-to-subgraph.mmd)
 
@@ -1239,7 +1385,7 @@ flowchart TD
 
 ---
 
-## 25. Only Nodes
+## 27. Only Nodes
 
 📄 **Source**: [`only-nodes.mmd`](./valid/only-nodes.mmd)
 
@@ -1282,7 +1428,7 @@ flowchart TD
 
 ---
 
-## 26. Quotes Single Inside Double
+## 28. Quotes Single Inside Double
 
 📄 **Source**: [`quotes-single-inside-double.mmd`](./valid/quotes-single-inside-double.mmd)
 
@@ -1325,7 +1471,7 @@ flowchart LR
 
 ---
 
-## 27. Simple Flow
+## 29. Simple Flow
 
 📄 **Source**: [`simple-flow.mmd`](./valid/simple-flow.mmd)
 
@@ -1364,7 +1510,7 @@ flowchart TD
 
 ---
 
-## 28. Special Arrows
+## 30. Special Arrows
 
 📄 **Source**: [`special-arrows.mmd`](./valid/special-arrows.mmd)
 
@@ -1409,7 +1555,7 @@ flowchart LR
 
 ---
 
-## 29. Special Chars
+## 31. Special Chars
 
 📄 **Source**: [`special-chars.mmd`](./valid/special-chars.mmd)
 
@@ -1452,7 +1598,7 @@ flowchart LR
 
 ---
 
-## 30. Styling Classes
+## 32. Styling Classes
 
 📄 **Source**: [`styling-classes.mmd`](./valid/styling-classes.mmd)
 
@@ -1495,7 +1641,7 @@ flowchart TD
 
 ---
 
-## 31. Subgraph Nested Direction
+## 33. Subgraph Nested Direction
 
 📄 **Source**: [`subgraph-nested-direction.mmd`](./valid/subgraph-nested-direction.mmd)
 
@@ -1552,7 +1698,7 @@ flowchart TD
 
 ---
 
-## 32. Subgraph Quoted Title
+## 34. Subgraph Quoted Title
 
 📄 **Source**: [`subgraph-quoted-title.mmd`](./valid/subgraph-quoted-title.mmd)
 
@@ -1601,7 +1747,7 @@ flowchart TD
 
 ---
 
-## 33. Subgraph To Node
+## 35. Subgraph To Node
 
 📄 **Source**: [`subgraph-to-node.mmd`](./valid/subgraph-to-node.mmd)
 
@@ -1650,7 +1796,7 @@ flowchart TD
 
 ---
 
-## 34. Subgraph To Subgraph Lr
+## 36. Subgraph To Subgraph Lr
 
 📄 **Source**: [`subgraph-to-subgraph-lr.mmd`](./valid/subgraph-to-subgraph-lr.mmd)
 
@@ -1705,7 +1851,7 @@ flowchart LR
 
 ---
 
-## 35. Subgraph To Subgraph
+## 37. Subgraph To Subgraph
 
 📄 **Source**: [`subgraph-to-subgraph.mmd`](./valid/subgraph-to-subgraph.mmd)
 
@@ -1760,7 +1906,7 @@ flowchart TD
 
 ---
 
-## 36. Subgraphs
+## 38. Subgraphs
 
 📄 **Source**: [`subgraphs.mmd`](./valid/subgraphs.mmd)
 
@@ -1811,7 +1957,7 @@ flowchart TD
 
 ---
 
-## 37. Typed Shapes Bad Units
+## 39. Typed Shapes Bad Units
 
 📄 **Source**: [`typed-shapes-bad-units.mmd`](./valid/typed-shapes-bad-units.mmd)
 
@@ -1858,7 +2004,7 @@ flowchart TD
 
 ---
 
-## 38. Typed Shapes Basic
+## 40. Typed Shapes Basic
 
 📄 **Source**: [`typed-shapes-basic.mmd`](./valid/typed-shapes-basic.mmd)
 
@@ -1905,7 +2051,7 @@ flowchart LR
 
 ---
 
-## 39. Undefined Node
+## 41. Undefined Node
 
 📄 **Source**: [`undefined-node.mmd`](./valid/undefined-node.mmd)
 
@@ -1948,7 +2094,7 @@ flowchart TD
 
 ---
 
-## 40. Unicode Text
+## 42. Unicode Text
 
 📄 **Source**: [`unicode-text.mmd`](./valid/unicode-text.mmd)
 
@@ -1995,7 +2141,7 @@ flowchart LR
 
 ---
 
-## 41. With Text
+## 43. With Text
 
 📄 **Source**: [`with-text.mmd`](./valid/with-text.mmd)
 

@@ -34,7 +34,8 @@ This file contains invalid flowchart test fixtures with:
 23. [Unescaped Quotes In Decision](#23-unescaped-quotes-in-decision)
 24. [Unmatched End](#24-unmatched-end)
 25. [Unquoted Label With Quotes](#25-unquoted-label-with-quotes)
-26. [Wrong Direction](#26-wrong-direction)
+26. [Unquoted Parens In Labels](#26-unquoted-parens-in-labels)
+27. [Wrong Direction](#27-wrong-direction)
 
 ---
 
@@ -57,7 +58,7 @@ This file contains invalid flowchart test fixtures with:
 | 13 | [linkstyle id unknown](#13-linkstyle-id-unknown) | INVALID | INVALID | — |
 | 14 | [missing arrow](#14-missing-arrow) | INVALID | INVALID | ✅ all |
 | 15 | [mixed brackets](#15-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 16 | [mixed quotes in labels](#16-mixed-quotes-in-labels) | INVALID | INVALID | ✅ safe |
+| 16 | [mixed quotes in labels](#16-mixed-quotes-in-labels) | INVALID | INVALID | ❌ safe |
 | 17 | [no diagram type](#17-no-diagram-type) | INVALID | INVALID | — |
 | 18 | [quotes double inside single](#18-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 19 | [typed shapes all](#19-typed-shapes-all) | INVALID | INVALID | — |
@@ -67,7 +68,8 @@ This file contains invalid flowchart test fixtures with:
 | 23 | [unescaped quotes in decision](#23-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
 | 24 | [unmatched end](#24-unmatched-end) | INVALID | INVALID | — |
 | 25 | [unquoted label with quotes](#25-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 26 | [wrong direction](#26-wrong-direction) | INVALID | INVALID | — |
+| 26 | [unquoted parens in labels](#26-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
+| 27 | [wrong direction](#27-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -1236,6 +1238,14 @@ at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:39
      |                                       ^
    4 |         S2 --> S3{Was 'D' skipped?};
 hint: Example: A[Label] --> B
+
+error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported. Use &quot; for inner quotes.
+at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:78
+   2 |     subgraph "Dependency Skip Evaluation"
+   3 |         S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
+     |                                                                              ^
+   4 |         S2 --> S3{Was 'D' skipped?};
+hint: Example: A["He said &quot;Hi&quot;"]
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1243,10 +1253,10 @@ hint: Example: A[Label] --> B
 ```mermaid
 flowchart TD
     subgraph "Dependency Skip Evaluation"
-        S1["Start Evaluation for Check 'C'"] --> S2{"For each dependency 'D' of &quot;C&quot;"};
-        S2 --> S3{"Was 'D' skipped?"};
-        S3 -- Yes --> S4["Mark 'D' as failed"];
-        S3 -- No --> S5{"Did 'D' have a fatal error?"};
+        S1[Start Evaluation for Check ]C'] --> S2{For each dependency 'D&quot; of &quot;C&quot;};
+        S2 --> S3{Was 'D' skipped?};
+        S3 -- Yes --> S4[Mark 'D' as failed];
+        S3 -- No --> S5{Did 'D' have a fatal error?};
         S5 -- Yes --> S4;
         S5 -- No --> S2;
         S4 --> S6{Any dependencies marked as failed?};
@@ -2030,7 +2040,148 @@ flowchart TD
 
 ---
 
-## 26. Wrong Direction
+## 26. Unquoted Parens In Labels
+
+📄 **Source**: [`unquoted-parens-in-labels.mmd`](./invalid/unquoted-parens-in-labels.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    %% This diagram produces FL-LABEL-PARENS-UNQUOTED errors.
+    %% Mermaid does not support unquoted parentheses in labels.
+    %% Use --fix to wrap labels with parentheses in quotes.
+    subgraph "CommandCheckProvider: Output Processing"
+        A[Execute Command] --> B{Get stdout};
+        B --> C{Attempt JSON.parse(stdout)};
+        C -- Success --> E[Output is Parsed JSON];
+        C -- Fails --> D{Extract JSON from end of stdout};
+        D -- Found --> F{Attempt JSON.parse(extracted)};
+        D -- Not Found --> G[Output is Raw String];
+        F -- Success --> E;
+        F -- Fails --> G;
+        E --> H[Apply transform_js/liquid];
+        G --> H;
+    end
+
+    style A fill:#cde4ff
+    style C fill:#ffe4b2
+    style D fill:#ffe4b2
+    style F fill:#ffe4b2
+    style E fill:#d4edda
+    style G fill:#f8d7da
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 4:
+...C{Attempt JSON.parse(stdout)};        C
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PS'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid. Wrap the label in quotes.
+at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:7:35
+   6 |         A[Execute Command] --> B{Get stdout};
+   7 |         B --> C{Attempt JSON.parse(stdout)};
+     |                                   ^
+   8 |         C -- Success --> E[Output is Parsed JSON];
+hint: Example: A["Calls func(arg)"]
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid. Wrap the label in quotes.
+at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:10:44
+   9 |         C -- Fails --> D{Extract JSON from end of stdout};
+  10 |         D -- Found --> F{Attempt JSON.parse(extracted)};
+     |                                            ^
+  11 |         D -- Not Found --> G[Output is Raw String];
+hint: Example: A["Calls func(arg)"]
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    %% This diagram produces FL-LABEL-PARENS-UNQUOTED errors.
+    %% Mermaid does not support unquoted parentheses in labels.
+    %% Use --fix to wrap labels with parentheses in quotes.
+    subgraph "CommandCheckProvider: Output Processing"
+        A[Execute Command] --> B{Get stdout};
+        B --> C{"Attempt JSON.parse(stdout)"};
+        C -- Success --> E[Output is Parsed JSON];
+        C -- Fails --> D{Extract JSON from end of stdout};
+        D -- Found --> F{"Attempt JSON.parse(extracted)"};
+        D -- Not Found --> G[Output is Raw String];
+        F -- Success --> E;
+        F -- Fails --> G;
+        E --> H[Apply transform_js/liquid];
+        G --> H;
+    end
+
+    style A fill:#cde4ff
+    style C fill:#ffe4b2
+    style D fill:#ffe4b2
+    style F fill:#ffe4b2
+    style E fill:#d4edda
+    style G fill:#f8d7da
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    %% This diagram produces FL-LABEL-PARENS-UNQUOTED errors.
+    %% Mermaid does not support unquoted parentheses in labels.
+    %% Use --fix to wrap labels with parentheses in quotes.
+    subgraph "CommandCheckProvider: Output Processing"
+        A[Execute Command] --> B{Get stdout};
+        B --> C{Attempt JSON.parse(stdout)};
+        C -- Success --> E[Output is Parsed JSON];
+        C -- Fails --> D{Extract JSON from end of stdout};
+        D -- Found --> F{Attempt JSON.parse(extracted)};
+        D -- Not Found --> G[Output is Raw String];
+        F -- Success --> E;
+        F -- Fails --> G;
+        E --> H[Apply transform_js/liquid];
+        G --> H;
+    end
+
+    style A fill:#cde4ff
+    style C fill:#ffe4b2
+    style D fill:#ffe4b2
+    style F fill:#ffe4b2
+    style E fill:#d4edda
+    style G fill:#f8d7da
+
+```
+</details>
+
+---
+
+## 27. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
