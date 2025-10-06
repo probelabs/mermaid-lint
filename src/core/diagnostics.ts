@@ -382,6 +382,24 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     };
   }
 
+  // 6b) Subgraph title with spaces must be quoted
+  if (isInRule(err, 'subgraph') && err.name === 'MismatchedTokenException' && expecting(err, 'Newline')) {
+    // Check if we're after a subgraph keyword and the current line has unquoted text with spaces
+    const subgraphIdx = lineStr.indexOf('subgraph');
+    if (subgraphIdx !== -1) {
+      const afterSubgraph = lineStr.slice(subgraphIdx + 8).trim();
+      // If there's text with spaces that isn't quoted, it's an unquoted title with spaces
+      if (afterSubgraph && !afterSubgraph.startsWith('"') && !afterSubgraph.startsWith("'") && afterSubgraph.includes(' ')) {
+        return {
+          line, column, severity: 'error', code: 'FL-SUBGRAPH-UNQUOTED-TITLE',
+          message: 'Subgraph titles with spaces must be quoted.',
+          hint: 'Example: subgraph "Existing Logic Path" or use underscores: subgraph Existing_Logic_Path',
+          length: afterSubgraph.length
+        };
+      }
+    }
+  }
+
   // 7) Unmatched 'end' with no open subgraph
   if (err.name === 'NotAllInputParsedException' && tokType === 'EndKeyword') {
     return {

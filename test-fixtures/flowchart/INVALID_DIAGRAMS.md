@@ -1432,17 +1432,40 @@ flowchart LR
 
 ```mermaid
 graph TD
-    A[Start] --> B[Log "processing items"];
-    B --> C[Execute "command" with args];
-    C --> D[Print "done"];
-    D --> E[End]
+    subgraph CheckExecutionEngine
+        A[Start processing check] --> B{"Does 'B' depend on a forEach check 'A'?"};
+        B -->|No| C[Execute 'B' normally];
+        B -->|Yes| D[Get forEach items from 'A's output];
+        D --> E{Is the items array empty?};
+
+        subgraph "New Logic Path (This PR)"
+            E -->|Yes| F[Log "skipping check..."];
+            F --> G[Return special empty result with forEach markers];
+            G --> H[Propagate skip to downstream checks];
+        end
+
+        subgraph Existing Logic Path
+            E -->|No| I[Log "processing N items..."];
+            I --> J[Create and execute a task for each item];
+            J --> K[Aggregate results];
+            K --> L[Return combined results];
+        end
+
+        C --> Z[End];
+        H --> Z;
+        L --> Z;
+    end
+
+    style F fill:#d4edda,stroke:#c3e6cb
+    style G fill:#d4edda,stroke:#c3e6cb
+    style H fill:#d4edda,stroke:#c3e6cb
 ```
 
 ### mermaid-cli Result: INVALID
 
 ```
-Error: Parse error on line 2:
-...A[Start] --> B[Log "processing items"];
+Error: Parse error on line 9:
+...  E -->|Yes| F[Log "skipping check..."];
 -----------------------^
 Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
 Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
@@ -1462,11 +1485,11 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ```
 error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
-at test-fixtures/flowchart/invalid/quotes-in-node-labels.mmd:2:24
-  1 | graph TD
-  2 |     A[Start] --> B[Log "processing items"];
-    |                        ^^^^^^^^^^^^^^^^^^
-  3 |     B --> C[Execute "command" with args];
+at test-fixtures/flowchart/invalid/quotes-in-node-labels.mmd:4:29
+   3 |         A[Start processing check] --> B{"Does 'B' depend on a forEach check 'A'?"};
+   4 |         B -->|No| C[Execute 'B' normally];
+     |                             ^^^
+   5 |         B -->|Yes| D[Get forEach items from 'A's output];
 hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
 
@@ -1474,10 +1497,33 @@ hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N it
 
 ```mermaid
 graph TD
-    A[Start] --> B["Log &quot;processing items&quot;"];
-    B --> C["Execute &quot;command&quot; with args"];
-    C --> D["Print &quot;done&quot;"];
-    D --> E[End]
+    subgraph CheckExecutionEngine
+        A[Start processing check] --> B{"Does 'B' depend on a forEach check 'A'?"};
+        B -->|No| C["Execute 'B' normally"];
+        B -->|Yes| D["Get forEach items from 'A's output"];
+        D --> E{Is the items array empty?};
+
+        subgraph "New Logic Path (This PR)"
+            E -->|Yes| F["Log &quot;skipping check...&quot;"];
+            F --> G[Return special empty result with forEach markers];
+            G --> H[Propagate skip to downstream checks];
+        end
+
+        subgraph "Existing Logic Path"
+            E -->|No| I["Log &quot;processing N items...&quot;"];
+            I --> J[Create and execute a task for each item];
+            J --> K[Aggregate results];
+            K --> L[Return combined results];
+        end
+
+        C --> Z[End];
+        H --> Z;
+        L --> Z;
+    end
+
+    style F fill:#d4edda,stroke:#c3e6cb
+    style G fill:#d4edda,stroke:#c3e6cb
+    style H fill:#d4edda,stroke:#c3e6cb
 ```
 
 ### maid Auto-fix (`--fix=all`) Preview
@@ -1489,10 +1535,33 @@ Shown above (safe changes applied).
 
 ```
 graph TD
-    A[Start] --> B[Log "processing items"];
-    B --> C[Execute "command" with args];
-    C --> D[Print "done"];
-    D --> E[End]
+    subgraph CheckExecutionEngine
+        A[Start processing check] --> B{"Does 'B' depend on a forEach check 'A'?"};
+        B -->|No| C[Execute 'B' normally];
+        B -->|Yes| D[Get forEach items from 'A's output];
+        D --> E{Is the items array empty?};
+
+        subgraph "New Logic Path (This PR)"
+            E -->|Yes| F[Log "skipping check..."];
+            F --> G[Return special empty result with forEach markers];
+            G --> H[Propagate skip to downstream checks];
+        end
+
+        subgraph Existing Logic Path
+            E -->|No| I[Log "processing N items..."];
+            I --> J[Create and execute a task for each item];
+            J --> K[Aggregate results];
+            K --> L[Return combined results];
+        end
+
+        C --> Z[End];
+        H --> Z;
+        L --> Z;
+    end
+
+    style F fill:#d4edda,stroke:#c3e6cb
+    style G fill:#d4edda,stroke:#c3e6cb
+    style H fill:#d4edda,stroke:#c3e6cb
 ```
 </details>
 
