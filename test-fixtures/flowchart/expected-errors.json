@@ -25,6 +25,9 @@
   "mixed-brackets.mmd": [
     "FL-NODE-MIXED-BRACKETS"
   ],
+  "mixed-quotes-in-labels.mmd": [
+    "FL-NODE-UNCLOSED-BRACKET"
+  ],
   "no-diagram-type.mmd": [
     "GEN-HEADER-INVALID"
   ],

@@ -24,16 +24,17 @@ This file contains invalid flowchart test fixtures with:
 13. [Linkstyle Id Unknown](#13-linkstyle-id-unknown)
 14. [Missing Arrow](#14-missing-arrow)
 15. [Mixed Brackets](#15-mixed-brackets)
-16. [No Diagram Type](#16-no-diagram-type)
-17. [Quotes Double Inside Single](#17-quotes-double-inside-single)
-18. [Typed Shapes All](#18-typed-shapes-all)
-19. [Typed Shapes Unknowns](#19-typed-shapes-unknowns)
-20. [Unclosed Bracket](#20-unclosed-bracket)
-21. [Unclosed Quote In Label](#21-unclosed-quote-in-label)
-22. [Unescaped Quotes In Decision](#22-unescaped-quotes-in-decision)
-23. [Unmatched End](#23-unmatched-end)
-24. [Unquoted Label With Quotes](#24-unquoted-label-with-quotes)
-25. [Wrong Direction](#25-wrong-direction)
+16. [Mixed Quotes In Labels](#16-mixed-quotes-in-labels)
+17. [No Diagram Type](#17-no-diagram-type)
+18. [Quotes Double Inside Single](#18-quotes-double-inside-single)
+19. [Typed Shapes All](#19-typed-shapes-all)
+20. [Typed Shapes Unknowns](#20-typed-shapes-unknowns)
+21. [Unclosed Bracket](#21-unclosed-bracket)
+22. [Unclosed Quote In Label](#22-unclosed-quote-in-label)
+23. [Unescaped Quotes In Decision](#23-unescaped-quotes-in-decision)
+24. [Unmatched End](#24-unmatched-end)
+25. [Unquoted Label With Quotes](#25-unquoted-label-with-quotes)
+26. [Wrong Direction](#26-wrong-direction)
 
 ---
 
@@ -56,16 +57,17 @@ This file contains invalid flowchart test fixtures with:
 | 13 | [linkstyle id unknown](#13-linkstyle-id-unknown) | INVALID | INVALID | — |
 | 14 | [missing arrow](#14-missing-arrow) | INVALID | INVALID | ✅ all |
 | 15 | [mixed brackets](#15-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 16 | [no diagram type](#16-no-diagram-type) | INVALID | INVALID | — |
-| 17 | [quotes double inside single](#17-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 18 | [typed shapes all](#18-typed-shapes-all) | INVALID | INVALID | — |
-| 19 | [typed shapes unknowns](#19-typed-shapes-unknowns) | INVALID | INVALID | — |
-| 20 | [unclosed bracket](#20-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 21 | [unclosed quote in label](#21-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 22 | [unescaped quotes in decision](#22-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 23 | [unmatched end](#23-unmatched-end) | INVALID | INVALID | — |
-| 24 | [unquoted label with quotes](#24-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 25 | [wrong direction](#25-wrong-direction) | INVALID | INVALID | — |
+| 16 | [mixed quotes in labels](#16-mixed-quotes-in-labels) | INVALID | INVALID | ✅ safe |
+| 17 | [no diagram type](#17-no-diagram-type) | INVALID | INVALID | — |
+| 18 | [quotes double inside single](#18-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
+| 19 | [typed shapes all](#19-typed-shapes-all) | INVALID | INVALID | — |
+| 20 | [typed shapes unknowns](#20-typed-shapes-unknowns) | INVALID | INVALID | — |
+| 21 | [unclosed bracket](#21-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 22 | [unclosed quote in label](#22-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 23 | [unescaped quotes in decision](#23-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 24 | [unmatched end](#24-unmatched-end) | INVALID | INVALID | — |
+| 25 | [unquoted label with quotes](#25-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 26 | [wrong direction](#26-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -1179,7 +1181,110 @@ flowchart LR
 
 ---
 
-## 16. No Diagram Type
+## 16. Mixed Quotes In Labels
+
+📄 **Source**: [`mixed-quotes-in-labels.mmd`](./invalid/mixed-quotes-in-labels.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    subgraph "Dependency Skip Evaluation"
+        S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
+        S2 --> S3{Was 'D' skipped?};
+        S3 -- Yes --> S4[Mark 'D' as failed];
+        S3 -- No --> S5{Did 'D' have a fatal error?};
+        S5 -- Yes --> S4;
+        S5 -- No --> S2;
+        S4 --> S6{Any dependencies marked as failed?};
+        S2 -- all dependencies checked --> S6;
+        S6 -- Yes --> S7["Skip Check 'C' (Reason: dependency_failed)"];
+        S6 -- No --> S8[Execute Check 'C'];
+    end
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 3:
+... dependency 'D' of "C"};        S2 --> 
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
+at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:39
+   2 |     subgraph "Dependency Skip Evaluation"
+   3 |         S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
+     |                                       ^
+   4 |         S2 --> S3{Was 'D' skipped?};
+hint: Example: A[Label] --> B
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    subgraph "Dependency Skip Evaluation"
+        S1["Start Evaluation for Check 'C'"] --> S2{"For each dependency 'D' of &quot;C&quot;"};
+        S2 --> S3{"Was 'D' skipped?"};
+        S3 -- Yes --> S4["Mark 'D' as failed"];
+        S3 -- No --> S5{"Did 'D' have a fatal error?"};
+        S5 -- Yes --> S4;
+        S5 -- No --> S2;
+        S4 --> S6{Any dependencies marked as failed?};
+        S2 -- all dependencies checked --> S6;
+        S6 -- Yes --> S7["Skip Check 'C' (Reason: dependency_failed)"];
+        S6 -- No --> S8[Execute Check 'C'];
+    end
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    subgraph "Dependency Skip Evaluation"
+        S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
+        S2 --> S3{Was 'D' skipped?};
+        S3 -- Yes --> S4[Mark 'D' as failed];
+        S3 -- No --> S5{Did 'D' have a fatal error?};
+        S5 -- Yes --> S4;
+        S5 -- No --> S2;
+        S4 --> S6{Any dependencies marked as failed?};
+        S2 -- all dependencies checked --> S6;
+        S6 -- Yes --> S7["Skip Check 'C' (Reason: dependency_failed)"];
+        S6 -- No --> S8[Execute Check 'C'];
+    end
+
+```
+</details>
+
+---
+
+## 17. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -1240,7 +1345,7 @@ B --> C
 
 ---
 
-## 17. Quotes Double Inside Single
+## 18. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -1313,7 +1418,7 @@ flowchart LR
 
 ---
 
-## 18. Typed Shapes All
+## 19. Typed Shapes All
 
 📄 **Source**: [`typed-shapes-all.mmd`](./invalid/typed-shapes-all.mmd)
 
@@ -1428,7 +1533,7 @@ flowchart LR
 
 ---
 
-## 19. Typed Shapes Unknowns
+## 20. Typed Shapes Unknowns
 
 📄 **Source**: [`typed-shapes-unknowns.mmd`](./invalid/typed-shapes-unknowns.mmd)
 
@@ -1523,7 +1628,7 @@ flowchart TD
 
 ---
 
-## 20. Unclosed Bracket
+## 21. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -1593,7 +1698,7 @@ flowchart LR
 
 ---
 
-## 21. Unclosed Quote In Label
+## 22. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -1669,7 +1774,7 @@ flowchart TD
 
 ---
 
-## 22. Unescaped Quotes In Decision
+## 23. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -1745,7 +1850,7 @@ flowchart TD
 
 ---
 
-## 23. Unmatched End
+## 24. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1810,7 +1915,7 @@ flowchart TD
 
 ---
 
-## 24. Unquoted Label With Quotes
+## 25. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -1925,7 +2030,7 @@ flowchart TD
 
 ---
 
-## 25. Wrong Direction
+## 26. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
