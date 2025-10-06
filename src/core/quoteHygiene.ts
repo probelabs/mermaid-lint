@@ -64,8 +64,13 @@ export function detectDoubleInDouble(
         if (ends.size > 0 && ends.has(u.tokenType?.name || '')) break;
         // Another quoted string before end → likely inner quote case
         if (u.tokenType?.name === 'QuotedString') {
-          const { line, column } = coercePos(u.startLine ?? null, u.startColumn ?? null, ln, 1);
-          out.push({ line, column, severity: 'error', code: opts.code, message: opts.message, hint: opts.hint, length: 1 });
+          // Only report if the FIRST quote is a double-quote, indicating a double-quoted wrapper
+          const firstImage = t.image || '';
+          const firstIsDoubleQuoted = firstImage.startsWith('"');
+          if (firstIsDoubleQuoted) {
+            const { line, column } = coercePos(u.startLine ?? null, u.startColumn ?? null, ln, 1);
+            out.push({ line, column, severity: 'error', code: opts.code, message: opts.message, hint: opts.hint, length: 1 });
+          }
           j = arr.length; // stop scanning this line
           break;
         }

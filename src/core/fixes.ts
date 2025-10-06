@@ -293,36 +293,8 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       if (level === 'safe' || level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
-        // Prefer wrap+encode when it looks like quotes inside an unquoted label within square brackets
-        const sqOpen = lineText.lastIndexOf('[', caret0);
-        const sqClose = lineText.indexOf(']', caret0);
-        if (sqOpen !== -1 && sqClose !== -1 && sqClose > sqOpen) {
-          const innerSeg = lineText.slice(sqOpen + 1, sqClose);
-          if (innerSeg.includes('"')) {
-            const ltrim = innerSeg.match(/^\s*/)?.[0] ?? '';
-            const rtrim = innerSeg.match(/\s*$/)?.[0] ?? '';
-            const core = innerSeg.slice(ltrim.length, innerSeg.length - rtrim.length);
-            const left = core.slice(0, 1);
-            const right = core.slice(-1);
-            const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
-            let newInner: string;
-            if (core.length >= 2 && isSlashPair(left, right)) {
-              const mid = core.slice(1, -1);
-              const replacedMid = mid.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
-              newInner = ltrim + left + replacedMid + right + rtrim;
-            } else {
-              const replaced = innerSeg.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
-              newInner = '"' + replaced + '"';
-            }
-            edits.push({ start: { line: e.line, column: sqOpen + 2 }, end: { line: e.line, column: sqClose + 1 }, newText: newInner });
-            patchedLines.add(e.line);
-            continue;
-          }
-        }
-        // Fallback: determine opener shape before caret and replace current closer token with the right closer
-        if (patchedLines.has(e.line)) {
-          continue;
-        }
+
+        // First, find the actual opener bracket before caret
         const opens = [
           { open: '{{', close: '}}', idx: lineText.lastIndexOf('{{', caret0), len: 2 },
           { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), len: 2 },
@@ -351,6 +323,42 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
             else if (sj !== -1 && sj === opened.idx - 1) opened = { open: '([', close: '])', idx: sj, len: 2 } as any;
             else if (cj2 !== -1 && cj2 === opened.idx - 1) opened = { open: '[(', close: ')]', idx: cj2, len: 2 } as any;
           }
+
+          // Now try to find the closer on the same line
+          if (opened) {
+            const closerIdx = lineText.indexOf(opened.close, caret0);
+            if (closerIdx !== -1) {
+              // Extract the content between opener and closer
+              const innerSeg = lineText.slice(opened.idx + opened.len, closerIdx);
+              // Check if there are quotes inside
+              if (innerSeg.includes('"') || innerSeg.includes("'")) {
+                // Wrap the label in double quotes and escape inner double quotes
+                const ltrim = innerSeg.match(/^\s*/)?.[0] ?? '';
+                const rtrim = innerSeg.match(/\s*$/)?.[0] ?? '';
+                const core = innerSeg.slice(ltrim.length, innerSeg.length - rtrim.length);
+                const left = core.slice(0, 1);
+                const right = core.slice(-1);
+                const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
+                let newInner: string;
+                if (core.length >= 2 && isSlashPair(left, right)) {
+                  const mid = core.slice(1, -1);
+                  const replacedMid = mid.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+                  newInner = ltrim + left + replacedMid + right + rtrim;
+                } else {
+                  const replaced = innerSeg.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+                  newInner = '"' + replaced + '"';
+                }
+                edits.push({ start: { line: e.line, column: opened.idx + opened.len + 1 }, end: { line: e.line, column: closerIdx + 1 }, newText: newInner });
+                patchedLines.add(e.line);
+                continue;
+              }
+            }
+          }
+        }
+
+        // Fallback: if no opener found or no closer found or no quotes inside, just replace current char with closer
+        if (patchedLines.has(e.line)) {
+          continue;
         }
         let closer = ']';
         if (opened) closer = opened.close;

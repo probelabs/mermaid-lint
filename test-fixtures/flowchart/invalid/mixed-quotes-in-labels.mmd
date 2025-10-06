@@ -1,0 +1,13 @@
+flowchart TD
+    subgraph "Dependency Skip Evaluation"
+        S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
+        S2 --> S3{Was 'D' skipped?};
+        S3 -- Yes --> S4[Mark 'D' as failed];
+        S3 -- No --> S5{Did 'D' have a fatal error?};
+        S5 -- Yes --> S4;
+        S5 -- No --> S2;
+        S4 --> S6{Any dependencies marked as failed?};
+        S2 -- all dependencies checked --> S6;
+        S6 -- Yes --> S7["Skip Check 'C' (Reason: dependency_failed)"];
+        S6 -- No --> S8[Execute Check 'C'];
+    end
