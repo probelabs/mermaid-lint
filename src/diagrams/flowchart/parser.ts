@@ -386,7 +386,18 @@ export class MermaidParser extends CstParser {
                             { ALT: () => this.CONSUME(tokens.TwoDashes) },
                             { ALT: () => this.CONSUME(tokens.Line) },
                             { ALT: () => this.CONSUME(tokens.ThickLine) },
-                            { ALT: () => this.CONSUME(tokens.DottedLine) }
+                            { ALT: () => this.CONSUME(tokens.DottedLine) },
+                            // Allow keywords that might appear in labels (e.g., "end of stdout", "subgraph data")
+                            { ALT: () => this.CONSUME(tokens.FlowchartKeyword) },
+                            { ALT: () => this.CONSUME(tokens.GraphKeyword) },
+                            { ALT: () => this.CONSUME(tokens.SubgraphKeyword) },
+                            { ALT: () => this.CONSUME(tokens.EndKeyword) },
+                            { ALT: () => this.CONSUME(tokens.Direction) },
+                            { ALT: () => this.CONSUME(tokens.ClassKeyword) },
+                            { ALT: () => this.CONSUME(tokens.StyleKeyword) },
+                            { ALT: () => this.CONSUME(tokens.ClassDefKeyword) },
+                            { ALT: () => this.CONSUME(tokens.ClickKeyword) },
+                            { ALT: () => this.CONSUME(tokens.LinkStyleKeyword) }
                         ]);
                     });
                 }
