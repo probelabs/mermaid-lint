@@ -1,6 +1,6 @@
 flowchart TD
-    %% This diagram produces FL-LABEL-PARENS-UNQUOTED warnings.
-    %% Renders with mermaid-cli but FAILS on GitHub.
+    %% This diagram produces FL-LABEL-PARENS-UNQUOTED errors.
+    %% Mermaid does not support unquoted parentheses in labels.
     %% Use --fix to wrap labels with parentheses in quotes.
     subgraph "CommandCheckProvider: Output Processing"
         A[Execute Command] --> B{Get stdout};
