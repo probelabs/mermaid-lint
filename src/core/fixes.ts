@@ -428,6 +428,30 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    // Flowchart: unquoted subgraph title with spaces → quote it (Safe)
+    if (is('FL-SUBGRAPH-UNQUOTED-TITLE', e)) {
+      if (level === 'safe' || level === 'all') {
+        const lineText = lineTextAt(text, e.line);
+        const subgraphIdx = lineText.indexOf('subgraph');
+        if (subgraphIdx !== -1) {
+          const beforeSubgraph = lineText.slice(0, subgraphIdx + 8);
+          const afterSubgraph = lineText.slice(subgraphIdx + 8);
+          const trimmed = afterSubgraph.trim();
+          const leadingSpaces = afterSubgraph.match(/^(\s*)/)?.[1] || '';
+
+          // Quote the title
+          const quotedTitle = `"${trimmed}"`;
+          const fixedLine = beforeSubgraph + leadingSpaces + quotedTitle;
+
+          edits.push({
+            start: { line: e.line, column: 1 },
+            end: { line: e.line, column: lineText.length + 1 },
+            newText: fixedLine
+          });
+        }
+      }
+      continue;
+    }
     // Flowchart: quotes inside unquoted label → wrap whole label content and encode inner quotes (Safe)
     if (is('FL-LABEL-QUOTE-IN-UNQUOTED', e)) {
       if (level === 'safe' || level === 'all') {

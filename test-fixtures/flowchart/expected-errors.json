@@ -26,13 +26,16 @@
     "FL-NODE-MIXED-BRACKETS"
   ],
   "mixed-quotes-in-labels.mmd": [
-    "FL-NODE-UNCLOSED-BRACKET"
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
   ],
   "no-diagram-type.mmd": [
     "GEN-HEADER-INVALID"
   ],
   "quotes-double-inside-single.mmd": [
     "FL-LABEL-DOUBLE-IN-SINGLE"
+  ],
+  "quotes-in-node-labels.mmd": [
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
   ],
   "unclosed-bracket.mmd": [
     "FL-NODE-UNCLOSED-BRACKET"
@@ -41,7 +44,7 @@
     "FL-END-WITHOUT-SUBGRAPH"
   ],
   "unquoted-label-with-quotes.mmd": [
-    "FL-NODE-UNCLOSED-BRACKET"
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
   ],
   "unclosed-quote-in-label.mmd": [
     "FL-QUOTE-UNCLOSED"
