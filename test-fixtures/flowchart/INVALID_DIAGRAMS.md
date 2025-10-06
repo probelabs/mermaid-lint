@@ -27,15 +27,16 @@ This file contains invalid flowchart test fixtures with:
 16. [Mixed Quotes In Labels](#16-mixed-quotes-in-labels)
 17. [No Diagram Type](#17-no-diagram-type)
 18. [Quotes Double Inside Single](#18-quotes-double-inside-single)
-19. [Typed Shapes All](#19-typed-shapes-all)
-20. [Typed Shapes Unknowns](#20-typed-shapes-unknowns)
-21. [Unclosed Bracket](#21-unclosed-bracket)
-22. [Unclosed Quote In Label](#22-unclosed-quote-in-label)
-23. [Unescaped Quotes In Decision](#23-unescaped-quotes-in-decision)
-24. [Unmatched End](#24-unmatched-end)
-25. [Unquoted Label With Quotes](#25-unquoted-label-with-quotes)
-26. [Unquoted Parens In Labels](#26-unquoted-parens-in-labels)
-27. [Wrong Direction](#27-wrong-direction)
+19. [Quotes In Node Labels](#19-quotes-in-node-labels)
+20. [Typed Shapes All](#20-typed-shapes-all)
+21. [Typed Shapes Unknowns](#21-typed-shapes-unknowns)
+22. [Unclosed Bracket](#22-unclosed-bracket)
+23. [Unclosed Quote In Label](#23-unclosed-quote-in-label)
+24. [Unescaped Quotes In Decision](#24-unescaped-quotes-in-decision)
+25. [Unmatched End](#25-unmatched-end)
+26. [Unquoted Label With Quotes](#26-unquoted-label-with-quotes)
+27. [Unquoted Parens In Labels](#27-unquoted-parens-in-labels)
+28. [Wrong Direction](#28-wrong-direction)
 
 ---
 
@@ -61,15 +62,16 @@ This file contains invalid flowchart test fixtures with:
 | 16 | [mixed quotes in labels](#16-mixed-quotes-in-labels) | INVALID | INVALID | ✅ safe |
 | 17 | [no diagram type](#17-no-diagram-type) | INVALID | INVALID | — |
 | 18 | [quotes double inside single](#18-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 19 | [typed shapes all](#19-typed-shapes-all) | INVALID | INVALID | — |
-| 20 | [typed shapes unknowns](#20-typed-shapes-unknowns) | INVALID | INVALID | — |
-| 21 | [unclosed bracket](#21-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 22 | [unclosed quote in label](#22-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 23 | [unescaped quotes in decision](#23-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 24 | [unmatched end](#24-unmatched-end) | INVALID | INVALID | — |
-| 25 | [unquoted label with quotes](#25-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 26 | [unquoted parens in labels](#26-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
-| 27 | [wrong direction](#27-wrong-direction) | INVALID | INVALID | — |
+| 19 | [quotes in node labels](#19-quotes-in-node-labels) | INVALID | INVALID | ✅ safe |
+| 20 | [typed shapes all](#20-typed-shapes-all) | INVALID | INVALID | — |
+| 21 | [typed shapes unknowns](#21-typed-shapes-unknowns) | INVALID | INVALID | — |
+| 22 | [unclosed bracket](#22-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 23 | [unclosed quote in label](#23-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 24 | [unescaped quotes in decision](#24-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 25 | [unmatched end](#25-unmatched-end) | INVALID | INVALID | — |
+| 26 | [unquoted label with quotes](#26-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 27 | [unquoted parens in labels](#27-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
+| 28 | [wrong direction](#28-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -1231,13 +1233,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
+error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
 at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:39
    2 |     subgraph "Dependency Skip Evaluation"
    3 |         S1[Start Evaluation for Check 'C'] --> S2{For each dependency 'D' of "C"};
-     |                                       ^
+     |                                       ^^^
    4 |         S2 --> S3{Was 'D' skipped?};
-hint: Example: A[Label] --> B
+hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -1420,7 +1422,83 @@ flowchart LR
 
 ---
 
-## 19. Typed Shapes All
+## 19. Quotes In Node Labels
+
+📄 **Source**: [`quotes-in-node-labels.mmd`](./invalid/quotes-in-node-labels.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+graph TD
+    A[Start] --> B[Log "processing items"];
+    B --> C[Execute "command" with args];
+    C --> D[Print "done"];
+    D --> E[End]
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+...A[Start] --> B[Log "processing items"];
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
+at test-fixtures/flowchart/invalid/quotes-in-node-labels.mmd:2:24
+  1 | graph TD
+  2 |     A[Start] --> B[Log "processing items"];
+    |                        ^^^^^^^^^^^^^^^^^^
+  3 |     B --> C[Execute "command" with args];
+hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+graph TD
+    A[Start] --> B["Log &quot;processing items&quot;"];
+    B --> C["Execute &quot;command&quot; with args"];
+    C --> D["Print &quot;done&quot;"];
+    D --> E[End]
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+graph TD
+    A[Start] --> B[Log "processing items"];
+    B --> C[Execute "command" with args];
+    C --> D[Print "done"];
+    D --> E[End]
+```
+</details>
+
+---
+
+## 20. Typed Shapes All
 
 📄 **Source**: [`typed-shapes-all.mmd`](./invalid/typed-shapes-all.mmd)
 
@@ -1535,7 +1613,7 @@ flowchart LR
 
 ---
 
-## 20. Typed Shapes Unknowns
+## 21. Typed Shapes Unknowns
 
 📄 **Source**: [`typed-shapes-unknowns.mmd`](./invalid/typed-shapes-unknowns.mmd)
 
@@ -1630,7 +1708,7 @@ flowchart TD
 
 ---
 
-## 21. Unclosed Bracket
+## 22. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -1700,7 +1778,7 @@ flowchart LR
 
 ---
 
-## 22. Unclosed Quote In Label
+## 23. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -1776,7 +1854,7 @@ flowchart TD
 
 ---
 
-## 23. Unescaped Quotes In Decision
+## 24. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -1852,7 +1930,7 @@ flowchart TD
 
 ---
 
-## 24. Unmatched End
+## 25. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1917,7 +1995,7 @@ flowchart TD
 
 ---
 
-## 25. Unquoted Label With Quotes
+## 26. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -1969,13 +2047,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
+error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
 at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:7:74
    6 |     subgraph "Runtime Execution"
    7 |         E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
-     |                                                                          ^
+     |                                                                          ^^^^^^^^^
    8 |         F --> G{Logger: Is current level DEBUG?};
-hint: Example: A[Label] --> B
+hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -2032,7 +2110,7 @@ flowchart TD
 
 ---
 
-## 26. Unquoted Parens In Labels
+## 27. Unquoted Parens In Labels
 
 📄 **Source**: [`unquoted-parens-in-labels.mmd`](./invalid/unquoted-parens-in-labels.mmd)
 
@@ -2173,7 +2251,7 @@ flowchart TD
 
 ---
 
-## 27. Wrong Direction
+## 28. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
