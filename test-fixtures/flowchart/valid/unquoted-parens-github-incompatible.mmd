@@ -1,0 +1,23 @@
+flowchart TD
+    %% This diagram produces FL-LABEL-PARENS-UNQUOTED warnings.
+    %% Renders with mermaid-cli but FAILS on GitHub.
+    %% Use --fix to wrap labels with parentheses in quotes.
+    subgraph "CommandCheckProvider: Output Processing"
+        A[Execute Command] --> B{Get stdout};
+        B --> C{Attempt JSON.parse(stdout)};
+        C -- Success --> E[Output is Parsed JSON];
+        C -- Fails --> D{Extract JSON from end of stdout};
+        D -- Found --> F{Attempt JSON.parse(extracted)};
+        D -- Not Found --> G[Output is Raw String];
+        F -- Success --> E;
+        F -- Fails --> G;
+        E --> H[Apply transform_js/liquid];
+        G --> H;
+    end
+
+    style A fill:#cde4ff
+    style C fill:#ffe4b2
+    style D fill:#ffe4b2
+    style F fill:#ffe4b2
+    style E fill:#d4edda
+    style G fill:#f8d7da
