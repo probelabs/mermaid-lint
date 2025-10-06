@@ -129,7 +129,75 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     };
   }
 
-  // 2) Missing arrow between nodes on the same line
+  // 2) Special case: detect 'note' keyword (sequence diagram syntax in flowchart)
+  // Check for both the specific token pattern and the error message mentioning AtSign
+  if (err.name === 'MismatchedTokenException') {
+    const msg = err.message || '';
+
+    // Case 1: Direct detection when 'right/left/over of' follows 'note'
+    if (tokType === 'Identifier' && ['right', 'left', 'over', 'of'].includes(found)) {
+      const prevTokens = allLines[Math.max(0, line - 1)]?.slice(0, Math.max(0, column - 1))?.trim()?.split(/\s+/) || [];
+      const lastToken = prevTokens[prevTokens.length - 1];
+      if (lastToken === 'note' || (prevTokens.length >= 2 && prevTokens[prevTokens.length - 2] === 'note')) {
+        return {
+          line,
+          column: Math.max(1, allLines[Math.max(0, line - 1)]?.lastIndexOf('note') + 1 || column),
+          severity: 'error',
+          code: 'FL-NOTE-NOT-SUPPORTED',
+          message: "'note' syntax is not supported in flowchart/graph diagrams.",
+          hint: "Notes are only available in sequence diagrams. Use node labels or HTML comments (%%comment%%) instead.",
+          length: 4
+        };
+      }
+    }
+
+    // Case 2: When parser expects AtSign (after a node ID) but finds 'of'
+    if (msg.includes('AtSign') && found === 'of') {
+      // Check if 'note' appears earlier on this line
+      const lineContent = allLines[Math.max(0, line - 1)] || '';
+      if (lineContent.includes('note')) {
+        const noteIdx = lineContent.indexOf('note');
+        return {
+          line,
+          column: noteIdx + 1,
+          severity: 'error',
+          code: 'FL-NOTE-NOT-SUPPORTED',
+          message: "'note' syntax is not supported in flowchart/graph diagrams.",
+          hint: "Notes are only available in sequence diagrams. Use node labels or HTML comments (%%comment%%) instead.",
+          length: 4
+        };
+      }
+    }
+  }
+
+  // 3) Edge label with quotes instead of pipes
+  if (tokType === 'QuotedString') {
+    // Check context to see if we're in a link rule
+    const context = (err as any)?.context;
+    const inLinkRule = context?.ruleStack?.includes('linkTextInline') ||
+                      context?.ruleStack?.includes('link') ||
+                      false;
+
+    // Also check the line content for link patterns
+    const lineContent = allLines[Math.max(0, line - 1)] || '';
+    const beforeQuote = lineContent.slice(0, Math.max(0, column - 1));
+    const hasLinkBefore = beforeQuote.match(/--\s*$|==\s*$|-\.\s*$|-\.-\s*$|\[\s*$/);
+
+    if (inLinkRule || hasLinkBefore) {
+      const quotedText = found.startsWith('"') ? found.slice(1, -1) : found;
+      return {
+        line,
+        column,
+        severity: 'error',
+        code: 'FL-EDGE-LABEL-QUOTED',
+        message: `Edge labels must use pipe syntax, not quotes.`,
+        hint: `Change -- "${quotedText}" --> to --|${quotedText}|--> or use -- |${quotedText}| -->`,
+        length: len
+      };
+    }
+  }
+
+  // 4) Missing arrow between nodes on the same line
   if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException')) {
     // Common pattern: two nodes on same line without an arrow
     const msg = err.message || '';
