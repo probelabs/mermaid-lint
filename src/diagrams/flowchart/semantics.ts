@@ -534,8 +534,8 @@ class FlowSemanticsVisitor extends BaseVisitor {
           column: t.startColumn ?? 1,
           severity: 'error',
           code: 'FL-LABEL-PARENS-UNQUOTED',
-          message: 'Parentheses inside an unquoted label are not supported by Mermaid. Wrap the label in quotes.',
-          hint: 'Example: A["Calls func(arg)"]'
+          message: 'Parentheses inside an unquoted label are not supported by Mermaid.',
+          hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;'
         });
       }
     }
