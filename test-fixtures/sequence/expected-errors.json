@@ -71,5 +71,8 @@
   ],
   "else-in-par-nested.mmd": [
     "SE-BRANCH-IN-WRONG-BLOCK"
+  ],
+  "note-multiline-missing-colon.mmd": [
+    "SE-NOTE-MALFORMED"
   ]
 }

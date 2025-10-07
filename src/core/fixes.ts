@@ -701,8 +701,12 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     }
     if (is('SE-NOTE-MALFORMED', e)) {
       const lineText = lineTextAt(text, e.line);
+      // Single-line header with inline body
       const mLR = /^(\s*)Note\s+(left|right)\s+of\s+(.+?)\s+(.+)$/.exec(lineText);
       const mOver = /^(\s*)Note\s+over\s+(.+?)\s+(.+)$/.exec(lineText);
+      // Header-only (multiline) without inline body
+      const mLRml = /^(\s*)Note\s+(left|right)\s+of\s+([^:]+?)\s*$/.exec(lineText);
+      const mOverml = /^(\s*)Note\s+over\s+([^:]+?)\s*$/.exec(lineText);
       let insertCol = e.column;
       if (mLR) {
         const indent = mLR[1] || '';
@@ -712,9 +716,30 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         const indent = mOver[1] || '';
         const beforeHeader = `${indent}Note over ${mOver[2]}`;
         insertCol = beforeHeader.length + 1;
+      } else if (mLRml || mOverml) {
+        // Convert multiline block note to single-line note by inlining the body and removing 'end note'
+        const lines = text.split(/\r?\n/);
+        const headerIdx = Math.max(0, e.line - 1);
+        let endIdx = -1;
+        for (let i = headerIdx + 1; i < lines.length; i++) {
+          if (/^\s*end\s+note\s*$/i.test(lines[i] || '')) { endIdx = i; break; }
+        }
+        const indent = (mLRml ? mLRml[1] : mOverml![1]) || '';
+        const beforeHeader = mLRml
+          ? `${indent}Note ${mLRml[2]} of ${mLRml[3].trimEnd()}`
+          : `${indent}Note over ${mOverml![2].trimEnd()}`;
+        const body = endIdx !== -1 ? lines.slice(headerIdx + 1, endIdx).map(s => s.trim()).join(' ') : '';
+        const newHeader = `${beforeHeader} : ${body}`.replace(/\s+$/,'');
+        // Replace header line with inlined single-line note
+        const hdrLine = lineTextAt(text, e.line);
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: hdrLine.length + 1 }, newText: newHeader });
+        if (endIdx !== -1) {
+          // Delete body lines and the 'end note' line
+          edits.push({ start: { line: headerIdx + 2, column: 1 }, end: { line: endIdx + 2, column: 1 }, newText: '' });
+        }
+        continue;
       }
       // Normalize spaces around colon: ensure one space before and one after
-      // If there is already a space at insertCol, replace it
       const idx0 = Math.max(0, insertCol - 1);
       const nextCh = lineText[idx0] || '';
       if (nextCh === ' ') {
