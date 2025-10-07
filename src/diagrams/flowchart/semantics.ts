@@ -467,6 +467,38 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
+  // Curly braces inside quoted label segments can be confusing because
+  // braces also delimit decision/hexagon shapes. We allow them in quoted
+  // text but suggest replacing with HTML entities so renderers remain stable.
+  private checkCurlyInQuoted(contentNodes: CstNode[] | undefined) {
+    if (!contentNodes) return;
+    for (const cn of contentNodes) {
+      const ch: any = (cn as any).children || {};
+      const qs: IToken[] = ch.QuotedString || [];
+      for (const q of qs) {
+        const raw = String(q.image || '');
+        const inner = raw.length >= 2 && (raw.startsWith('"') || raw.startsWith("'")) ? raw.slice(1, -1) : raw;
+        const i = inner.indexOf('{');
+        const j = inner.indexOf('}');
+        if (i >= 0 || j >= 0) {
+          const rel = i >= 0 ? i : j;
+          const col = (q.startColumn ?? 1) + 1 + Math.max(0, rel);
+          this.ctx.errors.push({
+            line: q.startLine ?? 1,
+            column: col,
+            severity: 'warning',
+            code: 'FL-LABEL-CURLY-IN-QUOTED',
+            message: 'Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.',
+            hint: 'Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".',
+            length: 1
+          });
+          break;
+        }
+      }
+    }
+  }
+
+
   private warnParensInUnquoted(contentNodes: CstNode[] | undefined) {
     if (!contentNodes) return;
     for (const cn of contentNodes) {
@@ -534,6 +566,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
       this.checkEmptyContent(openTok, contentNodes.length ? contentNodes : undefined);
       // Mermaid accepts backslash-escaped quotes inside labels; do not flag as error.
       this.checkDoubleInSingleQuoted(contentNodes);
+      this.checkCurlyInQuoted(contentNodes);
       this.checkBackticksInContent(contentNodes);
       this.warnParensInUnquoted(contentNodes);
 
