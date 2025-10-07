@@ -1,5 +1,7 @@
 {
-  "curly-in-quoted.mmd": [],
+  "curly-in-quoted.mmd": [
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
+  ],
   "empty-nodes.mmd": [
     "FL-NODE-EMPTY",
     "FL-NODE-EMPTY",
