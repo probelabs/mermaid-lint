@@ -118,6 +118,16 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
       A["Calls logger.debug(&quot;message&quot;, data)"] --> B
     ```
 
+- FL-LABEL-PARENS-UNQUOTED
+  - When: A label inside a shape is unquoted and contains `(` or `)`.
+  - Message: "Parentheses inside an unquoted label are not supported by Mermaid."
+  - Hint: "Wrap the label in quotes, e.g., A[\"Mark (X)\"] — or replace ( and ) with HTML entities: &#40; and &#41;."
+  - Example (fixed):
+    ```mermaid
+    flowchart TD
+      D[\"Mark Parent as Failed (Fatal)\"]
+    ```
+
 Tip: quoting inside labels
 - When you need double quotes inside a double‑quoted label, use the HTML entity `&quot;` instead of a backslash.
   - Correct: `A["He said &quot;Hi&quot;"]`

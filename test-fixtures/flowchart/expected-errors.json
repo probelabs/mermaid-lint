@@ -1,7 +1,5 @@
 {
-  "curly-in-quoted.mmd": [
-    "FL-LABEL-CURLY-IN-QUOTED"
-  ],
+  "curly-in-quoted.mmd": [],
   "empty-nodes.mmd": [
     "FL-NODE-EMPTY",
     "FL-NODE-EMPTY",
@@ -56,6 +54,7 @@
     "FL-LABEL-QUOTE-IN-UNQUOTED"
   ],
   "unquoted-parens-in-labels.mmd": [
+    "FL-LABEL-PARENS-UNQUOTED",
     "FL-LABEL-PARENS-UNQUOTED"
   ],
   "wrong-direction.mmd": [
