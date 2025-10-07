@@ -124,6 +124,11 @@ const cases = [
     after:  'flowchart LR\n  A(["quoted&quot; text"])\n'
   },
   {
+    name: 'FL-LABEL-CURLY-IN-QUOTED',
+    before: 'flowchart TD\n  A["Append {id}"]\n',
+    after:  'flowchart TD\n  A["Append &#123;id&#125;"]\n'
+  },
+  {
     name: 'FL-LABEL-QUOTE-IN-UNQUOTED (parallelogram)',
     before: 'flowchart LR\n  P[/Calls logger.debug("msg")/]\n',
     after:  'flowchart LR\n  P[/Calls logger.debug(&quot;msg&quot;)/]\n'

@@ -54,5 +54,8 @@
   ],
   "wrong-direction.mmd": [
     "FL-DIR-INVALID"
+  ],
+  "curly-in-quoted.mmd": [
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
   ]
 }
