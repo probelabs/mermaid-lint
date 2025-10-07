@@ -360,7 +360,6 @@ export class MermaidParser extends CstParser {
     // Content inside node shapes - very flexible
     private nodeContent = this.RULE("nodeContent", () => {
         this.OR([
-            { ALT: () => this.CONSUME(tokens.QuotedString) },
             { ALT: () => this.CONSUME(tokens.MultilineText) },
             { 
                 ALT: () => {
@@ -370,8 +369,9 @@ export class MermaidParser extends CstParser {
                             { ALT: () => this.CONSUME(tokens.Identifier) },
                             { ALT: () => this.CONSUME(tokens.Text) },
                             { ALT: () => this.CONSUME(tokens.NumberLiteral) },
-                            { ALT: () => this.CONSUME(tokens.RoundOpen) },
-                            { ALT: () => this.CONSUME(tokens.RoundClose) },
+                            // Allow quoted segments inside otherwise-unquoted labels (e.g., foo 'bar' baz)
+                            { ALT: () => this.CONSUME(tokens.QuotedString) },
+                            
                             // Allow HTML-like tags (e.g., <br/>) inside labels
                             { ALT: () => this.CONSUME(tokens.AngleLess) },
                             { ALT: () => this.CONSUME(tokens.AngleOpen) },

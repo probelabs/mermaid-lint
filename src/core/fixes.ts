@@ -90,6 +90,46 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       // Remove the offending backtick. Keep content otherwise unchanged.
       edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
       continue;
+        }
+
+    if (is('FL-LABEL-CURLY-IN-QUOTED', e)) {
+      // Replace { and } inside the surrounding quoted segment with HTML entities
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      // Find opening quote before caret
+      let qOpenIdx = -1; let qChar: string | null = null;
+      for (let i = caret0; i >= 0; i--) {
+        const ch = lineText[i];
+        if (ch === '"' || ch === "'") {
+          // ignore escaped quotes
+          const bs = i > 0 && lineText[i - 1] === '\\';
+          if (!bs) { qOpenIdx = i; qChar = ch; break; }
+        }
+      }
+      if (qOpenIdx !== -1 && qChar) {
+        // Find matching closing quote
+        let qCloseIdx = -1;
+        for (let j = qOpenIdx + 1; j < lineText.length; j++) {
+          const ch = lineText[j];
+          if (ch === qChar) {
+            const bs = lineText[j - 1] === '\\';
+            if (!bs) { qCloseIdx = j; break; }
+          }
+        }
+        if (qCloseIdx > qOpenIdx) {
+          const inner = lineText.slice(qOpenIdx + 1, qCloseIdx);
+          const replaced = inner.replace(/\\{/g, '&#123;').replace(/\\}/g, '&#125;');
+          if (replaced !== inner) {
+            edits.push({ start: { line: e.line, column: qOpenIdx + 2 }, end: { line: e.line, column: qCloseIdx + 1 }, newText: replaced });
+            continue;
+          }
+      }
+      // Fallback: replace just the current character
+      const ch = lineText[caret0] || '';
+      const rep = ch === '{' ? '&#123;' : ch === '}' ? '&#125;' : ch;
+      if (rep !== ch) edits.push(replaceRange(text, at(e), e.length ?? 1, rep));
+      continue;
+    }
     }
     // Flowchart: fix inner quotes inside a double-quoted label within shapes ([], (), {}, [[ ]], (( ))).
     if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {

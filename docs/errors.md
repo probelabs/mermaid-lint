@@ -16,6 +16,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | FL-LABEL-DOUBLE-IN-SINGLE | Safe | Replace inner `"` with `&quot;` in single-quoted labels. |
 | FL-LABEL-BACKTICK | Safe | Remove backticks `\`` inside labels (keep text). |
+| FL-LABEL-CURLY-IN-QUOTED | Safe | Replace `{`/`}` inside quoted label segments with `&#123;` / `&#125;`. |
 | FL-LABEL-QUOTE-IN-UNQUOTED | Safe | Wrap label content with double quotes and normalize inner quotes to `&quot;` (single-line heuristic). |
 | FL-DIR-MISSING | Safe | Insert default direction ` TD` after header. |
 | FL-DIR-INVALID | None | No change (ambiguous); suggests valid tokens. |
@@ -149,6 +150,12 @@ Tip: quoting inside labels
   - Hint: "Close with ')' or change the opening bracket to '['."
 
 - FL-QUOTE-UNCLOSED
+
+- FL-LABEL-CURLY-IN-QUOTED
+  - When: A quoted segment inside a node label contains `{` or `}` (e.g., A[Append 'tyk-trace-{id}' ...]).
+  - Message: "Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities."
+  - Hint: "Use &#123; and &#125; inside quoted text, e.g., \"tyk-trace-&#123;id&#125;\"."
+
   - When: A node label starts a quote but does not close it.
   - Message: "Unclosed quote in node label."
   - Hint: "Close the quote: A[\"Label\"]"
