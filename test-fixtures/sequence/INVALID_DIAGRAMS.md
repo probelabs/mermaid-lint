@@ -27,11 +27,12 @@ This file contains invalid sequence test fixtures with:
 16. [Else Outside Alt](#16-else-outside-alt)
 17. [Missing Colon](#17-missing-colon)
 18. [Note Malformed](#18-note-malformed)
-19. [Option In Par](#19-option-in-par)
-20. [Option Outside Critical](#20-option-outside-critical)
-21. [Title And Accessibility](#21-title-and-accessibility)
-22. [Unmatched End](#22-unmatched-end)
-23. [Wrong Arrow](#23-wrong-arrow)
+19. [Note Multiline Missing Colon](#19-note-multiline-missing-colon)
+20. [Option In Par](#20-option-in-par)
+21. [Option Outside Critical](#21-option-outside-critical)
+22. [Title And Accessibility](#22-title-and-accessibility)
+23. [Unmatched End](#23-unmatched-end)
+24. [Wrong Arrow](#24-wrong-arrow)
 
 ---
 
@@ -57,11 +58,12 @@ This file contains invalid sequence test fixtures with:
 | 16 | [else outside alt](#16-else-outside-alt) | INVALID | INVALID | — |
 | 17 | [missing colon](#17-missing-colon) | INVALID | INVALID | ✅ safe |
 | 18 | [note malformed](#18-note-malformed) | INVALID | INVALID | ✅ safe |
-| 19 | [option in par](#19-option-in-par) | INVALID | INVALID | — |
-| 20 | [option outside critical](#20-option-outside-critical) | INVALID | INVALID | — |
-| 21 | [title and accessibility](#21-title-and-accessibility) | INVALID | INVALID | — |
-| 22 | [unmatched end](#22-unmatched-end) | INVALID | INVALID | — |
-| 23 | [wrong arrow](#23-wrong-arrow) | INVALID | INVALID | — |
+| 19 | [note multiline missing colon](#19-note-multiline-missing-colon) | INVALID | INVALID | ✅ safe |
+| 20 | [option in par](#20-option-in-par) | INVALID | INVALID | — |
+| 21 | [option outside critical](#21-option-outside-critical) | INVALID | INVALID | — |
+| 22 | [title and accessibility](#22-title-and-accessibility) | INVALID | INVALID | — |
+| 23 | [unmatched end](#23-unmatched-end) | INVALID | INVALID | — |
+| 24 | [wrong arrow](#24-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
@@ -1552,7 +1554,106 @@ sequenceDiagram
 
 ---
 
-## 19. Option In Par
+## 19. Note Multiline Missing Colon
+
+📄 **Source**: [`note-multiline-missing-colon.mmd`](./invalid/note-multiline-missing-colon.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant A
+  participant B
+
+  Note right of A
+    Multi-line note without colon on header
+  end note
+
+  Note over A,B
+    Also missing colon on multi-line header
+  end note
+
+  A->>B: ok
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 5:
+...B  Note right of A    Multi-line note
+---------------------^
+Expecting 'TXT', got 'NEWLINE'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
+at test-fixtures/sequence/invalid/note-multiline-missing-colon.mmd:5:18
+   4 | 
+   5 |   Note right of A
+     |                  ^
+   6 |     Multi-line note without colon on header
+hint: Example: Note right of Alice: Hello
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+sequenceDiagram
+  participant A
+  participant B
+
+  Note right of A : Multi-line note without colon on header
+
+  Note over A,B : Also missing colon on multi-line header
+
+  A->>B: ok
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant A
+  participant B
+
+  Note right of A
+    Multi-line note without colon on header
+  end note
+
+  Note over A,B
+    Also missing colon on multi-line header
+  end note
+
+  A->>B: ok
+
+```
+</details>
+
+---
+
+## 20. Option In Par
 
 📄 **Source**: [`option-in-par.mmd`](./invalid/option-in-par.mmd)
 
@@ -1632,7 +1733,7 @@ sequenceDiagram
 
 ---
 
-## 20. Option Outside Critical
+## 21. Option Outside Critical
 
 📄 **Source**: [`option-outside-critical.mmd`](./invalid/option-outside-critical.mmd)
 
@@ -1707,7 +1808,7 @@ sequenceDiagram
 
 ---
 
-## 21. Title And Accessibility
+## 22. Title And Accessibility
 
 📄 **Source**: [`title-and-accessibility.mmd`](./invalid/title-and-accessibility.mmd)
 
@@ -1801,7 +1902,7 @@ sequenceDiagram
 
 ---
 
-## 22. Unmatched End
+## 23. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -1873,7 +1974,7 @@ sequenceDiagram
 
 ---
 
-## 23. Wrong Arrow
+## 24. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 

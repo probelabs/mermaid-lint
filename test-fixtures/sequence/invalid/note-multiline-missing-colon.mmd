@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant A
+  participant B
+
+  Note right of A
+    Multi-line note without colon on header
+  end note
+
+  Note over A,B
+    Also missing colon on multi-line header
+  end note
+
+  A->>B: ok
