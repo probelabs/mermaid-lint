@@ -262,6 +262,50 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       const msg = e.message || '';
       const lineText = lineTextAt(text, e.line);
       const caret0 = Math.max(0, e.column - 1);
+      // Handle common nested opener pairs with targeted replacements and then stop further fixes for this line
+      // Case: '([' ... '})'  => replace '}' with ']'
+      {
+        const openIdx = lineText.indexOf('([');
+        if (openIdx !== -1) {
+          const badClose = lineText.indexOf('})', openIdx + 2);
+          if (badClose !== -1) {
+            edits.push({ start: { line: e.line, column: badClose + 1 }, end: { line: e.line, column: badClose + 2 }, newText: ']' });
+            patchedLines.add(e.line);
+            continue;
+          }
+        }
+      }
+      // Case: '[(' ... '))'  => replace the second ')' with ']'
+      {
+        const openIdx = lineText.indexOf('[(');
+        if (openIdx !== -1) {
+          const closePair = lineText.indexOf('))', openIdx + 2);
+          if (closePair !== -1) {
+            // second ')' is at closePair + 1 (0-based)
+            edits.push({ start: { line: e.line, column: closePair + 2 }, end: { line: e.line, column: closePair + 3 }, newText: ']' });
+            patchedLines.add(e.line);
+            continue;
+          }
+        }
+      }
+
+      // Robust special-case: if the line opens with '([' and later we see a '})', turn it into '])'
+      {
+        const openPair = lineText.indexOf('([');
+        if (openPair !== -1) {
+          const badClose = lineText.indexOf('})', openPair + 2);
+          if (badClose !== -1) {
+            edits.push({ start: { line: e.line, column: badClose + 1 }, end: { line: e.line, column: badClose + 2 }, newText: ']' });
+            continue;
+          }
+        }
+      }
+
+      // Special-case: mixed pair '([' should close as '])' — if we see '})' at the caret, replace '}' with ']'
+      if (/\(\[/.test(lineText) && lineText.indexOf('})', Math.max(0, caret0 - 1)) !== -1) {
+        edits.push(replaceRange(text, at(e), e.length ?? 1, ']'));
+        continue;
+      }
       if (msg.includes("opened '('") && msg.includes("closed with ']'")) {
         const openIdx = lineText.lastIndexOf('(', caret0);
         if (openIdx !== -1) {
@@ -339,7 +383,40 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         // e.g., "Unclosed '['." or "Unclosed '{' ."
         const msg = e.message || '';
         const bracketMatch = msg.match(/Unclosed '(.+?)'/);
-        const expectedOpener = bracketMatch ? bracketMatch[1] : null;
+        const expectedOpener = bracketMatch ? (bracketMatch[1] || '').trim() : null;
+        // Content-aware fix for double-circle opener '((' under --fix=all: insert a minimal label and the closer.
+        if (expectedOpener === '((') {
+          if (level === 'all') {
+            // Find the last '((' before caret
+            const openIdx = lineText.lastIndexOf('((', caret0);
+            if (openIdx !== -1) {
+              const contentStart = openIdx + 2;
+              // Find the first link/arrow or end-of-line to place the closer before it
+              const picks: number[] = [];
+              const pushIdx2 = (i: number) => { if (i >= 0) picks.push(i); };
+              pushIdx2(lineText.indexOf('-', contentStart));
+              pushIdx2(lineText.indexOf('=', contentStart));
+              pushIdx2(lineText.indexOf('.', contentStart));
+              pushIdx2(lineText.indexOf('|', contentStart));
+              let insertIdx = picks.length ? Math.min(...picks) : lineText.length;
+              // Infer label from node id just before the "((" opener
+              const before = lineText.slice(0, openIdx);
+              const m = before.match(/([A-Za-z0-9_]+)\s*$/);
+              const inferred = m ? m[1] : '';
+              if (inferred) {
+                // Replace from contentStart..insertIdx with '<id>))' (no spaces)
+                edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: insertIdx + 1 }, newText: inferred + '))' });
+                patchedLines.add(e.line);
+                continue;
+              }
+              // If we cannot infer a label from the id, do not guess; skip auto-fix
+              patchedLines.add(e.line);
+              continue;
+            }
+          }
+          // If not --fix=all, skip editing to avoid invalid empty label
+          continue;
+        }
 
         // Map opener to closer
         const bracketMap: Record<string, string> = {
@@ -445,10 +522,35 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         }
         let closer = ']';
         if (opened) closer = opened.close;
-        // Replace the wrong token(s) at caret with the correct closer
-        const avail = lineText.slice(caret0);
-        const replaceLen = Math.min(closer.length, Math.max(1, avail.length));
-        edits.push({ start: { line: e.line, column: caret0 + 1 }, end: { line: e.line, column: caret0 + 1 + replaceLen }, newText: closer });
+        // Prefer a targeted insertion for the common square-bracket case: place ']' just before the link/arrow
+        if (closer === ']') {
+          const openIdxSq = lineText.lastIndexOf('[', caret0);
+          if (openIdxSq !== -1) {
+            // Find first link-like token after the opener
+            const picks: number[] = [];
+            const pushIdx2 = (i: number) => { if (i >= 0) picks.push(i); };
+            pushIdx2(lineText.indexOf('-', openIdxSq + 1));
+            pushIdx2(lineText.indexOf('=', openIdxSq + 1));
+            pushIdx2(lineText.indexOf('.', openIdxSq + 1));
+            pushIdx2(lineText.indexOf('|', openIdxSq + 1));
+            let ins = picks.length ? Math.min(...picks) : lineText.length;
+            // Trim trailing spaces before insertion
+            let tl = ins - 1;
+            while (tl >= 0 && /\s/.test(lineText[tl])) tl--;
+            const startCol2 = (tl + 1) + 1; // after last non-space
+            const endCol2 = ins + 1;        // at insertion point
+            edits.push({ start: { line: e.line, column: startCol2 }, end: { line: e.line, column: endCol2 }, newText: closer });
+          } else {
+            const avail = lineText.slice(caret0);
+            const replaceLen = Math.min(closer.length, Math.max(1, avail.length));
+            edits.push({ start: { line: e.line, column: caret0 + 1 }, end: { line: e.line, column: caret0 + 1 + replaceLen }, newText: closer });
+          }
+        } else {
+          // Generic fallback
+          const avail = lineText.slice(caret0);
+          const replaceLen = Math.min(closer.length, Math.max(1, avail.length));
+          edits.push({ start: { line: e.line, column: caret0 + 1 }, end: { line: e.line, column: caret0 + 1 + replaceLen }, newText: closer });
+        }
       }
       continue;
     }

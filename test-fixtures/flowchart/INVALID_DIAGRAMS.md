@@ -56,7 +56,7 @@ This file contains invalid flowchart test fixtures with:
 | 9 | [interactions linkstyle ranges](#9-interactions-linkstyle-ranges) | INVALID | INVALID | — |
 | 10 | [invalid arrow](#10-invalid-arrow) | INVALID | INVALID | ✅ safe |
 | 11 | [invalid class](#11-invalid-class) | INVALID | INVALID | — |
-| 12 | [invalid node syntax](#12-invalid-node-syntax) | INVALID | INVALID | ✅ safe |
+| 12 | [invalid node syntax](#12-invalid-node-syntax) | INVALID | INVALID | ✅ all |
 | 13 | [invalid subgraph](#13-invalid-subgraph) | INVALID | INVALID | — |
 | 14 | [linkstyle id unknown](#14-linkstyle-id-unknown) | INVALID | INVALID | — |
 | 15 | [missing arrow](#15-missing-arrow) | INVALID | INVALID | ✅ all |
@@ -446,7 +446,7 @@ at test-fixtures/flowchart/invalid/interactions-click-call-missing-fn.mmd:3:11
   3 |   click A call "Tip only"
     |           ^
   4 | 
-hint: Example: click A call doThing() "Tooltip"
+hint: Example: click A call doThing()
 
 error[FL-CLICK-CALL-EXTRA-TEXT]: Tooltip/text after 'call()' is not supported by Mermaid CLI.
 at test-fixtures/flowchart/invalid/interactions-click-call-missing-fn.mmd:3:16
@@ -662,21 +662,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-LINKSTYLE-INDEX-OUT-OF-RANGE]: linkStyle index 5 is out of range (0..1).
-at test-fixtures/flowchart/invalid/interactions-linkstyle-multi.mmd:5:19
-  4 |   %% indices include duplicate and out-of-range; styles split across lines
+error[FL-LINKSTYLE-MULTILINE]: 'linkStyle' styles must be on the same line as the indices.
+at test-fixtures/flowchart/invalid/interactions-linkstyle-multi.mmd:6:5
   5 |   linkStyle 0, 0, 5
-    |                   ^
   6 |     stroke:#f00,
-hint: Use an index between 0 and 1 or add more links first.
-
-warning[FL-LINKSTYLE-DUPLICATE-INDEX]: Duplicate linkStyle index 0.
-at test-fixtures/flowchart/invalid/interactions-linkstyle-multi.mmd:5:13
-  4 |   %% indices include duplicate and out-of-range; styles split across lines
-  5 |   linkStyle 0, 0, 5
-    |             ^
-  6 |     stroke:#f00,
-hint: Remove duplicates.
+    |     ^
+  7 |     stroke-width:2px
+hint: Example: linkStyle 0,1 stroke:#f00,stroke-width:2px
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -745,12 +737,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error: Expecting token of type --> Identifier <-- but found --> ':' <--
+error[FL-LINKSTYLE-RANGE-NOT-SUPPORTED]: Ranges in 'linkStyle' indices are not supported. Use comma-separated indices.
 at test-fixtures/flowchart/invalid/interactions-linkstyle-ranges.mmd:4:14
   3 |   B --> C[End]
   4 |   linkStyle 0:1 stroke:#f00,stroke-width:2px
     |              ^
-  5 |
+  5 | 
+hint: Example: linkStyle 0,1 stroke:#f00,stroke-width:2px
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -959,15 +952,15 @@ hint: Example: A((Circle))
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-flowchart TD
-    A(( ))--> B
-    B --> C
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+```mermaid
+flowchart TD
+    A((A))--> B
+    B --> C
+```
 
 <details>
 <summary>View source code</summary>
@@ -1804,7 +1797,7 @@ at test-fixtures/flowchart/invalid/typed-shapes-unknowns.mmd:2:14
   2 |   A@{ shape: rhombus, label: "X" }
     |              ^
   3 |   B@{ shape: rect, padding: "ten" }
-hint: Use one of: rect, round, stadium, subroutine, circle, cylinder, diamond, trapezoid, parallelogram, hexagon, lean-l, lean-r, icon, image
+hint: Use one of: rect, rounded, stadium, subroutine, circle, cylinder, diamond, trapezoid, parallelogram, hexagon, "lean-l", "lean-r", icon, image
 
 warning[FL-TYPED-NUMERIC-EXPECTED]: 'padding' expects a number (optionally with px).
 at test-fixtures/flowchart/invalid/typed-shapes-unknowns.mmd:3:29
@@ -1905,7 +1898,7 @@ hint: Example: A[Label] --> B
 
 ```mermaid
 flowchart LR
-    A[Start ]--> B
+    A[Start]--> B
     B --> C
 ```
 
