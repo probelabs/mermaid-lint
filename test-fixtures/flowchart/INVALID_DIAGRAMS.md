@@ -56,7 +56,7 @@ This file contains invalid flowchart test fixtures with:
 | 9 | [interactions linkstyle ranges](#9-interactions-linkstyle-ranges) | INVALID | INVALID | — |
 | 10 | [invalid arrow](#10-invalid-arrow) | INVALID | INVALID | ✅ safe |
 | 11 | [invalid class](#11-invalid-class) | INVALID | INVALID | — |
-| 12 | [invalid node syntax](#12-invalid-node-syntax) | INVALID | INVALID | — |
+| 12 | [invalid node syntax](#12-invalid-node-syntax) | INVALID | INVALID | ✅ all |
 | 13 | [invalid subgraph](#13-invalid-subgraph) | INVALID | INVALID | — |
 | 14 | [linkstyle id unknown](#14-linkstyle-id-unknown) | INVALID | INVALID | — |
 | 15 | [missing arrow](#15-missing-arrow) | INVALID | INVALID | ✅ all |
@@ -956,7 +956,11 @@ No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+```mermaid
+flowchart TD
+    A((A))--> B
+    B --> C
+```
 
 <details>
 <summary>View source code</summary>
