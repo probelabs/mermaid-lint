@@ -1,4 +1,7 @@
 {
+  "curly-in-quoted.mmd": [
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
+  ],
   "empty-nodes.mmd": [
     "FL-NODE-EMPTY",
     "FL-NODE-EMPTY",
@@ -40,22 +43,23 @@
   "unclosed-bracket.mmd": [
     "FL-NODE-UNCLOSED-BRACKET"
   ],
-  "unmatched-end.mmd": [
-    "FL-END-WITHOUT-SUBGRAPH"
-  ],
-  "unquoted-label-with-quotes.mmd": [
-    "FL-LABEL-QUOTE-IN-UNQUOTED"
-  ],
   "unclosed-quote-in-label.mmd": [
     "FL-QUOTE-UNCLOSED"
   ],
   "unescaped-quotes-in-decision.mmd": [
     "FL-LABEL-DOUBLE-IN-DOUBLE"
   ],
+  "unmatched-end.mmd": [
+    "FL-END-WITHOUT-SUBGRAPH"
+  ],
+  "unquoted-label-with-quotes.mmd": [
+    "FL-LABEL-QUOTE-IN-UNQUOTED"
+  ],
+  "unquoted-parens-in-labels.mmd": [
+    "FL-LABEL-PARENS-UNQUOTED",
+    "FL-LABEL-PARENS-UNQUOTED"
+  ],
   "wrong-direction.mmd": [
     "FL-DIR-INVALID"
-  ],
-  "curly-in-quoted.mmd": [
-    "FL-LABEL-QUOTE-IN-UNQUOTED"
   ]
 }

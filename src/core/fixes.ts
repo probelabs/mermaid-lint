@@ -427,6 +427,15 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
                 patchedLines.add(e.line);
                 continue;
               }
+              // If there are parentheses inside an unquoted label, encode them as HTML entities
+              if (innerSeg.includes('(') || innerSeg.includes(')')) {
+                const replaced = innerSeg.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
+                if (replaced !== innerSeg) {
+                  edits.push({ start: { line: e.line, column: opened.idx + opened.len + 1 }, end: { line: e.line, column: closerIdx + 1 }, newText: replaced });
+                  patchedLines.add(e.line);
+                  continue;
+                }
+              }
             }
         }
 
@@ -588,10 +597,12 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
                 // This is a parallelogram/trapezoid shape - do not wrap in quotes
                 break;
               }
-              // Wrap the content in quotes
-              const newInner = '"' + inner + '"';
-              edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: newInner });
-              patchedLines.add(e.line);
+              // Encode parentheses only
+              const replaced = inner.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
+              if (replaced !== inner) {
+                edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: replaced });
+                patchedLines.add(e.line);
+              }
               break;
             }
             searchStart = openIdx + 1;

@@ -2315,21 +2315,21 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 ### maid Result: INVALID
 
 ```
-error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid. Wrap the label in quotes.
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:7:35
    6 |         A[Execute Command] --> B{Get stdout};
    7 |         B --> C{Attempt JSON.parse(stdout)};
      |                                   ^
    8 |         C -- Success --> E[Output is Parsed JSON];
-hint: Example: A["Calls func(arg)"]
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
 
-error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid. Wrap the label in quotes.
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:10:44
    9 |         C -- Fails --> D{Extract JSON from end of stdout};
   10 |         D -- Found --> F{Attempt JSON.parse(extracted)};
      |                                            ^
   11 |         D -- Not Found --> G[Output is Raw String];
-hint: Example: A["Calls func(arg)"]
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
 ```
 
 ### maid Auto-fix (`--fix`) Preview
@@ -2341,10 +2341,10 @@ flowchart TD
     %% Use --fix to wrap labels with parentheses in quotes.
     subgraph "CommandCheckProvider: Output Processing"
         A[Execute Command] --> B{Get stdout};
-        B --> C{"Attempt JSON.parse(stdout)"};
+        B --> C{Attempt JSON.parse&#40;stdout&#41;};
         C -- Success --> E[Output is Parsed JSON];
         C -- Fails --> D{Extract JSON from end of stdout};
-        D -- Found --> F{"Attempt JSON.parse(extracted)"};
+        D -- Found --> F{Attempt JSON.parse&#40;extracted&#41;};
         D -- Not Found --> G[Output is Raw String];
         F -- Success --> E;
         F -- Fails --> G;

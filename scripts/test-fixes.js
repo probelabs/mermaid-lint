@@ -124,6 +124,11 @@ const cases = [
     after:  'flowchart LR\n  A(["quoted&quot; text"])\n'
   },
   {
+    name: 'FL-LABEL-PARENS-UNQUOTED (encode parens)',
+    before: 'flowchart TD\n  D[Mark Parent as Failed (Fatal)]\n',
+    after:  'flowchart TD\n  D[Mark Parent as Failed &#40;Fatal&#41;]\n'
+  },
+  {
     name: 'FL-LABEL-CURLY-IN-QUOTED',
     before: 'flowchart TD\n  A["Append {id}"]\n',
     after:  'flowchart TD\n  A["Append &#123;id&#125;"]\n'
