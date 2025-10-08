@@ -94,6 +94,12 @@ const cases = [
     afterLevel: 'all', // we treat as insertion; still valid
   },
   {
+    name: 'FL-NODE-UNCLOSED-BRACKET (double-circle all)',
+    before: 'flowchart TD\nA(( --> B\n',
+    after:  'flowchart TD\nA((A))--> B\n',
+    afterLevel: 'all'
+  },
+  {
     name: 'FL-NODE-EMPTY (strip brackets)',
     before: 'flowchart TD\n    A["\"] --> B[" "]\n    B --> C[]\n',
     after:  'flowchart TD\n    A --> B\n    B --> C\n'

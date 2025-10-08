@@ -142,6 +142,10 @@ Tip: quoting inside labels
   - When: A node shape opens but is not properly closed (e.g., `[`, `(`, `{`, `[[`, `((`).
   - Message: Clarifies which bracket is unclosed and what to add.
   - Hint: Example-specific (e.g., `A[Label] --> B`).
+  - Auto-fix:
+    - Safe: fixes square/curly/most bracket cases conservatively (no trailing space inside label).
+    - All: also fixes double-circle `((` by inserting the node id as the label (e.g., `A((A))`) and the closer. If a label cannot be inferred from the id, no fix is applied.
+
 
 - FL-NODE-MIXED-BRACKETS
   - When: Opening and closing brackets don't match (e.g., `(text]`).
@@ -467,6 +471,17 @@ Severity note: By default, quoting issues in participant/actor names are warning
   - When: `linkStyle` references an edge id that does not exist.
   - Message: "Unknown edge id 'X' in linkStyle statement."
   - Hint: "Define the edge id using 'e1@-->' before styling it, or use numeric indices."
+
+- FL-LINKSTYLE-MULTILINE
+  - When: Style key:value pairs are placed on the next line after the `linkStyle` indices.
+  - Message: "'linkStyle' styles must be on the same line as the indices."
+  - Hint: "Example: linkStyle 0,1 stroke:#f00,stroke-width:2px"
+
+- FL-LINKSTYLE-RANGE-NOT-SUPPORTED
+  - When: A range like `0:3` is used in the list of `linkStyle` indices.
+  - Message: "Ranges in 'linkStyle' indices are not supported. Use comma-separated indices."
+  - Hint: "Example: linkStyle 0,1 stroke:#f00,stroke-width:2px"
+
 
 - FL-EDGE-ATTR-ID-UNKNOWN
   - When: An edge attribute statement `e1@{ ... }` references a non-existent edge id.

@@ -240,7 +240,8 @@ export class MermaidParser extends CstParser {
     private linkStyleStatement = this.RULE('linkStyleStatement', () => {
         this.CONSUME(tokens.LinkStyleKeyword);
         this.SUBRULE(this.linkStyleIndexList);
-        this.OPTION1(() => this.CONSUME1(tokens.Newline));
+        // Mermaid CLI expects the style key:value pairs on the SAME line as the indices.
+        // Do not allow a newline between the index list and the first style pair
         this.SUBRULE(this.linkStylePairs);
         this.OPTION2(() => this.CONSUME2(tokens.Newline));
     });

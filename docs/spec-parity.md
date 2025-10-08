@@ -84,3 +84,11 @@ Next actions snapshot
   - Class: endpoint label/cardinality placement on multi‑bend edges; smarter overlap avoidance.
   - State: minor alignment tweaks under LR/RL; divider visuals where titles overlap.
   - Pie: add fixtures around internal quotes; keep parity with mermaid‑cli behavior.
+
+Known Compatibility Gaps vs mermaid‑cli
+
+- Flowchart — linkStyle multiline styles
+  - Behavior: Maid currently accepts `linkStyle` style pairs split across multiple lines (e.g., indices on one line, then styles on the next lines). Current mermaid‑cli rejects this (parse error after indices when a newline precedes styles).
+  - Example fixture: `test-fixtures/flowchart/invalid/interactions-linkstyle-multi.mmd` — if the indices were all valid, Maid would accept the multiline style whereas mermaid‑cli would still fail.
+  - Action: Align with mermaid‑cli (reject styles after a newline) or gate via an explicit option; keep ranges like `0:3` invalid.
+

@@ -1,4 +1,16 @@
 {
   "diagramType": "flowchart",
-  "items": []
+  "items": [
+    {
+      "id": "flowchart-linkstyle-multiline",
+      "title": "linkStyle styles split across multiple lines",
+      "status": "maid-accepts-cli-rejects",
+      "example": "test-fixtures/flowchart/invalid/interactions-linkstyle-multi.mmd",
+      "summary": "Maid accepts multiline style declarations (indices on one line; styles on following lines). Current mermaid-cli rejects when styles start on a new line.",
+      "maid": "Parses indices, then style pairs across subsequent lines; validates indices (duplicates/out-of-range).",
+      "mermaid": "Parse error after indices when a newline precedes styles; expects styles on the same line as indices.",
+      "proposedAction": "Align with mermaid-cli (reject multiline) or gate via an option; keep ranges like 0:3 invalid.",
+      "severity": "medium"
+    }
+  ]
 }

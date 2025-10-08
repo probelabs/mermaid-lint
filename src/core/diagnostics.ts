@@ -170,7 +170,33 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     }
   }
 
-  // 3) Edge label with quotes instead of pipes
+  
+  // linkStyle: multiline styles not supported by mermaid-cli (styles must follow indices on the same line)
+  if (isInRule(err, 'linkStylePairs') && tokType === 'Newline') {
+    // Shift caret to next line first non-space for clearer caret
+    const nextLine = Math.min(allLines.length, line + 1);
+    const nxt = allLines[nextLine - 1] || '';
+    const first = (nxt.match(/\S/) || { index: 0 }).index || 0;
+    return {
+      line: nextLine,
+      column: Math.max(1, first + 1),
+      severity: 'error',
+      code: 'FL-LINKSTYLE-MULTILINE',
+      message: "'linkStyle' styles must be on the same line as the indices.",
+      hint: 'Example: linkStyle 0,1 stroke:#f00,stroke-width:2px',
+      length: 1
+    };
+  }
+  // linkStyle: index ranges like 0:3 not supported
+  if ((isInRule(err, 'linkStyleIndexList') || isInRule(err, 'linkStyleStatement')) && tokType === 'Colon') {
+    return {
+      line, column, severity: 'error', code: 'FL-LINKSTYLE-RANGE-NOT-SUPPORTED',
+      message: "Ranges in 'linkStyle' indices are not supported. Use comma-separated indices.",
+      hint: 'Example: linkStyle 0,1 stroke:#f00,stroke-width:2px',
+      length: len
+    };
+  }
+// 3) Edge label with quotes instead of pipes
   if (tokType === 'QuotedString') {
     // Check context to see if we're in a link rule
     const context = (err as any)?.context;
