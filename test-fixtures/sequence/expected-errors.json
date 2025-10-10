@@ -74,5 +74,8 @@
   ],
   "note-multiline-missing-colon.mmd": [
     "SE-NOTE-MALFORMED"
+  ],
+  "box-with-messages-and-alt.mmd": [
+    "SE-BOX-EMPTY"
   ]
 }

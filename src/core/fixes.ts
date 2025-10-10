@@ -902,17 +902,34 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('SE-BOX-EMPTY', e)) {
-      // Convert empty box to rect
-      const lines = text.split(/\r?\n/);
-      const boxIdx = Math.max(0, e.line - 1);
-      const boxLine = lines[boxIdx] || '';
-      // Extract the label from box "Label"
-      const labelMatch = /^\s*box\s+(.+)$/.exec(boxLine);
-      if (labelMatch) {
-        const indent = boxLine.match(/^\s*/)?.[0] || '';
-        // Convert to rect with a light color
-        const newLine = `${indent}rect rgb(240, 240, 255)`;
-        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: boxLine.length + 1 }, newText: newLine });
+      if (level === 'all') {
+        // Convert empty box to rect, but only when doing so is likely to produce
+        // a valid diagram. If the box body contains activation markers (+/-)
+        // on messages, skip the transform (previews require fixed output to be valid).
+        const lines = text.split(/\r?\n/);
+        const boxIdx = Math.max(0, e.line - 1);
+        const boxLine = lines[boxIdx] || '';
+        // Find aligned 'end' for this box
+        const openIndent = (boxLine.match(/^(\s*)/)?.[1] || '').length;
+        let endIdx = -1;
+        for (let i = boxIdx + 1; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          const ind = (raw.match(/^(\s*)/)?.[1] || '').length;
+          if (/^\s*end\s*$/.test(raw) && ind <= openIndent) { endIdx = i; break; }
+        }
+        let hasMsgWithAct = false;
+        if (endIdx !== -1) {
+          const body = lines.slice(boxIdx + 1, endIdx).map(s => (s || '').trim());
+          hasMsgWithAct = body.some(s => /->/.test(s) && /[+-]/.test(s));
+        }
+        if (!hasMsgWithAct) {
+          const labelMatch = /^\s*box\s+(.+)$/.exec(boxLine);
+          if (labelMatch) {
+            const indent = boxLine.match(/^\s*/)?.[0] || '';
+            const newLine = `${indent}rect rgb(240, 240, 255)`;
+            edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: boxLine.length + 1 }, newText: newLine });
+          }
+        }
       }
       continue;
     }

@@ -16,23 +16,24 @@ This file contains invalid sequence test fixtures with:
 5. [Autonumber Malformed](#5-autonumber-malformed)
 6. [Box Empty](#6-box-empty)
 7. [Box Unclosed](#7-box-unclosed)
-8. [Box With Messages](#8-box-with-messages)
-9. [Box With Notes](#9-box-with-notes)
-10. [Create Malformed](#10-create-malformed)
-11. [Create Missing Name](#11-create-missing-name)
-12. [Critical Else](#12-critical-else)
-13. [Destroy Malformed](#13-destroy-malformed)
-14. [Details And Properties](#14-details-and-properties)
-15. [Else In Par Nested](#15-else-in-par-nested)
-16. [Else Outside Alt](#16-else-outside-alt)
-17. [Missing Colon](#17-missing-colon)
-18. [Note Malformed](#18-note-malformed)
-19. [Note Multiline Missing Colon](#19-note-multiline-missing-colon)
-20. [Option In Par](#20-option-in-par)
-21. [Option Outside Critical](#21-option-outside-critical)
-22. [Title And Accessibility](#22-title-and-accessibility)
-23. [Unmatched End](#23-unmatched-end)
-24. [Wrong Arrow](#24-wrong-arrow)
+8. [Box With Messages And Alt](#8-box-with-messages-and-alt)
+9. [Box With Messages](#9-box-with-messages)
+10. [Box With Notes](#10-box-with-notes)
+11. [Create Malformed](#11-create-malformed)
+12. [Create Missing Name](#12-create-missing-name)
+13. [Critical Else](#13-critical-else)
+14. [Destroy Malformed](#14-destroy-malformed)
+15. [Details And Properties](#15-details-and-properties)
+16. [Else In Par Nested](#16-else-in-par-nested)
+17. [Else Outside Alt](#17-else-outside-alt)
+18. [Missing Colon](#18-missing-colon)
+19. [Note Malformed](#19-note-malformed)
+20. [Note Multiline Missing Colon](#20-note-multiline-missing-colon)
+21. [Option In Par](#21-option-in-par)
+22. [Option Outside Critical](#22-option-outside-critical)
+23. [Title And Accessibility](#23-title-and-accessibility)
+24. [Unmatched End](#24-unmatched-end)
+25. [Wrong Arrow](#25-wrong-arrow)
 
 ---
 
@@ -45,25 +46,26 @@ This file contains invalid sequence test fixtures with:
 | 3 | [and outside par](#3-and-outside-par) | INVALID | INVALID | — |
 | 4 | [autonumber extraneous](#4-autonumber-extraneous) | INVALID | INVALID | ✅ safe |
 | 5 | [autonumber malformed](#5-autonumber-malformed) | INVALID | INVALID | ✅ all |
-| 6 | [box empty](#6-box-empty) | INVALID | INVALID | ✅ safe |
+| 6 | [box empty](#6-box-empty) | INVALID | INVALID | — |
 | 7 | [box unclosed](#7-box-unclosed) | INVALID | INVALID | ✅ safe |
-| 8 | [box with messages](#8-box-with-messages) | INVALID | INVALID | ✅ safe |
-| 9 | [box with notes](#9-box-with-notes) | INVALID | INVALID | ✅ safe |
-| 10 | [create malformed](#10-create-malformed) | INVALID | INVALID | — |
-| 11 | [create missing name](#11-create-missing-name) | INVALID | INVALID | — |
-| 12 | [critical else](#12-critical-else) | INVALID | INVALID | ✅ safe |
-| 13 | [destroy malformed](#13-destroy-malformed) | INVALID | INVALID | — |
-| 14 | [details and properties](#14-details-and-properties) | INVALID | INVALID | — |
-| 15 | [else in par nested](#15-else-in-par-nested) | INVALID | INVALID | — |
-| 16 | [else outside alt](#16-else-outside-alt) | INVALID | INVALID | — |
-| 17 | [missing colon](#17-missing-colon) | INVALID | INVALID | ✅ safe |
-| 18 | [note malformed](#18-note-malformed) | INVALID | INVALID | ✅ safe |
-| 19 | [note multiline missing colon](#19-note-multiline-missing-colon) | INVALID | INVALID | ✅ safe |
-| 20 | [option in par](#20-option-in-par) | INVALID | INVALID | — |
-| 21 | [option outside critical](#21-option-outside-critical) | INVALID | INVALID | — |
-| 22 | [title and accessibility](#22-title-and-accessibility) | INVALID | INVALID | — |
-| 23 | [unmatched end](#23-unmatched-end) | INVALID | INVALID | — |
-| 24 | [wrong arrow](#24-wrong-arrow) | INVALID | INVALID | — |
+| 8 | [box with messages and alt](#8-box-with-messages-and-alt) | INVALID | INVALID | — |
+| 9 | [box with messages](#9-box-with-messages) | INVALID | INVALID | ✅ safe |
+| 10 | [box with notes](#10-box-with-notes) | INVALID | INVALID | ✅ safe |
+| 11 | [create malformed](#11-create-malformed) | INVALID | INVALID | — |
+| 12 | [create missing name](#12-create-missing-name) | INVALID | INVALID | — |
+| 13 | [critical else](#13-critical-else) | INVALID | INVALID | ✅ safe |
+| 14 | [destroy malformed](#14-destroy-malformed) | INVALID | INVALID | — |
+| 15 | [details and properties](#15-details-and-properties) | INVALID | INVALID | — |
+| 16 | [else in par nested](#16-else-in-par-nested) | INVALID | INVALID | — |
+| 17 | [else outside alt](#17-else-outside-alt) | INVALID | INVALID | — |
+| 18 | [missing colon](#18-missing-colon) | INVALID | INVALID | ✅ safe |
+| 19 | [note malformed](#19-note-malformed) | INVALID | INVALID | ✅ safe |
+| 20 | [note multiline missing colon](#20-note-multiline-missing-colon) | INVALID | INVALID | ✅ safe |
+| 21 | [option in par](#21-option-in-par) | INVALID | INVALID | — |
+| 22 | [option outside critical](#22-option-outside-critical) | INVALID | INVALID | — |
+| 23 | [title and accessibility](#23-title-and-accessibility) | INVALID | INVALID | — |
+| 24 | [unmatched end](#24-unmatched-end) | INVALID | INVALID | — |
+| 25 | [wrong arrow](#25-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
@@ -637,20 +639,11 @@ hint: Replace 'box' with 'rect' if you want to group messages:
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-sequenceDiagram
-    participant A
-    participant B
-    rect rgb(240, 240, 255)
-        A->>B: message
-        Note over A: note
-    end
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -769,7 +762,130 @@ sequenceDiagram
 
 ---
 
-## 8. Box With Messages
+## 8. Box With Messages And Alt
+
+📄 **Source**: [`box-with-messages-and-alt.mmd`](./invalid/box-with-messages-and-alt.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant Gateway
+  participant loadBundle
+  participant Filesystem
+  participant loadBundleManifest
+
+  box "New Flow (Fixed)"
+    Gateway->>+loadBundle: Load API with existing bundle
+    loadBundle->>loadBundleWithFs: (using afero.Fs)
+    loadBundleWithFs->>Filesystem: Check if bundle exists (bundleFs.Stat)
+    Filesystem-->>loadBundleWithFs: Exists
+    loadBundleWithFs->>+loadBundleManifest: Load manifest (skipVerification=false)
+    Note right of loadBundleManifest: Signature is ALWAYS checked!
+    alt Manifest is Invalid
+      loadBundleManifest-->>-loadBundleWithFs: Return verification error
+    else Manifest is Valid
+      loadBundleManifest-->>-loadBundleWithFs: Manifest loaded
+    end
+  end
+
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 8:
+...w Flow (Fixed)"    Gateway->>+loadBundl
+----------------------^
+Expecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'ACTOR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[SE-BOX-EMPTY]: Box block has no participant/actor declarations. Use 'rect' to group messages visually.
+at test-fixtures/sequence/invalid/box-with-messages-and-alt.mmd:7:1
+   6 | 
+   7 |   box "New Flow (Fixed)"
+     | ^^^
+   8 |     Gateway->>+loadBundle: Load API with existing bundle
+hint: Replace 'box' with 'rect' if you want to group messages:
+  rect rgb(240, 240, 255)
+    A->>B: Message
+    Note over A: Info
+  end
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant Gateway
+  participant loadBundle
+  participant Filesystem
+  participant loadBundleManifest
+
+  box "New Flow (Fixed)"
+    Gateway->>+loadBundle: Load API with existing bundle
+    loadBundle->>loadBundleWithFs: (using afero.Fs)
+    loadBundleWithFs->>Filesystem: Check if bundle exists (bundleFs.Stat)
+    Filesystem-->>loadBundleWithFs: Exists
+    loadBundleWithFs->>+loadBundleManifest: Load manifest (skipVerification=false)
+    Note right of loadBundleManifest: Signature is ALWAYS checked!
+    alt Manifest is Invalid
+      loadBundleManifest-->>-loadBundleWithFs: Return verification error
+    else Manifest is Valid
+      loadBundleManifest-->>-loadBundleWithFs: Manifest loaded
+    end
+  end
+
+
+```
+</details>
+
+---
+
+## 9. Box With Messages
 
 📄 **Source**: [`box-with-messages.mmd`](./invalid/box-with-messages.mmd)
 
@@ -877,7 +993,7 @@ sequenceDiagram
 
 ---
 
-## 9. Box With Notes
+## 10. Box With Notes
 
 📄 **Source**: [`box-with-notes.mmd`](./invalid/box-with-notes.mmd)
 
@@ -985,7 +1101,7 @@ sequenceDiagram
 
 ---
 
-## 10. Create Malformed
+## 11. Create Malformed
 
 📄 **Source**: [`create-malformed.mmd`](./invalid/create-malformed.mmd)
 
@@ -1076,7 +1192,7 @@ sequenceDiagram
 
 ---
 
-## 11. Create Missing Name
+## 12. Create Missing Name
 
 📄 **Source**: [`create-missing-name.mmd`](./invalid/create-missing-name.mmd)
 
@@ -1162,7 +1278,7 @@ sequenceDiagram
 
 ---
 
-## 12. Critical Else
+## 13. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -1274,7 +1390,7 @@ sequenceDiagram
 
 ---
 
-## 13. Destroy Malformed
+## 14. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -1363,7 +1479,7 @@ sequenceDiagram
 
 ---
 
-## 14. Details And Properties
+## 15. Details And Properties
 
 📄 **Source**: [`details-and-properties.mmd`](./invalid/details-and-properties.mmd)
 
@@ -1474,7 +1590,7 @@ sequenceDiagram
 
 ---
 
-## 15. Else In Par Nested
+## 16. Else In Par Nested
 
 📄 **Source**: [`else-in-par-nested.mmd`](./invalid/else-in-par-nested.mmd)
 
@@ -1579,7 +1695,7 @@ sequenceDiagram
 
 ---
 
-## 16. Else Outside Alt
+## 17. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -1668,7 +1784,7 @@ sequenceDiagram
 
 ---
 
-## 17. Missing Colon
+## 18. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -1764,7 +1880,7 @@ sequenceDiagram
 
 ---
 
-## 18. Note Malformed
+## 19. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -1860,7 +1976,7 @@ sequenceDiagram
 
 ---
 
-## 19. Note Multiline Missing Colon
+## 20. Note Multiline Missing Colon
 
 📄 **Source**: [`note-multiline-missing-colon.mmd`](./invalid/note-multiline-missing-colon.mmd)
 
@@ -1976,7 +2092,7 @@ sequenceDiagram
 
 ---
 
-## 20. Option In Par
+## 21. Option In Par
 
 📄 **Source**: [`option-in-par.mmd`](./invalid/option-in-par.mmd)
 
@@ -2073,7 +2189,7 @@ sequenceDiagram
 
 ---
 
-## 21. Option Outside Critical
+## 22. Option Outside Critical
 
 📄 **Source**: [`option-outside-critical.mmd`](./invalid/option-outside-critical.mmd)
 
@@ -2165,7 +2281,7 @@ sequenceDiagram
 
 ---
 
-## 22. Title And Accessibility
+## 23. Title And Accessibility
 
 📄 **Source**: [`title-and-accessibility.mmd`](./invalid/title-and-accessibility.mmd)
 
@@ -2276,7 +2392,7 @@ sequenceDiagram
 
 ---
 
-## 23. Unmatched End
+## 24. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -2365,7 +2481,7 @@ sequenceDiagram
 
 ---
 
-## 24. Wrong Arrow
+## 25. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 
