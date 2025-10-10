@@ -1,0 +1,16 @@
+classDiagram
+    interface Animal {
+        +String name
+        +makeSound()
+    }
+
+    class Dog {
+        +bark()
+    }
+
+    class Cat {
+        +meow()
+    }
+
+    Dog --|> Animal
+    Cat --|> Animal

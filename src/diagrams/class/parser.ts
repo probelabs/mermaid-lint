@@ -15,8 +15,11 @@ export class ClassParser extends CstParser {
 
   private statement = this.RULE('statement', () => {
     this.OR([
+      { ALT: () => this.SUBRULE(this.titleStmt) },
       { ALT: () => this.SUBRULE(this.directionStmt) },
+      { ALT: () => this.SUBRULE(this.namespaceStmt) },
       { ALT: () => this.SUBRULE(this.classLine) },
+      { ALT: () => this.SUBRULE(this.interfaceLine) },
       { ALT: () => this.SUBRULE(this.relationStmt) },
       { ALT: () => this.SUBRULE(this.noteStmt) },
       { ALT: () => this.SUBRULE(this.memberAssignStmt) },
@@ -28,6 +31,46 @@ export class ClassParser extends CstParser {
     this.CONSUME(t.DirectionKw);
     this.CONSUME(t.Direction);
     this.OPTION(() => this.CONSUME(t.Newline));
+  });
+
+  private titleStmt = this.RULE('titleStmt', () => {
+    this.CONSUME(t.TitleKw);
+    // Title can be a quoted string or multiple identifiers/numbers (space-separated text)
+    this.OR([
+      { ALT: () => this.CONSUME(t.QuotedString) },
+      { ALT: () => {
+          // Match one or more identifiers/numbers for multi-word titles
+          this.AT_LEAST_ONE(() => {
+            this.OR2([
+              { ALT: () => this.CONSUME(t.Identifier) },
+              { ALT: () => this.CONSUME(t.NumberLiteral) },
+            ]);
+          });
+        }
+      }
+    ]);
+    this.OPTION(() => this.CONSUME(t.Newline));
+  });
+
+  private namespaceStmt = this.RULE('namespaceStmt', () => {
+    this.CONSUME(t.NamespaceKw);
+    this.OR([
+      { ALT: () => this.CONSUME(t.QuotedString) },
+      { ALT: () => this.CONSUME(t.Identifier) },
+    ]);
+    this.CONSUME(t.LCurly);
+    this.MANY(() => {
+      this.OR2([
+        { ALT: () => this.CONSUME(t.Newline) },
+        { ALT: () => this.SUBRULE(this.classLine) },
+        { ALT: () => this.SUBRULE(this.interfaceLine) },
+        { ALT: () => this.SUBRULE(this.relationStmt) },
+        { ALT: () => this.SUBRULE(this.noteStmt) },
+        { ALT: () => this.SUBRULE(this.memberAssignStmt) },
+      ]);
+    });
+    this.CONSUME(t.RCurly);
+    this.OPTION(() => this.CONSUME2(t.Newline));
   });
 
   // Unified class line: either a declaration with optional stereotype/alias or a block
@@ -51,6 +94,47 @@ export class ClassParser extends CstParser {
       {
         ALT: () => {
           // Optional bracket label: class X ["Label"]
+          this.OPTION1(() => {
+            this.CONSUME(t.SquareOpen);
+            this.CONSUME(t.QuotedString);
+            this.CONSUME(t.SquareClose);
+          });
+          this.OPTION2(() => {
+            this.CONSUME(t.LTlt);
+            this.CONSUME2(t.Identifier);
+            this.CONSUME(t.GTgt);
+          });
+          this.OPTION3(() => {
+            this.CONSUME(t.AsKw);
+            this.CONSUME3(t.Identifier);
+          });
+          this.OPTION4(() => this.CONSUME2(t.Newline));
+        }
+      }
+    ]);
+  });
+
+  // Interface line: similar to class but with interface keyword
+  private interfaceLine = this.RULE('interfaceLine', () => {
+    this.CONSUME(t.InterfaceKw);
+    this.SUBRULE(this.classRef);
+    this.OR([
+      {
+        ALT: () => {
+          this.CONSUME(t.LCurly);
+          this.MANY(() => {
+            this.OR2([
+              { ALT: () => this.CONSUME3(t.Newline) },
+              { ALT: () => this.SUBRULE(this.memberLineStmt) },
+            ]);
+          });
+          this.CONSUME(t.RCurly);
+          this.OPTION(() => this.CONSUME(t.Newline));
+        }
+      },
+      {
+        ALT: () => {
+          // Optional bracket label: interface X ["Label"]
           this.OPTION1(() => {
             this.CONSUME(t.SquareOpen);
             this.CONSUME(t.QuotedString);

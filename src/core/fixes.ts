@@ -111,6 +111,36 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    if (is('CL-INTERFACE-NAME-DOUBLE-QUOTED', e)) {
+      // Same transform as class:
+      // - If alias present: interface "Label" as ID  => interface ID["Label"]
+      // - Else: interface "Label" => interface `Label`
+      const lineText = lineTextAt(text, e.line);
+      const kwIdx = lineText.indexOf('interface');
+      const startSearch = kwIdx >= 0 ? kwIdx + 9 : 0;
+      const q1 = lineText.indexOf('"', startSearch);
+      if (q1 !== -1) {
+        const asIdx = lineText.indexOf(' as ', q1 + 1);
+        const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+        if (q2 > q1) {
+          if (asIdx !== -1) {
+            // Extract label text and build a double-quoted label with &quot; for inner quotes
+            const innerLbl = lineText.slice(q1 + 1, q2);
+            const dblQuoted = '"' + innerLbl.replace(/\"/g, '"').replace(/"/g, '&quot;') + '"';
+            // Build: interface <alias>["..."] (remove the quoted name and 'as')
+            const alias = lineText.slice(asIdx + 4).trim();
+            const before = lineText.slice(0, startSearch).trimEnd();
+            const newLine = `${before} ${alias}[${dblQuoted}]`;
+            edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
+          } else {
+            // No alias: switch to backticks around name
+            edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, 1, '`'));
+            edits.push(replaceRange(text, { line: e.line, column: q2 + 1 }, 1, '`'));
+          }
+        }
+      }
+      continue;
+    }
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
@@ -1124,6 +1154,31 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       const lines = text.split(/\r?\n/);
       const curIdx = Math.max(0, e.line - 1);
       const openerRe = /^(\s*)class\b.*\{\s*$/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}}\n`));
+        continue;
+      }
+      let insIdx = lines.length;
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      edits.push(insertAt(text, { line: insIdx + 1, column: 1 }, `${openIndent}}\n`));
+      continue;
+    }
+    if (is('CL-NAMESPACE-MISSING-RBRACE', e)) {
+      // Insert '}' aligned with 'namespace X {'
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      const openerRe = /^(\s*)namespace\b.*\{\s*$/;
       let openIdx = -1; let openIndent = '';
       for (let i = curIdx; i >= 0; i--) {
         const m = openerRe.exec(lines[i] || '');
