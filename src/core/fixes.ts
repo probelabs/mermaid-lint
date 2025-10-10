@@ -174,6 +174,15 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               const replaced = inner.split('\\\"').join('&quot;');
               edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
               continue;
+
+    if (is('FL-META-UNSUPPORTED', e)) {
+      // Remove the unsupported meta line (e.g., 'title ...'). Keep conservative under --fix=all only.
+      if (level === 'all') {
+        const lineText = lineTextAt(text, e.line);
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
+      }
+      continue;
+    }
             }
           }
         }
@@ -182,7 +191,15 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
       continue;
     }
-    if (is('FL-LABEL-BACKTICK', e)) {
+    
+    if (is('FL-META-UNSUPPORTED', e)) {
+      // Remove the unsupported meta line (e.g., 'title ...'). Keep conservative under --fix=all only.
+      if (level === 'all') {
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
+      }
+      continue;
+    }
+if (is('FL-LABEL-BACKTICK', e)) {
       // Remove the offending backtick. Keep content otherwise unchanged.
       edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
       continue;

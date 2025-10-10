@@ -32,6 +32,30 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {
+      // Flowchart: unsupported meta headers (title)
+      {
+        const tks = tokens as IToken[];
+        const firstByLine = new Map<number, IToken>();
+        for (const tk of tks) {
+          const ln = tk.startLine ?? 1;
+          const col = tk.startColumn ?? 1;
+          const prev = firstByLine.get(ln);
+          if (!prev || (prev.startColumn ?? Infinity) > col) firstByLine.set(ln, tk);
+        }
+        for (const tk of tks) {
+          if (tk.image === 'title' && firstByLine.get(tk.startLine ?? 1) === tk) {
+            prevErrors.push({
+              line: tk.startLine ?? 1,
+              column: tk.startColumn ?? 1,
+              severity: 'error',
+              code: 'FL-META-UNSUPPORTED',
+              message: "'title' is not supported in flowcharts by the current Mermaid CLI.",
+              hint: 'Use a Markdown heading above the code block, or draw a labeled node at the top (e.g., T["Dependency Relationship"]).',
+              length: (tk.image?.length ?? 5)
+            } as ValidationError);
+          }
+        }
+      }
       // Mermaid accepts backslash-escaped quotes inside quoted labels.
       // Emit as a warning (not an error) so --fix can normalize to &quot; if desired.
       const escWarn = detectEscapedQuotes(tokens as IToken[], {

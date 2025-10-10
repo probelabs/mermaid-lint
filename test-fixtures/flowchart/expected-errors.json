@@ -65,5 +65,8 @@
   "link-one-sided-marker.mmd": [
     "FL-LINK-UNSUPPORTED-MARKER",
     "FL-LINK-UNSUPPORTED-MARKER"
+  ],
+  "title-unsupported.mmd": [
+    "FL-META-UNSUPPORTED"
   ]
 }
