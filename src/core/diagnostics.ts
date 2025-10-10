@@ -763,8 +763,8 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
         let endIdx = -1;
         for (let i = openIdx + 1; i < lines.length; i++) {
           const raw = lines[i] || '';
-          if (/^\s*end\s*$/.test(raw)) { endIdx = i; break; }
-          if (/^\s*(sequenceDiagram|box|alt|opt|loop|par|rect|critical|break)\b/.test(raw)) break;
+          const ind = (raw.match(/^(\s*)/)?.[1] || '');
+          if (/^\s*end\s*$/.test(raw) && ind.length <= openIndent.length) { endIdx = i; break; }
         }
         if (endIdx !== -1) {
           const body = lines.slice(openIdx + 1, endIdx).map(s => (s || '').trim());
