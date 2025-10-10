@@ -1,0 +1,20 @@
+sequenceDiagram
+  participant Gateway
+  participant loadBundle
+  participant Filesystem
+  participant loadBundleManifest
+
+  box "New Flow (Fixed)"
+    Gateway->>+loadBundle: Load API with existing bundle
+    loadBundle->>loadBundleWithFs: (using afero.Fs)
+    loadBundleWithFs->>Filesystem: Check if bundle exists (bundleFs.Stat)
+    Filesystem-->>loadBundleWithFs: Exists
+    loadBundleWithFs->>+loadBundleManifest: Load manifest (skipVerification=false)
+    Note right of loadBundleManifest: Signature is ALWAYS checked!
+    alt Manifest is Invalid
+      loadBundleManifest-->>-loadBundleWithFs: Return verification error
+    else Manifest is Valid
+      loadBundleManifest-->>-loadBundleWithFs: Manifest loaded
+    end
+  end
+

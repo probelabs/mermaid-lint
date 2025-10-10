@@ -757,6 +757,31 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
         const m = openerRe.exec(lines[i] || '');
         if (m) { openIdx = i; openIndent = m[1] || ''; break; }
       }
+      // If the missing-end is inside a 'box' and its body clearly contains
+      // messages with activation markers (+/-), prefer a targeted box error.
+      if (blk.label === 'box' && openIdx !== -1) {
+        let endIdx = -1;
+        for (let i = openIdx + 1; i < lines.length; i++) {
+          const raw = lines[i] || '';
+          if (/^\s*end\s*$/.test(raw)) { endIdx = i; break; }
+          if (/^\s*(sequenceDiagram|box|alt|opt|loop|par|rect|critical|break)\b/.test(raw)) break;
+        }
+        if (endIdx !== -1) {
+          const body = lines.slice(openIdx + 1, endIdx).map(s => (s || '').trim());
+          const hasMsgWithActivation = body.some(s => /->/.test(s) && /[+-]/.test(s));
+          if (hasMsgWithActivation) {
+            return {
+              line: openIdx + 1,
+              column: 1,
+              severity: 'error',
+              code: 'SE-BOX-EMPTY',
+              message: "Box block has no participant/actor declarations. Use 'rect' to group messages visually.",
+              hint: "Replace 'box' with 'rect' if you want to group messages:\nrect rgb(240, 240, 255)\n  A->>B: Message\n  Note over A: Info\nend",
+              length: 3
+            };
+          }
+        }
+      }
       // Default caret line is current if opener not found
       let caretLine = line;
       if (openIdx !== -1) {
