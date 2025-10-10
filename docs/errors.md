@@ -12,6 +12,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | Code | Auto-fix | What maid changes |
 | --- | --- | --- |
 | FL-ARROW-INVALID | Safe | Replace `->` with `-->`. |
+| FL-LINK-UNSUPPORTED-MARKER | All | Remove unsupported one-sided marker (`x`/`o`) from `--x-->`/`--o-->` (keeps arrow). |
 | FL-LABEL-ESCAPED-QUOTE | Safe | Replace `\"` with `&quot;` inside quoted labels. |
 | FL-LABEL-DOUBLE-IN-DOUBLE | None | No change (avoid corrupting mixed-quote tokens); suggest using `&quot;`. |
 | FL-LABEL-DOUBLE-IN-SINGLE | Safe | Replace inner `"` with `&quot;` in single-quoted labels. |
@@ -117,6 +118,11 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
     flowchart TD
       A["Calls logger.debug(&quot;message&quot;, data)"] --> B
     ```
+- FL-LINK-UNSUPPORTED-MARKER
+  - When: Inline link uses a one-sided end marker (`--x-->` or `--o-->`).
+  - Message: "Unsupported one-sided link marker".
+  - Hint: "Use symmetric `x--x`/`o--o` or a plain arrow with a label: `A --|Skipped|--> B`."
+
 
 - FL-LABEL-PARENS-UNQUOTED
   - When: A label inside a shape is unquoted and contains `(` or `)`.

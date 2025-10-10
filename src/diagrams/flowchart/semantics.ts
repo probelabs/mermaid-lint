@@ -255,6 +255,8 @@ class FlowSemanticsVisitor extends BaseVisitor {
     if (ctx.nodeOrParallelGroup) ctx.nodeOrParallelGroup.forEach((n: CstNode) => this.visit(n));
     const linksHere = Array.isArray((ctx as any).link) ? (ctx as any).link.length : 0;
     if (linksHere > 0) this.edgeCount += linksHere;
+    // Visit links to run link-specific validations
+    if ((ctx as any).link) (ctx as any).link.forEach((ln: CstNode) => this.visit(ln));
   }
 
   // Edge attribute object statements must target a known edge id
@@ -607,6 +609,38 @@ class FlowSemanticsVisitor extends BaseVisitor {
     }
   }
 
+  // Validate link specifics that Mermaid CLI enforces but our grammar may parse loosely
+  link(ctx: any) {
+    // Detect inline-text variant like: -- text -->
+    const inline: CstNode | undefined = (ctx as any).linkTextInline?.[0] as CstNode | undefined;
+    if (inline) {
+      const ch: any = (inline.children || {});
+      const parts: IToken[] = ([] as IToken[])
+        .concat(ch.Identifier || [])
+        .concat(ch.Text || [])
+        .concat(ch.NumberLiteral || [])
+        .concat(ch.Pipe || []);
+      if (parts.length) {
+        const raw = parts.map(t => String(t.image || '')).join('').trim();
+        // Mermaid does not allow one-sided end markers like --x--> or --o-->
+        // Those are valid only as symmetric forms x--x / o--o. Keep parity by flagging them.
+        if (raw === 'x' || raw === 'o') {
+          const p = parts[0];
+          this.ctx.errors.push({
+            line: p.startLine ?? 1,
+            column: p.startColumn ?? 1,
+            severity: 'error',
+            code: 'FL-LINK-UNSUPPORTED-MARKER',
+            message: `Unsupported one-sided link marker '${raw}'. Use symmetric '${raw}--${raw}' or a plain arrow with a label.`,
+            hint: raw === 'x'
+              ? "Example: A x--x B  (or)  A --> B  and label it: A --|Skipped|--> B"
+              : "Example: A o--o B  (or)  A --> B",
+            length: (p.image?.length ?? 1)
+          });
+        }
+      }
+    }
+  }
   private checkBackticksInContent(contentNodes: CstNode[] | undefined) {
     if (!contentNodes) return;
     for (const cn of contentNodes) {

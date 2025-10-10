@@ -20,6 +20,11 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
       continue;
     }
+    if (is('FL-LINK-UNSUPPORTED-MARKER', e)) {
+      // Remove the unsupported one-sided marker (x/o) from the inline link text
+      edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
+      continue;
+    }
     // Fix quoted edge labels to use pipe syntax
     if (is('FL-EDGE-LABEL-QUOTED', e)) {
       const lineText = lineTextAt(text, e.line);
