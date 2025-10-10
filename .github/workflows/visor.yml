@@ -1,0 +1,43 @@
+name: PR Review Bot
+
+on:
+  # For fork PRs: Use pull_request_target instead (see docs/GITHUB_CHECKS.md for details)
+  pull_request:
+    types: [opened, synchronize, edited]
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: PR Review Bot
+        id: visor_review
+        uses: probelabs/visor@main
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          installation-id: ${{ secrets.APP_INSTALLATION_ID }}
+          auto-review: ${{ (github.event_name == 'pull_request_target' || github.event_name == 'pull_request') && 'true' || 'false' }}
+          debug: 'true'
+          fail-fast: 'true'
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          # AI Provider API Keys (configure one of these in your repository secrets)
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Optional: Specify the AI model to use (use Google model with Google API key)
+          MODEL_NAME: ${{ secrets.AI_MODEL_NAME || 'gemini-2.0-flash-exp' }}
