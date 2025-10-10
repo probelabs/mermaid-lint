@@ -1,4 +1,21 @@
 {
   "diagramType": "class",
-  "items": []
+  "items": [
+    {
+      "file": "interface-example.mmd",
+      "reason": "interface keyword not supported by mermaid-cli yet"
+    },
+    {
+      "file": "namespace-and-title.mmd",
+      "reason": "namespace and title keywords not supported by mermaid-cli yet"
+    },
+    {
+      "file": "namespace-only.mmd",
+      "reason": "namespace keyword not supported by mermaid-cli yet"
+    },
+    {
+      "file": "title-only.mmd",
+      "reason": "title keyword not supported by mermaid-cli yet"
+    }
+  ]
 }

@@ -1,0 +1,33 @@
+classDiagram
+    title ProbeAgent Architecture with Pluggable Components
+
+    namespace ProbeAgentCore {
+        class ProbeAgent
+    }
+
+    namespace PluggableModules {
+        class StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+            +clearHistory()
+        }
+        class HookManager {
+            +on()
+            +emit()
+        }
+    }
+
+    namespace DefaultImplementations {
+        class InMemoryStorageAdapter
+    }
+
+    namespace CustomImplementationsExamples {
+        class PostgresStorageAdapter
+        class CustomLogger
+    }
+
+    InMemoryStorageAdapter --|> StorageAdapter : implements
+    PostgresStorageAdapter --|> StorageAdapter : implements
+    CustomLogger -- HookManager : "subscribes to"
+    ProbeAgent ..> StorageAdapter : uses
+    ProbeAgent ..> HookManager : uses

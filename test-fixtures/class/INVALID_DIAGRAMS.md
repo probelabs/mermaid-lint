@@ -10,10 +10,13 @@ This file contains invalid class test fixtures with:
 ## Table of Contents
 
 1. [Generics And Types](#1-generics-and-types)
-2. [Invalid Relation](#2-invalid-relation)
-3. [Missing Rbrace](#3-missing-rbrace)
-4. [Quoted Name Double In Double](#4-quoted-name-double-in-double)
-5. [Relation Missing Target](#5-relation-missing-target)
+2. [Interface Example](#2-interface-example)
+3. [Invalid Relation](#3-invalid-relation)
+4. [Missing Rbrace](#4-missing-rbrace)
+5. [Namespace Missing Rbrace](#5-namespace-missing-rbrace)
+6. [Namespace Quoted And Interface Keyword](#6-namespace-quoted-and-interface-keyword)
+7. [Quoted Name Double In Double](#7-quoted-name-double-in-double)
+8. [Relation Missing Target](#8-relation-missing-target)
 
 ---
 
@@ -22,10 +25,13 @@ This file contains invalid class test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [generics and types](#1-generics-and-types) | INVALID | INVALID | — |
-| 2 | [invalid relation](#2-invalid-relation) | INVALID | INVALID | ✅ safe |
-| 3 | [missing rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 4 | [quoted name double in double](#4-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
-| 5 | [relation missing target](#5-relation-missing-target) | INVALID | INVALID | — |
+| 2 | [interface example](#2-interface-example) | INVALID | INVALID | ✅ safe |
+| 3 | [invalid relation](#3-invalid-relation) | INVALID | INVALID | ✅ safe |
+| 4 | [missing rbrace](#4-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 5 | [namespace missing rbrace](#5-namespace-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 6 | [namespace quoted and interface keyword](#6-namespace-quoted-and-interface-keyword) | INVALID | INVALID | ✅ safe |
+| 7 | [quoted name double in double](#7-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
+| 8 | [relation missing target](#8-relation-missing-target) | INVALID | INVALID | — |
 
 ---
 
@@ -56,7 +62,17 @@ Tree : root: Node<string>
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 9:
@@ -76,7 +92,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error: Redundant input, expecting EOF but found: <string,int>
@@ -86,6 +105,10 @@ at test-fixtures/class/invalid/generics-and-types.mmd:10:21
      |                     ^^^^^^^^^^^^
   11 | Repo : put(item: Pair<string,int>): void
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -120,7 +143,135 @@ Tree : root: Node<string>
 
 ---
 
-## 2. Invalid Relation
+## 2. Interface Example
+
+📄 **Source**: [`interface-example.mmd`](./invalid/interface-example.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+    interface Animal {
+        +String name
+        +makeSound()
+    }
+
+    class Dog {
+        +bark()
+    }
+
+    class Cat {
+        +meow()
+    }
+
+    Dog --|> Animal
+    Cat --|> Animal
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Lexical error on line 2. Unrecognized text.
+...   interface Animal {        +String na
+-----------------------^
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[CL-INTERFACE-KEYWORD-UNSUPPORTED]: The "interface" keyword is not supported by mermaid.js. Use the <<interface>> annotation instead.
+at test-fixtures/class/invalid/interface-example.mmd:2:5
+   1 | classDiagram
+   2 |     interface Animal {
+     |     ^^^^^^^^^
+   3 |         +String name
+hint: Auto-fix converts to "class". Then manually add: <<interface>> ClassName after the class definition
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+    class Animal {
+        +String name
+        +makeSound()
+    }
+
+    class Dog {
+        +bark()
+    }
+
+    class Cat {
+        +meow()
+    }
+
+    Dog --|> Animal
+    Cat --|> Animal
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    interface Animal {
+        +String name
+        +makeSound()
+    }
+
+    class Dog {
+        +bark()
+    }
+
+    class Cat {
+        +meow()
+    }
+
+    Dog --|> Animal
+    Cat --|> Animal
+
+```
+</details>
+
+---
+
+## 3. Invalid Relation
 
 📄 **Source**: [`invalid-relation.mmd`](./invalid/invalid-relation.mmd)
 
@@ -135,7 +286,17 @@ Foo -> Bar : wrong arrow
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -155,7 +316,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[CL-REL-INVALID]: Invalid relationship operator '->'. Use <|--, *--, o--, --, ..> or ..|>.
@@ -166,6 +330,10 @@ at test-fixtures/class/invalid/invalid-relation.mmd:2:5
   3 | 
 hint: Example: Foo <|-- Bar
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -193,7 +361,7 @@ Foo -> Bar : wrong arrow
 
 ---
 
-## 3. Missing Rbrace
+## 4. Missing Rbrace
 
 📄 **Source**: [`missing-rbrace.mmd`](./invalid/missing-rbrace.mmd)
 
@@ -209,7 +377,17 @@ class Foo {
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -229,7 +407,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[CL-BLOCK-MISSING-RBRACE]: Missing '}' to close class block.
@@ -240,6 +421,10 @@ at test-fixtures/class/invalid/missing-rbrace.mmd:5:1
   6 | }  ← insert '}' here
 hint: Close the block: class Foo { ... }
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -270,7 +455,256 @@ class Foo {
 
 ---
 
-## 4. Quoted Name Double In Double
+## 5. Namespace Missing Rbrace
+
+📄 **Source**: [`namespace-missing-rbrace.mmd`](./invalid/namespace-missing-rbrace.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+
+    class Display
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 2:
+...gram    namespace "Core Classes" {    
+----------------------^
+Expecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[CL-NAMESPACE-NAME-QUOTED]: Quoted namespace names are not supported by mermaid.js. Use an unquoted identifier.
+at test-fixtures/class/invalid/namespace-missing-rbrace.mmd:2:15
+  1 | classDiagram
+  2 |     namespace "Core Classes" {
+    |               ^^^^^^^^^^^^^^
+  3 |         class Engine
+hint: Change: namespace "ProbeAgent Core" { ... } → namespace ProbeAgentCore { ... }
+
+error[CL-NAMESPACE-MISSING-RBRACE]: Missing '}' to close namespace block.
+at test-fixtures/class/invalid/namespace-missing-rbrace.mmd:7:1
+  6 |     class Display
+  7 | 
+    | ^
+hint: Close the block: namespace "Name" { ... }
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+    namespace CoreClasses {
+        class Engine
+        class Wheel
+
+    }
+    class Display
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+
+    class Display
+
+```
+</details>
+
+---
+
+## 6. Namespace Quoted And Interface Keyword
+
+📄 **Source**: [`namespace-quoted-and-interface-keyword.mmd`](./invalid/namespace-quoted-and-interface-keyword.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+    title ProbeAgent Architecture
+
+    namespace "ProbeAgent Core" {
+        class ProbeAgent
+    }
+
+    namespace "Pluggable Modules" {
+        interface StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+        }
+    }
+
+    ProbeAgent ..> StorageAdapter : uses
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 4:
+...ure    namespace "ProbeAgent Core" { 
+---------------------^
+Expecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[CL-NAMESPACE-NAME-QUOTED]: Quoted namespace names are not supported by mermaid.js. Use an unquoted identifier.
+at test-fixtures/class/invalid/namespace-quoted-and-interface-keyword.mmd:4:15
+   3 | 
+   4 |     namespace "ProbeAgent Core" {
+     |               ^^^^^^^^^^^^^^^^^
+   5 |         class ProbeAgent
+hint: Change: namespace "ProbeAgent Core" { ... } → namespace ProbeAgentCore { ... }
+
+error[CL-NAMESPACE-NAME-QUOTED]: Quoted namespace names are not supported by mermaid.js. Use an unquoted identifier.
+at test-fixtures/class/invalid/namespace-quoted-and-interface-keyword.mmd:8:15
+   7 | 
+   8 |     namespace "Pluggable Modules" {
+     |               ^^^^^^^^^^^^^^^^^^^
+   9 |         interface StorageAdapter {
+hint: Change: namespace "ProbeAgent Core" { ... } → namespace ProbeAgentCore { ... }
+
+error[CL-INTERFACE-KEYWORD-UNSUPPORTED]: The "interface" keyword is not supported by mermaid.js. Use the <<interface>> annotation instead.
+at test-fixtures/class/invalid/namespace-quoted-and-interface-keyword.mmd:9:9
+   8 |     namespace "Pluggable Modules" {
+   9 |         interface StorageAdapter {
+     |         ^^^^^^^^^
+  10 |             +loadHistory()
+hint: Auto-fix converts to "class". Then manually add: <<interface>> ClassName after the class definition
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+    title ProbeAgent Architecture
+
+    namespace ProbeAgentCore {
+        class ProbeAgent
+    }
+
+    namespace PluggableModules {
+        class StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+        }
+    }
+
+    ProbeAgent ..> StorageAdapter : uses
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    title ProbeAgent Architecture
+
+    namespace "ProbeAgent Core" {
+        class ProbeAgent
+    }
+
+    namespace "Pluggable Modules" {
+        interface StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+        }
+    }
+
+    ProbeAgent ..> StorageAdapter : uses
+
+```
+</details>
+
+---
+
+## 7. Quoted Name Double In Double
 
 📄 **Source**: [`quoted-name-double-in-double.mmd`](./invalid/quoted-name-double-in-double.mmd)
 
@@ -285,7 +719,17 @@ class "Logger "core"" as L
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -305,7 +749,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[CL-NAME-DOUBLE-QUOTED]: Double-quoted class name is not supported. Use backticks for names with spaces/punctuation, or use a label.
@@ -316,6 +763,10 @@ at test-fixtures/class/invalid/quoted-name-double-in-double.mmd:2:7
   3 | 
 hint: Example: class `Logger "core"` as L  or  class L["Logger "core""]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -343,7 +794,7 @@ class "Logger "core"" as L
 
 ---
 
-## 5. Relation Missing Target
+## 8. Relation Missing Target
 
 📄 **Source**: [`relation-missing-target.mmd`](./invalid/relation-missing-target.mmd)
 
@@ -358,7 +809,17 @@ Foo <|-- : extends
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -378,7 +839,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[CL-REL-MALFORMED]: Malformed relationship. Provide a target class before the label.
@@ -389,6 +853,10 @@ at test-fixtures/class/invalid/relation-missing-target.mmd:2:10
   3 | 
 hint: Use: A <|-- B : label
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 

@@ -8,7 +8,10 @@ export const NumberLiteral = createToken({ name: 'NumberLiteral', pattern: /[0-9
 export const ClassDiagramKeyword = createToken({ name: 'ClassDiagramKeyword', pattern: /classDiagram/, longer_alt: Identifier });
 export const DirectionKw = createToken({ name: 'DirectionKw', pattern: /direction/, longer_alt: Identifier });
 export const Direction = createToken({ name: 'Direction', pattern: /LR|RL|TB|BT|TD/, longer_alt: Identifier });
+export const TitleKw = createToken({ name: 'TitleKw', pattern: /title/, longer_alt: Identifier });
+export const NamespaceKw = createToken({ name: 'NamespaceKw', pattern: /namespace/, longer_alt: Identifier });
 export const ClassKw = createToken({ name: 'ClassKw', pattern: /class/, longer_alt: Identifier });
+export const InterfaceKw = createToken({ name: 'InterfaceKw', pattern: /interface\b/, longer_alt: Identifier });
 export const AsKw = createToken({ name: 'AsKw', pattern: /as/, longer_alt: Identifier });
 export const NoteKw = createToken({ name: 'NoteKw', pattern: /note/, longer_alt: Identifier });
 export const ForKw = createToken({ name: 'ForKw', pattern: /for/, longer_alt: Identifier });
@@ -60,6 +63,9 @@ export const allTokens = [
   // Keywords
   ClassDiagramKeyword,
   DirectionKw,
+  TitleKw,
+  NamespaceKw,
+  InterfaceKw,
   ClassKw,
   AsKw,
   NoteKw,

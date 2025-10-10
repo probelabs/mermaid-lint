@@ -111,6 +111,36 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    if (is('CL-NAMESPACE-NAME-QUOTED', e)) {
+      // Remove quotes from namespace name and convert to identifier
+      // namespace "ProbeAgent Core" { } => namespace ProbeAgentCore { }
+      const lineText = lineTextAt(text, e.line);
+      const nsIdx = lineText.indexOf('namespace');
+      const startSearch = nsIdx >= 0 ? nsIdx + 9 : 0;
+      const q1 = lineText.indexOf('"', startSearch);
+      if (q1 !== -1) {
+        const q2 = lineText.indexOf('"', q1 + 1);
+        if (q2 > q1) {
+          // Extract the namespace name and remove spaces/special chars to make valid identifier
+          const namespaceName = lineText.slice(q1 + 1, q2);
+          const validIdentifier = namespaceName.replace(/[^A-Za-z0-9_]/g, '');
+          // Replace the quoted string with the unquoted identifier
+          edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, q2 - q1 + 1, validIdentifier));
+        }
+      }
+      continue;
+    }
+    if (is('CL-INTERFACE-KEYWORD-UNSUPPORTED', e)) {
+      // Simple transform: interface Foo => class Foo (let user add <<interface>> annotation manually or use mermaid.js default)
+      // For now, just change the keyword - the annotation placement is complex and version-dependent
+      const lineText = lineTextAt(text, e.line);
+      const ifIdx = lineText.indexOf('interface');
+      if (ifIdx !== -1) {
+        // Just replace 'interface' with 'class'
+        edits.push(replaceRange(text, { line: e.line, column: ifIdx + 1 }, 9, 'class'));
+      }
+      continue;
+    }
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
@@ -1124,6 +1154,31 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       const lines = text.split(/\r?\n/);
       const curIdx = Math.max(0, e.line - 1);
       const openerRe = /^(\s*)class\b.*\{\s*$/;
+      let openIdx = -1; let openIndent = '';
+      for (let i = curIdx; i >= 0; i--) {
+        const m = openerRe.exec(lines[i] || '');
+        if (m) { openIdx = i; openIndent = m[1] || ''; break; }
+      }
+      if (openIdx === -1) {
+        const indent = inferIndentFromLine(lines[curIdx] || '');
+        edits.push(insertAt(text, { line: curIdx + 1, column: 1 }, `${indent}}\n`));
+        continue;
+      }
+      let insIdx = lines.length;
+      for (let i = openIdx + 1; i < lines.length; i++) {
+        const raw = lines[i] || '';
+        if (raw.trim() === '') continue;
+        const ind = inferIndentFromLine(raw);
+        if (ind.length <= openIndent.length) { insIdx = i; break; }
+      }
+      edits.push(insertAt(text, { line: insIdx + 1, column: 1 }, `${openIndent}}\n`));
+      continue;
+    }
+    if (is('CL-NAMESPACE-MISSING-RBRACE', e)) {
+      // Insert '}' aligned with 'namespace X {'
+      const lines = text.split(/\r?\n/);
+      const curIdx = Math.max(0, e.line - 1);
+      const openerRe = /^(\s*)namespace\b.*\{\s*$/;
       let openIdx = -1; let openIndent = '';
       for (let i = curIdx; i >= 0; i--) {
         const m = openerRe.exec(lines[i] || '');

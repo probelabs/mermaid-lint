@@ -1,0 +1,13 @@
+classDiagram
+    namespace CoreClasses {
+        class Engine
+        class Wheel
+    }
+
+    namespace Components {
+        class Sensor
+        class Display
+    }
+
+    Engine -- Wheel
+    Sensor ..> Display

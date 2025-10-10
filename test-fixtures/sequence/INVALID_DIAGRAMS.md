@@ -85,7 +85,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -105,7 +115,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BRANCH-IN-WRONG-BLOCK]: 'and' is only valid in 'par' blocks (not inside 'alt').
@@ -130,6 +143,10 @@ at test-fixtures/sequence/invalid/and-in-alt-nested.mmd:4:5
   5 |   end
 hint: Start a parallel section with: par … and … end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -174,7 +191,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -194,7 +221,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BRANCH-IN-WRONG-BLOCK]: 'and' is only valid in 'par' blocks (not inside 'alt').
@@ -219,6 +249,10 @@ at test-fixtures/sequence/invalid/and-in-alt.mmd:4:3
   5 |     A->C: two
 hint: Start a parallel section with: par … and … end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -262,7 +296,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -282,7 +326,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-AND-OUTSIDE-PAR]: 'and' is only allowed inside 'par' blocks.
@@ -293,6 +340,10 @@ at test-fixtures/sequence/invalid/and-outside-par.mmd:3:3
   4 |   A->B: hi
 hint: Example: par … and … end (parallel branches).
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -333,7 +384,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -353,7 +414,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-AUTONUMBER-EXTRANEOUS]: Unexpected token after 'autonumber'. Put 'autonumber' on its own line.
@@ -366,6 +430,10 @@ hint: Example:
   autonumber 10 10
   participant A
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -414,7 +482,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -434,7 +512,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-AUTONUMBER-NON-NUMERIC]: Autonumber values must be numbers. Found 'ten'.
@@ -445,6 +526,10 @@ at test-fixtures/sequence/invalid/autonumber-malformed.mmd:2:17
   3 |   participant A
 hint: Use numbers: autonumber 10 or autonumber 10 10 (start and step).
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -497,7 +582,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 5:
@@ -517,7 +612,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BOX-EMPTY]: Box block has no participant/actor declarations. Use 'rect' to group messages visually.
@@ -532,6 +630,10 @@ hint: Replace 'box' with 'rect' if you want to group messages:
     Note over A: Info
   end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -585,7 +687,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 5:
@@ -605,7 +717,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BLOCK-MISSING-END]: Missing 'end' to close a 'box' block.
@@ -616,6 +731,10 @@ at test-fixtures/sequence/invalid/box-unclosed.mmd:5:1
   6 |   end  ← insert 'end' here
 hint: Add 'end' on its own line aligned with the block's start.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -669,7 +788,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 6:
@@ -689,7 +818,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BOX-INVALID-CONTENT]: Box blocks can only contain participant/actor declarations.
@@ -706,6 +838,10 @@ hint: Move messages, notes, and other statements outside the box block.
   end
   A->>B: Message
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -760,7 +896,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 6:
@@ -780,7 +926,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BOX-INVALID-CONTENT]: Box blocks can only contain participant/actor declarations.
@@ -797,6 +946,10 @@ hint: Move messages, notes, and other statements outside the box block.
   end
   A->>B: Message
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -849,7 +1002,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -869,7 +1032,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-CREATE-MALFORMED]: After 'create', specify 'participant' or 'actor' before the name.
@@ -882,6 +1048,10 @@ hint: Examples:
   create participant B
   create actor D as Donald
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -922,7 +1092,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 2. Unrecognized text.
@@ -941,7 +1121,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-CREATE-MISSING-NAME]: Missing name after 'create'.
@@ -952,6 +1135,10 @@ at test-fixtures/sequence/invalid/create-missing-name.mmd:2:21
   3 |   A->B: hi
 hint: Use: create participant A  or  create actor B
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -994,7 +1181,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -1014,7 +1211,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-ELSE-IN-CRITICAL]: 'else' is not allowed inside a 'critical' block. Use 'option' or close the block with 'end'.
@@ -1035,6 +1235,10 @@ at test-fixtures/sequence/invalid/critical-else.mmd:4:3
   5 |     A->B: nope
 hint: Use: alt Condition … else … end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1088,7 +1292,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: The destroyed participant undefined does not have an associated destroying message after its declaration. Please check the sequence diagram.
@@ -1106,7 +1320,10 @@ node_modules/mermaid/dist/mermaid.js:125016:20
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-DESTROY-MISSING-NAME]: Missing name after 'destroy'.
@@ -1117,6 +1334,10 @@ at test-fixtures/sequence/invalid/destroy-malformed.mmd:2:22
   3 |   participant A
 hint: Use: destroy participant A  or  destroy actor B
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1162,7 +1383,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 5:
@@ -1182,7 +1413,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-META-UNSUPPORTED]: Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams.
@@ -1209,6 +1443,10 @@ at test-fixtures/sequence/invalid/details-and-properties.mmd:6:3
   7 |   A->>B: Pay
 hint: Remove the 'details:' line to match mermaid-cli.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1254,7 +1492,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -1274,7 +1522,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BRANCH-IN-WRONG-BLOCK]: 'else' is only valid in 'alt' blocks (not inside 'par').
@@ -1299,6 +1550,10 @@ at test-fixtures/sequence/invalid/else-in-par-nested.mmd:4:5
   5 |   end
 hint: Use: alt Condition … else … end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1341,7 +1596,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1361,7 +1626,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-ELSE-OUTSIDE-ALT]: 'else' is only allowed inside 'alt' blocks.
@@ -1372,6 +1640,10 @@ at test-fixtures/sequence/invalid/else-outside-alt.mmd:3:3
   4 |   A->B: hi
 hint: Use: alt Condition … else … end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1413,7 +1685,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -1433,7 +1715,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-MSG-COLON-MISSING]: Missing colon after target actor in message.
@@ -1444,6 +1729,10 @@ at test-fixtures/sequence/invalid/missing-colon.mmd:4:35
   5 | 
 hint: Use: A->>B: Message text
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1492,7 +1781,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1512,7 +1811,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
@@ -1523,6 +1825,10 @@ at test-fixtures/sequence/invalid/note-malformed.mmd:3:32
   4 |   A->B: ok
 hint: Example: Note right of Alice: Hello
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1579,7 +1885,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 5:
@@ -1599,7 +1915,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-NOTE-MALFORMED]: Malformed note: missing colon before the note text.
@@ -1610,6 +1929,10 @@ at test-fixtures/sequence/invalid/note-multiline-missing-colon.mmd:5:18
    6 |     Multi-line note without colon on header
 hint: Example: Note right of Alice: Hello
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1671,7 +1994,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1691,7 +2024,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BRANCH-IN-WRONG-BLOCK]: 'option' is only valid in 'critical' blocks (not inside 'par').
@@ -1708,6 +2044,10 @@ hint: Use the proper branch for 'par' or close it with 'end'.
     …
   end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1749,7 +2089,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -1769,7 +2119,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-BRANCH-OUTSIDE-BLOCK]: 'option' is only allowed inside a 'critical' block.
@@ -1785,6 +2138,10 @@ hint: Start a critical section:
     …
   end
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1828,7 +2185,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1848,7 +2215,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-META-UNSUPPORTED]: Title/accTitle/accDescr are not accepted by current Mermaid CLI for sequence diagrams.
@@ -1875,6 +2245,10 @@ at test-fixtures/sequence/invalid/title-and-accessibility.mmd:4:3
   5 |   participant A as Alice
 hint: Remove this line (e.g., 'title …') to match mermaid-cli.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1919,7 +2293,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1939,7 +2323,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-END-WITHOUT-BLOCK]: 'end' without an open block (alt/opt/loop/par/rect/critical/break/box).
@@ -1950,6 +2337,10 @@ at test-fixtures/sequence/invalid/unmatched-end.mmd:3:3
   4 |   A->B: hi
 hint: Add a block above (e.g., par … end | alt … end) or remove this end.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1991,7 +2382,17 @@ sequenceDiagram
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -2011,7 +2412,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[SE-ARROW-INVALID]: Invalid sequence arrow near '
@@ -2024,6 +2428,10 @@ at test-fixtures/sequence/invalid/wrong-arrow.mmd:4:24
   5 | 
 hint: Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 

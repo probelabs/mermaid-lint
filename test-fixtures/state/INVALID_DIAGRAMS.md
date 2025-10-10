@@ -63,7 +63,17 @@ stateDiagram-v2
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 4. Unrecognized text.
@@ -82,7 +92,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
@@ -117,6 +130,10 @@ at test-fixtures/state/invalid/concurrency-adjacent.mmd:5:1
   6 |     C --> D : ev2
 hint: Place '---' between two sets of state lines inside the same block.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -162,7 +179,17 @@ stateDiagram-v2
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 4. Unrecognized text.
@@ -181,7 +208,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
@@ -200,6 +230,10 @@ at test-fixtures/state/invalid/concurrency-at-end.mmd:4:1
   5 |   }
 hint: Place '---' between two sets of state lines inside the same block.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -243,7 +277,17 @@ stateDiagram-v2
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 3. Unrecognized text.
@@ -262,7 +306,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
@@ -281,6 +328,10 @@ at test-fixtures/state/invalid/concurrency-at-start.mmd:3:1
   4 |     A --> B : ev1
 hint: Place '---' between two sets of state lines inside the same block.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -323,7 +374,17 @@ A --> [*]
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -343,7 +404,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error: Redundant input, expecting EOF but found: ---
@@ -353,6 +417,10 @@ at test-fixtures/state/invalid/concurrency-outside-block.mmd:3:1
     | ^^^
   4 | A --> [*]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -396,7 +464,17 @@ stateDiagram-v2
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 4. Unrecognized text.
@@ -415,7 +493,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
@@ -426,6 +507,10 @@ at test-fixtures/state/invalid/concurrency-two-regions.mmd:4:1
   5 |     [*] --> B
 hint: Remove '---' or split logic into separate composite states.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -466,7 +551,17 @@ A --> B
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 UnknownDiagramError: No diagram type detected matching given configuration for text: A --> B
@@ -485,7 +580,10 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
     at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", "sequenceDiagram", "classDiagram" or "stateDiagram[-v2]"
@@ -495,6 +593,10 @@ at test-fixtures/state/invalid/header-missing.mmd:1:1
   2 | 
 hint: Start with: flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -531,7 +633,17 @@ Idle -> Running : start
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -551,7 +663,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-ARROW-INVALID]: Invalid arrow '->'. Use '-->' in state transitions.
@@ -562,6 +677,10 @@ at test-fixtures/state/invalid/invalid-arrow.mmd:2:6
   3 | 
 hint: Example: A --> B : event
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -608,7 +727,17 @@ state Auth {
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 4. Unrecognized text.
@@ -627,7 +756,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-CONCURRENCY-UNSUPPORTED]: Concurrency separator '---' is not supported by Mermaid CLI in state diagrams.
@@ -638,6 +770,10 @@ at test-fixtures/state/invalid/markers-and-concurrency.mmd:4:1
   5 |   Stage2 --> [*]
 hint: Remove '---' or split logic into separate composite states.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -681,7 +817,17 @@ state Foo {
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -701,7 +847,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-BLOCK-MISSING-RBRACE]: Missing '}' to close a state block.
@@ -712,6 +861,10 @@ at test-fixtures/state/invalid/missing-rbrace.mmd:6:1
   7 | }  ← insert '}' here
 hint: Close the block: state Foo { ... }
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -761,7 +914,17 @@ Auth --> [*]Note over Auth: Handles user auth
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 4. Unrecognized text.
@@ -780,7 +943,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-NOTE-GLUED]: 'Note' must start on a new line (not glued to the previous statement).
@@ -791,6 +957,10 @@ at test-fixtures/state/invalid/note-glued-to-previous.mmd:4:13
   5 | 
 hint: Put 'Note …' on its own line: Note right of Auth: …
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -831,7 +1001,17 @@ A --> B : ok
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 2. Unrecognized text.
@@ -850,7 +1030,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
@@ -861,6 +1044,10 @@ at test-fixtures/state/invalid/note-missing-colon.mmd:2:17
   3 | A --> B : ok
 hint: Example: Note right of A: message
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -906,7 +1093,17 @@ A --> B
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 2. Unrecognized text.
@@ -925,7 +1122,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:129832:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[ST-NOTE-MALFORMED]: Malformed note: missing colon before note text.
@@ -936,6 +1136,10 @@ at test-fixtures/state/invalid/note-over-missing-colon.mmd:2:15
   3 | A --> B
 hint: Example: Note right of A: message
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 

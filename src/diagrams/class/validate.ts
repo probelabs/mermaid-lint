@@ -30,6 +30,35 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
             length: (b.image?.length ?? 1)
           });
         }
+        // CL-NAMESPACE-NAME-QUOTED: namespace followed by QuotedString
+        if (a.tokenType === t.NamespaceKw && b.tokenType === t.QuotedString) {
+          errs.push({
+            line: b.startLine ?? 1,
+            column: b.startColumn ?? 1,
+            severity: 'error',
+            code: 'CL-NAMESPACE-NAME-QUOTED',
+            message: 'Quoted namespace names are not supported by mermaid.js. Use an unquoted identifier.',
+            hint: 'Change: namespace "ProbeAgent Core" { ... } → namespace ProbeAgentCore { ... }',
+            length: (b.image?.length ?? 1)
+          });
+        }
+        // CL-INTERFACE-KEYWORD-UNSUPPORTED: interface keyword not supported by mermaid.js
+        // Only error if it's actually the interface keyword, not inside <<interface>> annotation
+        if (a.tokenType === t.InterfaceKw) {
+          // Check if previous token was <<
+          const prevToken = i > 0 ? tokList[i - 1] : null;
+          if (!prevToken || prevToken.tokenType !== t.LTlt) {
+            errs.push({
+              line: a.startLine ?? 1,
+              column: a.startColumn ?? 1,
+              severity: 'error',
+              code: 'CL-INTERFACE-KEYWORD-UNSUPPORTED',
+              message: 'The "interface" keyword is not supported by mermaid.js. Use the <<interface>> annotation instead.',
+              hint: 'Auto-fix converts to "class". Then manually add: <<interface>> ClassName after the class definition',
+              length: (a.image?.length ?? 9)
+            });
+          }
+        }
       }
       // CL-REL-INVALID via InvalidRelArrow token
       for (const tk of tokList) {
@@ -80,9 +109,11 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
       const has = (code: string, line: number) => (prev || []).some(e => e.code === code && e.line === line && e.severity === 'error');
       const lines = src.split(/\r?\n/);
       const classDeclOpen: number[] = [];
+      const namespaceDeclOpen: number[] = [];
       for (let i = 0; i < lines.length; i++) {
         const raw = lines[i] || '';
         if (/^\s*class\b.*\{\s*$/.test(raw)) classDeclOpen.push(i + 1);
+        if (/^\s*namespace\b.*\{\s*$/.test(raw)) namespaceDeclOpen.push(i + 1);
       }
       // Unclosed class blocks (best-effort): any opener without a later closing brace
       if (classDeclOpen.length > 0) {
@@ -90,6 +121,14 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
         if (!hasClose && !has('CL-BLOCK-MISSING-RBRACE', Math.max(1, lines.length))) {
           const last = classDeclOpen[classDeclOpen.length - 1];
           errors.push({ line: Math.max(1, lines.length), column: 1, severity: 'error', code: 'CL-BLOCK-MISSING-RBRACE', message: "Missing '}' to close class block.", hint: "Close the block: class Foo { ... }" });
+        }
+      }
+      // Unclosed namespace blocks
+      if (namespaceDeclOpen.length > 0) {
+        const hasClose = lines.some(l => /\}/.test(l));
+        if (!hasClose && !has('CL-NAMESPACE-MISSING-RBRACE', Math.max(1, lines.length))) {
+          const last = namespaceDeclOpen[namespaceDeclOpen.length - 1];
+          errors.push({ line: Math.max(1, lines.length), column: 1, severity: 'error', code: 'CL-NAMESPACE-MISSING-RBRACE', message: "Missing '}' to close namespace block.", hint: "Close the block: namespace \"Name\" { ... }" });
         }
       }
       return errors;

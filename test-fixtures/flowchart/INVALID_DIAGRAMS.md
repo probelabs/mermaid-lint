@@ -93,7 +93,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -113,7 +123,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
@@ -124,6 +137,10 @@ at test-fixtures/flowchart/invalid/curly-in-quoted.mmd:3:20
   4 |   A --> E2
 hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -168,7 +185,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -188,7 +215,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error: Expecting token of type --> Pipe <-- but found --> '(' <--
@@ -198,6 +228,10 @@ at test-fixtures/flowchart/invalid/edge-label-parens.mmd:2:20
     |                    ^
   3 |
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -234,7 +268,17 @@ flowchart TD
     B --> C[]
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -254,7 +298,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-NODE-EMPTY]: Empty label inside a shape (only empty quotes/whitespace).
@@ -280,6 +327,10 @@ at test-fixtures/flowchart/invalid/empty-nodes.mmd:3:12
     |            ^
 hint: Write non-empty text inside the brackets, e.g., A["Start"] or A[Start]. If you want no label, omit the brackets and just use A.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -325,7 +376,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 6:
@@ -345,7 +406,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.
@@ -364,6 +428,10 @@ at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
   7 |         B -- Yes --> E{"Is "Driver" configured?"}
 hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -417,7 +485,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 6:
@@ -437,7 +515,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-CLICK-CALL-NAME-MISSING]: 'click … call' requires a function name.
@@ -456,6 +537,10 @@ at test-fixtures/flowchart/invalid/interactions-click-call-missing-fn.mmd:3:16
   4 | 
 hint: Use: click A call doThing()
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -495,7 +580,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -515,7 +610,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-CLICK-CALL-EXTRA-TEXT]: Tooltip/text after 'call()' is not supported by Mermaid CLI.
@@ -526,6 +624,10 @@ at test-fixtures/flowchart/invalid/interactions-click-call-parens.mmd:3:30
   4 | 
 hint: Use: click A call doThing()
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -566,7 +668,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 TypeError: Cannot set properties of undefined (setting 'style')
@@ -584,7 +696,10 @@ Array.forEach (<anonymous>)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LINKSTYLE-INDEX-OUT-OF-RANGE]: linkStyle index 1 is out of range (0..0).
@@ -595,6 +710,10 @@ at test-fixtures/flowchart/invalid/interactions-click-href.mmd:4:13
   5 | 
 hint: Use an index between 0 and 0 or add more links first.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -639,7 +758,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -659,7 +788,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LINKSTYLE-MULTILINE]: 'linkStyle' styles must be on the same line as the indices.
@@ -670,6 +802,10 @@ at test-fixtures/flowchart/invalid/interactions-linkstyle-multi.mmd:6:5
   7 |     stroke-width:2px
 hint: Example: linkStyle 0,1 stroke:#f00,stroke-width:2px
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -714,7 +850,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -734,7 +880,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LINKSTYLE-RANGE-NOT-SUPPORTED]: Ranges in 'linkStyle' indices are not supported. Use comma-separated indices.
@@ -745,6 +894,10 @@ at test-fixtures/flowchart/invalid/interactions-linkstyle-ranges.mmd:4:14
   5 | 
 hint: Example: linkStyle 0,1 stroke:#f00,stroke-width:2px
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -783,7 +936,17 @@ flowchart TD
     B --> C
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -803,7 +966,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-ARROW-INVALID]: Invalid arrow syntax: -> (use --> instead)
@@ -814,6 +980,10 @@ at test-fixtures/flowchart/invalid/invalid-arrow.mmd:2:7
   3 |     B --> C
 hint: Replace -> with -->, or use -- text --> for inline labels.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -853,7 +1023,17 @@ flowchart TD
     class A
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -873,7 +1053,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-CLASS-MALFORMED]: Invalid class statement. Provide node id(s) then a class name.
@@ -883,6 +1066,10 @@ at test-fixtures/flowchart/invalid/invalid-class.mmd:3:12
     |            ^
 hint: Example: class A,B important
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -918,7 +1105,17 @@ flowchart TD
     B --> C
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -938,7 +1135,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '(( '. Add a matching '))'.
@@ -949,6 +1149,10 @@ at test-fixtures/flowchart/invalid/invalid-node-syntax.mmd:2:9
   3 |     B --> C
 hint: Example: A((Circle))
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -989,7 +1193,17 @@ flowchart TD
     end
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 TypeError: Cannot read properties of undefined (reading 'text')
@@ -1006,7 +1220,10 @@ FlowDB.addSubGraph (node_modules/mermaid/dist/mermaid.js:45974:26)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-SUBGRAPH-MISSING-HEADER]: Subgraph header is missing. Add an ID or a [Title] after the keyword.
@@ -1017,6 +1234,10 @@ at test-fixtures/flowchart/invalid/invalid-subgraph.mmd:2:13
   3 |         A --> B
 hint: Example: subgraph API [API Layer]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1055,7 +1276,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1075,7 +1306,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error: Expecting token of type --> NumberLiteral <-- but found --> 'e999' <--
@@ -1085,6 +1319,10 @@ at test-fixtures/flowchart/invalid/linkstyle-id-unknown.mmd:3:13
     |             ^^^^
   4 |
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1121,7 +1359,17 @@ flowchart TD
     A B
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -1141,7 +1389,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LINK-MISSING]: Two nodes on one line must be connected with an arrow.
@@ -1151,6 +1402,10 @@ at test-fixtures/flowchart/invalid/missing-arrow.mmd:2:7
     |       ^
 hint: Insert --> between nodes, e.g., A --> B.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1192,7 +1447,17 @@ flowchart LR
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -1212,7 +1477,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-NODE-MIXED-BRACKETS]: Mismatched brackets: opened '(' but closed with ']'.
@@ -1223,6 +1491,10 @@ at test-fixtures/flowchart/invalid/mixed-brackets.mmd:2:23
   3 |     B --> C
 hint: Close with ')' or change the opening bracket to '['.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1281,7 +1553,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -1301,7 +1583,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
@@ -1312,6 +1597,10 @@ at test-fixtures/flowchart/invalid/mixed-quotes-in-labels.mmd:3:39
    4 |         S2 --> S3{Was 'D' skipped?};
 hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1372,7 +1661,17 @@ A --> B
 B --> C
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 UnknownDiagramError: No diagram type detected matching given configuration for text: A --> B
@@ -1390,7 +1689,10 @@ detectType (node_modules/mermaid/dist/mermaid.js:20437:15)
     at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[GEN-HEADER-INVALID]: Diagram must start with "graph", "flowchart", "pie", "sequenceDiagram", "classDiagram" or "stateDiagram[-v2]"
@@ -1400,6 +1702,10 @@ at test-fixtures/flowchart/invalid/no-diagram-type.mmd:1:1
   2 | B --> C
 hint: Start with: flowchart TD | pie | sequenceDiagram | classDiagram | stateDiagram-v2.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1435,7 +1741,17 @@ flowchart LR
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 2:
@@ -1455,7 +1771,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-DOUBLE-IN-SINGLE]: Double quotes inside a single-quoted label are not supported by Mermaid. Replace inner " with &quot; or use a double-quoted label with &quot;.
@@ -1466,6 +1785,10 @@ at test-fixtures/flowchart/invalid/quotes-double-inside-single.mmd:2:15
   3 | 
 hint: Change to "She said &quot;Hello&quot;" or replace inner " with &quot;.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1532,7 +1855,17 @@ graph TD
     style H fill:#d4edda,stroke:#c3e6cb
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 9:
@@ -1552,7 +1885,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
@@ -1563,6 +1899,10 @@ at test-fixtures/flowchart/invalid/quotes-in-node-labels.mmd:4:29
    5 |         B -->|Yes| D[Get forEach items from 'A's output];
 hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1666,7 +2006,17 @@ flowchart LR
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: No such shape: parallelogram.
@@ -1683,7 +2033,10 @@ FlowDB.addVertex (node_modules/mermaid/dist/mermaid.js:45607:23)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-TYPED-SHAPE-UNSUPPORTED]: Typed shape 'hexagon' is not supported by current Mermaid CLI.
@@ -1718,6 +2071,10 @@ at test-fixtures/flowchart/invalid/typed-shapes-all.mmd:12:14
   13 |   L@{ shape: "lean-l", label: "LeanL" }
 hint: Use one of: rect, rounded, diamond, circle, cylinder, stadium, subroutine, "lean-l", "lean-r"
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1771,7 +2128,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: No such shape: rhombus.
@@ -1788,7 +2155,10 @@ FlowDB.addVertex (node_modules/mermaid/dist/mermaid.js:45607:23)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-TYPED-SHAPE-UNKNOWN]: Unknown shape 'rhombus' in '@{ shape: … }'.
@@ -1823,6 +2193,10 @@ at test-fixtures/flowchart/invalid/typed-shapes-unknowns.mmd:5:7
   6 | 
 hint: Allowed keys: shape, label, padding, cornerRadius, icon, image
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1862,7 +2236,17 @@ flowchart LR
     B --> C
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -1882,7 +2266,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-NODE-UNCLOSED-BRACKET]: Unclosed '['. Add a matching ']' before the arrow or newline.
@@ -1893,6 +2280,10 @@ at test-fixtures/flowchart/invalid/unclosed-bracket.mmd:2:13
   3 |     B --> C
 hint: Example: A[Label] --> B
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -1934,7 +2325,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 6:
@@ -1954,7 +2355,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-QUOTE-UNCLOSED]: Unclosed quote in node label.
@@ -1965,6 +2369,10 @@ at test-fixtures/flowchart/invalid/unclosed-quote-in-label.mmd:2:5
   3 |   A --> B
 hint: Close the quote: A["Label"]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -2010,7 +2418,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -2030,7 +2448,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-DOUBLE-IN-DOUBLE]: Double quotes inside a double-quoted label are not supported by Mermaid. Use &quot; for inner quotes.
@@ -2041,6 +2462,10 @@ at test-fixtures/flowchart/invalid/unescaped-quotes-in-decision.mmd:3:31
   4 | 
 hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -2084,7 +2509,17 @@ flowchart TD
     end
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 3:
@@ -2104,7 +2539,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-END-WITHOUT-SUBGRAPH]: 'end' without a matching 'subgraph'.
@@ -2114,6 +2552,10 @@ at test-fixtures/flowchart/invalid/unmatched-end.mmd:3:5
     |     ^^^
 hint: Remove this end or add a subgraph above.
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -2164,7 +2606,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 7:
@@ -2184,7 +2636,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
@@ -2195,6 +2650,10 @@ at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:7:74
    8 |         F --> G{Logger: Is current level DEBUG?};
 hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -2285,7 +2744,17 @@ flowchart TD
 
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Parse error on line 4:
@@ -2305,7 +2774,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
@@ -2324,6 +2796,10 @@ at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:10:44
   11 |         D -- Not Found --> G[Output is Raw String];
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
@@ -2404,7 +2880,17 @@ flowchart XY
     A --> B
 ```
 
-### mermaid-cli Result: INVALID
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 Error: Lexical error on line 1. Unrecognized text.
@@ -2423,7 +2909,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
     at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
 ```
 
-### maid Result: INVALID
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
 
 ```
 error[FL-DIR-INVALID]: Invalid direction 'XY'. Use one of: TD, TB, BT, RL, LR.
@@ -2433,6 +2922,10 @@ at test-fixtures/flowchart/invalid/wrong-direction.mmd:1:11
   2 |     A --> B
 hint: Try 'TD' (top-down) or 'LR' (left-to-right).
 ```
+
+</td>
+</tr>
+</table>
 
 ### maid Auto-fix (`--fix`) Preview
 
