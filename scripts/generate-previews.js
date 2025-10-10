@@ -280,11 +280,30 @@ function generateInvalidPreview(diagramType) {
     md += `### GitHub Render Attempt\n\n> **Note**: This invalid diagram may not render or may render incorrectly.\n\n`;
     md += `\`\`\`mermaid\n${content}\n\`\`\`\n\n`;
 
-    md += `### mermaid-cli Result: ${mermaidRes.valid ? 'VALID' : 'INVALID'}\n\n`;
-    if (!mermaidRes.valid) md += `\`\`\`\n${mermaidRes.message}\n\`\`\`\n\n`;
+    // Side-by-side comparison table for error messages
+    md += `### Error Comparison: mermaid-cli vs maid\n\n`;
+    md += `<table>\n<tr>\n`;
+    md += `<th width="50%">mermaid-cli</th>\n`;
+    md += `<th width="50%">maid</th>\n`;
+    md += `</tr>\n<tr>\n`;
 
-    md += `### maid Result: ${maidRes.valid ? 'VALID' : 'INVALID'}\n\n`;
-    if (!maidRes.valid) md += `\`\`\`\n${maidRes.message}\n\`\`\`\n\n`;
+    // mermaid-cli column
+    md += `<td valign="top">\n\n`;
+    md += `**Result**: ${mermaidRes.valid ? '✅ VALID' : '❌ INVALID'}\n\n`;
+    if (!mermaidRes.valid) {
+      md += `\`\`\`\n${mermaidRes.message}\n\`\`\`\n\n`;
+    }
+    md += `</td>\n`;
+
+    // maid column
+    md += `<td valign="top">\n\n`;
+    md += `**Result**: ${maidRes.valid ? '✅ VALID' : '❌ INVALID'}\n\n`;
+    if (!maidRes.valid) {
+      md += `\`\`\`\n${maidRes.message}\n\`\`\`\n\n`;
+    }
+    md += `</td>\n`;
+
+    md += `</tr>\n</table>\n\n`;
 
     // Auto-fix previews
     const orig = fs.readFileSync(abs, 'utf8');

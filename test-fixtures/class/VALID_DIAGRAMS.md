@@ -251,7 +251,6 @@ classDiagram
             +saveMessage()
             +clearHistory()
         }
-        <<interface>> StorageAdapter
         class HookManager {
             +on()
             +emit()
@@ -301,7 +300,6 @@ classDiagram
             +saveMessage()
             +clearHistory()
         }
-        <<interface>> StorageAdapter
         class HookManager {
             +on()
             +emit()

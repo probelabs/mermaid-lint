@@ -1,9 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
-  <rect width="400" height="200" fill="#fee" stroke="#c00" stroke-width="2" />
-  <text x="200" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#c00">
-    Render Error
-  </text>
-  <text x="200" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
-    <tspan x="200" dy="0">Cannot read properties of undefined</tspan><tspan x="200" dy="15">(reading &apos;children&apos;)</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="928" height="202" viewBox="-20 -20 928 202">
+<style>
+    .node-shape { fill: #eef0ff; stroke: #3f3f3f; stroke-width: 1px; }
+    .node-label { fill: #333; font-family: Arial, sans-serif; font-size: 14px; }
+    .edge-path { stroke: #555555; stroke-width: 2px; fill: none; }
+    .edge-label-bg { fill: rgba(232,232,232, 0.8); opacity: 0.5; }
+    .edge-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+    .edge-marker { stroke: #555555; }
+    .edge-marker-fill { fill: #555555; }
+
+    /* Basic stroke dash animation used by flowchart link animation presets */
+    @keyframes dash { to { stroke-dashoffset: -1000; } }
+
+    /* Cluster (flowchart + sequence blocks) */
+    .cluster-bg { fill: #ffffde; }
+    .cluster-border { fill: none; stroke: #aaaa33; stroke-width: 1px; }
+    .cluster-title-bg { fill: rgba(255,255,255,0.8); }
+    .cluster-label-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Notes */
+    .note { fill: #fff5ad; stroke: #aaaa33; stroke-width: 1px; }
+    .note-text { fill: #333; font-family: Arial, sans-serif; font-size: 12px; }
+
+    /* Sequence-specific add-ons (safe for flowcharts too) */
+    .actor-rect { fill: #eaeaea; stroke: #666; stroke-width: 1.5px; }
+    .actor-label { fill: #111; font-family: Arial, sans-serif; font-size: 16px; }
+    .lifeline { stroke: #999; stroke-width: 1px; }
+    .activation { fill: #f4f4f4; stroke: #666; stroke-width: 1px; }
+    .msg-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+    .msg-line.dotted { stroke-dasharray: 2 2; }
+    .msg-line.thick { stroke-width: 3px; }
+    .openhead { fill: none; stroke: #333; stroke-width: 1.5px; }
+    .crosshead path { stroke: #333; stroke-width: 1.5px; }
+    .msg-label { fill: #333; font-family: Arial, sans-serif; font-size: 12px; dominant-baseline: middle; }
+    .msg-label-bg { fill: #ffffff; stroke: #cccccc; stroke-width: 1px; rx: 3; }
+
+    /* State overlays */
+    .lane-divider { stroke: #aaaaaa; stroke-width: 1px; stroke-dasharray: 4 3; }
+    .end-double { stroke: #3f3f3f; stroke-width: 1px; fill: none; }
+  
+    .class-title { font-weight: 600; }
+    .class-divider { stroke: #aaa; stroke-width: 1; }
+    .class-member { font-size: 12px; }
+  </style>
+  <g transform="translate(20,20)">
+    <rect class="node-shape" width="222" height="36" rx="0"/>
+    <text class="node-label class-title" x="111" y="22" text-anchor="middle" dominant-baseline="middle">InMemoryStorageAdapter</text>
+  </g>
+  <g transform="translate(328,106)">
+    <rect class="node-shape" width="150" height="36" rx="0"/>
+    <text class="node-label class-title" x="75" y="22" text-anchor="middle" dominant-baseline="middle">StorageAdapter</text>
+  </g>
+  <g transform="translate(292,20)">
+    <rect class="node-shape" width="222" height="36" rx="0"/>
+    <text class="node-label class-title" x="111" y="22" text-anchor="middle" dominant-baseline="middle">PostgresStorageAdapter</text>
+  </g>
+  <g transform="translate(564,20)">
+    <rect class="node-shape" width="132" height="36" rx="0"/>
+    <text class="node-label class-title" x="66" y="22" text-anchor="middle" dominant-baseline="middle">CustomLogger</text>
+  </g>
+  <g transform="translate(744.5,106)">
+    <rect class="node-shape" width="123" height="36" rx="0"/>
+    <text class="node-label class-title" x="61.5" y="22" text-anchor="middle" dominant-baseline="middle">HookManager</text>
+  </g>
+  <g transform="translate(746,20)">
+    <rect class="node-shape" width="120" height="36" rx="0"/>
+    <text class="node-label class-title" x="60" y="22" text-anchor="middle" dominant-baseline="middle">ProbeAgent</text>
+  </g>
+<polyline class="edge-path edge-path" points="131,56 131,81 328,112.14338235294117" fill="none"/>
+<text class="edge-label-text" x="131" y="71" text-anchor="middle"><tspan x="131" dy="0">implements</tspan></text>
+<polyline class="edge-path edge-path" points="403,56 403,81 403,106" fill="none"/>
+<text class="edge-label-text" x="403" y="71" text-anchor="middle"><tspan x="403" dy="0">implements</tspan></text>
+<polyline class="edge-path edge-path" points="630,56 630,81 744.5,108.97443181818181" fill="none"/>
+<text class="edge-label-text" x="630" y="71" text-anchor="middle"><tspan x="630" dy="0">subscribes to</tspan></text>
+<polyline class="edge-path edge-path" points="746,46.9119170984456 516.5,81 450.51162790697674,106" fill="none"/>
+<text class="edge-label-text" x="516.5" y="71" text-anchor="middle"><tspan x="516.5" dy="0">uses</tspan></text>
+<polyline class="edge-path edge-path" points="806,56 806,81 806,106" fill="none"/>
+<text class="edge-label-text" x="806" y="71" text-anchor="middle"><tspan x="806" dy="0">uses</tspan></text>
 </svg>
