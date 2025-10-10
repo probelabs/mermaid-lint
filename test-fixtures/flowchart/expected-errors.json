@@ -61,5 +61,9 @@
   ],
   "wrong-direction.mmd": [
     "FL-DIR-INVALID"
+  ],
+  "link-one-sided-marker.mmd": [
+    "FL-LINK-UNSUPPORTED-MARKER",
+    "FL-LINK-UNSUPPORTED-MARKER"
   ]
 }
