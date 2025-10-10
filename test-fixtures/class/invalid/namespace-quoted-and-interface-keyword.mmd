@@ -1,0 +1,15 @@
+classDiagram
+    title ProbeAgent Architecture
+
+    namespace "ProbeAgent Core" {
+        class ProbeAgent
+    }
+
+    namespace "Pluggable Modules" {
+        interface StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+        }
+    }
+
+    ProbeAgent ..> StorageAdapter : uses

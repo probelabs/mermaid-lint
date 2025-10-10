@@ -15,20 +15,19 @@ This file contains all valid class test fixtures rendered with both Mermaid and 
 
 1. [alias and stereotype](#1-alias-and-stereotype)
 2. [inline members and attrs](#2-inline-members-and-attrs)
-3. [interface example](#3-interface-example)
-4. [member without name](#4-member-without-name)
-5. [members inline](#5-members-inline)
-6. [namespace and title](#6-namespace-and-title)
-7. [namespace only](#7-namespace-only)
-8. [notes on class](#8-notes-on-class)
-9. [relations advanced](#9-relations-advanced)
-10. [relations all](#10-relations-all)
-11. [relations dual end labels](#11-relations-dual-end-labels)
-12. [relations dual end steep](#12-relations-dual-end-steep)
-13. [relations leftward](#13-relations-leftward)
-14. [simple](#14-simple)
-15. [stereotype and alias](#15-stereotype-and-alias)
-16. [title only](#16-title-only)
+3. [member without name](#3-member-without-name)
+4. [members inline](#4-members-inline)
+5. [namespace and title](#5-namespace-and-title)
+6. [namespace only](#6-namespace-only)
+7. [notes on class](#7-notes-on-class)
+8. [relations advanced](#8-relations-advanced)
+9. [relations all](#9-relations-all)
+10. [relations dual end labels](#10-relations-dual-end-labels)
+11. [relations dual end steep](#11-relations-dual-end-steep)
+12. [relations leftward](#12-relations-leftward)
+13. [simple](#13-simple)
+14. [stereotype and alias](#14-stereotype-and-alias)
+15. [title only](#15-title-only)
 
 ---
 
@@ -130,76 +129,7 @@ class User {
 
 ---
 
-## 3. Interface Example
-
-📄 **Source**: [`interface-example.mmd`](./valid/interface-example.mmd)
-
-### Rendered Output
-
-<table>
-<tr>
-<th width="50%">Mermaid (Official)</th>
-<th width="50%">Maid (Experimental)</th>
-</tr>
-<tr>
-<td>
-
-```mermaid
-classDiagram
-    interface Animal {
-        +String name
-        +makeSound()
-    }
-
-    class Dog {
-        +bark()
-    }
-
-    class Cat {
-        +meow()
-    }
-
-    Dog --|> Animal
-    Cat --|> Animal
-
-```
-
-</td>
-<td>
-
-<img src="./rendered/interface-example.svg" alt="Maid Rendered Diagram" />
-
-</td>
-</tr>
-</table>
-
-<details>
-<summary>View source code</summary>
-
-```
-classDiagram
-    interface Animal {
-        +String name
-        +makeSound()
-    }
-
-    class Dog {
-        +bark()
-    }
-
-    class Cat {
-        +meow()
-    }
-
-    Dog --|> Animal
-    Cat --|> Animal
-
-```
-</details>
-
----
-
-## 4. Member Without Name
+## 3. Member Without Name
 
 📄 **Source**: [`member-without-name.mmd`](./valid/member-without-name.mmd)
 
@@ -246,7 +176,7 @@ class Foo {
 
 ---
 
-## 5. Members Inline
+## 4. Members Inline
 
 📄 **Source**: [`members-inline.mmd`](./valid/members-inline.mmd)
 
@@ -293,7 +223,7 @@ class User {
 
 ---
 
-## 6. Namespace And Title
+## 5. Namespace And Title
 
 📄 **Source**: [`namespace-and-title.mmd`](./valid/namespace-and-title.mmd)
 
@@ -311,27 +241,28 @@ class User {
 classDiagram
     title ProbeAgent Architecture with Pluggable Components
 
-    namespace "ProbeAgent Core" {
+    namespace ProbeAgentCore {
         class ProbeAgent
     }
 
-    namespace "Pluggable Modules" {
-        interface StorageAdapter {
+    namespace PluggableModules {
+        class StorageAdapter {
             +loadHistory()
             +saveMessage()
             +clearHistory()
         }
+        <<interface>> StorageAdapter
         class HookManager {
             +on()
             +emit()
         }
     }
 
-    namespace "Default Implementations" {
+    namespace DefaultImplementations {
         class InMemoryStorageAdapter
     }
 
-    namespace "Custom Implementations (Examples)" {
+    namespace CustomImplementationsExamples {
         class PostgresStorageAdapter
         class CustomLogger
     }
@@ -360,27 +291,28 @@ classDiagram
 classDiagram
     title ProbeAgent Architecture with Pluggable Components
 
-    namespace "ProbeAgent Core" {
+    namespace ProbeAgentCore {
         class ProbeAgent
     }
 
-    namespace "Pluggable Modules" {
-        interface StorageAdapter {
+    namespace PluggableModules {
+        class StorageAdapter {
             +loadHistory()
             +saveMessage()
             +clearHistory()
         }
+        <<interface>> StorageAdapter
         class HookManager {
             +on()
             +emit()
         }
     }
 
-    namespace "Default Implementations" {
+    namespace DefaultImplementations {
         class InMemoryStorageAdapter
     }
 
-    namespace "Custom Implementations (Examples)" {
+    namespace CustomImplementationsExamples {
         class PostgresStorageAdapter
         class CustomLogger
     }
@@ -396,7 +328,7 @@ classDiagram
 
 ---
 
-## 7. Namespace Only
+## 6. Namespace Only
 
 📄 **Source**: [`namespace-only.mmd`](./valid/namespace-only.mmd)
 
@@ -412,7 +344,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    namespace "Core Classes" {
+    namespace CoreClasses {
         class Engine
         class Wheel
     }
@@ -441,7 +373,7 @@ classDiagram
 
 ```
 classDiagram
-    namespace "Core Classes" {
+    namespace CoreClasses {
         class Engine
         class Wheel
     }
@@ -459,7 +391,7 @@ classDiagram
 
 ---
 
-## 8. Notes On Class
+## 7. Notes On Class
 
 📄 **Source**: [`notes-on-class.mmd`](./valid/notes-on-class.mmd)
 
@@ -508,7 +440,7 @@ note for Customer "Preferred"
 
 ---
 
-## 9. Relations Advanced
+## 8. Relations Advanced
 
 📄 **Source**: [`relations-advanced.mmd`](./valid/relations-advanced.mmd)
 
@@ -587,7 +519,7 @@ Client ..|> IService
 
 ---
 
-## 10. Relations All
+## 9. Relations All
 
 📄 **Source**: [`relations-all.mmd`](./valid/relations-all.mmd)
 
@@ -648,7 +580,7 @@ A ..|> B : realizes
 
 ---
 
-## 11. Relations Dual End Labels
+## 10. Relations Dual End Labels
 
 📄 **Source**: [`relations-dual-end-labels.mmd`](./valid/relations-dual-end-labels.mmd)
 
@@ -703,7 +635,7 @@ classDiagram
 
 ---
 
-## 12. Relations Dual End Steep
+## 11. Relations Dual End Steep
 
 📄 **Source**: [`relations-dual-end-steep.mmd`](./valid/relations-dual-end-steep.mmd)
 
@@ -750,7 +682,7 @@ classDiagram
 
 ---
 
-## 13. Relations Leftward
+## 12. Relations Leftward
 
 📄 **Source**: [`relations-leftward.mmd`](./valid/relations-leftward.mmd)
 
@@ -811,7 +743,7 @@ IService <|.. Impl
 
 ---
 
-## 14. Simple
+## 13. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -864,7 +796,7 @@ class Bar
 
 ---
 
-## 15. Stereotype And Alias
+## 14. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 
@@ -921,7 +853,7 @@ ServiceInterface ..|> Service : implements
 
 ---
 
-## 16. Title Only
+## 15. Title Only
 
 📄 **Source**: [`title-only.mmd`](./valid/title-only.mmd)
 

@@ -30,17 +30,34 @@ export function validateClass(text: string, _options: ValidateOptions = {}): Val
             length: (b.image?.length ?? 1)
           });
         }
-        // CL-INTERFACE-NAME-DOUBLE-QUOTED: interface followed by QuotedString
-        if (a.tokenType === t.InterfaceKw && b.tokenType === t.QuotedString) {
+        // CL-NAMESPACE-NAME-QUOTED: namespace followed by QuotedString
+        if (a.tokenType === t.NamespaceKw && b.tokenType === t.QuotedString) {
           errs.push({
             line: b.startLine ?? 1,
             column: b.startColumn ?? 1,
             severity: 'error',
-            code: 'CL-INTERFACE-NAME-DOUBLE-QUOTED',
-            message: 'Double-quoted interface name is not supported. Use backticks for names with spaces/punctuation, or use a label.',
-            hint: 'Example: interface `IStorage Adapter` as ISA  or  interface ISA["IStorage Adapter"]',
+            code: 'CL-NAMESPACE-NAME-QUOTED',
+            message: 'Quoted namespace names are not supported by mermaid.js. Use an unquoted identifier.',
+            hint: 'Change: namespace "ProbeAgent Core" { ... } → namespace ProbeAgentCore { ... }',
             length: (b.image?.length ?? 1)
           });
+        }
+        // CL-INTERFACE-KEYWORD-UNSUPPORTED: interface keyword not supported by mermaid.js
+        // Only error if it's actually the interface keyword, not inside <<interface>> annotation
+        if (a.tokenType === t.InterfaceKw) {
+          // Check if previous token was <<
+          const prevToken = i > 0 ? tokList[i - 1] : null;
+          if (!prevToken || prevToken.tokenType !== t.LTlt) {
+            errs.push({
+              line: a.startLine ?? 1,
+              column: a.startColumn ?? 1,
+              severity: 'error',
+              code: 'CL-INTERFACE-KEYWORD-UNSUPPORTED',
+              message: 'The "interface" keyword is not supported by mermaid.js. Use the <<interface>> annotation instead.',
+              hint: 'Auto-fix converts to "class". Then manually add: <<interface>> ClassName after the class definition',
+              length: (a.image?.length ?? 9)
+            });
+          }
         }
       }
       // CL-REL-INVALID via InvalidRelArrow token

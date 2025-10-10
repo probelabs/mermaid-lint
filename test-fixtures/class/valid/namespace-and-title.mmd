@@ -1,12 +1,12 @@
 classDiagram
     title ProbeAgent Architecture with Pluggable Components
 
-    namespace "ProbeAgent Core" {
+    namespace ProbeAgentCore {
         class ProbeAgent
     }
 
-    namespace "Pluggable Modules" {
-        interface StorageAdapter {
+    namespace PluggableModules {
+        class StorageAdapter {
             +loadHistory()
             +saveMessage()
             +clearHistory()
@@ -17,11 +17,11 @@ classDiagram
         }
     }
 
-    namespace "Default Implementations" {
+    namespace DefaultImplementations {
         class InMemoryStorageAdapter
     }
 
-    namespace "Custom Implementations (Examples)" {
+    namespace CustomImplementationsExamples {
         class PostgresStorageAdapter
         class CustomLogger
     }

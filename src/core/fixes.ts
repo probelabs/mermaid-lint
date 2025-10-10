@@ -111,33 +111,33 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-    if (is('CL-INTERFACE-NAME-DOUBLE-QUOTED', e)) {
-      // Same transform as class:
-      // - If alias present: interface "Label" as ID  => interface ID["Label"]
-      // - Else: interface "Label" => interface `Label`
+    if (is('CL-NAMESPACE-NAME-QUOTED', e)) {
+      // Remove quotes from namespace name and convert to identifier
+      // namespace "ProbeAgent Core" { } => namespace ProbeAgentCore { }
       const lineText = lineTextAt(text, e.line);
-      const kwIdx = lineText.indexOf('interface');
-      const startSearch = kwIdx >= 0 ? kwIdx + 9 : 0;
+      const nsIdx = lineText.indexOf('namespace');
+      const startSearch = nsIdx >= 0 ? nsIdx + 9 : 0;
       const q1 = lineText.indexOf('"', startSearch);
       if (q1 !== -1) {
-        const asIdx = lineText.indexOf(' as ', q1 + 1);
-        const q2 = asIdx !== -1 ? lineText.lastIndexOf('"', asIdx - 1) : lineText.lastIndexOf('"');
+        const q2 = lineText.indexOf('"', q1 + 1);
         if (q2 > q1) {
-          if (asIdx !== -1) {
-            // Extract label text and build a double-quoted label with &quot; for inner quotes
-            const innerLbl = lineText.slice(q1 + 1, q2);
-            const dblQuoted = '"' + innerLbl.replace(/\"/g, '"').replace(/"/g, '&quot;') + '"';
-            // Build: interface <alias>["..."] (remove the quoted name and 'as')
-            const alias = lineText.slice(asIdx + 4).trim();
-            const before = lineText.slice(0, startSearch).trimEnd();
-            const newLine = `${before} ${alias}[${dblQuoted}]`;
-            edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
-          } else {
-            // No alias: switch to backticks around name
-            edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, 1, '`'));
-            edits.push(replaceRange(text, { line: e.line, column: q2 + 1 }, 1, '`'));
-          }
+          // Extract the namespace name and remove spaces/special chars to make valid identifier
+          const namespaceName = lineText.slice(q1 + 1, q2);
+          const validIdentifier = namespaceName.replace(/[^A-Za-z0-9_]/g, '');
+          // Replace the quoted string with the unquoted identifier
+          edits.push(replaceRange(text, { line: e.line, column: q1 + 1 }, q2 - q1 + 1, validIdentifier));
         }
+      }
+      continue;
+    }
+    if (is('CL-INTERFACE-KEYWORD-UNSUPPORTED', e)) {
+      // Simple transform: interface Foo => class Foo (let user add <<interface>> annotation manually or use mermaid.js default)
+      // For now, just change the keyword - the annotation placement is complex and version-dependent
+      const lineText = lineTextAt(text, e.line);
+      const ifIdx = lineText.indexOf('interface');
+      if (ifIdx !== -1) {
+        // Just replace 'interface' with 'class'
+        edits.push(replaceRange(text, { line: e.line, column: ifIdx + 1 }, 9, 'class'));
       }
       continue;
     }
