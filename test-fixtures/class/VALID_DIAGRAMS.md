@@ -15,16 +15,20 @@ This file contains all valid class test fixtures rendered with both Mermaid and 
 
 1. [alias and stereotype](#1-alias-and-stereotype)
 2. [inline members and attrs](#2-inline-members-and-attrs)
-3. [member without name](#3-member-without-name)
-4. [members inline](#4-members-inline)
-5. [notes on class](#5-notes-on-class)
-6. [relations advanced](#6-relations-advanced)
-7. [relations all](#7-relations-all)
-8. [relations dual end labels](#8-relations-dual-end-labels)
-9. [relations dual end steep](#9-relations-dual-end-steep)
-10. [relations leftward](#10-relations-leftward)
-11. [simple](#11-simple)
-12. [stereotype and alias](#12-stereotype-and-alias)
+3. [interface example](#3-interface-example)
+4. [member without name](#4-member-without-name)
+5. [members inline](#5-members-inline)
+6. [namespace and title](#6-namespace-and-title)
+7. [namespace only](#7-namespace-only)
+8. [notes on class](#8-notes-on-class)
+9. [relations advanced](#9-relations-advanced)
+10. [relations all](#10-relations-all)
+11. [relations dual end labels](#11-relations-dual-end-labels)
+12. [relations dual end steep](#12-relations-dual-end-steep)
+13. [relations leftward](#13-relations-leftward)
+14. [simple](#14-simple)
+15. [stereotype and alias](#15-stereotype-and-alias)
+16. [title only](#16-title-only)
 
 ---
 
@@ -126,7 +130,76 @@ class User {
 
 ---
 
-## 3. Member Without Name
+## 3. Interface Example
+
+📄 **Source**: [`interface-example.mmd`](./valid/interface-example.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+classDiagram
+    interface Animal {
+        +String name
+        +makeSound()
+    }
+
+    class Dog {
+        +bark()
+    }
+
+    class Cat {
+        +meow()
+    }
+
+    Dog --|> Animal
+    Cat --|> Animal
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/interface-example.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    interface Animal {
+        +String name
+        +makeSound()
+    }
+
+    class Dog {
+        +bark()
+    }
+
+    class Cat {
+        +meow()
+    }
+
+    Dog --|> Animal
+    Cat --|> Animal
+
+```
+</details>
+
+---
+
+## 4. Member Without Name
 
 📄 **Source**: [`member-without-name.mmd`](./valid/member-without-name.mmd)
 
@@ -173,7 +246,7 @@ class Foo {
 
 ---
 
-## 4. Members Inline
+## 5. Members Inline
 
 📄 **Source**: [`members-inline.mmd`](./valid/members-inline.mmd)
 
@@ -220,7 +293,173 @@ class User {
 
 ---
 
-## 5. Notes On Class
+## 6. Namespace And Title
+
+📄 **Source**: [`namespace-and-title.mmd`](./valid/namespace-and-title.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+classDiagram
+    title ProbeAgent Architecture with Pluggable Components
+
+    namespace "ProbeAgent Core" {
+        class ProbeAgent
+    }
+
+    namespace "Pluggable Modules" {
+        interface StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+            +clearHistory()
+        }
+        class HookManager {
+            +on()
+            +emit()
+        }
+    }
+
+    namespace "Default Implementations" {
+        class InMemoryStorageAdapter
+    }
+
+    namespace "Custom Implementations (Examples)" {
+        class PostgresStorageAdapter
+        class CustomLogger
+    }
+
+    InMemoryStorageAdapter --|> StorageAdapter : implements
+    PostgresStorageAdapter --|> StorageAdapter : implements
+    CustomLogger -- HookManager : "subscribes to"
+    ProbeAgent ..> StorageAdapter : uses
+    ProbeAgent ..> HookManager : uses
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/namespace-and-title.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    title ProbeAgent Architecture with Pluggable Components
+
+    namespace "ProbeAgent Core" {
+        class ProbeAgent
+    }
+
+    namespace "Pluggable Modules" {
+        interface StorageAdapter {
+            +loadHistory()
+            +saveMessage()
+            +clearHistory()
+        }
+        class HookManager {
+            +on()
+            +emit()
+        }
+    }
+
+    namespace "Default Implementations" {
+        class InMemoryStorageAdapter
+    }
+
+    namespace "Custom Implementations (Examples)" {
+        class PostgresStorageAdapter
+        class CustomLogger
+    }
+
+    InMemoryStorageAdapter --|> StorageAdapter : implements
+    PostgresStorageAdapter --|> StorageAdapter : implements
+    CustomLogger -- HookManager : "subscribes to"
+    ProbeAgent ..> StorageAdapter : uses
+    ProbeAgent ..> HookManager : uses
+
+```
+</details>
+
+---
+
+## 7. Namespace Only
+
+📄 **Source**: [`namespace-only.mmd`](./valid/namespace-only.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+    }
+
+    namespace Components {
+        class Sensor
+        class Display
+    }
+
+    Engine -- Wheel
+    Sensor ..> Display
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/namespace-only.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+    }
+
+    namespace Components {
+        class Sensor
+        class Display
+    }
+
+    Engine -- Wheel
+    Sensor ..> Display
+
+```
+</details>
+
+---
+
+## 8. Notes On Class
 
 📄 **Source**: [`notes-on-class.mmd`](./valid/notes-on-class.mmd)
 
@@ -269,7 +508,7 @@ note for Customer "Preferred"
 
 ---
 
-## 6. Relations Advanced
+## 9. Relations Advanced
 
 📄 **Source**: [`relations-advanced.mmd`](./valid/relations-advanced.mmd)
 
@@ -348,7 +587,7 @@ Client ..|> IService
 
 ---
 
-## 7. Relations All
+## 10. Relations All
 
 📄 **Source**: [`relations-all.mmd`](./valid/relations-all.mmd)
 
@@ -409,7 +648,7 @@ A ..|> B : realizes
 
 ---
 
-## 8. Relations Dual End Labels
+## 11. Relations Dual End Labels
 
 📄 **Source**: [`relations-dual-end-labels.mmd`](./valid/relations-dual-end-labels.mmd)
 
@@ -464,7 +703,7 @@ classDiagram
 
 ---
 
-## 9. Relations Dual End Steep
+## 12. Relations Dual End Steep
 
 📄 **Source**: [`relations-dual-end-steep.mmd`](./valid/relations-dual-end-steep.mmd)
 
@@ -511,7 +750,7 @@ classDiagram
 
 ---
 
-## 10. Relations Leftward
+## 13. Relations Leftward
 
 📄 **Source**: [`relations-leftward.mmd`](./valid/relations-leftward.mmd)
 
@@ -572,7 +811,7 @@ IService <|.. Impl
 
 ---
 
-## 11. Simple
+## 14. Simple
 
 📄 **Source**: [`simple.mmd`](./valid/simple.mmd)
 
@@ -625,7 +864,7 @@ class Bar
 
 ---
 
-## 12. Stereotype And Alias
+## 15. Stereotype And Alias
 
 📄 **Source**: [`stereotype-and-alias.mmd`](./valid/stereotype-and-alias.mmd)
 
@@ -676,6 +915,59 @@ class Service {
   +doWork(task: string): void
 }
 ServiceInterface ..|> Service : implements
+
+```
+</details>
+
+---
+
+## 16. Title Only
+
+📄 **Source**: [`title-only.mmd`](./valid/title-only.mmd)
+
+### Rendered Output
+
+<table>
+<tr>
+<th width="50%">Mermaid (Official)</th>
+<th width="50%">Maid (Experimental)</th>
+</tr>
+<tr>
+<td>
+
+```mermaid
+classDiagram
+    title Simple Class Diagram
+
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
+
+```
+
+</td>
+<td>
+
+<img src="./rendered/title-only.svg" alt="Maid Rendered Diagram" />
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    title Simple Class Diagram
+
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
 
 ```
 </details>

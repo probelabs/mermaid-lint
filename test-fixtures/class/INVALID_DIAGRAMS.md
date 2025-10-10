@@ -10,10 +10,13 @@ This file contains invalid class test fixtures with:
 ## Table of Contents
 
 1. [Generics And Types](#1-generics-and-types)
-2. [Invalid Relation](#2-invalid-relation)
-3. [Missing Rbrace](#3-missing-rbrace)
-4. [Quoted Name Double In Double](#4-quoted-name-double-in-double)
-5. [Relation Missing Target](#5-relation-missing-target)
+2. [Interface Double Quoted With Alias](#2-interface-double-quoted-with-alias)
+3. [Interface Double Quoted](#3-interface-double-quoted)
+4. [Invalid Relation](#4-invalid-relation)
+5. [Missing Rbrace](#5-missing-rbrace)
+6. [Namespace Missing Rbrace](#6-namespace-missing-rbrace)
+7. [Quoted Name Double In Double](#7-quoted-name-double-in-double)
+8. [Relation Missing Target](#8-relation-missing-target)
 
 ---
 
@@ -22,10 +25,13 @@ This file contains invalid class test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [generics and types](#1-generics-and-types) | INVALID | INVALID | — |
-| 2 | [invalid relation](#2-invalid-relation) | INVALID | INVALID | ✅ safe |
-| 3 | [missing rbrace](#3-missing-rbrace) | INVALID | INVALID | ✅ safe |
-| 4 | [quoted name double in double](#4-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
-| 5 | [relation missing target](#5-relation-missing-target) | INVALID | INVALID | — |
+| 2 | [interface double quoted with alias](#2-interface-double-quoted-with-alias) | INVALID | INVALID | ❌ safe |
+| 3 | [interface double quoted](#3-interface-double-quoted) | INVALID | INVALID | ✅ safe |
+| 4 | [invalid relation](#4-invalid-relation) | INVALID | INVALID | ✅ safe |
+| 5 | [missing rbrace](#5-missing-rbrace) | INVALID | INVALID | ✅ safe |
+| 6 | [namespace missing rbrace](#6-namespace-missing-rbrace) | INVALID | INVALID | ❌ safe |
+| 7 | [quoted name double in double](#7-quoted-name-double-in-double) | INVALID | INVALID | ✅ safe |
+| 8 | [relation missing target](#8-relation-missing-target) | INVALID | INVALID | — |
 
 ---
 
@@ -120,7 +126,147 @@ Tree : root: Node<string>
 
 ---
 
-## 2. Invalid Relation
+## 2. Interface Double Quoted With Alias
+
+📄 **Source**: [`interface-double-quoted-with-alias.mmd`](./invalid/interface-double-quoted-with-alias.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+    interface "IStorage Adapter" as ISA
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+... "IStorage Adapter" as ISA
+-----------------------^
+Expecting 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', got 'ALPHA'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[CL-INTERFACE-NAME-DOUBLE-QUOTED]: Double-quoted interface name is not supported. Use backticks for names with spaces/punctuation, or use a label.
+at test-fixtures/class/invalid/interface-double-quoted-with-alias.mmd:2:15
+  1 | classDiagram
+  2 |     interface "IStorage Adapter" as ISA
+    |               ^^^^^^^^^^^^^^^^^^
+  3 | 
+hint: Example: interface `IStorage Adapter` as ISA  or  interface ISA["IStorage Adapter"]
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+    interface ISA["IStorage Adapter"]
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    interface "IStorage Adapter" as ISA
+
+```
+</details>
+
+---
+
+## 3. Interface Double Quoted
+
+📄 **Source**: [`interface-double-quoted.mmd`](./invalid/interface-double-quoted.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+    interface "IStorage Adapter"
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+...e "IStorage Adapter"
+-----------------------^
+Expecting 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', got 'NEWLINE'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[CL-INTERFACE-NAME-DOUBLE-QUOTED]: Double-quoted interface name is not supported. Use backticks for names with spaces/punctuation, or use a label.
+at test-fixtures/class/invalid/interface-double-quoted.mmd:2:15
+  1 | classDiagram
+  2 |     interface "IStorage Adapter"
+    |               ^^^^^^^^^^^^^^^^^^
+  3 | 
+hint: Example: interface `IStorage Adapter` as ISA  or  interface ISA["IStorage Adapter"]
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+    interface `IStorage Adapter`
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    interface "IStorage Adapter"
+
+```
+</details>
+
+---
+
+## 4. Invalid Relation
 
 📄 **Source**: [`invalid-relation.mmd`](./invalid/invalid-relation.mmd)
 
@@ -193,7 +339,7 @@ Foo -> Bar : wrong arrow
 
 ---
 
-## 3. Missing Rbrace
+## 5. Missing Rbrace
 
 📄 **Source**: [`missing-rbrace.mmd`](./invalid/missing-rbrace.mmd)
 
@@ -270,7 +416,89 @@ class Foo {
 
 ---
 
-## 4. Quoted Name Double In Double
+## 6. Namespace Missing Rbrace
+
+📄 **Source**: [`namespace-missing-rbrace.mmd`](./invalid/namespace-missing-rbrace.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+
+    class Display
+
+```
+
+### mermaid-cli Result: INVALID
+
+```
+Error: Parse error on line 2:
+...gram    namespace "Core Classes" {    
+----------------------^
+Expecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:127920:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+### maid Result: INVALID
+
+```
+error[CL-NAMESPACE-MISSING-RBRACE]: Missing '}' to close namespace block.
+at test-fixtures/class/invalid/namespace-missing-rbrace.mmd:7:1
+  6 |     class Display
+  7 | 
+    | ^
+hint: Close the block: namespace "Name" { ... }
+```
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+
+    }
+    class Display
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+classDiagram
+    namespace "Core Classes" {
+        class Engine
+        class Wheel
+
+    class Display
+
+```
+</details>
+
+---
+
+## 7. Quoted Name Double In Double
 
 📄 **Source**: [`quoted-name-double-in-double.mmd`](./invalid/quoted-name-double-in-double.mmd)
 
@@ -343,7 +571,7 @@ class "Logger "core"" as L
 
 ---
 
-## 5. Relation Missing Target
+## 8. Relation Missing Target
 
 📄 **Source**: [`relation-missing-target.mmd`](./invalid/relation-missing-target.mmd)
 
