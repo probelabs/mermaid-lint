@@ -22,6 +22,7 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-DIR-INVALID | None | No change (ambiguous); suggests valid tokens. |
 | FL-DIR-KW-INVALID | Safe | Replace unknown keyword before direction with `direction`. |
 | FL-LINK-MISSING | All | Insert ` --> ` between two nodes on the same line. |
+| FL-META-UNSUPPORTED | All | Remove unsupported meta line (e.g., `title ...`) in flowchart. |
 | FL-NODE-UNCLOSED-BRACKET | All | Insert the best-guess closing bracket at caret. |
 | FL-NODE-MIXED-BRACKETS | Safe | Replace mismatched closer with correct one. |
 | FL-NODE-EMPTY | Safe | Remove empty square-bracket shapes (A[""] / A[" "] / A[]) and keep plain node id (A). |
@@ -188,6 +189,12 @@ Tip: quoting inside labels
   - Message: "'end' without a matching 'subgraph'."
   - Hint: "Remove this end or add a subgraph above."
 
+
+
+- FL-META-UNSUPPORTED
+  - When: A meta header like `title` appears in a flowchart.
+  - Message: "'title' is not supported in flowcharts by the current Mermaid CLI."
+  - Hint: "Use a Markdown heading above the code block, or draw a labeled node at the top (e.g., T["Dependency Relationship"])."
 ## Pie (PI-*)
 
 - PI-LABEL-REQUIRES-QUOTES
