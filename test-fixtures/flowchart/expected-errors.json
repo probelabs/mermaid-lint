@@ -68,5 +68,8 @@
   ],
   "title-unsupported.mmd": [
     "FL-META-UNSUPPORTED"
+  ],
+  "unquoted-parens-with-backticks.mmd": [
+    "FL-LABEL-PARENS-UNQUOTED"
   ]
 }

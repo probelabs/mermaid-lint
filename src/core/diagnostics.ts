@@ -271,7 +271,19 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
         if (openIdx !== -1) {
           const closeIdx = lineStr.indexOf(']', openIdx + 1);
           const seg = closeIdx !== -1 ? lineStr.slice(openIdx + 1, closeIdx) : lineStr.slice(openIdx + 1);
-          // If the segment contains '(' or ')' and is not already quoted as a whole, prefer FL-LABEL-PARENS-UNQUOTED
+          // If the segment contains quotes, prefer the quote-in-unquoted diagnostic
+          if (seg.includes('"')) {
+            return {
+              line,
+              column,
+              severity: 'error',
+              code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
+              message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
+              hint: 'Example: I[Log &quot;processing N items&quot;] or I["Log \\"processing N items\\""]',
+              length: len
+            };
+          }
+          // Otherwise if the segment contains '(' or ')', map to FL-LABEL-PARENS-UNQUOTED
           if ((seg.includes('(') || seg.includes(')'))) {
             return {
               line,
