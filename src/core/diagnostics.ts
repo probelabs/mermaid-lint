@@ -264,6 +264,27 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
         };
       }
 
+      // Heuristic: if there are parentheses inside an unquoted square-bracket label, map to targeted error
+      {
+        const caret0 = Math.max(0, column - 1);
+        const openIdx = lineStr.lastIndexOf('[', caret0);
+        if (openIdx !== -1) {
+          const closeIdx = lineStr.indexOf(']', openIdx + 1);
+          const seg = closeIdx !== -1 ? lineStr.slice(openIdx + 1, closeIdx) : lineStr.slice(openIdx + 1);
+          // If the segment contains '(' or ')' and is not already quoted as a whole, prefer FL-LABEL-PARENS-UNQUOTED
+          if ((seg.includes('(') || seg.includes(')'))) {
+            return {
+              line,
+              column,
+              severity: 'error',
+              code: 'FL-LABEL-PARENS-UNQUOTED',
+              message: 'Parentheses inside an unquoted label are not supported by Mermaid.',
+              hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.',
+              length: len
+            };
+          }
+        }
+      }
       // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
       if (tokType === 'QuotedString') {
         return {
