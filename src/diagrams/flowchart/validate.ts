@@ -34,7 +34,7 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
     postParse: (text, tokens, _cst, prevErrors) => {
       // Heuristic scan: quotes inside unquoted square-bracket labels even when parse failed earlier
       // This catches cases like: A[... "text" ...] alongside unrelated parse errors (e.g., subgraph title).
-      {
+      if (!(prevErrors || []).some((e: any) => e.code === 'FL-LABEL-QUOTE-IN-UNQUOTED')) {
         const tks = tokens as IToken[];
         for (let i = 0; i < tks.length; i++) {
           const t = tks[i];
@@ -45,11 +45,16 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
             while (j < tks.length) {
               const tt = tks[j];
               if (tt.tokenType?.name === 'SquareClose') break;
-              if (tt.tokenType?.name === 'QuotedString') { foundQuote = tt; break; }
+              if (tt.tokenType?.name === 'QuotedString' && typeof tt.image === 'string' && tt.image.startsWith('"')) { foundQuote = tt; break; }
               j++;
             }
             if (foundQuote) {
-              prevErrors.push({
+              const img = String(foundQuote.image || '');
+              const inner = img.startsWith('"') && img.endsWith('"') ? img.slice(1, -1) : img;
+              if (inner.trim().length === 0) { i = j; continue; }
+              const exists = (prevErrors || []).some((e: any) => e.code === 'FL-LABEL-QUOTE-IN-UNQUOTED' && e.line === (foundQuote.startLine ?? t.startLine ?? 1));
+              if (!exists) {
+                prevErrors.push({
                 line: foundQuote.startLine ?? t.startLine ?? 1,
                 column: foundQuote.startColumn ?? 1,
                 severity: 'error',
@@ -58,6 +63,7 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
                 hint: 'Example: I[Log &quot;processing N items&quot;] or I["Log \\"processing N items\\""]',
                 length: (foundQuote.image?.length ?? 1)
               } as ValidationError);
+              }
               // Skip to after this bracket to avoid duplicate reports
               i = j;
             }
