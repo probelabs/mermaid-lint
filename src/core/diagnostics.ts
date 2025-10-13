@@ -344,6 +344,26 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
           length: len
         };
       }
+      // Fallback: if parentheses appear inside an unquoted diamond label, prefer a targeted error
+      {
+        const caret0 = Math.max(0, column - 1);
+        const openIdx = lineStr.lastIndexOf('{', caret0);
+        if (openIdx !== -1) {
+          const closeIdx = lineStr.indexOf('}', openIdx + 1);
+          const seg = closeIdx !== -1 ? lineStr.slice(openIdx + 1, closeIdx) : lineStr.slice(openIdx + 1);
+          if (seg.includes('(') || seg.includes(')')) {
+            return {
+              line,
+              column,
+              severity: 'error',
+              code: 'FL-LABEL-PARENS-UNQUOTED',
+              message: 'Parentheses inside an unquoted label are not supported by Mermaid.',
+              hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.',
+              length: len
+            };
+          }
+        }
+      }
       // Try to recognize common quote issues inside decision labels and map them to clearer errors
       const q = findInnerQuoteIssue('{');
       if (q?.kind === 'escaped') {
