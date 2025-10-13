@@ -39,7 +39,8 @@ This file contains invalid flowchart test fixtures with:
 28. [Unmatched End](#28-unmatched-end)
 29. [Unquoted Label With Quotes](#29-unquoted-label-with-quotes)
 30. [Unquoted Parens In Labels](#30-unquoted-parens-in-labels)
-31. [Wrong Direction](#31-wrong-direction)
+31. [Unquoted Parens With Backticks](#31-unquoted-parens-with-backticks)
+32. [Wrong Direction](#32-wrong-direction)
 
 ---
 
@@ -77,7 +78,8 @@ This file contains invalid flowchart test fixtures with:
 | 28 | [unmatched end](#28-unmatched-end) | INVALID | INVALID | — |
 | 29 | [unquoted label with quotes](#29-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
 | 30 | [unquoted parens in labels](#30-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
-| 31 | [wrong direction](#31-wrong-direction) | INVALID | INVALID | — |
+| 31 | [unquoted parens with backticks](#31-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
+| 32 | [wrong direction](#32-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -3058,7 +3060,103 @@ flowchart TD
 
 ---
 
-## 31. Wrong Direction
+## 31. Unquoted Parens With Backticks
+
+📄 **Source**: [`unquoted-parens-with-backticks.mmd`](./invalid/unquoted-parens-with-backticks.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+  subgraph "Check Execution Flow"
+    G[JS Expressions (`fail_if`, `value_js`)] -- read via `memory` object --> C
+  end
+
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 3:
+...   G[JS Expressions (`fail_if`, `value_j
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PS'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/unquoted-parens-with-backticks.mmd:3:44
+  2 |   subgraph "Check Execution Flow"
+  3 |     G[JS Expressions (`fail_if`, `value_js`)] -- read via `memory` object --> C
+    |                                            ^^
+  4 |   end
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+  subgraph "Check Execution Flow"
+    G[JS Expressions &#40;fail_if, value_js&#41;] -- read via `memory` object --> C
+  end
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  subgraph "Check Execution Flow"
+    G[JS Expressions (`fail_if`, `value_js`)] -- read via `memory` object --> C
+  end
+
+
+```
+</details>
+
+---
+
+## 32. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
