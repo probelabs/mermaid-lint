@@ -72,9 +72,9 @@ const cases = [
     before: 'flowchart TD\n  B -- Yes --> D{"Is \\\"Driver\\\" AND \\\"AuthCheck.Path\\\" configured?"}\n'
   },
   {
-    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (wrap + encode)',
+    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (encode only)',
     before: 'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];\n',
-    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];\n'
+    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug(&quot;message&quot;, data)];\n'
   },
   {
     name: 'FL-QUOTE-UNCLOSED (all)',

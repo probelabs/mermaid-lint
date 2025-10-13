@@ -32,6 +32,38 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {
+      // Heuristic scan: quotes inside unquoted square-bracket labels even when parse failed earlier
+      // This catches cases like: A[... "text" ...] alongside unrelated parse errors (e.g., subgraph title).
+      {
+        const tks = tokens as IToken[];
+        for (let i = 0; i < tks.length; i++) {
+          const t = tks[i];
+          if (t.tokenType?.name === 'SquareOpen') {
+            const start = i;
+            let j = i + 1;
+            let foundQuote: IToken | null = null;
+            while (j < tks.length) {
+              const tt = tks[j];
+              if (tt.tokenType?.name === 'SquareClose') break;
+              if (tt.tokenType?.name === 'QuotedString') { foundQuote = tt; break; }
+              j++;
+            }
+            if (foundQuote) {
+              prevErrors.push({
+                line: foundQuote.startLine ?? t.startLine ?? 1,
+                column: foundQuote.startColumn ?? 1,
+                severity: 'error',
+                code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
+                message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
+                hint: 'Example: I[Log &quot;processing N items&quot;] or I["Log \\"processing N items\\""]',
+                length: (foundQuote.image?.length ?? 1)
+              } as ValidationError);
+              // Skip to after this bracket to avoid duplicate reports
+              i = j;
+            }
+          }
+        }
+      }
       // Flowchart: unsupported meta headers (title)
       {
         const tks = tokens as IToken[];
