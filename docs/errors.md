@@ -523,3 +523,7 @@ Severity note: By default, quoting issues in participant/actor names are warning
   - When: A typed shape in `@{ shape: … }` is recognized by Maid but not supported by current Mermaid CLI.
   - Message: "Typed shape 'X' is not supported by current Mermaid CLI."
   - Hint: "Use one of: rect, rounded, diamond, circle, cylinder, stadium, subroutine, \"lean-l\", \"lean-r\""
+- SE-BULLET-LINE-UNSUPPORTED
+  - When: A free-form line starts with '-' (bullet style) outside of a supported statement.
+  - Message: "Bullet list lines starting with '-' are not supported in sequence diagrams."
+  - Hint: "Wrap free-form text in a note block, for example:\n    Note over A : Item 1\n    Note over A\n      - Item 1\n      - Item 2\n    end note"

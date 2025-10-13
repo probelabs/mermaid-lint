@@ -730,6 +730,20 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     return { line, column, severity: 'error', code: 'SE-ARROW-INVALID', message: `Invalid sequence arrow near '${found}'.`, hint: 'Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>', length: len };
   }
 
+  // Bullet-like lines beginning with '-' are not supported by Mermaid sequence diagrams.
+  // Map a clear diagnostic when a stray '-' appears where a statement keyword is expected.
+  if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException') && tokType === 'Minus') {
+    return {
+      line,
+      column,
+      severity: 'error',
+      code: 'SE-BULLET-LINE-UNSUPPORTED',
+      message: "Bullet list lines starting with '-' are not supported in sequence diagrams.",
+      hint: "Wrap free‑form text in a note block instead, for example:\nNote over A : Item 1\nNote over A\n  - Item 1\n  - Item 2\nend note",
+      length: len
+    };
+  }
+
   // Note forms
   if (inRule('noteStmt')) {
     if (err.name === 'MismatchedTokenException' && exp('Colon')) {
@@ -880,6 +894,15 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     }
   }
 
+  // Bullet-like lines outside of any block: map generic redundant input to a targeted error.
+  if ((err.name === 'NotAllInputParsedException' || err.name === 'NoViableAltException') && found === '-') {
+    return {
+      line, column, severity: 'error', code: 'SE-BULLET-LINE-UNSUPPORTED',
+      message: "Bullet list lines starting with '-' are not supported in sequence diagrams.",
+      hint: "Wrap free‑form text in a note block, for example:\nNote over A : Item 1\nNote over A\n  - Item 1\n  - Item 2\nend note",
+      length: len
+    };
+  }
   // Block control keywords outside blocks
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'ElseKeyword') {
     return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Use: alt Condition … else … end', length: len };

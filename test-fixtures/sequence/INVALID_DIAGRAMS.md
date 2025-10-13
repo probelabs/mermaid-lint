@@ -19,21 +19,22 @@ This file contains invalid sequence test fixtures with:
 8. [Box With Messages And Alt](#8-box-with-messages-and-alt)
 9. [Box With Messages](#9-box-with-messages)
 10. [Box With Notes](#10-box-with-notes)
-11. [Create Malformed](#11-create-malformed)
-12. [Create Missing Name](#12-create-missing-name)
-13. [Critical Else](#13-critical-else)
-14. [Destroy Malformed](#14-destroy-malformed)
-15. [Details And Properties](#15-details-and-properties)
-16. [Else In Par Nested](#16-else-in-par-nested)
-17. [Else Outside Alt](#17-else-outside-alt)
-18. [Missing Colon](#18-missing-colon)
-19. [Note Malformed](#19-note-malformed)
-20. [Note Multiline Missing Colon](#20-note-multiline-missing-colon)
-21. [Option In Par](#21-option-in-par)
-22. [Option Outside Critical](#22-option-outside-critical)
-23. [Title And Accessibility](#23-title-and-accessibility)
-24. [Unmatched End](#24-unmatched-end)
-25. [Wrong Arrow](#25-wrong-arrow)
+11. [Bullet Dash Lines](#11-bullet-dash-lines)
+12. [Create Malformed](#12-create-malformed)
+13. [Create Missing Name](#13-create-missing-name)
+14. [Critical Else](#14-critical-else)
+15. [Destroy Malformed](#15-destroy-malformed)
+16. [Details And Properties](#16-details-and-properties)
+17. [Else In Par Nested](#17-else-in-par-nested)
+18. [Else Outside Alt](#18-else-outside-alt)
+19. [Missing Colon](#19-missing-colon)
+20. [Note Malformed](#20-note-malformed)
+21. [Note Multiline Missing Colon](#21-note-multiline-missing-colon)
+22. [Option In Par](#22-option-in-par)
+23. [Option Outside Critical](#23-option-outside-critical)
+24. [Title And Accessibility](#24-title-and-accessibility)
+25. [Unmatched End](#25-unmatched-end)
+26. [Wrong Arrow](#26-wrong-arrow)
 
 ---
 
@@ -51,21 +52,22 @@ This file contains invalid sequence test fixtures with:
 | 8 | [box with messages and alt](#8-box-with-messages-and-alt) | INVALID | INVALID | — |
 | 9 | [box with messages](#9-box-with-messages) | INVALID | INVALID | ✅ safe |
 | 10 | [box with notes](#10-box-with-notes) | INVALID | INVALID | ✅ safe |
-| 11 | [create malformed](#11-create-malformed) | INVALID | INVALID | — |
-| 12 | [create missing name](#12-create-missing-name) | INVALID | INVALID | — |
-| 13 | [critical else](#13-critical-else) | INVALID | INVALID | ✅ safe |
-| 14 | [destroy malformed](#14-destroy-malformed) | INVALID | INVALID | — |
-| 15 | [details and properties](#15-details-and-properties) | INVALID | INVALID | — |
-| 16 | [else in par nested](#16-else-in-par-nested) | INVALID | INVALID | — |
-| 17 | [else outside alt](#17-else-outside-alt) | INVALID | INVALID | — |
-| 18 | [missing colon](#18-missing-colon) | INVALID | INVALID | ✅ safe |
-| 19 | [note malformed](#19-note-malformed) | INVALID | INVALID | ✅ safe |
-| 20 | [note multiline missing colon](#20-note-multiline-missing-colon) | INVALID | INVALID | ✅ safe |
-| 21 | [option in par](#21-option-in-par) | INVALID | INVALID | — |
-| 22 | [option outside critical](#22-option-outside-critical) | INVALID | INVALID | — |
-| 23 | [title and accessibility](#23-title-and-accessibility) | INVALID | INVALID | — |
-| 24 | [unmatched end](#24-unmatched-end) | INVALID | INVALID | — |
-| 25 | [wrong arrow](#25-wrong-arrow) | INVALID | INVALID | — |
+| 11 | [bullet dash lines](#11-bullet-dash-lines) | INVALID | INVALID | — |
+| 12 | [create malformed](#12-create-malformed) | INVALID | INVALID | — |
+| 13 | [create missing name](#13-create-missing-name) | INVALID | INVALID | — |
+| 14 | [critical else](#14-critical-else) | INVALID | INVALID | ✅ safe |
+| 15 | [destroy malformed](#15-destroy-malformed) | INVALID | INVALID | — |
+| 16 | [details and properties](#16-details-and-properties) | INVALID | INVALID | — |
+| 17 | [else in par nested](#17-else-in-par-nested) | INVALID | INVALID | — |
+| 18 | [else outside alt](#18-else-outside-alt) | INVALID | INVALID | — |
+| 19 | [missing colon](#19-missing-colon) | INVALID | INVALID | ✅ safe |
+| 20 | [note malformed](#20-note-malformed) | INVALID | INVALID | ✅ safe |
+| 21 | [note multiline missing colon](#21-note-multiline-missing-colon) | INVALID | INVALID | ✅ safe |
+| 22 | [option in par](#22-option-in-par) | INVALID | INVALID | — |
+| 23 | [option outside critical](#23-option-outside-critical) | INVALID | INVALID | — |
+| 24 | [title and accessibility](#24-title-and-accessibility) | INVALID | INVALID | — |
+| 25 | [unmatched end](#25-unmatched-end) | INVALID | INVALID | — |
+| 26 | [wrong arrow](#26-wrong-arrow) | INVALID | INVALID | — |
 
 ---
 
@@ -1101,7 +1103,113 @@ sequenceDiagram
 
 ---
 
-## 11. Create Malformed
+## 11. Bullet Dash Lines
+
+📄 **Source**: [`bullet-dash-lines.mmd`](./invalid/bullet-dash-lines.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+sequenceDiagram
+  participant A
+  participant B
+
+  Note over A: Preparing content
+  A->>B: Send header
+  %% The following bullet-like lines are invalid in Mermaid sequence diagrams
+  - PR context
+  - Tool outputs
+  A->>B: Continue processing
+
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 7:
+...->>B: Send header  - PR context  - Too
+----------------------^
+Expecting 'SPACE', 'NEWLINE', 'create', 'box', 'end', 'autonumber', 'activate', 'deactivate', 'title', 'legacy_title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'loop', 'rect', 'opt', 'alt', 'par', 'par_over', 'critical', 'break', 'option', 'and', 'else', 'participant', 'participant_actor', 'destroy', 'note', 'links', 'link', 'properties', 'details', 'ACTOR', got '-'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:123898:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[SE-BULLET-LINE-UNSUPPORTED]: Bullet list lines starting with '-' are not supported in sequence diagrams.
+at test-fixtures/sequence/invalid/bullet-dash-lines.mmd:8:3
+   7 |   %% The following bullet-like lines are invalid in Mermaid sequence diagrams
+   8 |   - PR context
+     |   ^
+   9 |   - Tool outputs
+hint: Wrap free‑form text in a note block, for example:
+  Note over A : Item 1
+  Note over A
+    - Item 1
+    - Item 2
+  end note
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+sequenceDiagram
+  participant A
+  participant B
+
+  Note over A: Preparing content
+  A->>B: Send header
+  %% The following bullet-like lines are invalid in Mermaid sequence diagrams
+  - PR context
+  - Tool outputs
+  A->>B: Continue processing
+
+
+```
+</details>
+
+---
+
+## 12. Create Malformed
 
 📄 **Source**: [`create-malformed.mmd`](./invalid/create-malformed.mmd)
 
@@ -1192,7 +1300,7 @@ sequenceDiagram
 
 ---
 
-## 12. Create Missing Name
+## 13. Create Missing Name
 
 📄 **Source**: [`create-missing-name.mmd`](./invalid/create-missing-name.mmd)
 
@@ -1278,7 +1386,7 @@ sequenceDiagram
 
 ---
 
-## 13. Critical Else
+## 14. Critical Else
 
 📄 **Source**: [`critical-else.mmd`](./invalid/critical-else.mmd)
 
@@ -1390,7 +1498,7 @@ sequenceDiagram
 
 ---
 
-## 14. Destroy Malformed
+## 15. Destroy Malformed
 
 📄 **Source**: [`destroy-malformed.mmd`](./invalid/destroy-malformed.mmd)
 
@@ -1479,7 +1587,7 @@ sequenceDiagram
 
 ---
 
-## 15. Details And Properties
+## 16. Details And Properties
 
 📄 **Source**: [`details-and-properties.mmd`](./invalid/details-and-properties.mmd)
 
@@ -1590,7 +1698,7 @@ sequenceDiagram
 
 ---
 
-## 16. Else In Par Nested
+## 17. Else In Par Nested
 
 📄 **Source**: [`else-in-par-nested.mmd`](./invalid/else-in-par-nested.mmd)
 
@@ -1695,7 +1803,7 @@ sequenceDiagram
 
 ---
 
-## 17. Else Outside Alt
+## 18. Else Outside Alt
 
 📄 **Source**: [`else-outside-alt.mmd`](./invalid/else-outside-alt.mmd)
 
@@ -1784,7 +1892,7 @@ sequenceDiagram
 
 ---
 
-## 18. Missing Colon
+## 19. Missing Colon
 
 📄 **Source**: [`missing-colon.mmd`](./invalid/missing-colon.mmd)
 
@@ -1880,7 +1988,7 @@ sequenceDiagram
 
 ---
 
-## 19. Note Malformed
+## 20. Note Malformed
 
 📄 **Source**: [`note-malformed.mmd`](./invalid/note-malformed.mmd)
 
@@ -1976,7 +2084,7 @@ sequenceDiagram
 
 ---
 
-## 20. Note Multiline Missing Colon
+## 21. Note Multiline Missing Colon
 
 📄 **Source**: [`note-multiline-missing-colon.mmd`](./invalid/note-multiline-missing-colon.mmd)
 
@@ -2092,7 +2200,7 @@ sequenceDiagram
 
 ---
 
-## 21. Option In Par
+## 22. Option In Par
 
 📄 **Source**: [`option-in-par.mmd`](./invalid/option-in-par.mmd)
 
@@ -2189,7 +2297,7 @@ sequenceDiagram
 
 ---
 
-## 22. Option Outside Critical
+## 23. Option Outside Critical
 
 📄 **Source**: [`option-outside-critical.mmd`](./invalid/option-outside-critical.mmd)
 
@@ -2281,7 +2389,7 @@ sequenceDiagram
 
 ---
 
-## 23. Title And Accessibility
+## 24. Title And Accessibility
 
 📄 **Source**: [`title-and-accessibility.mmd`](./invalid/title-and-accessibility.mmd)
 
@@ -2392,7 +2500,7 @@ sequenceDiagram
 
 ---
 
-## 24. Unmatched End
+## 25. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -2481,7 +2589,7 @@ sequenceDiagram
 
 ---
 
-## 25. Wrong Arrow
+## 26. Wrong Arrow
 
 📄 **Source**: [`wrong-arrow.mmd`](./invalid/wrong-arrow.mmd)
 

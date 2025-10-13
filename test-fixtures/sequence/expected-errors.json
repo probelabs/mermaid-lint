@@ -77,5 +77,8 @@
   ],
   "box-with-messages-and-alt.mmd": [
     "SE-BOX-EMPTY"
+  ],
+  "bullet-dash-lines.mmd": [
+    "SE-BULLET-LINE-UNSUPPORTED"
   ]
 }
