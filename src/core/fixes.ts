@@ -245,6 +245,15 @@ if (is('FL-LABEL-BACKTICK', e)) {
       continue;
     }
 
+    // Flowchart: unmatched 'end' without a subgraph — remove the stray line (all-level fix)
+    if (is('FL-END-WITHOUT-SUBGRAPH', e)) {
+      if (level === 'all') {
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
+      }
+      continue;
+    }
+
+    // Flowchart: unmatched 'end' without a subgraph — remove the stray line (all-level fix)
     // Flowchart: fix inner quotes inside a double-quoted label within shapes ([], (), {}, [[ ]], (( ))).
     if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {
       const lineText = lineTextAt(text, e.line);

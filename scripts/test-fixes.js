@@ -151,6 +151,12 @@ const cases = [
   },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },
+  {
+    name: 'FL-END-WITHOUT-SUBGRAPH (all)',
+    before: 'flowchart TD\n    A-->B\nend\n',
+    after:  'flowchart TD\n    A-->B\n',
+    afterLevel: 'all'
+  },
   // Sequence
   { name: 'SE-MSG-COLON-MISSING', before: 'sequenceDiagram\nA->B hi\n', after: 'sequenceDiagram\nA->B : hi\n' },
   { name: 'SE-NOTE-MALFORMED', before: 'sequenceDiagram\nNote right of A Hello\n', after: 'sequenceDiagram\nNote right of A : Hello\n' },
