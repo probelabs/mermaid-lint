@@ -71,5 +71,8 @@
   ],
   "unquoted-parens-with-backticks.mmd": [
     "FL-LABEL-PARENS-UNQUOTED"
+  ],
+  "diamond-parens-unquoted.mmd": [
+    "FL-LABEL-PARENS-UNQUOTED"
   ]
 }
