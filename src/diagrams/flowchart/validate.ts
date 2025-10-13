@@ -32,6 +32,7 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       return errs;
     },
     postParse: (text, tokens, _cst, prevErrors) => {
+      
       // Flowchart: unsupported meta headers (title)
       {
         const tks = tokens as IToken[];

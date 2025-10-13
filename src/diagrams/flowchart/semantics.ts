@@ -645,7 +645,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
     if (!contentNodes) return;
     for (const cn of contentNodes) {
       const ch: any = (cn as any).children || {};
-      const inspectTok = (tk: IToken | undefined) => {
+      const inspectTok = (tk: IToken | undefined, inQuoted = false) => {
         if (!tk) return false;
         const img = String(tk.image || '');
         const idx = img.indexOf('`');
@@ -654,7 +654,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
           this.ctx.errors.push({
             line: tk.startLine ?? 1,
             column: col,
-            severity: 'warning',
+            severity: inQuoted ? 'error' : 'warning',
             code: 'FL-LABEL-BACKTICK',
             message: 'Backticks (`…`) inside node labels are not supported by Mermaid.',
             hint: 'Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".',
@@ -665,9 +665,9 @@ class FlowSemanticsVisitor extends BaseVisitor {
         return false;
       };
       const texts: IToken[] = ch.Text || [];
-      for (const tk of texts) { if (inspectTok(tk)) return; }
+      for (const tk of texts) { if (inspectTok(tk, false)) return; }
       const qs: IToken[] = ch.QuotedString || [];
-      for (const tk of qs) { if (inspectTok(tk)) return; }
+      for (const tk of qs) { if (inspectTok(tk, true)) return; }
     }
   }
 }

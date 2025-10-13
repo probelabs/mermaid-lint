@@ -325,6 +325,26 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
           length: len
         };
       }
+      // Fallback: if parentheses appear inside an unquoted round label, map to a targeted error
+      {
+        const caret0 = Math.max(0, column - 1);
+        const openIdx = lineStr.lastIndexOf('(', caret0);
+        if (openIdx !== -1) {
+          // Scan the rest of the line after the shape opener; any inner '(' or ')' should be flagged
+          const seg = lineStr.slice(openIdx + 1);
+          if (seg.includes('(') || seg.includes(')')) {
+            return {
+              line,
+              column,
+              severity: 'error',
+              code: 'FL-LABEL-PARENS-UNQUOTED',
+              message: 'Parentheses inside an unquoted label are not supported by Mermaid.',
+              hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.',
+              length: len
+            };
+          }
+        }
+      }
       const q = findInnerQuoteIssue('(');
       if (q?.kind === 'escaped') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE', message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.', hint: 'Prefer "He said &quot;Hi&quot;".', length: 2 };
@@ -710,6 +730,20 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     return { line, column, severity: 'error', code: 'SE-ARROW-INVALID', message: `Invalid sequence arrow near '${found}'.`, hint: 'Use ->, -->, ->>, -->>, -x, --x, -), --), <<->>, or <<-->>', length: len };
   }
 
+  // Bullet-like lines beginning with '-' are not supported by Mermaid sequence diagrams.
+  // Map a clear diagnostic when a stray '-' appears where a statement keyword is expected.
+  if ((err.name === 'NoViableAltException' || err.name === 'MismatchedTokenException') && tokType === 'Minus') {
+    return {
+      line,
+      column,
+      severity: 'error',
+      code: 'SE-BULLET-LINE-UNSUPPORTED',
+      message: "Bullet list lines starting with '-' are not supported in sequence diagrams.",
+      hint: "Wrap free‑form text in a note block instead, for example:\nNote over A : Item 1\nNote over A\n  - Item 1\n  - Item 2\nend note",
+      length: len
+    };
+  }
+
   // Note forms
   if (inRule('noteStmt')) {
     if (err.name === 'MismatchedTokenException' && exp('Colon')) {
@@ -860,6 +894,15 @@ export function mapSequenceParserError(err: IRecognitionException, text: string)
     }
   }
 
+  // Bullet-like lines outside of any block: map generic redundant input to a targeted error.
+  if ((err.name === 'NotAllInputParsedException' || err.name === 'NoViableAltException') && found === '-') {
+    return {
+      line, column, severity: 'error', code: 'SE-BULLET-LINE-UNSUPPORTED',
+      message: "Bullet list lines starting with '-' are not supported in sequence diagrams.",
+      hint: "Wrap free‑form text in a note block, for example:\nNote over A : Item 1\nNote over A\n  - Item 1\n  - Item 2\nend note",
+      length: len
+    };
+  }
   // Block control keywords outside blocks
   if ((err.name === 'NoViableAltException' || err.name === 'NotAllInputParsedException') && tokType === 'ElseKeyword') {
     return { line, column, severity: 'error', code: 'SE-ELSE-OUTSIDE-ALT', message: "'else' is only allowed inside 'alt' blocks.", hint: 'Use: alt Condition … else … end', length: len };
