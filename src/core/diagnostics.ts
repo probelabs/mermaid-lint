@@ -325,6 +325,26 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
           length: len
         };
       }
+      // Fallback: if parentheses appear inside an unquoted round label, map to a targeted error
+      {
+        const caret0 = Math.max(0, column - 1);
+        const openIdx = lineStr.lastIndexOf('(', caret0);
+        if (openIdx !== -1) {
+          // Scan the rest of the line after the shape opener; any inner '(' or ')' should be flagged
+          const seg = lineStr.slice(openIdx + 1);
+          if (seg.includes('(') || seg.includes(')')) {
+            return {
+              line,
+              column,
+              severity: 'error',
+              code: 'FL-LABEL-PARENS-UNQUOTED',
+              message: 'Parentheses inside an unquoted label are not supported by Mermaid.',
+              hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.',
+              length: len
+            };
+          }
+        }
+      }
       const q = findInnerQuoteIssue('(');
       if (q?.kind === 'escaped') {
         return { line, column: q.column, severity: 'error', code: 'FL-LABEL-ESCAPED-QUOTE', message: 'Escaped quotes (\\") in node labels are not supported by Mermaid. Use &quot; instead.', hint: 'Prefer "He said &quot;Hi&quot;".', length: 2 };
