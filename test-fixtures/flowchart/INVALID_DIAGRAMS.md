@@ -31,17 +31,18 @@ This file contains invalid flowchart test fixtures with:
 20. [No Diagram Type](#20-no-diagram-type)
 21. [Quotes Double Inside Single](#21-quotes-double-inside-single)
 22. [Quotes In Node Labels](#22-quotes-in-node-labels)
-23. [Title Unsupported](#23-title-unsupported)
-24. [Typed Shapes All](#24-typed-shapes-all)
-25. [Typed Shapes Unknowns](#25-typed-shapes-unknowns)
-26. [Unclosed Bracket](#26-unclosed-bracket)
-27. [Unclosed Quote In Label](#27-unclosed-quote-in-label)
-28. [Unescaped Quotes In Decision](#28-unescaped-quotes-in-decision)
-29. [Unmatched End](#29-unmatched-end)
-30. [Unquoted Label With Quotes](#30-unquoted-label-with-quotes)
-31. [Unquoted Parens In Labels](#31-unquoted-parens-in-labels)
-32. [Unquoted Parens With Backticks](#32-unquoted-parens-with-backticks)
-33. [Wrong Direction](#33-wrong-direction)
+23. [Round Parens Unquoted](#23-round-parens-unquoted)
+24. [Title Unsupported](#24-title-unsupported)
+25. [Typed Shapes All](#25-typed-shapes-all)
+26. [Typed Shapes Unknowns](#26-typed-shapes-unknowns)
+27. [Unclosed Bracket](#27-unclosed-bracket)
+28. [Unclosed Quote In Label](#28-unclosed-quote-in-label)
+29. [Unescaped Quotes In Decision](#29-unescaped-quotes-in-decision)
+30. [Unmatched End](#30-unmatched-end)
+31. [Unquoted Label With Quotes](#31-unquoted-label-with-quotes)
+32. [Unquoted Parens In Labels](#32-unquoted-parens-in-labels)
+33. [Unquoted Parens With Backticks](#33-unquoted-parens-with-backticks)
+34. [Wrong Direction](#34-wrong-direction)
 
 ---
 
@@ -49,7 +50,7 @@ This file contains invalid flowchart test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [curly in quoted](#1-curly-in-quoted) | INVALID | INVALID | ✅ safe |
+| 1 | [curly in quoted](#1-curly-in-quoted) | INVALID | INVALID | — |
 | 2 | [diamond parens unquoted](#2-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
 | 3 | [edge label parens](#3-edge-label-parens) | INVALID | INVALID | — |
 | 4 | [empty nodes](#4-empty-nodes) | INVALID | INVALID | ✅ safe |
@@ -67,21 +68,22 @@ This file contains invalid flowchart test fixtures with:
 | 16 | [linkstyle id unknown](#16-linkstyle-id-unknown) | INVALID | INVALID | — |
 | 17 | [missing arrow](#17-missing-arrow) | INVALID | INVALID | ✅ all |
 | 18 | [mixed brackets](#18-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 19 | [mixed quotes in labels](#19-mixed-quotes-in-labels) | INVALID | INVALID | ✅ safe |
+| 19 | [mixed quotes in labels](#19-mixed-quotes-in-labels) | INVALID | INVALID | — |
 | 20 | [no diagram type](#20-no-diagram-type) | INVALID | INVALID | — |
 | 21 | [quotes double inside single](#21-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 22 | [quotes in node labels](#22-quotes-in-node-labels) | INVALID | INVALID | ✅ safe |
-| 23 | [title unsupported](#23-title-unsupported) | INVALID | INVALID | ✅ all |
-| 24 | [typed shapes all](#24-typed-shapes-all) | INVALID | INVALID | — |
-| 25 | [typed shapes unknowns](#25-typed-shapes-unknowns) | INVALID | INVALID | — |
-| 26 | [unclosed bracket](#26-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 27 | [unclosed quote in label](#27-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 28 | [unescaped quotes in decision](#28-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 29 | [unmatched end](#29-unmatched-end) | INVALID | INVALID | — |
-| 30 | [unquoted label with quotes](#30-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 31 | [unquoted parens in labels](#31-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
-| 32 | [unquoted parens with backticks](#32-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
-| 33 | [wrong direction](#33-wrong-direction) | INVALID | INVALID | — |
+| 22 | [quotes in node labels](#22-quotes-in-node-labels) | INVALID | INVALID | — |
+| 23 | [round parens unquoted](#23-round-parens-unquoted) | INVALID | INVALID | — |
+| 24 | [title unsupported](#24-title-unsupported) | INVALID | INVALID | ✅ all |
+| 25 | [typed shapes all](#25-typed-shapes-all) | INVALID | INVALID | — |
+| 26 | [typed shapes unknowns](#26-typed-shapes-unknowns) | INVALID | INVALID | — |
+| 27 | [unclosed bracket](#27-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 28 | [unclosed quote in label](#28-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 29 | [unescaped quotes in decision](#29-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 30 | [unmatched end](#30-unmatched-end) | INVALID | INVALID | — |
+| 31 | [unquoted label with quotes](#31-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 32 | [unquoted parens in labels](#32-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
+| 33 | [unquoted parens with backticks](#33-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
+| 34 | [wrong direction](#34-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -152,17 +154,11 @@ hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N it
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-flowchart TD
-  A[Start]
-  E2 --> S2["Append 'tyk-trace-&#123;id&#125;' tag to Analytics Record"]
-  A --> E2
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -1800,26 +1796,11 @@ hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N it
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-flowchart TD
-    subgraph "Dependency Skip Evaluation"
-        S1["Start Evaluation for Check 'C'"] --> S2{"For each dependency 'D' of &quot;C&quot;"};
-        S2 --> S3{"Was 'D' skipped?"};
-        S3 -- Yes --> S4["Mark 'D' as failed"];
-        S3 -- No --> S5{"Did 'D' have a fatal error?"};
-        S5 -- Yes --> S4;
-        S5 -- No --> S2;
-        S4 --> S6{Any dependencies marked as failed?};
-        S2 -- all dependencies checked --> S6;
-        S6 -- Yes --> S7["Skip Check 'C' (Reason: dependency_failed)"];
-        S6 -- No --> S8[Execute Check 'C'];
-    end
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -2102,40 +2083,11 @@ hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N it
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-graph TD
-    subgraph CheckExecutionEngine
-        A[Start processing check] --> B{"Does 'B' depend on a forEach check 'A'?"};
-        B -->|No| C["Execute 'B' normally"];
-        B -->|Yes| D["Get forEach items from 'A's output"];
-        D --> E{Is the items array empty?};
-
-        subgraph "New Logic Path (This PR)"
-            E -->|Yes| F["Log &quot;skipping check...&quot;"];
-            F --> G[Return special empty result with forEach markers];
-            G --> H[Propagate skip to downstream checks];
-        end
-
-        subgraph "Existing Logic Path"
-            E -->|No| I["Log &quot;processing N items...&quot;"];
-            I --> J[Create and execute a task for each item];
-            J --> K[Aggregate results];
-            K --> L[Return combined results];
-        end
-
-        C --> Z[End];
-        H --> Z;
-        L --> Z;
-    end
-
-    style F fill:#d4edda,stroke:#c3e6cb
-    style G fill:#d4edda,stroke:#c3e6cb
-    style H fill:#d4edda,stroke:#c3e6cb
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+No auto-fix changes (all level).
 
 <details>
 <summary>View source code</summary>
@@ -2174,7 +2126,92 @@ graph TD
 
 ---
 
-## 23. Title Unsupported
+## 23. Round Parens Unquoted
+
+📄 **Source**: [`round-parens-unquoted.mmd`](./invalid/round-parens-unquoted.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+  B --> C(new CheckExecutionEngine(octokit));
+
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 2:
+...CheckExecutionEngine(octokit));
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PS'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/round-parens-unquoted.mmd:2:43
+  1 | flowchart TD
+  2 |   B --> C(new CheckExecutionEngine(octokit));
+    |                                           ^^
+  3 | 
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+No auto-fix changes (safe level).
+
+### maid Auto-fix (`--fix=all`) Preview
+
+No auto-fix changes (all level).
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+  B --> C(new CheckExecutionEngine(octokit));
+
+
+```
+</details>
+
+---
+
+## 24. Title Unsupported
 
 📄 **Source**: [`title-unsupported.mmd`](./invalid/title-unsupported.mmd)
 
@@ -2263,7 +2300,7 @@ flowchart TD
 
 ---
 
-## 24. Typed Shapes All
+## 25. Typed Shapes All
 
 📄 **Source**: [`typed-shapes-all.mmd`](./invalid/typed-shapes-all.mmd)
 
@@ -2395,7 +2432,7 @@ flowchart LR
 
 ---
 
-## 25. Typed Shapes Unknowns
+## 26. Typed Shapes Unknowns
 
 📄 **Source**: [`typed-shapes-unknowns.mmd`](./invalid/typed-shapes-unknowns.mmd)
 
@@ -2507,7 +2544,7 @@ flowchart TD
 
 ---
 
-## 26. Unclosed Bracket
+## 27. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -2594,7 +2631,7 @@ flowchart LR
 
 ---
 
-## 27. Unclosed Quote In Label
+## 28. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -2687,7 +2724,7 @@ flowchart TD
 
 ---
 
-## 28. Unescaped Quotes In Decision
+## 29. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -2780,7 +2817,7 @@ flowchart TD
 
 ---
 
-## 29. Unmatched End
+## 30. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -2862,7 +2899,7 @@ flowchart TD
 
 ---
 
-## 30. Unquoted Label With Quotes
+## 31. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -2949,7 +2986,7 @@ flowchart TD
     B -- No --> D[Configure Logger: Level = INFO];
     
     subgraph "Runtime Execution"
-        E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];
+        E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug&#40;&quot;message&quot;, data&#41;];
         F --> G{Logger: Is current level DEBUG?};
         G -- Yes --> H[Format and write message to stderr];
         G -- No --> I[Discard message];
@@ -2994,7 +3031,7 @@ flowchart TD
 
 ---
 
-## 31. Unquoted Parens In Labels
+## 32. Unquoted Parens In Labels
 
 📄 **Source**: [`unquoted-parens-in-labels.mmd`](./invalid/unquoted-parens-in-labels.mmd)
 
@@ -3152,7 +3189,7 @@ flowchart TD
 
 ---
 
-## 32. Unquoted Parens With Backticks
+## 33. Unquoted Parens With Backticks
 
 📄 **Source**: [`unquoted-parens-with-backticks.mmd`](./invalid/unquoted-parens-with-backticks.mmd)
 
@@ -3248,7 +3285,7 @@ flowchart TD
 
 ---
 
-## 33. Wrong Direction
+## 34. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 
