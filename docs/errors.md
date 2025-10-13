@@ -21,8 +21,9 @@ This table shows which diagnostics Maid can auto-fix and how. Levels:
 | FL-DIR-MISSING | Safe | Insert default direction ` TD` after header. |
 | FL-DIR-INVALID | None | No change (ambiguous); suggests valid tokens. |
 | FL-DIR-KW-INVALID | Safe | Replace unknown keyword before direction with `direction`. |
-| FL-LINK-MISSING | All | Insert ` --> ` between two nodes on the same line. |
+| FL-LINK-MISSING | All | Insert ` --> ` between two nodes on one line. |
 | FL-META-UNSUPPORTED | All | Remove unsupported meta line (e.g., `title ...`) in flowchart. |
+| FL-END-WITHOUT-SUBGRAPH | All | Remove stray `end` line (no matching `subgraph`). |
 | FL-NODE-UNCLOSED-BRACKET | All | Insert the best-guess closing bracket at caret. |
 | FL-NODE-MIXED-BRACKETS | Safe | Replace mismatched closer with correct one. |
 | FL-NODE-EMPTY | Safe | Remove empty square-bracket shapes (A[""] / A[" "] / A[]) and keep plain node id (A). |
@@ -195,6 +196,13 @@ Tip: quoting inside labels
   - When: A meta header like `title` appears in a flowchart.
   - Message: "'title' is not supported in flowcharts by the current Mermaid CLI."
   - Hint: "Use a Markdown heading above the code block, or draw a labeled node at the top (e.g., T["Dependency Relationship"])."
+
+
+- FL-END-WITHOUT-SUBGRAPH
+  - When: `end` appears without a matching `subgraph`.
+  - Message: "'end' without a matching 'subgraph'."
+  - Hint: "Remove this end or add a subgraph above."
+  - Auto-fix (`--fix=all`): Removes the stray `end` line.
 ## Pie (PI-*)
 
 - PI-LABEL-REQUIRES-QUOTES
