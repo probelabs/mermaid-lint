@@ -77,8 +77,5 @@
   ],
   "round-parens-unquoted.mmd": [
     "FL-LABEL-PARENS-UNQUOTED"
-  ],
-  "backticks-in-quoted-label.mmd": [
-    "FL-LABEL-BACKTICK"
   ]
 }

@@ -258,6 +258,15 @@ if (is('FL-LABEL-BACKTICK', e)) {
     if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {
       const lineText = lineTextAt(text, e.line);
       const caret0 = Math.max(0, e.column - 1);
+      // Safety guard: very long labels with many quotes tend to be code/examples.
+      // In such cases, our span-rewrite can overreach. Skip auto-fix when the number
+      // of raw double quotes on the line is high to avoid corrupting content.
+      const rawDqCount = (lineText.match(/\"/g) || []).length;
+      const unescapedDqCount = (lineText.replace(/\\\"/g, '').match(/\"/g) || []).length;
+      if (lineText.length > 600 || rawDqCount + unescapedDqCount > 8) {
+        // Let the warning/error stand without auto-fixing this line.
+        continue;
+      }
       // Find nearest shape opener before caret
       const opens = [
         { tok: '[[', idx: lineText.lastIndexOf('[[', caret0) },
@@ -671,6 +680,12 @@ if (is('FL-LABEL-BACKTICK', e)) {
       if (level === 'safe' || level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
+        // Safety guard: very long, quote-dense labels are likely code samples.
+        // Avoid rewriting these to prevent content corruption; leave as-is for manual editing.
+        const dq = (lineText.replace(/\\\"/g, '').match(/\"/g) || []).length;
+        if (lineText.length > 600 || dq > 8) {
+          continue;
+        }
         // Find nearest opener before caret
         const openPairs: Array<{open:string, close:string, idx:number, delta:number}> = [
           { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },

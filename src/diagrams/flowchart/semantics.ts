@@ -654,10 +654,11 @@ class FlowSemanticsVisitor extends BaseVisitor {
           this.ctx.errors.push({
             line: tk.startLine ?? 1,
             column: col,
-            severity: inQuoted ? 'error' : 'warning',
+            // Mermaid CLI accepts backticks in labels; treat as a portability warning only.
+            severity: 'warning',
             code: 'FL-LABEL-BACKTICK',
-            message: 'Backticks (`…`) inside node labels are not supported by Mermaid.',
-            hint: 'Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".',
+            message: 'Backticks (`…`) inside labels may not render consistently. Prefer regular quotes or plain text.',
+            hint: 'Consider replacing ``` with quotes or plain text where possible.',
             length: 1
           });
           return true;

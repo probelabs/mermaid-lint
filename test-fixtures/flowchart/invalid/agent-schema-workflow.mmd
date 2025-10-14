@@ -1,0 +1,149 @@
+graph TB
+    Start[User calls agent.answer with schema] --> CheckSchema{Schema<br/>provided?}
+    
+    CheckSchema -->|No| NormalFlow[Normal agentic flow<br/>No JSON handling]
+    CheckSchema -->|Yes| ExtendIterations[Extend max iterations by 4<br/>line 1410]
+    
+    ExtendIterations --> ToolLoop[Tool iteration loop starts<br/>maxIterations = base + 4]
+    
+    ToolLoop --> GetResponse[Call AI model]
+    GetResponse --> ParseResponse{Parse<br/>response}
+    
+    ParseResponse -->|Tool call found| ExecuteTool[Execute tool<br/>Add result to messages]
+    ExecuteTool --> CheckMaxIter{Reached max<br/>iterations?}
+    
+    ParseResponse -->|attempt_completion| SetCompletion[Set completionAttempted = true<br/>Extract result from tag]
+    SetCompletion --> BreakLoop[Break from tool loop]
+    
+    ParseResponse -->|attempt_complete| ReuseResponse[Reuse previous response<br/>as final result]
+    ReuseResponse --> BreakLoop
+    
+    ParseResponse -->|No tool<br/>No completion| AddReminder{Schema<br/>provided?}
+    
+    AddReminder -->|Yes| SchemaReminder["Add reminder message:<br/>'IMPORTANT: A schema was provided<br/>for the final output format.<br/><br/>Option 1 - Use attempt_completion<br/>with your complete answer:<br/>&lt;attempt_completion&gt;<br/>[Your complete answer here -<br/>will be automatically formatted<br/>to match the schema]<br/>&lt;/attempt_completion&gt;<br/><br/>Option 2 - Provide a natural response<br/>without any tool, and it will be<br/>automatically formatted.<br/><br/>Do NOT try to format your response<br/>as JSON yourself - this will be<br/>done automatically.'<br/>lines 1626-1635"]
+    
+    AddReminder -->|No| StandardReminder[Add standard reminder<br/>about tool usage]
+    
+    SchemaReminder --> CheckMaxIter
+    StandardReminder --> CheckMaxIter
+    
+    CheckMaxIter -->|No| ToolLoop
+    CheckMaxIter -->|Yes| EndLoop[End tool loop]
+    
+    BreakLoop --> SchemaProcessing{Schema provided<br/>AND !_schemaFormatted<br/>AND not max iter?<br/>line 1710}
+    EndLoop --> SchemaProcessing
+    
+    SchemaProcessing -->|No| SkipSchema[Skip schema processing]
+    
+    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    
+    RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
+    
+    CleanResponse1 --> MermaidVal{disableMermaid<br/>Validation?}
+    
+    MermaidVal -->|No| ValidateMermaid[validateAndFixMermaidResponse<br/>lines 1761-1807]
+    MermaidVal -->|Yes| CheckJsonSchema
+    
+    ValidateMermaid --> CheckJsonSchema{isJsonSchema<br/>schema?<br/>line 1810}
+    
+    CheckJsonSchema -->|No| FinalMermaid
+    CheckJsonSchema -->|Yes| CleanAgain[cleanSchemaResponse again<br/>line 1817]
+    
+    CleanAgain --> ValidateJson[validateJsonResponse<br/>line 1831]
+    
+    ValidateJson --> CheckSchemaDef{Response is<br/>schema definition?<br/>isJsonSchemaDefinition<br/>line 1836}
+    
+    CheckSchemaDef -->|Yes| MarkInvalid["Mark as invalid:<br/>error = 'Response is a JSON<br/>schema definition instead<br/>of actual data'<br/>lines 1841-1845"]
+    
+    CheckSchemaDef -->|No| CheckValid{Valid JSON?}
+    MarkInvalid --> CheckValid
+    
+    CheckValid -->|Yes| UpdateFinal[Update finalResult]
+    UpdateFinal --> FinalMermaid
+    
+    CheckValid -->|No| InitJsonFixer["Initialize JsonFixingAgent<br/>Separate session with:<br/>- disableJsonValidation: true<br/>- Same model/provider<br/>lines 1854-1861"]
+    
+    InitJsonFixer --> RetryLoop{retryCount<br/>< 3?}
+    
+    RetryLoop -->|No| LogFailure[Log validation failure<br/>Continue with invalid JSON<br/>lines 1906-1908]
+    
+    RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
+    
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+    
+    JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
+    
+    JsonFixerAnswer --> CleanFixed[cleanSchemaResponse<br/>on fixer result<br/>line 891]
+    
+    CleanFixed --> ValidateFixed[validateJsonResponse<br/>line 894]
+    
+    ValidateFixed --> CheckFixed{Valid?}
+    
+    CheckFixed -->|No| IncrementRetry[retryCount++<br/>line 1883]
+    IncrementRetry --> RetryLoop
+    
+    CheckFixed -->|Yes| UpdateResult[Update currentResult<br/>line 1890]
+    UpdateResult --> FinalUpdate[finalResult = currentResult<br/>line 1903]
+    
+    LogFailure --> FinalMermaid
+    FinalUpdate --> FinalMermaid
+    
+    FinalMermaid["Final mermaid validation<br/>if !_schemaFormatted<br/>lines 2086-2117"]
+    
+    FinalMermaid --> RemoveThinking["Remove <thinking> tags<br/>if !_schemaFormatted<br/>lines 2122-2126"]
+    
+    RemoveThinking --> Return[Return finalResult]
+    
+    SkipSchema --> AttemptCompletion{completionAttempted<br/>AND schema<br/>AND !_schemaFormatted?<br/>line 1931}
+    
+    AttemptCompletion -->|No| NormalFlow
+    
+    AttemptCompletion -->|Yes| CleanAttempt[cleanSchemaResponse<br/>line 1934]
+    
+    CleanAttempt --> MermaidAttempt[validateAndFixMermaidResponse<br/>if !disableMermaidValidation<br/>lines 1937-1963]
+    
+    MermaidAttempt --> JsonAttempt{isJsonSchema?<br/>line 1966}
+    
+    JsonAttempt -->|No| FinalMermaid
+    JsonAttempt -->|Yes| ValidateAttempt[validateJsonResponse<br/>line 1981]
+    
+    ValidateAttempt --> CheckSchemaDefAttempt{Schema definition?<br/>line 1986}
+    
+    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
+    
+    CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
+    
+    SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
+    
+    RecursiveCorrect --> CleanCorrected[cleanSchemaResponse]
+    CleanCorrected --> ValidateCorrected[validateJsonResponse]
+    ValidateCorrected --> AttemptRetry
+    
+    AttemptRetry -->|Yes| FinalMermaid
+    AttemptRetry -->|No| AttemptRetryLoop{retryCount<br/>< 3?}
+    
+    AttemptRetryLoop -->|No| FinalMermaid
+    AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
+    
+    CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    
+    RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
+    
+    CleanAttempted --> ValidateAttempted[validateJsonResponse<br/>line 2050]
+    
+    ValidateAttempted --> IncrementAttempt[retryCount++<br/>line 2051]
+    
+    IncrementAttempt --> AttemptRetryLoop
+    
+    NormalFlow --> Return
+
+    style Start fill:#e1f5ff
+    style Return fill:#c8e6c9
+    style SchemaReminder fill:#fff9c4
+    style RecursiveCall fill:#fff9c4
+    style JsonFixerInternal fill:#ffccbc
+    style SchemaDefPrompt fill:#ffccbc
+    style InitJsonFixer fill:#f8bbd0
+    style CheckSchemaDef fill:#ffe0b2
+    style CheckSchemaDefAttempt fill:#ffe0b2
+
