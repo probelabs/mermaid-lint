@@ -52,7 +52,7 @@ This file contains invalid flowchart test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ❌ safe |
+| 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ✅ safe |
 | 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | INVALID | ✅ safe |
 | 3 | [curly in quoted](#3-curly-in-quoted) | INVALID | INVALID | — |
 | 4 | [diamond parens unquoted](#4-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
@@ -439,7 +439,7 @@ graph TB
     
     RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
     
-    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: &#123;&quot;key&quot;: &quot;value&quot;&#125;<br/>NOT: &#96;&#96;&#96;json&#123;&quot;key&quot;: &quot;value&quot;&#125;&#96;&#96;&#96;e&quot;&#125;&#96;&#96;&#96;&#125;&#96;&#96;<br/><br/>lines 427-478 in schemaUtils.js"]
     
     JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
     
