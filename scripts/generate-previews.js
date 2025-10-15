@@ -394,7 +394,9 @@ async function main() {
         process.exit(1);
       }
 
-      // Enforce auto-fixes that changed content must be VALID under mermaid-cli
+      // Enforce aggressive '--fix=all' auto-fixes that changed content must be VALID under mermaid-cli
+      // (safe-level fixes may be partial and are advisory only)
+      // Only consider 'all' level failures.
       if (fixFailures.length) {
         console.error(`\n❌ Found ${fixFailures.length} auto-fix validation failure(s) in '${type}/invalid':`);
         for (const f of fixFailures) {
