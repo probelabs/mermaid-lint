@@ -11,6 +11,33 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
   const patchedLines = new Set<number>();
   const seen = new Set<string>();
   const piQuoteClosedLines = new Set<number>();
+  // If a line contains quoted-label issues (quotes/curly/backticks), sanitize the full quoted segment first.
+  {
+    const byLine = new Map<number, string[]>();
+    for (const e of errors) {
+      const arr = byLine.get(e.line) || [];
+      if (e.code) arr.push(e.code);
+      byLine.set(e.line, arr);
+    }
+    for (const [line, codes] of byLine) {
+      if (patchedLines.has(line)) continue;
+      const hasQuotedIssue = codes.some(c => c === 'FL-LABEL-ESCAPED-QUOTE' || c === 'FL-LABEL-CURLY-IN-QUOTED' || c === 'FL-LABEL-DOUBLE-IN-DOUBLE' || c === 'FL-LABEL-BACKTICK');
+      if (!hasQuotedIssue) continue;
+      const lineText = lineTextAt(text, line);
+      if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') continue;
+      // Find first/last unescaped double quote on the line
+      let q1 = -1; for (let i=0;i<lineText.length;i++){ if (lineText[i]==='"' && lineText[i-1] !== '\\'){ q1=i; break; } }
+      let q2 = -1; for (let j=lineText.length-1;j>=0;j--){ if (lineText[j]==='"' && lineText[j-1] !== '\\'){ q2=j; break; } }
+      if (q1 !== -1 && q2 !== -1 && q2 > q1) {
+        const inner = lineText.slice(q1+1, q2);
+        const replaced = sanitizeQuotedInner(inner);
+        if (replaced !== inner) {
+          edits.push({ start: { line, column: q1 + 2 }, end: { line, column: q2 + 1 }, newText: replaced });
+          patchedLines.add(line);
+        }
+      }
+    }
+  }
   const hasHeavyQuotedIssues = errors.some(e => e.code === 'FL-LABEL-CURLY-IN-QUOTED' || e.code === 'FL-LABEL-ESCAPED-QUOTE' || e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE') || text.includes('```');
   // Encode unsafe characters inside quoted labels so Mermaid CLI can parse them.
   function sanitizeQuotedInner(inner: string): string {
@@ -166,8 +193,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
-      // Guard against very long or code-fenced lines (often code/JSON examples).
-      // In such cases, skip auto-fix to avoid corrupting content; leave as diagnostics only.
+      // Guard against very long or code-fenced lines (often code/JSON examples) unless aggressive '--fix=all'
       if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') { continue; }
       const caret0 = Math.max(0, e.column - 1);
       const opens = [
@@ -190,24 +216,10 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           const q2 = lineText.lastIndexOf('"', closeIdx - 1);
           if (q1 !== -1 && q2 !== -1 && q2 > q1) {
             const inner = lineText.slice(q1 + 1, q2);
-            // Skip JSON/code-like content to avoid corrupting examples
-            const dqCountInner = (inner.match(/"/g) || []).length + (inner.match(/\\\"/g) || []).length;
-            if ((inner.includes('{') && inner.includes('}')) && dqCountInner >= 4) {
-              continue;
-            }
-            if (inner.includes('\\"')) {
-              const replaced = inner.split('\\\"').join('&quot;');
+            const replaced = sanitizeQuotedInner(inner);
+            if (replaced !== inner) {
               edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
               continue;
-
-    if (is('FL-META-UNSUPPORTED', e)) {
-      // Remove the unsupported meta line (e.g., 'title ...'). Keep conservative under --fix=all only.
-      if (level === 'all') {
-        const lineText = lineTextAt(text, e.line);
-        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
-      }
-      continue;
-    }
             }
           }
         }
@@ -216,10 +228,11 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
       continue;
     }
-    
+
     if (is('FL-META-UNSUPPORTED', e)) {
       // Remove the unsupported meta line (e.g., 'title ...'). Keep conservative under --fix=all only.
       if (level === 'all') {
+        const lineText = lineTextAt(text, e.line);
         edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
       }
       continue;

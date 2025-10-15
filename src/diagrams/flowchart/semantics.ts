@@ -488,7 +488,7 @@ class FlowSemanticsVisitor extends BaseVisitor {
           this.ctx.errors.push({
             line: q.startLine ?? 1,
             column: col,
-            severity: 'warning',
+            severity: 'error',
             code: 'FL-LABEL-CURLY-IN-QUOTED',
             message: 'Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.',
             hint: 'Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".',
