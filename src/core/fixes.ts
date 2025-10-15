@@ -11,6 +11,48 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
   const patchedLines = new Set<number>();
   const seen = new Set<string>();
   const piQuoteClosedLines = new Set<number>();
+  // Utility: sanitize all quoted segments inside shape labels on a given line
+  function sanitizeAllQuotedSegmentsInShapes(lineText: string, lineNo: number) {
+    // Shapes and their closers in order of preference (double before single)
+    const shapes: Array<{ open: string; close: string }> = [
+      { open: '[[', close: ']]' },
+      { open: '((', close: '))' },
+      { open: '{{', close: '}}' },
+      { open: '[(', close: ')]' },
+      { open: '([', close: '])' },
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+    ];
+    let idx = 0; let produced = 0;
+    while (idx < lineText.length) {
+      // Find next shape opener
+      let found: { open: string; close: string; i: number } | null = null;
+      for (const s of shapes) {
+        const i = lineText.indexOf(s.open, idx);
+        if (i !== -1 && (found === null || i < found.i)) found = { ...s, i };
+      }
+      if (!found) break;
+      const contentStart = found.i + found.open.length;
+      const closeIdx = lineText.indexOf(found.close, contentStart);
+      if (closeIdx === -1) { idx = contentStart; continue; }
+      // Within the shape content, look for the outermost quoted segment (double-quotes)
+      let q1 = -1; for (let i = contentStart; i < closeIdx; i++) { if (lineText[i] === '"' && lineText[i-1] !== '\\') { q1 = i; break; } }
+      if (q1 !== -1) {
+        let q2 = -1; for (let j = closeIdx - 1; j > q1; j--) { if (lineText[j] === '"' && lineText[j-1] !== '\\') { q2 = j; break; } }
+        if (q2 !== -1) {
+          const inner = lineText.slice(q1 + 1, q2);
+          const replaced = sanitizeQuotedInner(inner);
+          if (replaced !== inner) {
+            edits.push({ start: { line: lineNo, column: q1 + 2 }, end: { line: lineNo, column: q2 + 1 }, newText: replaced });
+            produced++;
+          }
+        }
+      }
+      idx = closeIdx + found.close.length;
+    }
+    return produced;
+  }
   
   // Encode unsafe characters inside quoted labels so Mermaid CLI can parse them.
   function sanitizeQuotedInner(inner: string): string {
@@ -33,6 +75,12 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     if (seen.has(key)) continue;
     seen.add(key);
     // Flowchart fixes
+    // If we see any quoted-label hazard on this line, sanitize all quoted segments inside shapes once
+    if ((e.code === 'FL-LABEL-ESCAPED-QUOTE' || e.code === 'FL-LABEL-CURLY-IN-QUOTED' || e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE' || e.code === 'FL-LABEL-BACKTICK') && !patchedLines.has(e.line)) {
+      const lineText = lineTextAt(text, e.line);
+      const produced = sanitizeAllQuotedSegmentsInShapes(lineText, e.line);
+      if (produced > 0) { patchedLines.add(e.line); continue; }
+    }
     if (is('FL-ARROW-INVALID', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
       continue;
