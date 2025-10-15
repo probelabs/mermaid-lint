@@ -149,6 +149,10 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
+      // Guard against very long or code-fenced lines (often code/JSON examples).
+      // In such cases, skip auto-fix to avoid corrupting content; leave as diagnostics only.
+      if (lineText.length > 600) { continue; }
+      if (lineText.includes('```')) { continue; }
       const caret0 = Math.max(0, e.column - 1);
       const opens = [
         { tok: '[[', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },
@@ -170,6 +174,11 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           const q2 = lineText.lastIndexOf('"', closeIdx - 1);
           if (q1 !== -1 && q2 !== -1 && q2 > q1) {
             const inner = lineText.slice(q1 + 1, q2);
+            // Skip JSON/code-like content to avoid corrupting examples
+            const dqCountInner = (inner.match(/"/g) || []).length + (inner.match(/\\\"/g) || []).length;
+            if ((inner.includes('{') && inner.includes('}')) && dqCountInner >= 4) {
+              continue;
+            }
             if (inner.includes('\\"')) {
               const replaced = inner.split('\\\"').join('&quot;');
               edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
@@ -200,13 +209,19 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
 if (is('FL-LABEL-BACKTICK', e)) {
+      if (e.severity === 'warning') { continue; }
+      const lineText = lineTextAt(text, e.line);
+      if (lineText.length > 600) { continue; }
+      if (lineText.includes('```')) { continue; }
       // Remove the offending backtick. Keep content otherwise unchanged.
       edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
       continue;
     }
     if (is('FL-LABEL-CURLY-IN-QUOTED', e)) {
+      if (e.severity === 'warning') { continue; }
       // Replace { and } inside the surrounding quoted segment with HTML entities
       const lineText = lineTextAt(text, e.line);
+      if (lineText.length > 600) { continue; }
       const caret0 = Math.max(0, e.column - 1);
       // Find opening quote before caret
       let qOpenIdx = -1; let qChar: string | null = null;
@@ -231,6 +246,9 @@ if (is('FL-LABEL-BACKTICK', e)) {
         }
         if (qCloseIdx > qOpenIdx) {
           const inner = lineText.slice(qOpenIdx + 1, qCloseIdx);
+          // Heuristic: looks like JSON/code? Skip fixing to avoid corruption.
+          const dqCount = (inner.match(/"/g) || []).length;
+          if ((inner.includes('{') && inner.includes('}')) && dqCount >= 4) { continue; }
           const replaced = inner.replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
           if (replaced !== inner) {
             edits.push({ start: { line: e.line, column: qOpenIdx + 2 }, end: { line: e.line, column: qCloseIdx + 1 }, newText: replaced });
