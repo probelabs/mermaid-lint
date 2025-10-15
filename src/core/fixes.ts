@@ -11,34 +11,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
   const patchedLines = new Set<number>();
   const seen = new Set<string>();
   const piQuoteClosedLines = new Set<number>();
-  // If a line contains quoted-label issues (quotes/curly/backticks), sanitize the full quoted segment first.
-  {
-    const byLine = new Map<number, string[]>();
-    for (const e of errors) {
-      const arr = byLine.get(e.line) || [];
-      if (e.code) arr.push(e.code);
-      byLine.set(e.line, arr);
-    }
-    for (const [line, codes] of byLine) {
-      if (patchedLines.has(line)) continue;
-      const hasQuotedIssue = codes.some(c => c === 'FL-LABEL-ESCAPED-QUOTE' || c === 'FL-LABEL-CURLY-IN-QUOTED' || c === 'FL-LABEL-DOUBLE-IN-DOUBLE' || c === 'FL-LABEL-BACKTICK');
-      if (!hasQuotedIssue) continue;
-      const lineText = lineTextAt(text, line);
-      if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') continue;
-      // Find first/last unescaped double quote on the line
-      let q1 = -1; for (let i=0;i<lineText.length;i++){ if (lineText[i]==='"' && lineText[i-1] !== '\\'){ q1=i; break; } }
-      let q2 = -1; for (let j=lineText.length-1;j>=0;j--){ if (lineText[j]==='"' && lineText[j-1] !== '\\'){ q2=j; break; } }
-      if (q1 !== -1 && q2 !== -1 && q2 > q1) {
-        const inner = lineText.slice(q1+1, q2);
-        const replaced = sanitizeQuotedInner(inner);
-        if (replaced !== inner) {
-          edits.push({ start: { line, column: q1 + 2 }, end: { line, column: q2 + 1 }, newText: replaced });
-          patchedLines.add(line);
-        }
-      }
-    }
-  }
-  const hasHeavyQuotedIssues = errors.some(e => e.code === 'FL-LABEL-CURLY-IN-QUOTED' || e.code === 'FL-LABEL-ESCAPED-QUOTE' || e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE') || text.includes('```');
+  
   // Encode unsafe characters inside quoted labels so Mermaid CLI can parse them.
   function sanitizeQuotedInner(inner: string): string {
     const SENT_Q = '\u0000__Q__';
@@ -194,7 +167,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
       // Guard against very long or code-fenced lines (often code/JSON examples) unless aggressive '--fix=all'
-      if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') { continue; }
+      
       const caret0 = Math.max(0, e.column - 1);
       const opens = [
         { tok: '[[', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },
@@ -239,7 +212,7 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     }
 if (is('FL-LABEL-BACKTICK', e)) {
       const lineText = lineTextAt(text, e.line);
-      if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') { continue; }
+      
       // Remove the offending backtick. Keep content otherwise unchanged.
       edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
       continue;
@@ -247,7 +220,7 @@ if (is('FL-LABEL-BACKTICK', e)) {
     if (is('FL-LABEL-CURLY-IN-QUOTED', e)) {
       // Replace { and } inside the surrounding quoted segment with HTML entities
       const lineText = lineTextAt(text, e.line);
-      if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') { continue; }
+      
       const caret0 = Math.max(0, e.column - 1);
       // Find opening quote before caret
       let qOpenIdx = -1; let qChar: string | null = null;
@@ -302,7 +275,7 @@ if (is('FL-LABEL-BACKTICK', e)) {
       // Safety guard unless aggressive '--fix=all'
       const rawDqCount = (lineText.match(/\"/g) || []).length;
       const unescapedDqCount = (lineText.replace(/\\\"/g, '').match(/\"/g) || []).length;
-      if ((lineText.length > 600 || rawDqCount + unescapedDqCount > 8) && level !== 'all') {
+      if ((rawDqCount + unescapedDqCount > 8) && level !== 'all') {
         continue;
       }
       // Find nearest shape opener before caret
@@ -765,7 +738,6 @@ if (is('FL-LABEL-BACKTICK', e)) {
     // Flowchart: wrap unquoted labels containing parentheses in quotes
     if (is('FL-LABEL-PARENS-UNQUOTED', e)) {
       if (level === 'safe' || level === 'all') {
-        if (level === 'safe' && hasHeavyQuotedIssues) { continue; }
         if (patchedLines.has(e.line)) continue; // Already patched this line
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);

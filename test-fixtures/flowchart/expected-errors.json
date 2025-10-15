@@ -8,7 +8,8 @@
     "FL-NODE-EMPTY"
   ],
   "escaped-quotes-in-decision.mmd": [
-    "FL-LABEL-DOUBLE-IN-DOUBLE"
+    "FL-LABEL-DOUBLE-IN-DOUBLE",
+    "FL-LABEL-ESCAPED-QUOTE"
   ],
   "invalid-arrow.mmd": [
     "FL-ARROW-INVALID"

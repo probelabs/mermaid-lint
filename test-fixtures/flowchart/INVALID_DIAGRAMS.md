@@ -288,6 +288,22 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:677
+   37 |     
+   38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
+   39 |     
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:589
+   71 |     
+   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+   73 |     
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
 error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:619
    71 |     
@@ -295,6 +311,14 @@ at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:619
       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
    73 |     
 hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
+
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:281
+  111 |     
+  112 |     CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
+      |                                                                                                                                                                                                                                                                                         ^
+  113 |     
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
 
 error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:116:58
@@ -312,31 +336,7 @@ at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:128:59
   129 |     
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
 
-warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:677
-   37 |     
-   38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
-      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
-   39 |     
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
-warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:589
-   71 |     
-   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
-      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
-   73 |     
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
-warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:281
-  111 |     
-  112 |     CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
-      |                                                                                                                                                                                                                                                                                         ^
-  113 |     
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
-warning[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:678
    37 |     
    38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
@@ -344,7 +344,7 @@ at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:678
    39 |     
 hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
 
-warning[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:590
    71 |     
    72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
@@ -352,7 +352,7 @@ at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:590
    73 |     
 hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
 
-warning[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:282
   111 |     
   112 |     CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
@@ -405,7 +405,7 @@ graph TB
     
     SchemaProcessing -->|No| SkipSchema[Skip schema processing]
     
-    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: &#123;&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 25&#125;<br/>NOT: &#123;&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: ...&#125;operties&quot;: ...&#125;...&#125;'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
     
     RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
     
@@ -483,7 +483,7 @@ graph TB
     
     CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
     
-    SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
+    SchemaDefPrompt --> RecursiveCorrect[Recursive answer&#40;&#41; call<br/>with _schemaFormatted: true]
     
     RecursiveCorrect --> CleanCorrected[cleanSchemaResponse]
     CleanCorrected --> ValidateCorrected[validateJsonResponse]
@@ -495,7 +495,7 @@ graph TB
     AttemptRetryLoop -->|No| FinalMermaid
     AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
     
-    CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    CreateCorrection --> RecursiveAttempt[Recursive answer&#40;&#41;<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
     
     RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
     
@@ -733,6 +733,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:7
+  1 | flowchart TD
+  2 |   A["`{% if %}` template"] --> B{Stage}
+    |       ^
+  3 | 
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
 error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:6
   1 | flowchart TD
@@ -740,14 +748,6 @@ at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:6
     |      ^
   3 | 
 hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
-
-warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:7
-  1 | flowchart TD
-  2 |   A["`{% if %}` template"] --> B{Stage}
-    |       ^
-  3 | 
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
 ```
 
 </td>
@@ -1207,7 +1207,7 @@ at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:7:35
   8 |     end
 hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
 
-warning[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
 at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
   5 |         B -- No --> C[Continue with other auth methods]
   6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
