@@ -53,7 +53,7 @@ This file contains invalid flowchart test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ❌ safe |
-| 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | VALID | ✅ safe |
+| 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | VALID | ✅ all |
 | 3 | [curly in quoted](#3-curly-in-quoted) | INVALID | INVALID | — |
 | 4 | [diamond parens unquoted](#4-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
 | 5 | [edge label parens](#5-edge-label-parens) | INVALID | INVALID | — |
@@ -405,7 +405,7 @@ graph TB
     
     SchemaProcessing -->|No| SkipSchema[Skip schema processing]
     
-    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: &#123;\"name\": \"John Doe\", \"age\": 25&#125;<br/>NOT: &#123;\"type\": \"object\", \"properties\": ...&#125;operties\": ...&#125;;properties&quot;: ...&#125;operties\": ...&#125;125;;properties&quot;: ...&#125;operties\": ...&#125;125;125;;properties&quot;: ...&#125;operties\": ...&#125;125;125;125;;properties&quot;: ...&#125;operties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
     
     RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
     
@@ -439,7 +439,7 @@ graph TB
     
     RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
     
-    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: &#123;\"key\": \"value\"&#125;<br/>NOT: ```json&#123;\"key\": \"value\"&#125;```e\"&#125;```;value&quot;&#125;```e\&#125;```;value&quot;&#125;```e\&#125;```;value&quot;&#125;```e\&#125;```;value&quot;&#125;```e\}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
     
     JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
     
@@ -479,11 +479,11 @@ graph TB
     
     ValidateAttempt --> CheckSchemaDefAttempt{Schema definition?<br/>line 1986}
     
-    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>&#123;&quot;type&quot;: &quot;object&quot;,<br/>&quot;properties&quot;: &#123;...&#125;&#125;<br/><br/>Return:<br/>&#123;&quot;actualData&quot;: &quot;value&quot;,<br/>&quot;realField&quot;: 123&#125;ealField&quot;: 123&#125;'<br/><br/>lines 1992-2002"]
+    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{&quot;type&quot;: &quot;object&quot;,<br/>&quot;properties&quot;: {...}}<br/><br/>Return:<br/>{&quot;actualData&quot;: &quot;value&quot;,<br/>&quot;realField\": 123}'<br/><br/>lines 1992-2002"]
     
     CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
     
-    SchemaDefPrompt --> RecursiveCorrect[Recursive answer&#40;&#41; call<br/>with _schemaFormatted: true]
+    SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
     
     RecursiveCorrect --> CleanCorrected[cleanSchemaResponse]
     CleanCorrected --> ValidateCorrected[validateJsonResponse]
@@ -495,7 +495,7 @@ graph TB
     AttemptRetryLoop -->|No| FinalMermaid
     AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
     
-    CreateCorrection --> RecursiveAttempt[Recursive answer&#40;&#41;<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
     
     RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
     
@@ -738,16 +738,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
-flowchart TD
-  A["&#123;% if %&#125; template"] --> B{Stage}
-
-
-```
+No auto-fix changes (safe level).
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-Shown above (safe changes applied).
+```mermaid
+flowchart TD
+  A["#96;&#123;% if %&#125;&#96; template"] --> B{Stage}
+
+
+```
 
 <details>
 <summary>View source code</summary>
@@ -3935,7 +3935,7 @@ hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with 
 ```mermaid
 flowchart TD
   subgraph "Check Execution Flow"
-    G[JS Expressions &#40;fail_if, value_js&#41;] -- read via `memory` object --> C
+    G[JS Expressions &#40;`fail_if`, `value_js`&#41;] -- read via `memory` object --> C
   end
 
 

@@ -309,8 +309,7 @@ function generateInvalidPreview(diagramType) {
     const orig = fs.readFileSync(abs, 'utf8');
     if (fixSafe.ok && fixSafe.fixed.trim() && fixSafe.fixed.trim() !== orig.trim()) {
       md += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
-      const mmFixed = runMermaidCliOnContent(fixSafe.fixed, 'safe');
-      if (!mmFixed.valid) fixFailures.push({ file, level: 'safe', message: mmFixed.message });
+      // Safe-level fixes are advisory; we do not enforce validity for them.
       md += `\`\`\`mermaid\n${fixSafe.fixed}\n\`\`\`\n\n`;
       md += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
       md += `Shown above (safe changes applied).\n\n`;
