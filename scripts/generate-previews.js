@@ -46,6 +46,18 @@ function sanitizeMermaidMessage(input) {
   return out;
 }
 
+// Choose a safe backtick fence length so inner backticks in content don't break the block.
+function codeFence(content, lang = '') {
+  const matches = content.match(/`+/g) || [];
+  const maxTicks = matches.reduce((m, s) => Math.max(m, s.length), 0);
+  const fence = '`'.repeat(Math.max(3, maxTicks + 1));
+  const header = lang ? `${fence}${lang}\n` : `${fence}\n`;
+  return {
+    open: header,
+    close: `\n${fence}\n`,
+  };
+}
+
 function runMermaidCli(filepath) {
   const outSvg = `/tmp/mermaid-cli-${path.basename(filepath)}.svg`;
   try {
@@ -192,7 +204,10 @@ function generateValidPreview(diagramType, { withRenderer = true } = {}) {
     md += `📄 **Source**: [\`${file}\`](./valid/${file})\n\n`;
     if (supportedByRenderer) {
       md += `### Rendered Output\n\n<table>\n<tr>\n<th width=\"50%\">Mermaid (Official)</th>\n<th width=\"50%\">Maid (Experimental)</th>\n</tr>\n<tr>\n<td>\n\n`;
-      md += `\`\`\`mermaid\n${content}\n\`\`\`\n\n`;
+      {
+        const f = codeFence(content, 'mermaid');
+        md += `${f.open}${content}${f.close}\n`;
+      }
       md += `</td>\n<td>\n\n`;
       try {
         const res = renderMermaid(content);
@@ -211,7 +226,10 @@ function generateValidPreview(diagramType, { withRenderer = true } = {}) {
     } else {
       // Mermaid-only block
       md += `### Rendered Output (Mermaid)\n\n`;
-      md += `\`\`\`mermaid\n${content}\n\`\`\`\n\n`;
+      {
+        const f = codeFence(content, 'mermaid');
+        md += `${f.open}${content}${f.close}`;
+      }
     }
     md += `<details>\n<summary>View source code</summary>\n\n\`\`\`\n${content}\n\`\`\`\n</details>\n\n---\n\n`;
   }
@@ -311,7 +329,10 @@ function generateInvalidPreview(diagramType) {
       md += `### maid Auto-fix (\`--fix\`) Preview\n\n`;
       const mmFixed = runMermaidCliOnContent(fixSafe.fixed, 'safe');
       if (!mmFixed.valid) fixFailures.push({ file, level: 'safe', message: mmFixed.message });
-      md += `\`\`\`mermaid\n${fixSafe.fixed}\n\`\`\`\n\n`;
+      {
+        const f = codeFence(fixSafe.fixed, 'mermaid');
+        md += `${f.open}${fixSafe.fixed}${f.close}\n`;
+      }
       md += `### maid Auto-fix (\`--fix=all\`) Preview\n\n`;
       md += `Shown above (safe changes applied).\n\n`;
     } else {
@@ -320,7 +341,8 @@ function generateInvalidPreview(diagramType) {
       if (fixAll.ok && fixAll.fixed.trim() && fixAll.fixed.trim() !== orig.trim()) {
         const mmFixedAll = runMermaidCliOnContent(fixAll.fixed, 'all');
         if (!mmFixedAll.valid) fixFailures.push({ file, level: 'all', message: mmFixedAll.message });
-        md += `\`\`\`mermaid\n${fixAll.fixed}\n\`\`\`\n\n`;
+        const f = codeFence(fixAll.fixed, 'mermaid');
+        md += `${f.open}${fixAll.fixed}${f.close}\n`;
       } else {
         md += `No auto-fix changes (all level).\n\n`;
       }
