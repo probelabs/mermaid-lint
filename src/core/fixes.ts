@@ -225,7 +225,6 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
 if (is('FL-LABEL-BACKTICK', e)) {
-      if (e.severity === 'warning' && level !== 'all') { continue; }
       const lineText = lineTextAt(text, e.line);
       if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') { continue; }
       // Remove the offending backtick. Keep content otherwise unchanged.
@@ -233,7 +232,6 @@ if (is('FL-LABEL-BACKTICK', e)) {
       continue;
     }
     if (is('FL-LABEL-CURLY-IN-QUOTED', e)) {
-      if (e.severity === 'warning' && level !== 'all') { continue; }
       // Replace { and } inside the surrounding quoted segment with HTML entities
       const lineText = lineTextAt(text, e.line);
       if ((lineText.length > 600 || lineText.includes('```')) && level !== 'all') { continue; }

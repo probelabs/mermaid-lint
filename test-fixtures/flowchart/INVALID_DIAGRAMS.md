@@ -53,7 +53,7 @@ This file contains invalid flowchart test fixtures with:
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
 | 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ❌ safe |
-| 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | VALID | ✅ all |
+| 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | INVALID | ✅ safe |
 | 3 | [curly in quoted](#3-curly-in-quoted) | INVALID | INVALID | — |
 | 4 | [diamond parens unquoted](#4-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
 | 5 | [edge label parens](#5-edge-label-parens) | INVALID | INVALID | — |
@@ -288,6 +288,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
+error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:619
+   71 |     
+   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+   73 |     
+hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
+
 error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:116:58
   115 |     
@@ -319,14 +327,6 @@ at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:589
       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
    73 |     
 hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
-warning[FL-LABEL-BACKTICK]: Backticks (`…`) inside labels may not render consistently. Prefer regular quotes or plain text.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:619
-   71 |     
-   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
-      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
-   73 |     
-hint: Consider replacing ``` with quotes or plain text where possible.
 
 warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:281
@@ -479,7 +479,7 @@ graph TB
     
     ValidateAttempt --> CheckSchemaDefAttempt{Schema definition?<br/>line 1986}
     
-    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{&quot;type&quot;: &quot;object&quot;,<br/>&quot;properties&quot;: {...}}<br/><br/>Return:<br/>{&quot;actualData&quot;: &quot;value&quot;,<br/>&quot;realField\": 123}'<br/><br/>lines 1992-2002"]
+    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>&#123;&quot;type&quot;: &quot;object&quot;,<br/>&quot;properties&quot;: &#123;...&#125;&#125;<br/><br/>Return:<br/>&#123;&quot;actualData&quot;: &quot;value&quot;,<br/>&quot;realField&quot;: 123&#125;ealField&quot;: 123&#125;123&#125;'<br/><br/>lines 1992-2002"]
     
     CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
     
@@ -730,7 +730,25 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 </td>
 <td valign="top">
 
-**Result**: ✅ VALID
+**Result**: ❌ INVALID
+
+```
+error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:6
+  1 | flowchart TD
+  2 |   A["`{% if %}` template"] --> B{Stage}
+    |      ^
+  3 | 
+hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
+
+warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:7
+  1 | flowchart TD
+  2 |   A["`{% if %}` template"] --> B{Stage}
+    |       ^
+  3 | 
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+```
 
 </td>
 </tr>
@@ -738,16 +756,16 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
-
-### maid Auto-fix (`--fix=all`) Preview
-
 ```mermaid
 flowchart TD
   A["#96;&#123;% if %&#125;&#96; template"] --> B{Stage}
 
 
 ```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -3935,7 +3953,7 @@ hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with 
 ```mermaid
 flowchart TD
   subgraph "Check Execution Flow"
-    G[JS Expressions &#40;`fail_if`, `value_js`&#41;] -- read via `memory` object --> C
+    G[JS Expressions &#40;fail_if, value_js&#41;] -- read via `memory` object --> C
   end
 
 
