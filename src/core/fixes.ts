@@ -11,11 +11,76 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
   const patchedLines = new Set<number>();
   const seen = new Set<string>();
   const piQuoteClosedLines = new Set<number>();
+  // Utility: sanitize all quoted segments inside shape labels on a given line
+  function sanitizeAllQuotedSegmentsInShapes(lineText: string, lineNo: number) {
+    // Shapes and their closers in order of preference (double before single)
+    const shapes: Array<{ open: string; close: string }> = [
+      { open: '[[', close: ']]' },
+      { open: '((', close: '))' },
+      { open: '{{', close: '}}' },
+      { open: '[(', close: ')]' },
+      { open: '([', close: '])' },
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+    ];
+    let idx = 0; let produced = 0;
+    while (idx < lineText.length) {
+      // Find next shape opener
+      let found: { open: string; close: string; i: number } | null = null;
+      for (const s of shapes) {
+        const i = lineText.indexOf(s.open, idx);
+        if (i !== -1 && (found === null || i < found.i)) found = { ...s, i };
+      }
+      if (!found) break;
+      const contentStart = found.i + found.open.length;
+      const closeIdx = lineText.indexOf(found.close, contentStart);
+      if (closeIdx === -1) { idx = contentStart; continue; }
+      // Within the shape content, look for the outermost quoted segment (double-quotes)
+      let q1 = -1; for (let i = contentStart; i < closeIdx; i++) { if (lineText[i] === '"' && lineText[i-1] !== '\\') { q1 = i; break; } }
+      if (q1 !== -1) {
+        let q2 = -1; for (let j = closeIdx - 1; j > q1; j--) { if (lineText[j] === '"' && lineText[j-1] !== '\\') { q2 = j; break; } }
+        if (q2 !== -1) {
+          const inner = lineText.slice(q1 + 1, q2);
+          const replaced = sanitizeQuotedInner(inner);
+          if (replaced !== inner) {
+            edits.push({ start: { line: lineNo, column: q1 + 2 }, end: { line: lineNo, column: q2 + 1 }, newText: replaced });
+            produced++;
+          }
+        }
+      }
+      idx = closeIdx + found.close.length;
+    }
+    return produced;
+  }
+  
+  // Encode unsafe characters inside quoted labels so Mermaid CLI can parse them.
+  function sanitizeQuotedInner(inner: string): string {
+    const SENT_Q = '\u0000__Q__';
+    let out = inner.split('&quot;').join(SENT_Q);
+    // Backticks are not always accepted, encode to entity
+    out = out.replace(/`/g, '&#96;');
+    // Encode quotes
+    out = out.replace(/\\\"/g, '&quot;');
+    out = out.replace(/\"/g, '&quot;');
+    out = out.replace(/"/g, '&quot;');
+    // Encode curly braces which can conflict with diamond/hexagon tokens
+    out = out.replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
+    // Restore any pre-existing &quot;
+    out = out.split(SENT_Q).join('&quot;');
+    return out;
+  }
   for (const e of errors) {
     const key = `${e.code}@${e.line}:${e.column}:${e.length ?? 1}`;
     if (seen.has(key)) continue;
     seen.add(key);
     // Flowchart fixes
+    // If we see any quoted-label hazard on this line, sanitize all quoted segments inside shapes once
+    if ((e.code === 'FL-LABEL-ESCAPED-QUOTE' || e.code === 'FL-LABEL-CURLY-IN-QUOTED' || e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE' || e.code === 'FL-LABEL-BACKTICK') && !patchedLines.has(e.line)) {
+      const lineText = lineTextAt(text, e.line);
+      const produced = sanitizeAllQuotedSegmentsInShapes(lineText, e.line);
+      if (produced > 0) { patchedLines.add(e.line); continue; }
+    }
     if (is('FL-ARROW-INVALID', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
       continue;
@@ -149,6 +214,8 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
+      // Guard against very long or code-fenced lines (often code/JSON examples) unless aggressive '--fix=all'
+      
       const caret0 = Math.max(0, e.column - 1);
       const opens = [
         { tok: '[[', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },
@@ -170,10 +237,18 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           const q2 = lineText.lastIndexOf('"', closeIdx - 1);
           if (q1 !== -1 && q2 !== -1 && q2 > q1) {
             const inner = lineText.slice(q1 + 1, q2);
-            if (inner.includes('\\"')) {
-              const replaced = inner.split('\\\"').join('&quot;');
+            const replaced = sanitizeQuotedInner(inner);
+            if (replaced !== inner) {
               edits.push({ start: { line: e.line, column: q1 + 2 }, end: { line: e.line, column: q2 + 1 }, newText: replaced });
               continue;
+            }
+          }
+        }
+      }
+      // Fallback: replace only the current occurrence
+      edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
+      continue;
+    }
 
     if (is('FL-META-UNSUPPORTED', e)) {
       // Remove the unsupported meta line (e.g., 'title ...'). Keep conservative under --fix=all only.
@@ -183,23 +258,9 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-            }
-          }
-        }
-      }
-      // Fallback: replace only the current occurrence
-      edits.push(replaceRange(text, at(e), e.length ?? 2, '&quot;'));
-      continue;
-    }
-    
-    if (is('FL-META-UNSUPPORTED', e)) {
-      // Remove the unsupported meta line (e.g., 'title ...'). Keep conservative under --fix=all only.
-      if (level === 'all') {
-        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line + 1, column: 1 }, newText: '' });
-      }
-      continue;
-    }
 if (is('FL-LABEL-BACKTICK', e)) {
+      const lineText = lineTextAt(text, e.line);
+      
       // Remove the offending backtick. Keep content otherwise unchanged.
       edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
       continue;
@@ -207,6 +268,7 @@ if (is('FL-LABEL-BACKTICK', e)) {
     if (is('FL-LABEL-CURLY-IN-QUOTED', e)) {
       // Replace { and } inside the surrounding quoted segment with HTML entities
       const lineText = lineTextAt(text, e.line);
+      
       const caret0 = Math.max(0, e.column - 1);
       // Find opening quote before caret
       let qOpenIdx = -1; let qChar: string | null = null;
@@ -231,7 +293,7 @@ if (is('FL-LABEL-BACKTICK', e)) {
         }
         if (qCloseIdx > qOpenIdx) {
           const inner = lineText.slice(qOpenIdx + 1, qCloseIdx);
-          const replaced = inner.replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
+          const replaced = sanitizeQuotedInner(inner);
           if (replaced !== inner) {
             edits.push({ start: { line: e.line, column: qOpenIdx + 2 }, end: { line: e.line, column: qCloseIdx + 1 }, newText: replaced });
             continue;
@@ -240,7 +302,7 @@ if (is('FL-LABEL-BACKTICK', e)) {
       }
       // Fallback: replace just the current character
       const ch = lineText[caret0] || '';
-      const rep = ch === '{' ? '&#123;' : ch === '}' ? '&#125;' : ch;
+      const rep = ch === '{' ? '&#123;' : ch === '}' ? '&#125;' : ch === '`' ? '&#96;' : ch;
       if (rep !== ch) edits.push(replaceRange(text, at(e), e.length ?? 1, rep));
       continue;
     }
@@ -258,6 +320,12 @@ if (is('FL-LABEL-BACKTICK', e)) {
     if (is('FL-LABEL-DOUBLE-IN-DOUBLE', e)) {
       const lineText = lineTextAt(text, e.line);
       const caret0 = Math.max(0, e.column - 1);
+      // Safety guard unless aggressive '--fix=all'
+      const rawDqCount = (lineText.match(/\"/g) || []).length;
+      const unescapedDqCount = (lineText.replace(/\\\"/g, '').match(/\"/g) || []).length;
+      if ((rawDqCount + unescapedDqCount > 8) && level !== 'all') {
+        continue;
+      }
       // Find nearest shape opener before caret
       const opens = [
         { tok: '[[', idx: lineText.lastIndexOf('[[', caret0) },
@@ -284,7 +352,7 @@ if (is('FL-LABEL-BACKTICK', e)) {
         const q2 = lineText.lastIndexOf('"', closeIdx - 1);
         if (q1 !== -1 && q2 !== -1 && q2 > q1) {
           const inner = lineText.slice(q1 + 1, q2);
-          const replaced = inner.split('&quot;').join('\u0000').split('"').join('&quot;').split('\u0000').join('&quot;');
+          const replaced = sanitizeQuotedInner(inner);
           if (replaced !== inner) {
             const start = { line: e.line, column: q1 + 2 };
             const end = { line: e.line, column: q2 + 1 };
@@ -671,6 +739,12 @@ if (is('FL-LABEL-BACKTICK', e)) {
       if (level === 'safe' || level === 'all') {
         const lineText = lineTextAt(text, e.line);
         const caret0 = Math.max(0, e.column - 1);
+        // Safety guard: very long, quote-dense labels are likely code samples.
+        // Avoid rewriting these to prevent content corruption; leave as-is for manual editing.
+        const dq = (lineText.replace(/\\\"/g, '').match(/\"/g) || []).length;
+        if (lineText.length > 600 || dq > 8) {
+          continue;
+        }
         // Find nearest opener before caret
         const openPairs: Array<{open:string, close:string, idx:number, delta:number}> = [
           { open: '[[', close: ']]', idx: lineText.lastIndexOf('[[', caret0), delta: 2 },

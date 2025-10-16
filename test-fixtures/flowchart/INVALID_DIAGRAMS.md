@@ -9,41 +9,42 @@ This file contains invalid flowchart test fixtures with:
 
 ## Table of Contents
 
-1. [Backticks In Quoted Label](#1-backticks-in-quoted-label)
-2. [Curly In Quoted](#2-curly-in-quoted)
-3. [Diamond Parens Unquoted](#3-diamond-parens-unquoted)
-4. [Edge Label Parens](#4-edge-label-parens)
-5. [Empty Nodes](#5-empty-nodes)
-6. [Escaped Quotes In Decision](#6-escaped-quotes-in-decision)
-7. [Interactions Click Call Missing Fn](#7-interactions-click-call-missing-fn)
-8. [Interactions Click Call Parens](#8-interactions-click-call-parens)
-9. [Interactions Click Href](#9-interactions-click-href)
-10. [Interactions Linkstyle Multi](#10-interactions-linkstyle-multi)
-11. [Interactions Linkstyle Ranges](#11-interactions-linkstyle-ranges)
-12. [Invalid Arrow](#12-invalid-arrow)
-13. [Invalid Class](#13-invalid-class)
-14. [Invalid Node Syntax](#14-invalid-node-syntax)
-15. [Invalid Subgraph](#15-invalid-subgraph)
-16. [Link One Sided Marker](#16-link-one-sided-marker)
-17. [Linkstyle Id Unknown](#17-linkstyle-id-unknown)
-18. [Missing Arrow](#18-missing-arrow)
-19. [Mixed Brackets](#19-mixed-brackets)
-20. [Mixed Quotes In Labels](#20-mixed-quotes-in-labels)
-21. [No Diagram Type](#21-no-diagram-type)
-22. [Quotes Double Inside Single](#22-quotes-double-inside-single)
-23. [Quotes In Node Labels](#23-quotes-in-node-labels)
-24. [Round Parens Unquoted](#24-round-parens-unquoted)
-25. [Title Unsupported](#25-title-unsupported)
-26. [Typed Shapes All](#26-typed-shapes-all)
-27. [Typed Shapes Unknowns](#27-typed-shapes-unknowns)
-28. [Unclosed Bracket](#28-unclosed-bracket)
-29. [Unclosed Quote In Label](#29-unclosed-quote-in-label)
-30. [Unescaped Quotes In Decision](#30-unescaped-quotes-in-decision)
-31. [Unmatched End](#31-unmatched-end)
-32. [Unquoted Label With Quotes](#32-unquoted-label-with-quotes)
-33. [Unquoted Parens In Labels](#33-unquoted-parens-in-labels)
-34. [Unquoted Parens With Backticks](#34-unquoted-parens-with-backticks)
-35. [Wrong Direction](#35-wrong-direction)
+1. [Agent Schema Workflow](#1-agent-schema-workflow)
+2. [Backticks In Quoted Label](#2-backticks-in-quoted-label)
+3. [Curly In Quoted](#3-curly-in-quoted)
+4. [Diamond Parens Unquoted](#4-diamond-parens-unquoted)
+5. [Edge Label Parens](#5-edge-label-parens)
+6. [Empty Nodes](#6-empty-nodes)
+7. [Escaped Quotes In Decision](#7-escaped-quotes-in-decision)
+8. [Interactions Click Call Missing Fn](#8-interactions-click-call-missing-fn)
+9. [Interactions Click Call Parens](#9-interactions-click-call-parens)
+10. [Interactions Click Href](#10-interactions-click-href)
+11. [Interactions Linkstyle Multi](#11-interactions-linkstyle-multi)
+12. [Interactions Linkstyle Ranges](#12-interactions-linkstyle-ranges)
+13. [Invalid Arrow](#13-invalid-arrow)
+14. [Invalid Class](#14-invalid-class)
+15. [Invalid Node Syntax](#15-invalid-node-syntax)
+16. [Invalid Subgraph](#16-invalid-subgraph)
+17. [Link One Sided Marker](#17-link-one-sided-marker)
+18. [Linkstyle Id Unknown](#18-linkstyle-id-unknown)
+19. [Missing Arrow](#19-missing-arrow)
+20. [Mixed Brackets](#20-mixed-brackets)
+21. [Mixed Quotes In Labels](#21-mixed-quotes-in-labels)
+22. [No Diagram Type](#22-no-diagram-type)
+23. [Quotes Double Inside Single](#23-quotes-double-inside-single)
+24. [Quotes In Node Labels](#24-quotes-in-node-labels)
+25. [Round Parens Unquoted](#25-round-parens-unquoted)
+26. [Title Unsupported](#26-title-unsupported)
+27. [Typed Shapes All](#27-typed-shapes-all)
+28. [Typed Shapes Unknowns](#28-typed-shapes-unknowns)
+29. [Unclosed Bracket](#29-unclosed-bracket)
+30. [Unclosed Quote In Label](#30-unclosed-quote-in-label)
+31. [Unescaped Quotes In Decision](#31-unescaped-quotes-in-decision)
+32. [Unmatched End](#32-unmatched-end)
+33. [Unquoted Label With Quotes](#33-unquoted-label-with-quotes)
+34. [Unquoted Parens In Labels](#34-unquoted-parens-in-labels)
+35. [Unquoted Parens With Backticks](#35-unquoted-parens-with-backticks)
+36. [Wrong Direction](#36-wrong-direction)
 
 ---
 
@@ -51,45 +52,638 @@ This file contains invalid flowchart test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [backticks in quoted label](#1-backticks-in-quoted-label) | INVALID | INVALID | ✅ safe |
-| 2 | [curly in quoted](#2-curly-in-quoted) | INVALID | INVALID | — |
-| 3 | [diamond parens unquoted](#3-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
-| 4 | [edge label parens](#4-edge-label-parens) | INVALID | INVALID | — |
-| 5 | [empty nodes](#5-empty-nodes) | INVALID | INVALID | ✅ safe |
-| 6 | [escaped quotes in decision](#6-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 7 | [interactions click call missing fn](#7-interactions-click-call-missing-fn) | INVALID | INVALID | — |
-| 8 | [interactions click call parens](#8-interactions-click-call-parens) | INVALID | INVALID | — |
-| 9 | [interactions click href](#9-interactions-click-href) | INVALID | INVALID | — |
-| 10 | [interactions linkstyle multi](#10-interactions-linkstyle-multi) | INVALID | INVALID | — |
-| 11 | [interactions linkstyle ranges](#11-interactions-linkstyle-ranges) | INVALID | INVALID | — |
-| 12 | [invalid arrow](#12-invalid-arrow) | INVALID | INVALID | ✅ safe |
-| 13 | [invalid class](#13-invalid-class) | INVALID | INVALID | — |
-| 14 | [invalid node syntax](#14-invalid-node-syntax) | INVALID | INVALID | ✅ all |
-| 15 | [invalid subgraph](#15-invalid-subgraph) | INVALID | INVALID | — |
-| 16 | [link one sided marker](#16-link-one-sided-marker) | INVALID | INVALID | ✅ safe |
-| 17 | [linkstyle id unknown](#17-linkstyle-id-unknown) | INVALID | INVALID | — |
-| 18 | [missing arrow](#18-missing-arrow) | INVALID | INVALID | ✅ all |
-| 19 | [mixed brackets](#19-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 20 | [mixed quotes in labels](#20-mixed-quotes-in-labels) | INVALID | INVALID | — |
-| 21 | [no diagram type](#21-no-diagram-type) | INVALID | INVALID | — |
-| 22 | [quotes double inside single](#22-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 23 | [quotes in node labels](#23-quotes-in-node-labels) | INVALID | INVALID | — |
-| 24 | [round parens unquoted](#24-round-parens-unquoted) | INVALID | INVALID | — |
-| 25 | [title unsupported](#25-title-unsupported) | INVALID | INVALID | ✅ all |
-| 26 | [typed shapes all](#26-typed-shapes-all) | INVALID | INVALID | — |
-| 27 | [typed shapes unknowns](#27-typed-shapes-unknowns) | INVALID | INVALID | — |
-| 28 | [unclosed bracket](#28-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 29 | [unclosed quote in label](#29-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 30 | [unescaped quotes in decision](#30-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 31 | [unmatched end](#31-unmatched-end) | INVALID | INVALID | — |
-| 32 | [unquoted label with quotes](#32-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 33 | [unquoted parens in labels](#33-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
-| 34 | [unquoted parens with backticks](#34-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
-| 35 | [wrong direction](#35-wrong-direction) | INVALID | INVALID | — |
+| 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ✅ safe |
+| 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | INVALID | ✅ safe |
+| 3 | [curly in quoted](#3-curly-in-quoted) | INVALID | INVALID | — |
+| 4 | [diamond parens unquoted](#4-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
+| 5 | [edge label parens](#5-edge-label-parens) | INVALID | INVALID | — |
+| 6 | [empty nodes](#6-empty-nodes) | INVALID | INVALID | ✅ safe |
+| 7 | [escaped quotes in decision](#7-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 8 | [interactions click call missing fn](#8-interactions-click-call-missing-fn) | INVALID | INVALID | — |
+| 9 | [interactions click call parens](#9-interactions-click-call-parens) | INVALID | INVALID | — |
+| 10 | [interactions click href](#10-interactions-click-href) | INVALID | INVALID | — |
+| 11 | [interactions linkstyle multi](#11-interactions-linkstyle-multi) | INVALID | INVALID | — |
+| 12 | [interactions linkstyle ranges](#12-interactions-linkstyle-ranges) | INVALID | INVALID | — |
+| 13 | [invalid arrow](#13-invalid-arrow) | INVALID | INVALID | ✅ safe |
+| 14 | [invalid class](#14-invalid-class) | INVALID | INVALID | — |
+| 15 | [invalid node syntax](#15-invalid-node-syntax) | INVALID | INVALID | ✅ all |
+| 16 | [invalid subgraph](#16-invalid-subgraph) | INVALID | INVALID | — |
+| 17 | [link one sided marker](#17-link-one-sided-marker) | INVALID | INVALID | ✅ safe |
+| 18 | [linkstyle id unknown](#18-linkstyle-id-unknown) | INVALID | INVALID | — |
+| 19 | [missing arrow](#19-missing-arrow) | INVALID | INVALID | ✅ all |
+| 20 | [mixed brackets](#20-mixed-brackets) | INVALID | INVALID | ✅ safe |
+| 21 | [mixed quotes in labels](#21-mixed-quotes-in-labels) | INVALID | INVALID | — |
+| 22 | [no diagram type](#22-no-diagram-type) | INVALID | INVALID | — |
+| 23 | [quotes double inside single](#23-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
+| 24 | [quotes in node labels](#24-quotes-in-node-labels) | INVALID | INVALID | — |
+| 25 | [round parens unquoted](#25-round-parens-unquoted) | INVALID | INVALID | — |
+| 26 | [title unsupported](#26-title-unsupported) | INVALID | INVALID | ✅ all |
+| 27 | [typed shapes all](#27-typed-shapes-all) | INVALID | INVALID | — |
+| 28 | [typed shapes unknowns](#28-typed-shapes-unknowns) | INVALID | INVALID | — |
+| 29 | [unclosed bracket](#29-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 30 | [unclosed quote in label](#30-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 31 | [unescaped quotes in decision](#31-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 32 | [unmatched end](#32-unmatched-end) | INVALID | INVALID | — |
+| 33 | [unquoted label with quotes](#33-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 34 | [unquoted parens in labels](#34-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
+| 35 | [unquoted parens with backticks](#35-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
+| 36 | [wrong direction](#36-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
-## 1. Backticks In Quoted Label
+## 1. Agent Schema Workflow
+
+📄 **Source**: [`agent-schema-workflow.mmd`](./invalid/agent-schema-workflow.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+graph TB
+    Start[User calls agent.answer with schema] --> CheckSchema{Schema<br/>provided?}
+    
+    CheckSchema -->|No| NormalFlow[Normal agentic flow<br/>No JSON handling]
+    CheckSchema -->|Yes| ExtendIterations[Extend max iterations by 4<br/>line 1410]
+    
+    ExtendIterations --> ToolLoop[Tool iteration loop starts<br/>maxIterations = base + 4]
+    
+    ToolLoop --> GetResponse[Call AI model]
+    GetResponse --> ParseResponse{Parse<br/>response}
+    
+    ParseResponse -->|Tool call found| ExecuteTool[Execute tool<br/>Add result to messages]
+    ExecuteTool --> CheckMaxIter{Reached max<br/>iterations?}
+    
+    ParseResponse -->|attempt_completion| SetCompletion[Set completionAttempted = true<br/>Extract result from tag]
+    SetCompletion --> BreakLoop[Break from tool loop]
+    
+    ParseResponse -->|attempt_complete| ReuseResponse[Reuse previous response<br/>as final result]
+    ReuseResponse --> BreakLoop
+    
+    ParseResponse -->|No tool<br/>No completion| AddReminder{Schema<br/>provided?}
+    
+    AddReminder -->|Yes| SchemaReminder["Add reminder message:<br/>'IMPORTANT: A schema was provided<br/>for the final output format.<br/><br/>Option 1 - Use attempt_completion<br/>with your complete answer:<br/>&lt;attempt_completion&gt;<br/>[Your complete answer here -<br/>will be automatically formatted<br/>to match the schema]<br/>&lt;/attempt_completion&gt;<br/><br/>Option 2 - Provide a natural response<br/>without any tool, and it will be<br/>automatically formatted.<br/><br/>Do NOT try to format your response<br/>as JSON yourself - this will be<br/>done automatically.'<br/>lines 1626-1635"]
+    
+    AddReminder -->|No| StandardReminder[Add standard reminder<br/>about tool usage]
+    
+    SchemaReminder --> CheckMaxIter
+    StandardReminder --> CheckMaxIter
+    
+    CheckMaxIter -->|No| ToolLoop
+    CheckMaxIter -->|Yes| EndLoop[End tool loop]
+    
+    BreakLoop --> SchemaProcessing{Schema provided<br/>AND !_schemaFormatted<br/>AND not max iter?<br/>line 1710}
+    EndLoop --> SchemaProcessing
+    
+    SchemaProcessing -->|No| SkipSchema[Skip schema processing]
+    
+    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    
+    RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
+    
+    CleanResponse1 --> MermaidVal{disableMermaid<br/>Validation?}
+    
+    MermaidVal -->|No| ValidateMermaid[validateAndFixMermaidResponse<br/>lines 1761-1807]
+    MermaidVal -->|Yes| CheckJsonSchema
+    
+    ValidateMermaid --> CheckJsonSchema{isJsonSchema<br/>schema?<br/>line 1810}
+    
+    CheckJsonSchema -->|No| FinalMermaid
+    CheckJsonSchema -->|Yes| CleanAgain[cleanSchemaResponse again<br/>line 1817]
+    
+    CleanAgain --> ValidateJson[validateJsonResponse<br/>line 1831]
+    
+    ValidateJson --> CheckSchemaDef{Response is<br/>schema definition?<br/>isJsonSchemaDefinition<br/>line 1836}
+    
+    CheckSchemaDef -->|Yes| MarkInvalid["Mark as invalid:<br/>error = 'Response is a JSON<br/>schema definition instead<br/>of actual data'<br/>lines 1841-1845"]
+    
+    CheckSchemaDef -->|No| CheckValid{Valid JSON?}
+    MarkInvalid --> CheckValid
+    
+    CheckValid -->|Yes| UpdateFinal[Update finalResult]
+    UpdateFinal --> FinalMermaid
+    
+    CheckValid -->|No| InitJsonFixer["Initialize JsonFixingAgent<br/>Separate session with:<br/>- disableJsonValidation: true<br/>- Same model/provider<br/>lines 1854-1861"]
+    
+    InitJsonFixer --> RetryLoop{retryCount<br/>< 3?}
+    
+    RetryLoop -->|No| LogFailure[Log validation failure<br/>Continue with invalid JSON<br/>lines 1906-1908]
+    
+    RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
+    
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+    
+    JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
+    
+    JsonFixerAnswer --> CleanFixed[cleanSchemaResponse<br/>on fixer result<br/>line 891]
+    
+    CleanFixed --> ValidateFixed[validateJsonResponse<br/>line 894]
+    
+    ValidateFixed --> CheckFixed{Valid?}
+    
+    CheckFixed -->|No| IncrementRetry[retryCount++<br/>line 1883]
+    IncrementRetry --> RetryLoop
+    
+    CheckFixed -->|Yes| UpdateResult[Update currentResult<br/>line 1890]
+    UpdateResult --> FinalUpdate[finalResult = currentResult<br/>line 1903]
+    
+    LogFailure --> FinalMermaid
+    FinalUpdate --> FinalMermaid
+    
+    FinalMermaid["Final mermaid validation<br/>if !_schemaFormatted<br/>lines 2086-2117"]
+    
+    FinalMermaid --> RemoveThinking["Remove <thinking> tags<br/>if !_schemaFormatted<br/>lines 2122-2126"]
+    
+    RemoveThinking --> Return[Return finalResult]
+    
+    SkipSchema --> AttemptCompletion{completionAttempted<br/>AND schema<br/>AND !_schemaFormatted?<br/>line 1931}
+    
+    AttemptCompletion -->|No| NormalFlow
+    
+    AttemptCompletion -->|Yes| CleanAttempt[cleanSchemaResponse<br/>line 1934]
+    
+    CleanAttempt --> MermaidAttempt[validateAndFixMermaidResponse<br/>if !disableMermaidValidation<br/>lines 1937-1963]
+    
+    MermaidAttempt --> JsonAttempt{isJsonSchema?<br/>line 1966}
+    
+    JsonAttempt -->|No| FinalMermaid
+    JsonAttempt -->|Yes| ValidateAttempt[validateJsonResponse<br/>line 1981]
+    
+    ValidateAttempt --> CheckSchemaDefAttempt{Schema definition?<br/>line 1986}
+    
+    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
+    
+    CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
+    
+    SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
+    
+    RecursiveCorrect --> CleanCorrected[cleanSchemaResponse]
+    CleanCorrected --> ValidateCorrected[validateJsonResponse]
+    ValidateCorrected --> AttemptRetry
+    
+    AttemptRetry -->|Yes| FinalMermaid
+    AttemptRetry -->|No| AttemptRetryLoop{retryCount<br/>< 3?}
+    
+    AttemptRetryLoop -->|No| FinalMermaid
+    AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
+    
+    CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    
+    RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
+    
+    CleanAttempted --> ValidateAttempted[validateJsonResponse<br/>line 2050]
+    
+    ValidateAttempted --> IncrementAttempt[retryCount++<br/>line 2051]
+    
+    IncrementAttempt --> AttemptRetryLoop
+    
+    NormalFlow --> Return
+
+    style Start fill:#e1f5ff
+    style Return fill:#c8e6c9
+    style SchemaReminder fill:#fff9c4
+    style RecursiveCall fill:#fff9c4
+    style JsonFixerInternal fill:#ffccbc
+    style SchemaDefPrompt fill:#ffccbc
+    style InitJsonFixer fill:#f8bbd0
+    style CheckSchemaDef fill:#ffe0b2
+    style CheckSchemaDefAttempt fill:#ffe0b2
+
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 34:
+...r/>Return: {\"name\": \"John Doe\", \"ag
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:677
+   37 |     
+   38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
+   39 |     
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:589
+   71 |     
+   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+   73 |     
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
+error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:619
+   71 |     
+   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+   73 |     
+hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
+
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:281
+  111 |     
+  112 |     CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
+      |                                                                                                                                                                                                                                                                                         ^
+  113 |     
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:116:58
+  115 |     
+  116 |     SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
+      |                                                          ^
+  117 |     
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:128:59
+  127 |     
+  128 |     CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+      |                                                           ^
+  129 |     
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
+
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:678
+   37 |     
+   38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^^
+   39 |     
+hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
+
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:590
+   71 |     
+   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^^
+   73 |     
+hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
+
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:282
+  111 |     
+  112 |     CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
+      |                                                                                                                                                                                                                                                                                          ^^
+  113 |     
+hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+graph TB
+    Start[User calls agent.answer with schema] --> CheckSchema{Schema<br/>provided?}
+    
+    CheckSchema -->|No| NormalFlow[Normal agentic flow<br/>No JSON handling]
+    CheckSchema -->|Yes| ExtendIterations[Extend max iterations by 4<br/>line 1410]
+    
+    ExtendIterations --> ToolLoop[Tool iteration loop starts<br/>maxIterations = base + 4]
+    
+    ToolLoop --> GetResponse[Call AI model]
+    GetResponse --> ParseResponse{Parse<br/>response}
+    
+    ParseResponse -->|Tool call found| ExecuteTool[Execute tool<br/>Add result to messages]
+    ExecuteTool --> CheckMaxIter{Reached max<br/>iterations?}
+    
+    ParseResponse -->|attempt_completion| SetCompletion[Set completionAttempted = true<br/>Extract result from tag]
+    SetCompletion --> BreakLoop[Break from tool loop]
+    
+    ParseResponse -->|attempt_complete| ReuseResponse[Reuse previous response<br/>as final result]
+    ReuseResponse --> BreakLoop
+    
+    ParseResponse -->|No tool<br/>No completion| AddReminder{Schema<br/>provided?}
+    
+    AddReminder -->|Yes| SchemaReminder["Add reminder message:<br/>'IMPORTANT: A schema was provided<br/>for the final output format.<br/><br/>Option 1 - Use attempt_completion<br/>with your complete answer:<br/>&lt;attempt_completion&gt;<br/>[Your complete answer here -<br/>will be automatically formatted<br/>to match the schema]<br/>&lt;/attempt_completion&gt;<br/><br/>Option 2 - Provide a natural response<br/>without any tool, and it will be<br/>automatically formatted.<br/><br/>Do NOT try to format your response<br/>as JSON yourself - this will be<br/>done automatically.'<br/>lines 1626-1635"]
+    
+    AddReminder -->|No| StandardReminder[Add standard reminder<br/>about tool usage]
+    
+    SchemaReminder --> CheckMaxIter
+    StandardReminder --> CheckMaxIter
+    
+    CheckMaxIter -->|No| ToolLoop
+    CheckMaxIter -->|Yes| EndLoop[End tool loop]
+    
+    BreakLoop --> SchemaProcessing{Schema provided<br/>AND !_schemaFormatted<br/>AND not max iter?<br/>line 1710}
+    EndLoop --> SchemaProcessing
+    
+    SchemaProcessing -->|No| SkipSchema[Skip schema processing]
+    
+    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: &#123;&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 25&#125;<br/>NOT: &#123;&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: ...&#125;operties&quot;: ...&#125;...&#125;'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    
+    RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
+    
+    CleanResponse1 --> MermaidVal{disableMermaid<br/>Validation?}
+    
+    MermaidVal -->|No| ValidateMermaid[validateAndFixMermaidResponse<br/>lines 1761-1807]
+    MermaidVal -->|Yes| CheckJsonSchema
+    
+    ValidateMermaid --> CheckJsonSchema{isJsonSchema<br/>schema?<br/>line 1810}
+    
+    CheckJsonSchema -->|No| FinalMermaid
+    CheckJsonSchema -->|Yes| CleanAgain[cleanSchemaResponse again<br/>line 1817]
+    
+    CleanAgain --> ValidateJson[validateJsonResponse<br/>line 1831]
+    
+    ValidateJson --> CheckSchemaDef{Response is<br/>schema definition?<br/>isJsonSchemaDefinition<br/>line 1836}
+    
+    CheckSchemaDef -->|Yes| MarkInvalid["Mark as invalid:<br/>error = 'Response is a JSON<br/>schema definition instead<br/>of actual data'<br/>lines 1841-1845"]
+    
+    CheckSchemaDef -->|No| CheckValid{Valid JSON?}
+    MarkInvalid --> CheckValid
+    
+    CheckValid -->|Yes| UpdateFinal[Update finalResult]
+    UpdateFinal --> FinalMermaid
+    
+    CheckValid -->|No| InitJsonFixer["Initialize JsonFixingAgent<br/>Separate session with:<br/>- disableJsonValidation: true<br/>- Same model/provider<br/>lines 1854-1861"]
+    
+    InitJsonFixer --> RetryLoop{retryCount<br/>< 3?}
+    
+    RetryLoop -->|No| LogFailure[Log validation failure<br/>Continue with invalid JSON<br/>lines 1906-1908]
+    
+    RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
+    
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: &#123;&quot;key&quot;: &quot;value&quot;&#125;<br/>NOT: &#96;&#96;&#96;json&#123;&quot;key&quot;: &quot;value&quot;&#125;&#96;&#96;&#96;e&quot;&#125;&#96;&#96;&#96;&#125;&#96;&#96;<br/><br/>lines 427-478 in schemaUtils.js"]
+    
+    JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
+    
+    JsonFixerAnswer --> CleanFixed[cleanSchemaResponse<br/>on fixer result<br/>line 891]
+    
+    CleanFixed --> ValidateFixed[validateJsonResponse<br/>line 894]
+    
+    ValidateFixed --> CheckFixed{Valid?}
+    
+    CheckFixed -->|No| IncrementRetry[retryCount++<br/>line 1883]
+    IncrementRetry --> RetryLoop
+    
+    CheckFixed -->|Yes| UpdateResult[Update currentResult<br/>line 1890]
+    UpdateResult --> FinalUpdate[finalResult = currentResult<br/>line 1903]
+    
+    LogFailure --> FinalMermaid
+    FinalUpdate --> FinalMermaid
+    
+    FinalMermaid["Final mermaid validation<br/>if !_schemaFormatted<br/>lines 2086-2117"]
+    
+    FinalMermaid --> RemoveThinking["Remove <thinking> tags<br/>if !_schemaFormatted<br/>lines 2122-2126"]
+    
+    RemoveThinking --> Return[Return finalResult]
+    
+    SkipSchema --> AttemptCompletion{completionAttempted<br/>AND schema<br/>AND !_schemaFormatted?<br/>line 1931}
+    
+    AttemptCompletion -->|No| NormalFlow
+    
+    AttemptCompletion -->|Yes| CleanAttempt[cleanSchemaResponse<br/>line 1934]
+    
+    CleanAttempt --> MermaidAttempt[validateAndFixMermaidResponse<br/>if !disableMermaidValidation<br/>lines 1937-1963]
+    
+    MermaidAttempt --> JsonAttempt{isJsonSchema?<br/>line 1966}
+    
+    JsonAttempt -->|No| FinalMermaid
+    JsonAttempt -->|Yes| ValidateAttempt[validateJsonResponse<br/>line 1981]
+    
+    ValidateAttempt --> CheckSchemaDefAttempt{Schema definition?<br/>line 1986}
+    
+    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>&#123;&quot;type&quot;: &quot;object&quot;,<br/>&quot;properties&quot;: &#123;...&#125;&#125;<br/><br/>Return:<br/>&#123;&quot;actualData&quot;: &quot;value&quot;,<br/>&quot;realField&quot;: 123&#125;ealField&quot;: 123&#125;123&#125;'<br/><br/>lines 1992-2002"]
+    
+    CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
+    
+    SchemaDefPrompt --> RecursiveCorrect[Recursive answer&#40;&#41; call<br/>with _schemaFormatted: true]
+    
+    RecursiveCorrect --> CleanCorrected[cleanSchemaResponse]
+    CleanCorrected --> ValidateCorrected[validateJsonResponse]
+    ValidateCorrected --> AttemptRetry
+    
+    AttemptRetry -->|Yes| FinalMermaid
+    AttemptRetry -->|No| AttemptRetryLoop{retryCount<br/>< 3?}
+    
+    AttemptRetryLoop -->|No| FinalMermaid
+    AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
+    
+    CreateCorrection --> RecursiveAttempt[Recursive answer&#40;&#41;<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    
+    RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
+    
+    CleanAttempted --> ValidateAttempted[validateJsonResponse<br/>line 2050]
+    
+    ValidateAttempted --> IncrementAttempt[retryCount++<br/>line 2051]
+    
+    IncrementAttempt --> AttemptRetryLoop
+    
+    NormalFlow --> Return
+
+    style Start fill:#e1f5ff
+    style Return fill:#c8e6c9
+    style SchemaReminder fill:#fff9c4
+    style RecursiveCall fill:#fff9c4
+    style JsonFixerInternal fill:#ffccbc
+    style SchemaDefPrompt fill:#ffccbc
+    style InitJsonFixer fill:#f8bbd0
+    style CheckSchemaDef fill:#ffe0b2
+    style CheckSchemaDefAttempt fill:#ffe0b2
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+graph TB
+    Start[User calls agent.answer with schema] --> CheckSchema{Schema<br/>provided?}
+    
+    CheckSchema -->|No| NormalFlow[Normal agentic flow<br/>No JSON handling]
+    CheckSchema -->|Yes| ExtendIterations[Extend max iterations by 4<br/>line 1410]
+    
+    ExtendIterations --> ToolLoop[Tool iteration loop starts<br/>maxIterations = base + 4]
+    
+    ToolLoop --> GetResponse[Call AI model]
+    GetResponse --> ParseResponse{Parse<br/>response}
+    
+    ParseResponse -->|Tool call found| ExecuteTool[Execute tool<br/>Add result to messages]
+    ExecuteTool --> CheckMaxIter{Reached max<br/>iterations?}
+    
+    ParseResponse -->|attempt_completion| SetCompletion[Set completionAttempted = true<br/>Extract result from tag]
+    SetCompletion --> BreakLoop[Break from tool loop]
+    
+    ParseResponse -->|attempt_complete| ReuseResponse[Reuse previous response<br/>as final result]
+    ReuseResponse --> BreakLoop
+    
+    ParseResponse -->|No tool<br/>No completion| AddReminder{Schema<br/>provided?}
+    
+    AddReminder -->|Yes| SchemaReminder["Add reminder message:<br/>'IMPORTANT: A schema was provided<br/>for the final output format.<br/><br/>Option 1 - Use attempt_completion<br/>with your complete answer:<br/>&lt;attempt_completion&gt;<br/>[Your complete answer here -<br/>will be automatically formatted<br/>to match the schema]<br/>&lt;/attempt_completion&gt;<br/><br/>Option 2 - Provide a natural response<br/>without any tool, and it will be<br/>automatically formatted.<br/><br/>Do NOT try to format your response<br/>as JSON yourself - this will be<br/>done automatically.'<br/>lines 1626-1635"]
+    
+    AddReminder -->|No| StandardReminder[Add standard reminder<br/>about tool usage]
+    
+    SchemaReminder --> CheckMaxIter
+    StandardReminder --> CheckMaxIter
+    
+    CheckMaxIter -->|No| ToolLoop
+    CheckMaxIter -->|Yes| EndLoop[End tool loop]
+    
+    BreakLoop --> SchemaProcessing{Schema provided<br/>AND !_schemaFormatted<br/>AND not max iter?<br/>line 1710}
+    EndLoop --> SchemaProcessing
+    
+    SchemaProcessing -->|No| SkipSchema[Skip schema processing]
+    
+    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    
+    RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
+    
+    CleanResponse1 --> MermaidVal{disableMermaid<br/>Validation?}
+    
+    MermaidVal -->|No| ValidateMermaid[validateAndFixMermaidResponse<br/>lines 1761-1807]
+    MermaidVal -->|Yes| CheckJsonSchema
+    
+    ValidateMermaid --> CheckJsonSchema{isJsonSchema<br/>schema?<br/>line 1810}
+    
+    CheckJsonSchema -->|No| FinalMermaid
+    CheckJsonSchema -->|Yes| CleanAgain[cleanSchemaResponse again<br/>line 1817]
+    
+    CleanAgain --> ValidateJson[validateJsonResponse<br/>line 1831]
+    
+    ValidateJson --> CheckSchemaDef{Response is<br/>schema definition?<br/>isJsonSchemaDefinition<br/>line 1836}
+    
+    CheckSchemaDef -->|Yes| MarkInvalid["Mark as invalid:<br/>error = 'Response is a JSON<br/>schema definition instead<br/>of actual data'<br/>lines 1841-1845"]
+    
+    CheckSchemaDef -->|No| CheckValid{Valid JSON?}
+    MarkInvalid --> CheckValid
+    
+    CheckValid -->|Yes| UpdateFinal[Update finalResult]
+    UpdateFinal --> FinalMermaid
+    
+    CheckValid -->|No| InitJsonFixer["Initialize JsonFixingAgent<br/>Separate session with:<br/>- disableJsonValidation: true<br/>- Same model/provider<br/>lines 1854-1861"]
+    
+    InitJsonFixer --> RetryLoop{retryCount<br/>< 3?}
+    
+    RetryLoop -->|No| LogFailure[Log validation failure<br/>Continue with invalid JSON<br/>lines 1906-1908]
+    
+    RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
+    
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
+    
+    JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
+    
+    JsonFixerAnswer --> CleanFixed[cleanSchemaResponse<br/>on fixer result<br/>line 891]
+    
+    CleanFixed --> ValidateFixed[validateJsonResponse<br/>line 894]
+    
+    ValidateFixed --> CheckFixed{Valid?}
+    
+    CheckFixed -->|No| IncrementRetry[retryCount++<br/>line 1883]
+    IncrementRetry --> RetryLoop
+    
+    CheckFixed -->|Yes| UpdateResult[Update currentResult<br/>line 1890]
+    UpdateResult --> FinalUpdate[finalResult = currentResult<br/>line 1903]
+    
+    LogFailure --> FinalMermaid
+    FinalUpdate --> FinalMermaid
+    
+    FinalMermaid["Final mermaid validation<br/>if !_schemaFormatted<br/>lines 2086-2117"]
+    
+    FinalMermaid --> RemoveThinking["Remove <thinking> tags<br/>if !_schemaFormatted<br/>lines 2122-2126"]
+    
+    RemoveThinking --> Return[Return finalResult]
+    
+    SkipSchema --> AttemptCompletion{completionAttempted<br/>AND schema<br/>AND !_schemaFormatted?<br/>line 1931}
+    
+    AttemptCompletion -->|No| NormalFlow
+    
+    AttemptCompletion -->|Yes| CleanAttempt[cleanSchemaResponse<br/>line 1934]
+    
+    CleanAttempt --> MermaidAttempt[validateAndFixMermaidResponse<br/>if !disableMermaidValidation<br/>lines 1937-1963]
+    
+    MermaidAttempt --> JsonAttempt{isJsonSchema?<br/>line 1966}
+    
+    JsonAttempt -->|No| FinalMermaid
+    JsonAttempt -->|Yes| ValidateAttempt[validateJsonResponse<br/>line 1981]
+    
+    ValidateAttempt --> CheckSchemaDefAttempt{Schema definition?<br/>line 1986}
+    
+    CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
+    
+    CheckSchemaDefAttempt -->|No| AttemptRetry{Valid?}
+    
+    SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
+    
+    RecursiveCorrect --> CleanCorrected[cleanSchemaResponse]
+    CleanCorrected --> ValidateCorrected[validateJsonResponse]
+    ValidateCorrected --> AttemptRetry
+    
+    AttemptRetry -->|Yes| FinalMermaid
+    AttemptRetry -->|No| AttemptRetryLoop{retryCount<br/>< 3?}
+    
+    AttemptRetryLoop -->|No| FinalMermaid
+    AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
+    
+    CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    
+    RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
+    
+    CleanAttempted --> ValidateAttempted[validateJsonResponse<br/>line 2050]
+    
+    ValidateAttempted --> IncrementAttempt[retryCount++<br/>line 2051]
+    
+    IncrementAttempt --> AttemptRetryLoop
+    
+    NormalFlow --> Return
+
+    style Start fill:#e1f5ff
+    style Return fill:#c8e6c9
+    style SchemaReminder fill:#fff9c4
+    style RecursiveCall fill:#fff9c4
+    style JsonFixerInternal fill:#ffccbc
+    style SchemaDefPrompt fill:#ffccbc
+    style InitJsonFixer fill:#f8bbd0
+    style CheckSchemaDef fill:#ffe0b2
+    style CheckSchemaDefAttempt fill:#ffe0b2
+
+
+```
+</details>
+
+---
+
+## 2. Backticks In Quoted Label
 
 📄 **Source**: [`backticks-in-quoted-label.mmd`](./invalid/backticks-in-quoted-label.mmd)
 
@@ -139,6 +733,14 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
+error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
+at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:7
+  1 | flowchart TD
+  2 |   A["`{% if %}` template"] --> B{Stage}
+    |       ^
+  3 | 
+hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
+
 error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:6
   1 | flowchart TD
@@ -146,14 +748,6 @@ at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:6
     |      ^
   3 | 
 hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
-
-warning[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/backticks-in-quoted-label.mmd:2:7
-  1 | flowchart TD
-  2 |   A["`{% if %}` template"] --> B{Stage}
-    |       ^
-  3 | 
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
 ```
 
 </td>
@@ -164,7 +758,7 @@ hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#1
 
 ```mermaid
 flowchart TD
-  A["&#123;% if %&#125; template"] --> B{Stage}
+  A["#96;&#123;% if %&#125;&#96; template"] --> B{Stage}
 
 
 ```
@@ -186,7 +780,7 @@ flowchart TD
 
 ---
 
-## 2. Curly In Quoted
+## 3. Curly In Quoted
 
 📄 **Source**: [`curly-in-quoted.mmd`](./invalid/curly-in-quoted.mmd)
 
@@ -273,7 +867,7 @@ flowchart TD
 
 ---
 
-## 3. Diamond Parens Unquoted
+## 4. Diamond Parens Unquoted
 
 📄 **Source**: [`diamond-parens-unquoted.mmd`](./invalid/diamond-parens-unquoted.mmd)
 
@@ -363,7 +957,7 @@ flowchart TD
 
 ---
 
-## 4. Edge Label Parens
+## 5. Edge Label Parens
 
 📄 **Source**: [`edge-label-parens.mmd`](./invalid/edge-label-parens.mmd)
 
@@ -447,7 +1041,7 @@ flowchart TD
 
 ---
 
-## 5. Empty Nodes
+## 6. Empty Nodes
 
 📄 **Source**: [`empty-nodes.mmd`](./invalid/empty-nodes.mmd)
 
@@ -549,7 +1143,7 @@ flowchart TD
 
 ---
 
-## 6. Escaped Quotes In Decision
+## 7. Escaped Quotes In Decision
 
 📄 **Source**: [`escaped-quotes-in-decision.mmd`](./invalid/escaped-quotes-in-decision.mmd)
 
@@ -613,7 +1207,7 @@ at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:7:35
   8 |     end
 hint: Example: D{"Is &quot;Driver&quot; and &quot;AuthCheck.Path&quot; configured?"}
 
-warning[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
+error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
 at test-fixtures/flowchart/invalid/escaped-quotes-in-decision.mmd:6:28
   5 |         B -- No --> C[Continue with other auth methods]
   6 |         B -- Yes --> D{"Is \"Driver\" AND \"AuthCheck.Path\" configured?"}
@@ -662,7 +1256,7 @@ flowchart TD
 
 ---
 
-## 7. Interactions Click Call Missing Fn
+## 8. Interactions Click Call Missing Fn
 
 📄 **Source**: [`interactions-click-call-missing-fn.mmd`](./invalid/interactions-click-call-missing-fn.mmd)
 
@@ -757,7 +1351,7 @@ flowchart TD
 
 ---
 
-## 8. Interactions Click Call Parens
+## 9. Interactions Click Call Parens
 
 📄 **Source**: [`interactions-click-call-parens.mmd`](./invalid/interactions-click-call-parens.mmd)
 
@@ -844,7 +1438,7 @@ flowchart TD
 
 ---
 
-## 9. Interactions Click Href
+## 10. Interactions Click Href
 
 📄 **Source**: [`interactions-click-href.mmd`](./invalid/interactions-click-href.mmd)
 
@@ -931,7 +1525,7 @@ flowchart TD
 
 ---
 
-## 10. Interactions Linkstyle Multi
+## 11. Interactions Linkstyle Multi
 
 📄 **Source**: [`interactions-linkstyle-multi.mmd`](./invalid/interactions-linkstyle-multi.mmd)
 
@@ -1026,7 +1620,7 @@ flowchart TD
 
 ---
 
-## 11. Interactions Linkstyle Ranges
+## 12. Interactions Linkstyle Ranges
 
 📄 **Source**: [`interactions-linkstyle-ranges.mmd`](./invalid/interactions-linkstyle-ranges.mmd)
 
@@ -1115,7 +1709,7 @@ flowchart TD
 
 ---
 
-## 12. Invalid Arrow
+## 13. Invalid Arrow
 
 📄 **Source**: [`invalid-arrow.mmd`](./invalid/invalid-arrow.mmd)
 
@@ -1202,7 +1796,7 @@ flowchart TD
 
 ---
 
-## 13. Invalid Class
+## 14. Invalid Class
 
 📄 **Source**: [`invalid-class.mmd`](./invalid/invalid-class.mmd)
 
@@ -1284,7 +1878,7 @@ flowchart TD
 
 ---
 
-## 14. Invalid Node Syntax
+## 15. Invalid Node Syntax
 
 📄 **Source**: [`invalid-node-syntax.mmd`](./invalid/invalid-node-syntax.mmd)
 
@@ -1371,7 +1965,7 @@ flowchart TD
 
 ---
 
-## 15. Invalid Subgraph
+## 16. Invalid Subgraph
 
 📄 **Source**: [`invalid-subgraph.mmd`](./invalid/invalid-subgraph.mmd)
 
@@ -1453,7 +2047,7 @@ flowchart TD
 
 ---
 
-## 16. Link One Sided Marker
+## 17. Link One Sided Marker
 
 📄 **Source**: [`link-one-sided-marker.mmd`](./invalid/link-one-sided-marker.mmd)
 
@@ -1551,7 +2145,7 @@ flowchart TD
 
 ---
 
-## 17. Linkstyle Id Unknown
+## 18. Linkstyle Id Unknown
 
 📄 **Source**: [`linkstyle-id-unknown.mmd`](./invalid/linkstyle-id-unknown.mmd)
 
@@ -1637,7 +2231,7 @@ flowchart TD
 
 ---
 
-## 18. Missing Arrow
+## 19. Missing Arrow
 
 📄 **Source**: [`missing-arrow.mmd`](./invalid/missing-arrow.mmd)
 
@@ -1720,7 +2314,7 @@ flowchart TD
 
 ---
 
-## 19. Mixed Brackets
+## 20. Mixed Brackets
 
 📄 **Source**: [`mixed-brackets.mmd`](./invalid/mixed-brackets.mmd)
 
@@ -1819,7 +2413,7 @@ flowchart LR
 
 ---
 
-## 20. Mixed Quotes In Labels
+## 21. Mixed Quotes In Labels
 
 📄 **Source**: [`mixed-quotes-in-labels.mmd`](./invalid/mixed-quotes-in-labels.mmd)
 
@@ -1924,7 +2518,7 @@ flowchart TD
 
 ---
 
-## 21. No Diagram Type
+## 22. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -2002,7 +2596,7 @@ B --> C
 
 ---
 
-## 22. Quotes Double Inside Single
+## 23. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -2092,7 +2686,7 @@ flowchart LR
 
 ---
 
-## 23. Quotes In Node Labels
+## 24. Quotes In Node Labels
 
 📄 **Source**: [`quotes-in-node-labels.mmd`](./invalid/quotes-in-node-labels.mmd)
 
@@ -2225,7 +2819,7 @@ graph TD
 
 ---
 
-## 24. Round Parens Unquoted
+## 25. Round Parens Unquoted
 
 📄 **Source**: [`round-parens-unquoted.mmd`](./invalid/round-parens-unquoted.mmd)
 
@@ -2310,7 +2904,7 @@ flowchart TD
 
 ---
 
-## 25. Title Unsupported
+## 26. Title Unsupported
 
 📄 **Source**: [`title-unsupported.mmd`](./invalid/title-unsupported.mmd)
 
@@ -2399,7 +2993,7 @@ flowchart TD
 
 ---
 
-## 26. Typed Shapes All
+## 27. Typed Shapes All
 
 📄 **Source**: [`typed-shapes-all.mmd`](./invalid/typed-shapes-all.mmd)
 
@@ -2531,7 +3125,7 @@ flowchart LR
 
 ---
 
-## 27. Typed Shapes Unknowns
+## 28. Typed Shapes Unknowns
 
 📄 **Source**: [`typed-shapes-unknowns.mmd`](./invalid/typed-shapes-unknowns.mmd)
 
@@ -2643,7 +3237,7 @@ flowchart TD
 
 ---
 
-## 28. Unclosed Bracket
+## 29. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -2730,7 +3324,7 @@ flowchart LR
 
 ---
 
-## 29. Unclosed Quote In Label
+## 30. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -2823,7 +3417,7 @@ flowchart TD
 
 ---
 
-## 30. Unescaped Quotes In Decision
+## 31. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -2916,7 +3510,7 @@ flowchart TD
 
 ---
 
-## 31. Unmatched End
+## 32. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -2998,7 +3592,7 @@ flowchart TD
 
 ---
 
-## 32. Unquoted Label With Quotes
+## 33. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -3130,7 +3724,7 @@ flowchart TD
 
 ---
 
-## 33. Unquoted Parens In Labels
+## 34. Unquoted Parens In Labels
 
 📄 **Source**: [`unquoted-parens-in-labels.mmd`](./invalid/unquoted-parens-in-labels.mmd)
 
@@ -3288,7 +3882,7 @@ flowchart TD
 
 ---
 
-## 34. Unquoted Parens With Backticks
+## 35. Unquoted Parens With Backticks
 
 📄 **Source**: [`unquoted-parens-with-backticks.mmd`](./invalid/unquoted-parens-with-backticks.mmd)
 
@@ -3384,7 +3978,7 @@ flowchart TD
 
 ---
 
-## 35. Wrong Direction
+## 36. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 

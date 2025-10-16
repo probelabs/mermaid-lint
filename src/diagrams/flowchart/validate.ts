@@ -57,13 +57,13 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           }
         }
       }
-      // Mermaid accepts backslash-escaped quotes inside quoted labels.
-      // Emit as a warning (not an error) so --fix can normalize to &quot; if desired.
+      // Backslash-escaped quotes inside quoted labels will cause Mermaid CLI parse errors if not normalized.
+      // Treat as errors so autofix is required to produce a renderable diagram.
       const escWarn = detectEscapedQuotes(tokens as IToken[], {
         code: 'FL-LABEL-ESCAPED-QUOTE',
         message: 'Escaped quotes (\\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.',
         hint: 'Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]'
-      }).map(e => ({ ...e, severity: 'warning' } as ValidationError));
+      }).map(e => ({ ...e, severity: 'error' } as ValidationError));
       // Detect double-in-double for lines not already reported by the parser mapping
       const seenDoubleLines = new Set(
         prevErrors.filter(e => e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE').map(e => e.line)
