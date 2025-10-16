@@ -54,18 +54,18 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     return produced;
   }
   
-  // Encode unsafe characters inside quoted labels so Mermaid CLI can parse them.
+  // Sanitize unsafe characters inside quoted labels so Mermaid CLI can parse them.
   function sanitizeQuotedInner(inner: string): string {
     const SENT_Q = '\u0000__Q__';
     let out = inner.split('&quot;').join(SENT_Q);
-    // Backticks are not always accepted, encode to entity
-    out = out.replace(/`/g, '&#96;');
+    // Remove backticks (Mermaid doesn't support numeric entities, so just remove them)
+    out = out.replace(/`/g, '');
     // Encode quotes
     out = out.replace(/\\\"/g, '&quot;');
     out = out.replace(/\"/g, '&quot;');
     out = out.replace(/"/g, '&quot;');
-    // Encode curly braces which can conflict with diamond/hexagon tokens
-    out = out.replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
+    // Curly braces work fine in quoted labels - leave them as-is
+    // Note: The FL-LABEL-CURLY-IN-QUOTED error is for parser/safety, not rendering
     // Restore any pre-existing &quot;
     out = out.split(SENT_Q).join('&quot;');
     return out;
@@ -79,7 +79,9 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
     if ((e.code === 'FL-LABEL-ESCAPED-QUOTE' || e.code === 'FL-LABEL-CURLY-IN-QUOTED' || e.code === 'FL-LABEL-DOUBLE-IN-DOUBLE' || e.code === 'FL-LABEL-BACKTICK') && !patchedLines.has(e.line)) {
       const lineText = lineTextAt(text, e.line);
       const produced = sanitizeAllQuotedSegmentsInShapes(lineText, e.line);
-      if (produced > 0) { patchedLines.add(e.line); continue; }
+      // Mark line as patched regardless of whether changes were made, to prevent duplicate processing
+      patchedLines.add(e.line);
+      if (produced > 0) { continue; }
     }
     if (is('FL-ARROW-INVALID', e)) {
       edits.push(replaceRange(text, at(e), e.length ?? 2, '-->'));
@@ -212,6 +214,8 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       continue;
     }
     if (is('FL-LABEL-ESCAPED-QUOTE', e)) {
+      // Skip if line was already patched by sanitizeAllQuotedSegmentsInShapes
+      if (patchedLines.has(e.line)) continue;
       // Prefer rewriting the whole double-quoted span within a shape so we catch all occurrences at once
       const lineText = lineTextAt(text, e.line);
       // Guard against very long or code-fenced lines (often code/JSON examples) unless aggressive '--fix=all'
@@ -258,10 +262,9 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-if (is('FL-LABEL-BACKTICK', e)) {
-      const lineText = lineTextAt(text, e.line);
-      
-      // Remove the offending backtick. Keep content otherwise unchanged.
+    // FL-LABEL-BACKTICK for unquoted labels (warnings): remove the backtick
+    // For quoted labels (errors): handled by sanitizeAllQuotedSegmentsInShapes above
+    if (is('FL-LABEL-BACKTICK', e) && e.severity === 'warning') {
       edits.push(replaceRange(text, at(e), e.length ?? 1, ''));
       continue;
     }
@@ -300,10 +303,8 @@ if (is('FL-LABEL-BACKTICK', e)) {
           }
         }
       }
-      // Fallback: replace just the current character
-      const ch = lineText[caret0] || '';
-      const rep = ch === '{' ? '&#123;' : ch === '}' ? '&#125;' : ch === '`' ? '&#96;' : ch;
-      if (rep !== ch) edits.push(replaceRange(text, at(e), e.length ?? 1, rep));
+      // Fallback: Curly braces work fine in quoted labels (Mermaid doesn't decode numeric entities anyway)
+      // So we skip this error - it's a false positive from the parser
       continue;
     }
 
