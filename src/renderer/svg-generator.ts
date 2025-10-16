@@ -508,7 +508,12 @@ ${baseGroup}
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&')
       .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'");
+      .replace(/&#39;/g, "'")
+      .replace(/&#96;/g, '`')
+      .replace(/&#123;/g, '{')
+      .replace(/&#125;/g, '}')
+      .replace(/&#40;/g, '(')
+      .replace(/&#41;/g, ')');
   }
 
   private generateEdge(edge: LayoutEdge, padX: number, padY: number, nodeMap: Record<string, {x:number;y:number;width:number;height:number;shape:string}>): { path: string; overlay?: string } {
