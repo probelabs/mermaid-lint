@@ -138,16 +138,17 @@ const cases = [
   // 1. Curly braces work perfectly in quoted labels
   // 2. Mermaid doesn't decode numeric HTML entities (&#123;/&#125;)
   // 3. There's no viable workaround
-  // This error may be outdated and should potentially be downgraded to a warning or removed
+  // Parallelogram/trapezoid shapes: encode both parentheses and quotes
+  // (After stricter parser, FL-LABEL-PARENS-UNQUOTED is detected first)
   {
-    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (parallelogram)',
+    name: 'FL-LABEL-PARENS-UNQUOTED (parallelogram with quotes)',
     before: 'flowchart LR\n  P[/Calls logger.debug("msg")/]\n',
-    after:  'flowchart LR\n  P[/Calls logger.debug(&quot;msg&quot;)/]\n'
+    after:  'flowchart LR\n  P[/Calls logger.debug&#40;&quot;msg&quot;&#41;/]\n'
   },
   {
-    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (trapezoid)',
+    name: 'FL-LABEL-PARENS-UNQUOTED (trapezoid with quotes)',
     before: 'flowchart LR\n  T[\\Calls logger.debug("msg")/]\n',
-    after:  'flowchart LR\n  T[\\Calls logger.debug(&quot;msg&quot;)/]\n'
+    after:  'flowchart LR\n  T[\\Calls logger.debug&#40;&quot;msg&quot;&#41;/]\n'
   },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },
