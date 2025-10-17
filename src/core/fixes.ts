@@ -802,6 +802,25 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           { open: '(',  close: ')' }
         ];
 
+        // Helper to find the matching closer, accounting for nested delimiters
+        const findMatchingCloser = (text: string, openIdx: number, opener: string, closer: string): number => {
+          let pos = openIdx + opener.length;
+          let depth = 1;
+          while (pos < text.length && depth > 0) {
+            if (text.slice(pos, pos + opener.length) === opener) {
+              depth++;
+              pos += opener.length;
+            } else if (text.slice(pos, pos + closer.length) === closer) {
+              depth--;
+              if (depth === 0) return pos;
+              pos += closer.length;
+            } else {
+              pos++;
+            }
+          }
+          return -1; // No matching closer found
+        };
+
         // Find which shape contains the problematic parenthesis
         for (const shape of shapes) {
           let searchStart = 0;
@@ -809,7 +828,10 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
             const openIdx = lineText.indexOf(shape.open, searchStart);
             if (openIdx === -1) break;
             const contentStart = openIdx + shape.open.length;
-            const closeIdx = lineText.indexOf(shape.close, contentStart);
+            // Use smart matching for round shapes to handle nested parentheses
+            const closeIdx = (shape.open === '(' && shape.close === ')')
+              ? findMatchingCloser(lineText, openIdx, shape.open, shape.close)
+              : lineText.indexOf(shape.close, contentStart);
             if (closeIdx === -1) break;
 
             // Check if this shape contains the caret position (the parenthesis)
@@ -825,19 +847,21 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
                 break;
               }
               // Check for parallelogram/trapezoid shapes [/.../], [\...\], [/...\], [\.../]
-              // These should NOT be wrapped in quotes (the slashes are part of the shape syntax)
+              // For these shapes, we encode both parentheses AND quotes (but don't wrap in quotes)
               const ltrim = inner.match(/^\s*/)?.[0] ?? '';
               const rtrim = inner.match(/\s*$/)?.[0] ?? '';
               const core = inner.slice(ltrim.length, inner.length - rtrim.length);
               const left = core.slice(0, 1);
               const right = core.slice(-1);
               const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
-              if (core.length >= 2 && isSlashPair(left, right)) {
-                // This is a parallelogram/trapezoid shape - do not wrap in quotes
-                break;
+              const isParallelogramShape = core.length >= 2 && isSlashPair(left, right);
+
+              // Encode parentheses (and quotes for parallelogram shapes)
+              let replaced = inner.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
+              if (isParallelogramShape) {
+                // Also encode quotes in parallelogram/trapezoid shapes
+                replaced = replaced.replace(/"/g, '&quot;');
               }
-              // Encode parentheses only
-              const replaced = inner.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
               if (replaced !== inner) {
                 edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: replaced });
                 patchedLines.add(e.line);
