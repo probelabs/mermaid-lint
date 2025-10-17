@@ -76,7 +76,7 @@ This file contains invalid flowchart test fixtures with:
 | 22 | [no diagram type](#22-no-diagram-type) | INVALID | INVALID | — |
 | 23 | [quotes double inside single](#23-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
 | 24 | [quotes in node labels](#24-quotes-in-node-labels) | INVALID | INVALID | — |
-| 25 | [round parens unquoted](#25-round-parens-unquoted) | INVALID | INVALID | — |
+| 25 | [round parens unquoted](#25-round-parens-unquoted) | INVALID | INVALID | ✅ safe |
 | 26 | [title unsupported](#26-title-unsupported) | INVALID | INVALID | ✅ all |
 | 27 | [typed shapes all](#27-typed-shapes-all) | INVALID | INVALID | — |
 | 28 | [typed shapes unknowns](#28-typed-shapes-unknowns) | INVALID | INVALID | — |
@@ -288,53 +288,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
-error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:677
-   37 |     
-   38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
-      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
-   39 |     
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
-error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:589
-   71 |     
-   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
-      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
-   73 |     
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
-error[FL-LABEL-BACKTICK]: Backticks (`…`) inside node labels are not supported by Mermaid.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:72:619
-   71 |     
-   72 |     CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]
-      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
-   73 |     
-hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--cli".
-
-error[FL-LABEL-CURLY-IN-QUOTED]: Curly braces inside quoted label text may be parsed as a shape by Mermaid. Replace { and } with HTML entities.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:281
-  111 |     
-  112 |     CheckSchemaDefAttempt -->|Yes| SchemaDefPrompt["createSchemaDefinitionCorrectionPrompt:<br/>'CRITICAL MISUNDERSTANDING:<br/>You returned a JSON schema<br/>definition instead of data...<br/><br/>You must return ACTUAL DATA<br/>that follows the schema.<br/><br/>Instead of:<br/>{\"type\": \"object\",<br/>\"properties\": {...}}<br/><br/>Return:<br/>{\"actualData\": \"value\",<br/>\"realField\": 123}'<br/><br/>lines 1992-2002"]
-      |                                                                                                                                                                                                                                                                                         ^
-  113 |     
-hint: Use &#123; and &#125; for { and } inside quoted text, e.g., "tyk-trace-&#123;id&#125;".
-
 error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:116:58
   115 |     
   116 |     SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
       |                                                          ^
   117 |     
-hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
-
-error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
-at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:128:59
-  127 |     
-  128 |     CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
-      |                                                           ^
-  129 |     
-hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 
 error[FL-LABEL-ESCAPED-QUOTE]: Escaped quotes (\") in node labels are accepted by Mermaid, but using &quot; is preferred for portability.
 at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:678
@@ -496,28 +456,6 @@ graph TB
     AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
     
     CreateCorrection --> RecursiveAttempt[Recursive answer&#40;&#41;<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
-    
-    RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
-    
-    CleanAttempted --> ValidateAttempted[validateJsonResponse<br/>line 2050]
-    
-    ValidateAttempted --> IncrementAttempt[retryCount++<br/>line 2051]
-    
-    IncrementAttempt --> AttemptRetryLoop
-    
-    NormalFlow --> Return
-
-    style Start fill:#e1f5ff
-    style Return fill:#c8e6c9
-    style SchemaReminder fill:#fff9c4
-    style RecursiveCall fill:#fff9c4
-    style JsonFixerInternal fill:#ffccbc
-    style SchemaDefPrompt fill:#ffccbc
-    style InitJsonFixer fill:#f8bbd0
-    style CheckSchemaDef fill:#ffe0b2
-    style CheckSchemaDefAttempt fill:#ffe0b2
-
-
 ```
 
 ### maid Auto-fix (`--fix=all`) Preview
@@ -924,7 +862,7 @@ at test-fixtures/flowchart/invalid/diamond-parens-unquoted.mmd:2:26
   2 |   C --> D{Return comment (even if only header exists)}
     |                          ^
   3 | 
-hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -2871,10 +2809,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ```
 error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
-at test-fixtures/flowchart/invalid/round-parens-unquoted.mmd:2:43
+at test-fixtures/flowchart/invalid/round-parens-unquoted.mmd:2:35
   1 | flowchart TD
   2 |   B --> C(new CheckExecutionEngine(octokit));
-    |                                           ^^
+    |                                   ^
   3 | 
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
@@ -2885,11 +2823,16 @@ hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with 
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+flowchart TD
+  B --> C(new CheckExecutionEngine&#40;octokit&#41;);
+
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
@@ -3657,13 +3600,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
-error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
-at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:7:74
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/unquoted-label-with-quotes.mmd:7:73
    6 |     subgraph "Runtime Execution"
    7 |         E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];
-     |                                                                          ^^^^^^^^^
+     |                                                                         ^
    8 |         F --> G{Logger: Is current level DEBUG?};
-hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -3801,15 +3744,7 @@ at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:7:35
    7 |         B --> C{Attempt JSON.parse(stdout)};
      |                                   ^
    8 |         C -- Success --> E[Output is Parsed JSON];
-hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
-
-error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
-at test-fixtures/flowchart/invalid/unquoted-parens-in-labels.mmd:10:44
-   9 |         C -- Fails --> D{Extract JSON from end of stdout};
-  10 |         D -- Found --> F{Attempt JSON.parse(extracted)};
-     |                                            ^
-  11 |         D -- Not Found --> G[Output is Raw String];
-hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -3936,10 +3871,10 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 
 ```
 error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
-at test-fixtures/flowchart/invalid/unquoted-parens-with-backticks.mmd:3:44
+at test-fixtures/flowchart/invalid/unquoted-parens-with-backticks.mmd:3:22
   2 |   subgraph "Check Execution Flow"
   3 |     G[JS Expressions (`fail_if`, `value_js`)] -- read via `memory` object --> C
-    |                                            ^^
+    |                      ^
   4 |   end
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```

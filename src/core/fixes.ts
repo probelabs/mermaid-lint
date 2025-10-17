@@ -802,6 +802,25 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           { open: '(',  close: ')' }
         ];
 
+        // Helper to find the matching closer, accounting for nested delimiters
+        const findMatchingCloser = (text: string, openIdx: number, opener: string, closer: string): number => {
+          let pos = openIdx + opener.length;
+          let depth = 1;
+          while (pos < text.length && depth > 0) {
+            if (text.slice(pos, pos + opener.length) === opener) {
+              depth++;
+              pos += opener.length;
+            } else if (text.slice(pos, pos + closer.length) === closer) {
+              depth--;
+              if (depth === 0) return pos;
+              pos += closer.length;
+            } else {
+              pos++;
+            }
+          }
+          return -1; // No matching closer found
+        };
+
         // Find which shape contains the problematic parenthesis
         for (const shape of shapes) {
           let searchStart = 0;
@@ -809,7 +828,10 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
             const openIdx = lineText.indexOf(shape.open, searchStart);
             if (openIdx === -1) break;
             const contentStart = openIdx + shape.open.length;
-            const closeIdx = lineText.indexOf(shape.close, contentStart);
+            // Use smart matching for round shapes to handle nested parentheses
+            const closeIdx = (shape.open === '(' && shape.close === ')')
+              ? findMatchingCloser(lineText, openIdx, shape.open, shape.close)
+              : lineText.indexOf(shape.close, contentStart);
             if (closeIdx === -1) break;
 
             // Check if this shape contains the caret position (the parenthesis)
