@@ -456,6 +456,28 @@ graph TB
     AttemptRetryLoop -->|Yes| CreateCorrection["Check if schema definition<br/>or regular JSON error<br/>Create appropriate prompt<br/>lines 2014-2041"]
     
     CreateCorrection --> RecursiveAttempt[Recursive answer&#40;&#41;<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+    
+    RecursiveAttempt --> CleanAttempted[cleanSchemaResponse<br/>line 2047]
+    
+    CleanAttempted --> ValidateAttempted[validateJsonResponse<br/>line 2050]
+    
+    ValidateAttempted --> IncrementAttempt[retryCount++<br/>line 2051]
+    
+    IncrementAttempt --> AttemptRetryLoop
+    
+    NormalFlow --> Return
+
+    style Start fill:#e1f5ff
+    style Return fill:#c8e6c9
+    style SchemaReminder fill:#fff9c4
+    style RecursiveCall fill:#fff9c4
+    style JsonFixerInternal fill:#ffccbc
+    style SchemaDefPrompt fill:#ffccbc
+    style InitJsonFixer fill:#f8bbd0
+    style CheckSchemaDef fill:#ffe0b2
+    style CheckSchemaDefAttempt fill:#ffe0b2
+
+
 ```
 
 ### maid Auto-fix (`--fix=all`) Preview
