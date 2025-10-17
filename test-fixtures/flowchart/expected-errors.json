@@ -54,10 +54,9 @@
     "FL-END-WITHOUT-SUBGRAPH"
   ],
   "unquoted-label-with-quotes.mmd": [
-    "FL-LABEL-QUOTE-IN-UNQUOTED"
+    "FL-LABEL-PARENS-UNQUOTED"
   ],
   "unquoted-parens-in-labels.mmd": [
-    "FL-LABEL-PARENS-UNQUOTED",
     "FL-LABEL-PARENS-UNQUOTED"
   ],
   "wrong-direction.mmd": [
