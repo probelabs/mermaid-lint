@@ -7,11 +7,11 @@ import {
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { validate, detectDiagramType } from '@probelabs/maid';
-import { extractMermaidBlocks, offsetErrors } from '@probelabs/maid';
-import { computeFixes } from '@probelabs/maid';
-import { applyEdits } from '@probelabs/maid';
-import type { ValidationError, FixLevel } from '@probelabs/maid';
+import { validate, detectDiagramType } from '@probelabs/maid/core/router';
+import { extractMermaidBlocks, offsetErrors } from '@probelabs/maid/core/markdown';
+import { computeFixes } from '@probelabs/maid/core/fixes';
+import { applyEdits } from '@probelabs/maid/core/edits';
+import type { ValidationError, FixLevel } from '@probelabs/maid/core/types';
 
 /**
  * MCP Server for Mermaid diagram validation

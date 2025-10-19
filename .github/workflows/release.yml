@@ -52,11 +52,13 @@ jobs:
           for i in {1..30}; do
             if npm view @probelabs/maid@$VERSION version 2>/dev/null; then
               echo "@probelabs/maid@$VERSION is now available!"
-              break
+              exit 0
             fi
             echo "Attempt $i/30: Package not yet available, waiting 10 seconds..."
             sleep 10
           done
+          echo "::error::Timed out waiting for @probelabs/maid@$VERSION to be available on npm."
+          exit 1
 
       - name: Update maid-mcp package.json version from tag
         working-directory: packages/maid-mcp
