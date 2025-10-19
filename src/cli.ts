@@ -31,11 +31,9 @@ function printUsage() {
     console.log('       cat file | maid -');
     console.log('       maid <directory>');
     console.log('       maid render <input> [output]');
-    console.log('       maid mcp');
     console.log('  - Validates standalone .mmd files or Markdown with ```mermaid fences');
     console.log('  - When a directory is given, scans recursively for .md/.markdown/.mdx/.mmd/.mermaid');
     console.log('  - "maid render" renders diagrams to SVG/PNG using experimental renderer');
-    console.log('  - "maid mcp" starts Model Context Protocol server for AI assistant integration');
     console.log('Options:');
     console.log('  --include, -I   Glob(s) to include (repeatable or comma-separated)');
     console.log('  --exclude, -E   Glob(s) to exclude (repeatable or comma-separated)');
@@ -223,9 +221,12 @@ async function main() {
 
     // Handle MCP mode
     if (args[0] === 'mcp') {
-        // Dynamically import and start MCP server
-        await import('./mcp.js');
-        return; // MCP server takes over from here
+        console.error('The MCP server has been moved to a separate package.');
+        console.error('Install: npm install -g @probelabs/maid-mcp');
+        console.error('Then run: maid-mcp');
+        console.error('');
+        console.error('See: https://github.com/probelabs/maid#mcp-server');
+        process.exit(1);
     }
 
     // Handle render mode

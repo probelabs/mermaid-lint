@@ -5,6 +5,10 @@ out-cjs/
 .DS_Store
 syntaxes/
 
+# npm pack artifacts
+*.tgz
+package/
+
 # Ignore stray ad-hoc test files at repo root
 /test*.mmd
 /test-*.mmd

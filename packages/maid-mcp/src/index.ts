@@ -7,11 +7,11 @@ import {
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { validate, detectDiagramType } from './core/router.js';
-import { extractMermaidBlocks, offsetErrors } from './core/markdown.js';
-import { computeFixes } from './core/fixes.js';
-import { applyEdits } from './core/edits.js';
-import type { ValidationError, FixLevel } from './core/types.js';
+import { validate, detectDiagramType } from '@probelabs/maid';
+import { extractMermaidBlocks, offsetErrors } from '@probelabs/maid';
+import { computeFixes } from '@probelabs/maid';
+import { applyEdits } from '@probelabs/maid';
+import type { ValidationError, FixLevel } from '@probelabs/maid';
 
 /**
  * MCP Server for Mermaid diagram validation
@@ -66,7 +66,7 @@ function formatErrors(errors: ValidationError[]): string {
 async function startServer() {
   const server = new Server(
     {
-      name: '@probelabs/maid',
+      name: '@probelabs/maid-mcp',
       version: '1.0.0',
     },
     {
