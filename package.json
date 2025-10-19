@@ -15,6 +15,26 @@
     },
     "./cli": {
       "import": "./out/cli.js"
+    },
+    "./core/router": {
+      "types": "./out/core/router.d.ts",
+      "import": "./out/core/router.js"
+    },
+    "./core/markdown": {
+      "types": "./out/core/markdown.d.ts",
+      "import": "./out/core/markdown.js"
+    },
+    "./core/fixes": {
+      "types": "./out/core/fixes.d.ts",
+      "import": "./out/core/fixes.js"
+    },
+    "./core/edits": {
+      "types": "./out/core/edits.d.ts",
+      "import": "./out/core/edits.js"
+    },
+    "./core/types": {
+      "types": "./out/core/types.d.ts",
+      "import": "./out/core/types.js"
     }
   },
   "files": [
@@ -88,11 +108,9 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.18.2",
     "@types/dagre": "^0.7.53",
     "chevrotain": "^11.0.3",
     "dagre": "^0.8.5",
-    "globby": "^14.0.2",
-    "zod": "^4.1.11"
+    "globby": "^14.0.2"
   }
 }

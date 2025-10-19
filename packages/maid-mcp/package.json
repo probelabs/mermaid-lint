@@ -1,0 +1,57 @@
+{
+  "name": "@probelabs/maid-mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for Mermaid diagram validation using Maid",
+  "type": "module",
+  "bin": {
+    "maid-mcp": "./out/index.js"
+  },
+  "main": "./out/index.js",
+  "types": "./out/index.d.ts",
+  "files": [
+    "out",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/probelabs/maid.git",
+    "directory": "packages/maid-mcp"
+  },
+  "homepage": "https://github.com/probelabs/maid#readme",
+  "bugs": {
+    "url": "https://github.com/probelabs/maid/issues"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf out",
+    "build": "tsc",
+    "prepack": "npm run build"
+  },
+  "keywords": [
+    "mermaid",
+    "mcp",
+    "model-context-protocol",
+    "validation",
+    "linter",
+    "diagram"
+  ],
+  "author": "Probelabs",
+  "peerDependencies": {
+    "@probelabs/maid": "^1.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.2",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  }
+}
