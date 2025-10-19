@@ -856,29 +856,24 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
               const isParallelogramShape = core.length >= 2 && isSlashPair(left, right);
 
-              // Strategy: wrap in double quotes only if label contains BOTH raw quotes AND curly braces
-              // AND the quotes haven't been encoded yet (i.e., not &quot;)
-              // For labels with just raw quotes, just parentheses, or just commas, encode as HTML entities
-              const hasRawQuotes = /["']/.test(inner) && !/&quot;/.test(inner);
-              const hasCurlyBraces = /[{}]/.test(inner);
-              const needsQuoting = hasRawQuotes && hasCurlyBraces;
-
+              // Primary strategy: wrap in quotes (standard Mermaid syntax for special characters)
+              // Fallback: for parallelogram/trapezoid shapes, encode all special chars as HTML entities
               let replaced: string;
-              if (needsQuoting && !isParallelogramShape) {
-                // Wrap in double quotes and encode inner quotes and curly braces
+              if (!isParallelogramShape) {
+                // Wrap in quotes and escape internal double quotes and curly braces
+                // Parentheses and single quotes don't need encoding inside quotes
                 const escaped = inner
                   .replace(/"/g, '&quot;')
-                  .replace(/'/g, '&quot;')  // Convert single quotes to &quot; for consistency
                   .replace(/{/g, '&#123;')
                   .replace(/}/g, '&#125;');
                 replaced = '"' + escaped + '"';
               } else {
-                // For simple cases or parallelogram shapes, just encode parentheses
-                replaced = inner.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
-                if (isParallelogramShape) {
-                  // Also encode quotes in parallelogram/trapezoid shapes
-                  replaced = replaced.replace(/"/g, '&quot;');
-                }
+                // Parallelogram/trapezoid shapes don't support quotes: encode all special characters
+                replaced = inner
+                  .replace(/\(/g, '&#40;').replace(/\)/g, '&#41;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/'/g, '&quot;')
+                  .replace(/{/g, '&#123;').replace(/}/g, '&#125;');
               }
 
               if (replaced !== inner) {

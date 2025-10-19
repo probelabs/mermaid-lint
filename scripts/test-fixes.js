@@ -72,9 +72,9 @@ const cases = [
     before: 'flowchart TD\n  B -- Yes --> D{"Is \\\"Driver\\\" AND \\\"AuthCheck.Path\\\" configured?"}\n'
   },
   {
-    name: 'FL-LABEL-QUOTE-IN-UNQUOTED (encode quotes; parens encoded by separate rule)',
+    name: 'FL-LABEL-PARENS-UNQUOTED (wrap in quotes when parentheses present)',
     before: 'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug("message", data)];\n',
-    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F[Calls logger.debug&#40;&quot;message&quot;, data&#41;];\n'
+    after:  'flowchart TD\n  E[Component e.g., CheckExecutionEngine] --> F["Calls logger.debug(&quot;message&quot;, data)"];\n'
   },
   {
     name: 'FL-QUOTE-UNCLOSED (all)',
@@ -130,9 +130,9 @@ const cases = [
     after:  'flowchart LR\n  A(["quoted&quot; text"])\n'
   },
   {
-    name: 'FL-LABEL-PARENS-UNQUOTED (encode parens)',
+    name: 'FL-LABEL-PARENS-UNQUOTED (wrap in quotes)',
     before: 'flowchart TD\n  D[Mark Parent as Failed (Fatal)]\n',
-    after:  'flowchart TD\n  D[Mark Parent as Failed &#40;Fatal&#41;]\n'
+    after:  'flowchart TD\n  D["Mark Parent as Failed (Fatal)"]\n'
   },
   // FL-LABEL-CURLY-IN-QUOTED is not auto-fixable because:
   // 1. Curly braces work perfectly in quoted labels
