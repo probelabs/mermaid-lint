@@ -856,16 +856,16 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
               const isParallelogramShape = core.length >= 2 && isSlashPair(left, right);
 
-              // Strategy: wrap in double quotes if label contains complex characters (quotes, curly braces, commas)
-              // Otherwise just encode parentheses as HTML entities
-              const hasQuotes = /["']/.test(inner);
+              // Strategy: wrap in double quotes only if label contains BOTH raw quotes AND curly braces
+              // AND the quotes haven't been encoded yet (i.e., not &quot;)
+              // For labels with just raw quotes, just parentheses, or just commas, encode as HTML entities
+              const hasRawQuotes = /["']/.test(inner) && !/&quot;/.test(inner);
               const hasCurlyBraces = /[{}]/.test(inner);
-              const hasCommas = /,/.test(inner);
-              const needsQuoting = hasQuotes || hasCurlyBraces || hasCommas;
+              const needsQuoting = hasRawQuotes && hasCurlyBraces;
 
               let replaced: string;
               if (needsQuoting && !isParallelogramShape) {
-                // Wrap in double quotes and encode inner double quotes and curly braces
+                // Wrap in double quotes and encode inner quotes and curly braces
                 const escaped = inner
                   .replace(/"/g, '&quot;')
                   .replace(/'/g, '&quot;')  // Convert single quotes to &quot; for consistency
