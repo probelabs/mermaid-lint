@@ -857,23 +857,20 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               const isParallelogramShape = core.length >= 2 && isSlashPair(left, right);
 
               // Primary strategy: wrap in quotes (standard Mermaid syntax for special characters)
-              // Fallback: for parallelogram/trapezoid shapes, encode all special chars as HTML entities
+              // Fallback: for parallelogram/trapezoid shapes, encode only characters that break parsing
               let replaced: string;
               if (!isParallelogramShape) {
-                // Wrap in quotes and escape internal double quotes and curly braces
-                // Parentheses and single quotes don't need encoding inside quotes
+                // Wrap in quotes and escape internal double quotes. Curly braces and parens are fine inside quotes.
                 const escaped = inner
-                  .replace(/"/g, '&quot;')
-                  .replace(/{/g, '&#123;')
-                  .replace(/}/g, '&#125;');
+                  .replace(/\"/g, '&quot;')
+                  .replace(/"/g, '&quot;');
                 replaced = '"' + escaped + '"';
               } else {
-                // Parallelogram/trapezoid shapes don't support quotes: encode all special characters
+                // Parallelogram/trapezoid shapes don't support quotes: encode parens and double quotes only
                 replaced = inner
                   .replace(/\(/g, '&#40;').replace(/\)/g, '&#41;')
-                  .replace(/"/g, '&quot;')
-                  .replace(/'/g, '&quot;')
-                  .replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+                  .replace(/\"/g, '&quot;')
+                  .replace(/"/g, '&quot;');
               }
 
               if (replaced !== inner) {

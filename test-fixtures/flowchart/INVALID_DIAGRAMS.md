@@ -2091,7 +2091,7 @@ graph TD
     C --> D[Built CLI Distribution]
 
     E[Runtime: CheckExecutionEngine] --> F[Template Loading]
-    F --> G["path.join(__dirname, 'output/&#123;schema&#125;/template.liquid')"]
+    F --> G["path.join(__dirname, 'output/{schema}/template.liquid')"]
     G --> H[Template Found in dist/output/]
     H --> I[Successful Rendering]
 
