@@ -856,12 +856,23 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               const isSlashPair = (l: string, r: string) => (l === '/' && r === '/') || (l === '\\' && r === '\\') || (l === '/' && r === '\\') || (l === '\\' && r === '/');
               const isParallelogramShape = core.length >= 2 && isSlashPair(left, right);
 
-              // Encode parentheses (and quotes for parallelogram shapes)
-              let replaced = inner.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
-              if (isParallelogramShape) {
-                // Also encode quotes in parallelogram/trapezoid shapes
-                replaced = replaced.replace(/"/g, '&quot;');
+              // Primary strategy: wrap in quotes (standard Mermaid syntax for special characters)
+              // Fallback: for parallelogram/trapezoid shapes, encode only characters that break parsing
+              let replaced: string;
+              if (!isParallelogramShape) {
+                // Wrap in quotes and escape internal double quotes. Curly braces and parens are fine inside quotes.
+                const escaped = inner
+                  .replace(/\"/g, '&quot;')
+                  .replace(/"/g, '&quot;');
+                replaced = '"' + escaped + '"';
+              } else {
+                // Parallelogram/trapezoid shapes don't support quotes: encode parens and double quotes only
+                replaced = inner
+                  .replace(/\(/g, '&#40;').replace(/\)/g, '&#41;')
+                  .replace(/\"/g, '&quot;')
+                  .replace(/"/g, '&quot;');
               }
+
               if (replaced !== inner) {
                 edits.push({ start: { line: e.line, column: contentStart + 1 }, end: { line: e.line, column: closeIdx + 1 }, newText: replaced });
                 patchedLines.add(e.line);

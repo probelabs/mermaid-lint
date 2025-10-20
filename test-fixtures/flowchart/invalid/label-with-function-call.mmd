@@ -1,0 +1,12 @@
+graph TD
+    A[CLI Build Process] --> B[ncc bundling]
+    B --> C[Copy output/ to dist/]
+    C --> D[Built CLI Distribution]
+
+    E[Runtime: CheckExecutionEngine] --> F[Template Loading]
+    F --> G[path.join(__dirname, 'output/{schema}/template.liquid')]
+    G --> H[Template Found in dist/output/]
+    H --> I[Successful Rendering]
+
+    J[Tests] --> K[Mock Path Resolution]
+    K --> L[Expect output path]
