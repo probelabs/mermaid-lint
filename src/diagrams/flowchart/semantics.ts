@@ -638,6 +638,25 @@ class FlowSemanticsVisitor extends BaseVisitor {
             length: (p.image?.length ?? 1)
           });
         }
+        // Backticks (Markdown code) inside inline edge labels often fail in Mermaid CLI/GitHub.
+        // Surface as an error so autofix can normalize.
+        for (const t of parts) {
+          const img = String(t.image || '');
+          const idx = img.indexOf('`');
+          if (idx >= 0) {
+            const col = (t.startColumn ?? 1) + idx;
+            this.ctx.errors.push({
+              line: t.startLine ?? 1,
+              column: col,
+              severity: 'error',
+              code: 'FL-EDGE-LABEL-BACKTICK',
+              message: 'Backticks (`…`) are not supported inside inline edge labels.',
+              hint: 'Remove backticks or use pipe labels: A --|Text|--> B.',
+              length: 1
+            });
+            break;
+          }
+        }
       }
     }
   }

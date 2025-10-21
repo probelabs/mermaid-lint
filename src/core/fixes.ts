@@ -153,6 +153,30 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    if (is('FL-EDGE-LABEL-BACKTICK', e)) {
+      // Transform inline edge labels containing backticks into pipe labels and strip backticks.
+      // Example: A -- Detects `"` in unquoted label --> B  =>  A --|Detects " in unquoted label|--> B
+      const lineText = lineTextAt(text, e.line);
+      const re = /^(.*?--)\s*([^|>]+?)\s*(-->|==>|\.->|->)(.*)$/;
+      const m = re.exec(lineText);
+      if (m) {
+        const before = m[1];
+        const label = (m[2] || '').replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;');
+        const arrow = m[3];
+        const after = m[4] || '';
+        let fixedLine = `${before}|${label}|${arrow}${after}`;
+        // Also sanitize any square-bracket node label segments on the same line
+        fixedLine = fixedLine.replace(/\[([^\]]*)\]/g, (_m, seg) => {
+          const cleaned = String(seg).replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;');
+          return '[' + cleaned + ']';
+        });
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: fixedLine });
+      } else {
+        // Fallback: just remove backticks; also encode quotes to avoid pipe conflicts if any
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: lineText.replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;') });
+      }
+      continue;
+    }
     if (is('CL-NAME-DOUBLE-QUOTED', e)) {
       // Safer transform:
       // - If alias present: class "Label" as ID  => class ID["Label"]
@@ -181,6 +205,28 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           }
         }
       }
+      continue;
+    }
+    // Remove backticks inside unquoted node labels (warning-level)
+    if (is('FL-LABEL-BACKTICK', e)) {
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      // Prefer square-bracket labels on this line
+      const openIdx = lineText.lastIndexOf('[', caret0);
+      if (openIdx !== -1) {
+        const closeIdx = lineText.indexOf(']', openIdx + 1);
+        if (closeIdx !== -1) {
+          const before = lineText.slice(0, openIdx + 1);
+          const seg = lineText.slice(openIdx + 1, closeIdx);
+          const after = lineText.slice(closeIdx);
+          const fixedSeg = seg.replace(/`/g, '');
+          const newLine = before + fixedSeg + after;
+          edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
+          continue;
+        }
+      }
+      // Fallback: remove all backticks on the line
+      edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: lineText.replace(/`/g, '') });
       continue;
     }
     if (is('CL-NAMESPACE-NAME-QUOTED', e)) {
@@ -784,8 +830,8 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
-    // Flowchart: wrap unquoted labels containing parentheses in quotes
-    if (is('FL-LABEL-PARENS-UNQUOTED', e)) {
+    // Flowchart: wrap unquoted labels containing parentheses or at-sign in quotes
+    if (is('FL-LABEL-PARENS-UNQUOTED', e) || is('FL-LABEL-AT-IN-UNQUOTED', e)) {
       if (level === 'safe' || level === 'all') {
         if (patchedLines.has(e.line)) continue; // Already patched this line
         const lineText = lineTextAt(text, e.line);
@@ -862,12 +908,14 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               if (!isParallelogramShape) {
                 // Wrap in quotes and escape internal double quotes. Curly braces and parens are fine inside quotes.
                 const escaped = inner
+                  .replace(/`/g, '')
                   .replace(/\"/g, '&quot;')
                   .replace(/"/g, '&quot;');
                 replaced = '"' + escaped + '"';
               } else {
                 // Parallelogram/trapezoid shapes don't support quotes: encode parens and double quotes only
                 replaced = inner
+                  .replace(/`/g, '')
                   .replace(/\(/g, '&#40;').replace(/\)/g, '&#41;')
                   .replace(/\"/g, '&quot;')
                   .replace(/"/g, '&quot;');

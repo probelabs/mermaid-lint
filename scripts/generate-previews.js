@@ -417,12 +417,12 @@ async function main() {
       }
 
       // Enforce aggressive '--fix=all' auto-fixes that changed content must be VALID under mermaid-cli
-      // (safe-level fixes may be partial and are advisory only)
-      // Only consider 'all' level failures.
-      if (fixFailures.length) {
-        console.error(`\n❌ Found ${fixFailures.length} auto-fix validation failure(s) in '${type}/invalid':`);
-        for (const f of fixFailures) {
-          console.error(` - ${f.file}: '--fix${f.level === 'all' ? '=all' : ''}' produced output that is still INVALID per mermaid-cli — ${f.message.split('\n')[0]}`);
+      // Safe-level fixes may be partial; we report them in the preview but do not fail CI.
+      const allFailures = fixFailures.filter((f) => f.level === 'all');
+      if (allFailures.length) {
+        console.error(`\n❌ Found ${allFailures.length} auto-fix validation failure(s) in '${type}/invalid':`);
+        for (const f of allFailures) {
+          console.error(` - ${f.file}: '--fix=all' produced output that is still INVALID per mermaid-cli — ${f.message.split('\n')[0]}`);
         }
         process.exit(1);
       }
