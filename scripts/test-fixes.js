@@ -139,6 +139,11 @@ const cases = [
     before: 'flowchart TD\n  F --> G[Print: "💡 Tip: Try using synonyms..."]\n',
     after:  'flowchart TD\n  F --> G[Print: &quot;💡 Tip: Try using synonyms...&quot;]\n'
   },
+  {
+    name: 'FL-LABEL-AT-IN-UNQUOTED (wrap in quotes)',
+    before: 'flowchart TD\n  A[package.json] --> B[@probelabs/probe v0.6.0-rc149]\n',
+    after:  'flowchart TD\n  A[package.json] --> B["@probelabs/probe v0.6.0-rc149"]\n'
+  },
   // FL-LABEL-CURLY-IN-QUOTED is not auto-fixable because:
   // 1. Curly braces work perfectly in quoted labels
   // 2. Mermaid doesn't decode numeric HTML entities (&#123;/&#125;)

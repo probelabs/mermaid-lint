@@ -264,7 +264,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
         };
       }
 
-      // Heuristic: if there are parentheses inside an unquoted square-bracket label, map to targeted error
+      // Heuristic: if there are hazards inside an unquoted square-bracket label, map to targeted errors
       {
         const caret0 = Math.max(0, column - 1);
         const openIdx = lineStr.lastIndexOf('[', caret0);
@@ -281,6 +281,20 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
               message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
               hint: 'Example: I[Log &quot;processing N items&quot;] or I["Log \\"processing N items\\""]',
               length: len
+            };
+          }
+          // If the segment contains an at-sign, Mermaid may tokenize it as a link/attr marker; require quoting
+          const atPos = seg.indexOf('@');
+          if (atPos >= 0) {
+            const atCol = openIdx + 1 + atPos + 1; // 1-based
+            return {
+              line,
+              column: atCol,
+              severity: 'error',
+              code: 'FL-LABEL-AT-IN-UNQUOTED',
+              message: "'@' inside an unquoted label can be misparsed by Mermaid.",
+              hint: 'Wrap the label in quotes, e.g., B["@probelabs/probe v0.6.0-rc149"]',
+              length: 1
             };
           }
           // Otherwise if the segment contains '(' or ')', map to FL-LABEL-PARENS-UNQUOTED
