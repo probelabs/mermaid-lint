@@ -56,11 +56,11 @@ This file contains invalid flowchart test fixtures with:
 
 | # | Diagram | mermaid-cli | maid | Auto-fix? |
 |---:|---|:---:|:---:|:---:|
-| 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ✅ safe |
+| 1 | [agent schema workflow](#1-agent-schema-workflow) | INVALID | INVALID | ❌ safe |
 | 2 | [backticks in quoted label](#2-backticks-in-quoted-label) | INVALID | INVALID | ✅ safe |
 | 3 | [curly in quoted](#3-curly-in-quoted) | INVALID | INVALID | — |
 | 4 | [diamond parens unquoted](#4-diamond-parens-unquoted) | INVALID | INVALID | ✅ safe |
-| 5 | [edge label backticks](#5-edge-label-backticks) | INVALID | INVALID | ❌ safe |
+| 5 | [edge label backticks](#5-edge-label-backticks) | INVALID | INVALID | ✅ safe |
 | 6 | [edge label parens](#6-edge-label-parens) | INVALID | INVALID | — |
 | 7 | [empty nodes](#7-empty-nodes) | INVALID | INVALID | ✅ safe |
 | 8 | [escaped quotes in decision](#8-escaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
@@ -335,7 +335,7 @@ hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
 
 ### maid Auto-fix (`--fix`) Preview
 
-```mermaid
+````mermaid
 graph TB
     Start[User calls agent.answer with schema] --> CheckSchema{Schema<br/>provided?}
     
@@ -407,7 +407,7 @@ graph TB
     
     RetryLoop -->|Yes| CallJsonFixer[jsonFixer.fixJson<br/>with enhanced error context<br/>lines 1874-1879]
     
-    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {&quot;key&quot;: &quot;value&quot;}<br/>NOT: json{&quot;key&quot;: &quot;value&quot;}'<br/><br/>lines 427-478 in schemaUtils.js"]
+    CallJsonFixer --> JsonFixerInternal["JsonFixingAgent.fixJson:<br/>Creates specialized prompt<br/>based on retry count<br/><br/>Retry 0:<br/>'CRITICAL JSON ERROR:<br/>Your previous response is not<br/>valid JSON. Error: [error]<br/><br/>Invalid response:<br/>[response preview]<br/><br/>You MUST fix this...'<br/><br/>Retry 1:<br/>'URGENT - JSON PARSING FAILED:<br/>This is your second chance...<br/>Return ONLY valid JSON...'<br/><br/>Retry 2:<br/>'FINAL ATTEMPT - CRITICAL:<br/>This is the final retry...<br/>You MUST return ONLY raw JSON<br/>without any other content.<br/>EXAMPLE: {\"key\": \"value\"}<br/>NOT: ```json{\"key\": \"value\"}```'<br/><br/>lines 427-478 in schemaUtils.js"]27-478 in schemaUtils.js"]
     
     JsonFixerInternal --> JsonFixerAnswer["JsonFixingAgent calls<br/>its own answer() with:<br/>- Correction prompt<br/>- disableJsonValidation: true<br/>- _schemaFormatted: true<br/>lines 882-888 in schemaUtils.js"]
     
@@ -486,7 +486,7 @@ graph TB
     style CheckSchemaDefAttempt fill:#ffe0b2
 
 
-```
+````
 
 ### maid Auto-fix (`--fix=all`) Preview
 
@@ -727,8 +727,6 @@ hint: Remove the backticks or use quotes instead, e.g., "GITHUB_ACTIONS" and "--
 ```mermaid
 flowchart TD
   A["{% if %} template"] --> B{Stage}
-
-
 ```
 
 ### maid Auto-fix (`--fix=all`) Preview
@@ -1032,7 +1030,7 @@ graph TD
     end
     B --|Detects &quot; in unquoted label|--> D[Error: FL-LABEL-QUOTE-IN-UNQUOTED];
     D -- triggers fix --> F;
-    F --|on &quot; error|--> G[Encode `"` to `&quot;`];    G --> I[Valid Mermaid Code];
+    F --|on &quot; error|--> G[Encode &quot; to &quot;]; G --> I[Valid Mermaid Code];
 
 
 ```
@@ -4388,7 +4386,7 @@ hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with 
 ```mermaid
 flowchart TD
   subgraph "Check Execution Flow"
-    G["JS Expressions (fail_if, value_js)"] --|read via memory object|--> C
+    G["&quot;JS Expressions (fail_if, value_js)&quot;"] --|read via memory object|--> C
   end
 
 

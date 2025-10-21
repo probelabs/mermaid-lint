@@ -164,7 +164,12 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
         const label = (m[2] || '').replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;');
         const arrow = m[3];
         const after = m[4] || '';
-        const fixedLine = `${before}|${label}|${arrow}${after}`;
+        let fixedLine = `${before}|${label}|${arrow}${after}`;
+        // Also sanitize any square-bracket node label segments on the same line
+        fixedLine = fixedLine.replace(/\[([^\]]*)\]/g, (_m, seg) => {
+          const cleaned = String(seg).replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;');
+          return '[' + cleaned + ']';
+        });
         edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: fixedLine });
       } else {
         // Fallback: just remove backticks; also encode quotes to avoid pipe conflicts if any
@@ -200,6 +205,28 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           }
         }
       }
+      continue;
+    }
+    // Remove backticks inside unquoted node labels (warning-level)
+    if (is('FL-LABEL-BACKTICK', e)) {
+      const lineText = lineTextAt(text, e.line);
+      const caret0 = Math.max(0, e.column - 1);
+      // Prefer square-bracket labels on this line
+      const openIdx = lineText.lastIndexOf('[', caret0);
+      if (openIdx !== -1) {
+        const closeIdx = lineText.indexOf(']', openIdx + 1);
+        if (closeIdx !== -1) {
+          const before = lineText.slice(0, openIdx + 1);
+          const seg = lineText.slice(openIdx + 1, closeIdx);
+          const after = lineText.slice(closeIdx);
+          const fixedSeg = seg.replace(/`/g, '');
+          const newLine = before + fixedSeg + after;
+          edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: newLine });
+          continue;
+        }
+      }
+      // Fallback: remove all backticks on the line
+      edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: lineText.replace(/`/g, '') });
       continue;
     }
     if (is('CL-NAMESPACE-NAME-QUOTED', e)) {
