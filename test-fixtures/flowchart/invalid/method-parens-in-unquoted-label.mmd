@@ -1,0 +1,10 @@
+graph TD
+    A[Log Entry with Error] --> B{JSONFormatter.Format};
+    B --> C{entry.Data has logrus.ErrorKey?};
+    C -- Yes --> D{Value is an 'error' type?};
+    D -- Yes --> E[Convert error to string via .Error()];
+    D -- No --> F[Use value as-is];
+    E --> G[Add string to log data];
+    F --> G;
+    G --> H{Marshal to JSON};
+    H --> I[✅ Successful JSON Log Output];

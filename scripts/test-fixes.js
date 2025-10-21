@@ -165,6 +165,12 @@ const cases = [
     before: 'flowchart LR\n  T[\\Calls logger.debug("msg")/]\n',
     after:  'flowchart LR\n  T[\\Calls logger.debug&#40;&quot;msg&quot;&#41;/]\n'
   },
+
+  {
+    name: 'FL-LABEL-PARENS-UNQUOTED (method call)',
+    before: 'flowchart TD\n  X --> E[Convert error to string via .Error()]\n',
+    after:  'flowchart TD\n  X --> E[\"Convert error to string via .Error()\"]\n'
+  },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },
   {
