@@ -26,26 +26,27 @@ This file contains invalid flowchart test fixtures with:
 15. [Invalid Node Syntax](#15-invalid-node-syntax)
 16. [Invalid Subgraph](#16-invalid-subgraph)
 17. [Label With Function Call](#17-label-with-function-call)
-18. [Link One Sided Marker](#18-link-one-sided-marker)
-19. [Linkstyle Id Unknown](#19-linkstyle-id-unknown)
-20. [Missing Arrow](#20-missing-arrow)
-21. [Mixed Brackets](#21-mixed-brackets)
-22. [Mixed Quotes In Labels](#22-mixed-quotes-in-labels)
-23. [No Diagram Type](#23-no-diagram-type)
-24. [Quotes Double Inside Single](#24-quotes-double-inside-single)
-25. [Quotes In Node Labels](#25-quotes-in-node-labels)
-26. [Round Parens Unquoted](#26-round-parens-unquoted)
-27. [Title Unsupported](#27-title-unsupported)
-28. [Typed Shapes All](#28-typed-shapes-all)
-29. [Typed Shapes Unknowns](#29-typed-shapes-unknowns)
-30. [Unclosed Bracket](#30-unclosed-bracket)
-31. [Unclosed Quote In Label](#31-unclosed-quote-in-label)
-32. [Unescaped Quotes In Decision](#32-unescaped-quotes-in-decision)
-33. [Unmatched End](#33-unmatched-end)
-34. [Unquoted Label With Quotes](#34-unquoted-label-with-quotes)
-35. [Unquoted Parens In Labels](#35-unquoted-parens-in-labels)
-36. [Unquoted Parens With Backticks](#36-unquoted-parens-with-backticks)
-37. [Wrong Direction](#37-wrong-direction)
+18. [Label With Tip](#18-label-with-tip)
+19. [Link One Sided Marker](#19-link-one-sided-marker)
+20. [Linkstyle Id Unknown](#20-linkstyle-id-unknown)
+21. [Missing Arrow](#21-missing-arrow)
+22. [Mixed Brackets](#22-mixed-brackets)
+23. [Mixed Quotes In Labels](#23-mixed-quotes-in-labels)
+24. [No Diagram Type](#24-no-diagram-type)
+25. [Quotes Double Inside Single](#25-quotes-double-inside-single)
+26. [Quotes In Node Labels](#26-quotes-in-node-labels)
+27. [Round Parens Unquoted](#27-round-parens-unquoted)
+28. [Title Unsupported](#28-title-unsupported)
+29. [Typed Shapes All](#29-typed-shapes-all)
+30. [Typed Shapes Unknowns](#30-typed-shapes-unknowns)
+31. [Unclosed Bracket](#31-unclosed-bracket)
+32. [Unclosed Quote In Label](#32-unclosed-quote-in-label)
+33. [Unescaped Quotes In Decision](#33-unescaped-quotes-in-decision)
+34. [Unmatched End](#34-unmatched-end)
+35. [Unquoted Label With Quotes](#35-unquoted-label-with-quotes)
+36. [Unquoted Parens In Labels](#36-unquoted-parens-in-labels)
+37. [Unquoted Parens With Backticks](#37-unquoted-parens-with-backticks)
+38. [Wrong Direction](#38-wrong-direction)
 
 ---
 
@@ -70,26 +71,27 @@ This file contains invalid flowchart test fixtures with:
 | 15 | [invalid node syntax](#15-invalid-node-syntax) | INVALID | INVALID | ✅ all |
 | 16 | [invalid subgraph](#16-invalid-subgraph) | INVALID | INVALID | — |
 | 17 | [label with function call](#17-label-with-function-call) | INVALID | INVALID | ✅ safe |
-| 18 | [link one sided marker](#18-link-one-sided-marker) | INVALID | INVALID | ✅ safe |
-| 19 | [linkstyle id unknown](#19-linkstyle-id-unknown) | INVALID | INVALID | — |
-| 20 | [missing arrow](#20-missing-arrow) | INVALID | INVALID | ✅ all |
-| 21 | [mixed brackets](#21-mixed-brackets) | INVALID | INVALID | ✅ safe |
-| 22 | [mixed quotes in labels](#22-mixed-quotes-in-labels) | INVALID | INVALID | — |
-| 23 | [no diagram type](#23-no-diagram-type) | INVALID | INVALID | — |
-| 24 | [quotes double inside single](#24-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 25 | [quotes in node labels](#25-quotes-in-node-labels) | INVALID | INVALID | — |
-| 26 | [round parens unquoted](#26-round-parens-unquoted) | INVALID | INVALID | ✅ safe |
-| 27 | [title unsupported](#27-title-unsupported) | INVALID | INVALID | ✅ all |
-| 28 | [typed shapes all](#28-typed-shapes-all) | INVALID | INVALID | — |
-| 29 | [typed shapes unknowns](#29-typed-shapes-unknowns) | INVALID | INVALID | — |
-| 30 | [unclosed bracket](#30-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 31 | [unclosed quote in label](#31-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 32 | [unescaped quotes in decision](#32-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 33 | [unmatched end](#33-unmatched-end) | INVALID | INVALID | — |
-| 34 | [unquoted label with quotes](#34-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 35 | [unquoted parens in labels](#35-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
-| 36 | [unquoted parens with backticks](#36-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
-| 37 | [wrong direction](#37-wrong-direction) | INVALID | INVALID | — |
+| 18 | [label with tip](#18-label-with-tip) | INVALID | INVALID | ✅ safe |
+| 19 | [link one sided marker](#19-link-one-sided-marker) | INVALID | INVALID | ✅ safe |
+| 20 | [linkstyle id unknown](#20-linkstyle-id-unknown) | INVALID | INVALID | — |
+| 21 | [missing arrow](#21-missing-arrow) | INVALID | INVALID | ✅ all |
+| 22 | [mixed brackets](#22-mixed-brackets) | INVALID | INVALID | ✅ safe |
+| 23 | [mixed quotes in labels](#23-mixed-quotes-in-labels) | INVALID | INVALID | — |
+| 24 | [no diagram type](#24-no-diagram-type) | INVALID | INVALID | — |
+| 25 | [quotes double inside single](#25-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
+| 26 | [quotes in node labels](#26-quotes-in-node-labels) | INVALID | INVALID | — |
+| 27 | [round parens unquoted](#27-round-parens-unquoted) | INVALID | INVALID | ✅ safe |
+| 28 | [title unsupported](#28-title-unsupported) | INVALID | INVALID | ✅ all |
+| 29 | [typed shapes all](#29-typed-shapes-all) | INVALID | INVALID | — |
+| 30 | [typed shapes unknowns](#30-typed-shapes-unknowns) | INVALID | INVALID | — |
+| 31 | [unclosed bracket](#31-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 32 | [unclosed quote in label](#32-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 33 | [unescaped quotes in decision](#33-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 34 | [unmatched end](#34-unmatched-end) | INVALID | INVALID | — |
+| 35 | [unquoted label with quotes](#35-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 36 | [unquoted parens in labels](#36-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
+| 37 | [unquoted parens with backticks](#37-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
+| 38 | [wrong direction](#38-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -2126,7 +2128,130 @@ graph TD
 
 ---
 
-## 18. Link One Sided Marker
+## 18. Label With Tip
+
+📄 **Source**: [`label-with-tip.mmd`](./invalid/label-with-tip.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+flowchart TD
+    A[User runs search] --> B[handle_search function]
+    B --> C[Process search results]
+    C --> D{Check output format}
+    D -->|JSON/XML| E[Skip tip display]
+    D -->|Other formats| F[Display search tip]
+    F --> G[Print: "💡 Tip: Try using synonyms..."]
+    G --> H[Complete output]
+    
+    I[Test runner] --> J[test_cli_limit_message]
+    J --> K[Execute search command]
+    K --> L[Verify tip in stdout]
+    L --> M[Assert tip presence]
+
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 7:
+...    F --> G[Print: "💡 Tip: Try using sy...
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.
+at test-fixtures/flowchart/invalid/label-with-tip.mmd:7:20
+   6 |     D -->|Other formats| F[Display search tip]
+   7 |     F --> G[Print: "💡 Tip: Try using synonyms..."]
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |     G --> H[Complete output]
+hint: Example: I[Log &quot;processing N items&quot;] or I["Log \"processing N items\""]
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+flowchart TD
+    A[User runs search] --> B[handle_search function]
+    B --> C[Process search results]
+    C --> D{Check output format}
+    D -->|JSON/XML| E[Skip tip display]
+    D -->|Other formats| F[Display search tip]
+    F --> G[Print: &quot;💡 Tip: Try using synonyms...&quot;]
+    G --> H[Complete output]
+    
+    I[Test runner] --> J[test_cli_limit_message]
+    J --> K[Execute search command]
+    K --> L[Verify tip in stdout]
+    L --> M[Assert tip presence]
+
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+flowchart TD
+    A[User runs search] --> B[handle_search function]
+    B --> C[Process search results]
+    C --> D{Check output format}
+    D -->|JSON/XML| E[Skip tip display]
+    D -->|Other formats| F[Display search tip]
+    F --> G[Print: "💡 Tip: Try using synonyms..."]
+    G --> H[Complete output]
+    
+    I[Test runner] --> J[test_cli_limit_message]
+    J --> K[Execute search command]
+    K --> L[Verify tip in stdout]
+    L --> M[Assert tip presence]
+
+
+```
+</details>
+
+---
+
+## 19. Link One Sided Marker
 
 📄 **Source**: [`link-one-sided-marker.mmd`](./invalid/link-one-sided-marker.mmd)
 
@@ -2224,7 +2349,7 @@ flowchart TD
 
 ---
 
-## 19. Linkstyle Id Unknown
+## 20. Linkstyle Id Unknown
 
 📄 **Source**: [`linkstyle-id-unknown.mmd`](./invalid/linkstyle-id-unknown.mmd)
 
@@ -2310,7 +2435,7 @@ flowchart TD
 
 ---
 
-## 20. Missing Arrow
+## 21. Missing Arrow
 
 📄 **Source**: [`missing-arrow.mmd`](./invalid/missing-arrow.mmd)
 
@@ -2393,7 +2518,7 @@ flowchart TD
 
 ---
 
-## 21. Mixed Brackets
+## 22. Mixed Brackets
 
 📄 **Source**: [`mixed-brackets.mmd`](./invalid/mixed-brackets.mmd)
 
@@ -2492,7 +2617,7 @@ flowchart LR
 
 ---
 
-## 22. Mixed Quotes In Labels
+## 23. Mixed Quotes In Labels
 
 📄 **Source**: [`mixed-quotes-in-labels.mmd`](./invalid/mixed-quotes-in-labels.mmd)
 
@@ -2597,7 +2722,7 @@ flowchart TD
 
 ---
 
-## 23. No Diagram Type
+## 24. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -2675,7 +2800,7 @@ B --> C
 
 ---
 
-## 24. Quotes Double Inside Single
+## 25. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -2765,7 +2890,7 @@ flowchart LR
 
 ---
 
-## 25. Quotes In Node Labels
+## 26. Quotes In Node Labels
 
 📄 **Source**: [`quotes-in-node-labels.mmd`](./invalid/quotes-in-node-labels.mmd)
 
@@ -2898,7 +3023,7 @@ graph TD
 
 ---
 
-## 26. Round Parens Unquoted
+## 27. Round Parens Unquoted
 
 📄 **Source**: [`round-parens-unquoted.mmd`](./invalid/round-parens-unquoted.mmd)
 
@@ -2988,7 +3113,7 @@ flowchart TD
 
 ---
 
-## 27. Title Unsupported
+## 28. Title Unsupported
 
 📄 **Source**: [`title-unsupported.mmd`](./invalid/title-unsupported.mmd)
 
@@ -3077,7 +3202,7 @@ flowchart TD
 
 ---
 
-## 28. Typed Shapes All
+## 29. Typed Shapes All
 
 📄 **Source**: [`typed-shapes-all.mmd`](./invalid/typed-shapes-all.mmd)
 
@@ -3209,7 +3334,7 @@ flowchart LR
 
 ---
 
-## 29. Typed Shapes Unknowns
+## 30. Typed Shapes Unknowns
 
 📄 **Source**: [`typed-shapes-unknowns.mmd`](./invalid/typed-shapes-unknowns.mmd)
 
@@ -3321,7 +3446,7 @@ flowchart TD
 
 ---
 
-## 30. Unclosed Bracket
+## 31. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -3408,7 +3533,7 @@ flowchart LR
 
 ---
 
-## 31. Unclosed Quote In Label
+## 32. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -3501,7 +3626,7 @@ flowchart TD
 
 ---
 
-## 32. Unescaped Quotes In Decision
+## 33. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -3594,7 +3719,7 @@ flowchart TD
 
 ---
 
-## 33. Unmatched End
+## 34. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -3676,7 +3801,7 @@ flowchart TD
 
 ---
 
-## 34. Unquoted Label With Quotes
+## 35. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -3808,7 +3933,7 @@ flowchart TD
 
 ---
 
-## 35. Unquoted Parens In Labels
+## 36. Unquoted Parens In Labels
 
 📄 **Source**: [`unquoted-parens-in-labels.mmd`](./invalid/unquoted-parens-in-labels.mmd)
 
@@ -3958,7 +4083,7 @@ flowchart TD
 
 ---
 
-## 36. Unquoted Parens With Backticks
+## 37. Unquoted Parens With Backticks
 
 📄 **Source**: [`unquoted-parens-with-backticks.mmd`](./invalid/unquoted-parens-with-backticks.mmd)
 
@@ -4054,7 +4179,7 @@ flowchart TD
 
 ---
 
-## 37. Wrong Direction
+## 38. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 

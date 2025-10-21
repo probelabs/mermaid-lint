@@ -1,0 +1,14 @@
+flowchart TD
+    A[User runs search] --> B[handle_search function]
+    B --> C[Process search results]
+    C --> D{Check output format}
+    D -->|JSON/XML| E[Skip tip display]
+    D -->|Other formats| F[Display search tip]
+    F --> G[Print: "💡 Tip: Try using synonyms..."]
+    G --> H[Complete output]
+    
+    I[Test runner] --> J[test_cli_limit_message]
+    J --> K[Execute search command]
+    K --> L[Verify tip in stdout]
+    L --> M[Assert tip presence]
+
