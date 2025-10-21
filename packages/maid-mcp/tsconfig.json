@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ES2020",
+    "module": "Node16",
     "lib": ["ES2020"],
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "outDir": "./out",
     "rootDir": "./src",
     "declaration": true,
