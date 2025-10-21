@@ -1,0 +1,11 @@
+graph TD
+    A[Input .mmd with invalid label] --> B{Maid Parser & Linter};
+    subgraph B
+        C{Diagnostic Engine};
+        F{Auto-fixer};
+    end
+    B -- Detects `"` in unquoted label --> D[Error: FL-LABEL-QUOTE-IN-UNQUOTED];
+    D -- triggers fix --> F;
+    F -- on `"` error --> G[Encode `"` to `&quot;`];
+    G --> I[Valid Mermaid Code];
+

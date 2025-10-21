@@ -153,6 +153,25 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
       }
       continue;
     }
+    if (is('FL-EDGE-LABEL-BACKTICK', e)) {
+      // Transform inline edge labels containing backticks into pipe labels and strip backticks.
+      // Example: A -- Detects `"` in unquoted label --> B  =>  A --|Detects " in unquoted label|--> B
+      const lineText = lineTextAt(text, e.line);
+      const re = /^(.*?--)\s*([^|>]+?)\s*(-->|==>|\.->|->)(.*)$/;
+      const m = re.exec(lineText);
+      if (m) {
+        const before = m[1];
+        const label = (m[2] || '').replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;');
+        const arrow = m[3];
+        const after = m[4] || '';
+        const fixedLine = `${before}|${label}|${arrow}${after}`;
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: fixedLine });
+      } else {
+        // Fallback: just remove backticks; also encode quotes to avoid pipe conflicts if any
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: lineText.replace(/`/g, '').replace(/\"/g, '"').replace(/"/g, '&quot;') });
+      }
+      continue;
+    }
     if (is('CL-NAME-DOUBLE-QUOTED', e)) {
       // Safer transform:
       // - If alias present: class "Label" as ID  => class ID["Label"]
@@ -862,12 +881,14 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
               if (!isParallelogramShape) {
                 // Wrap in quotes and escape internal double quotes. Curly braces and parens are fine inside quotes.
                 const escaped = inner
+                  .replace(/`/g, '')
                   .replace(/\"/g, '&quot;')
                   .replace(/"/g, '&quot;');
                 replaced = '"' + escaped + '"';
               } else {
                 // Parallelogram/trapezoid shapes don't support quotes: encode parens and double quotes only
                 replaced = inner
+                  .replace(/`/g, '')
                   .replace(/\(/g, '&#40;').replace(/\)/g, '&#41;')
                   .replace(/\"/g, '&quot;')
                   .replace(/"/g, '&quot;');
