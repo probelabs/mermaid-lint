@@ -138,6 +138,11 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
             const seg2 = raw2.slice(open2 + 1, close2);
             const trimmed2 = seg2.trim();
             const ln2 = ii + 1;
+            // Skip typed/compound shapes inside label (parallelogram/trapezoid or cylinder/stadium within square)
+            const lsp = trimmed2.slice(0,1); const rsp = trimmed2.slice(-1);
+            const isSlashPair = ((lsp === '/' || lsp === '\\') && (rsp === '/' || rsp === '\\'));
+            const isParenWrapped = (lsp === '(' && rsp === ')');
+            if (isSlashPair || isParenWrapped) { continue; }
             if (!reported.has(String(ln2)) && !(/^\".*\"$/.test(trimmed2)) && (seg2.includes('(') || seg2.includes(')'))) {
               errs.push({ line: ln2, column: open2 + 2, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A[\"Mark (X)\"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
             }
