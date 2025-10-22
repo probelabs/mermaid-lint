@@ -123,6 +123,27 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           }
         }
       }
+      
+      // Heuristic sweep: parens inside an unquoted square-bracket node label anywhere in the file.
+      // This ensures we still surface FL-LABEL-PARENS-UNQUOTED even when an earlier parser error short-circuited detailed mapping.
+      {
+        const reported = new Set(errs.filter(e => (e as any).code === 'FL-LABEL-PARENS-UNQUOTED').map(e => `${(e as any).line}`));
+        const lines2 = text.split(/\r?\n/);
+        for (let ii = 0; ii < lines2.length; ii++) {
+          const raw2 = lines2[ii] || '';
+          if (!raw2.includes('[') || !raw2.includes(']')) continue;
+          const open2 = raw2.indexOf('[');
+          const close2 = raw2.indexOf(']', open2 + 1);
+          if (open2 !== -1 && close2 !== -1 && close2 > open2 + 1) {
+            const seg2 = raw2.slice(open2 + 1, close2);
+            const trimmed2 = seg2.trim();
+            const ln2 = ii + 1;
+            if (!reported.has(String(ln2)) && !(/^\".*\"$/.test(trimmed2)) && (seg2.includes('(') || seg2.includes(')'))) {
+              errs.push({ line: ln2, column: open2 + 2, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A[\"Mark (X)\"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
+            }
+          }
+        }
+      }
 
       // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
         // per-line mismatches as OK as long as the file balances quotes overall).

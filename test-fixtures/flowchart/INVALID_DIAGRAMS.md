@@ -79,7 +79,7 @@ This file contains invalid flowchart test fixtures with:
 | 20 | [label with tip](#20-label-with-tip) | INVALID | INVALID | ✅ safe |
 | 21 | [link one sided marker](#21-link-one-sided-marker) | INVALID | INVALID | ✅ safe |
 | 22 | [linkstyle id unknown](#22-linkstyle-id-unknown) | INVALID | INVALID | — |
-| 23 | [method parens in unquoted label](#23-method-parens-in-unquoted-label) | INVALID | INVALID | — |
+| 23 | [method parens in unquoted label](#23-method-parens-in-unquoted-label) | INVALID | INVALID | ✅ safe |
 | 24 | [missing arrow](#24-missing-arrow) | INVALID | INVALID | ✅ all |
 | 25 | [mixed brackets](#25-mixed-brackets) | INVALID | INVALID | ✅ safe |
 | 26 | [mixed quotes in labels](#26-mixed-quotes-in-labels) | INVALID | INVALID | — |
@@ -2727,13 +2727,13 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
-error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &apos; for single quotes or &quot; for double quotes.
-at test-fixtures/flowchart/invalid/method-parens-in-unquoted-label.mmd:4:32
-   3 |     B --> C{entry.Data has logrus.ErrorKey?};
-   4 |     C -- Yes --> D{Value is an 'error' type?};
-     |                                ^^^^^^^
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/method-parens-in-unquoted-label.mmd:5:54
+   4 |     C -- Yes --> D{Value is an error type?};
    5 |     D -- Yes --> E[Convert error to string via .Error()];
-hint: Example: B{Does &apos;B&apos; depend on a forEach check &apos;A&apos;?}
+     |                                                      ^
+   6 |     D -- No --> F[Use value as-is];
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -2742,11 +2742,23 @@ hint: Example: B{Does &apos;B&apos; depend on a forEach check &apos;A&apos;?}
 
 ### maid Auto-fix (`--fix`) Preview
 
-No auto-fix changes (safe level).
+```mermaid
+graph TD
+    A[Log Entry with Error] --> B{JSONFormatter.Format};
+    B --> C{entry.Data has logrus.ErrorKey?};
+    C -- Yes --> D{Value is an error type?};
+    D -- Yes --> E["Convert error to string via .Error()"];
+    D -- No --> F[Use value as-is];
+    E --> G[Add string to log data];
+    F --> G;
+    G --> H{Marshal to JSON};
+    H --> I[✅ Successful JSON Log Output];
+
+```
 
 ### maid Auto-fix (`--fix=all`) Preview
 
-No auto-fix changes (all level).
+Shown above (safe changes applied).
 
 <details>
 <summary>View source code</summary>
