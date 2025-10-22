@@ -35,21 +35,22 @@ This file contains invalid flowchart test fixtures with:
 24. [Missing Arrow](#24-missing-arrow)
 25. [Mixed Brackets](#25-mixed-brackets)
 26. [Mixed Quotes In Labels](#26-mixed-quotes-in-labels)
-27. [No Diagram Type](#27-no-diagram-type)
-28. [Quotes Double Inside Single](#28-quotes-double-inside-single)
-29. [Quotes In Node Labels](#29-quotes-in-node-labels)
-30. [Round Parens Unquoted](#30-round-parens-unquoted)
-31. [Title Unsupported](#31-title-unsupported)
-32. [Typed Shapes All](#32-typed-shapes-all)
-33. [Typed Shapes Unknowns](#33-typed-shapes-unknowns)
-34. [Unclosed Bracket](#34-unclosed-bracket)
-35. [Unclosed Quote In Label](#35-unclosed-quote-in-label)
-36. [Unescaped Quotes In Decision](#36-unescaped-quotes-in-decision)
-37. [Unmatched End](#37-unmatched-end)
-38. [Unquoted Label With Quotes](#38-unquoted-label-with-quotes)
-39. [Unquoted Parens In Labels](#39-unquoted-parens-in-labels)
-40. [Unquoted Parens With Backticks](#40-unquoted-parens-with-backticks)
-41. [Wrong Direction](#41-wrong-direction)
+27. [Model Initialize Call](#27-model-initialize-call)
+28. [No Diagram Type](#28-no-diagram-type)
+29. [Quotes Double Inside Single](#29-quotes-double-inside-single)
+30. [Quotes In Node Labels](#30-quotes-in-node-labels)
+31. [Round Parens Unquoted](#31-round-parens-unquoted)
+32. [Title Unsupported](#32-title-unsupported)
+33. [Typed Shapes All](#33-typed-shapes-all)
+34. [Typed Shapes Unknowns](#34-typed-shapes-unknowns)
+35. [Unclosed Bracket](#35-unclosed-bracket)
+36. [Unclosed Quote In Label](#36-unclosed-quote-in-label)
+37. [Unescaped Quotes In Decision](#37-unescaped-quotes-in-decision)
+38. [Unmatched End](#38-unmatched-end)
+39. [Unquoted Label With Quotes](#39-unquoted-label-with-quotes)
+40. [Unquoted Parens In Labels](#40-unquoted-parens-in-labels)
+41. [Unquoted Parens With Backticks](#41-unquoted-parens-with-backticks)
+42. [Wrong Direction](#42-wrong-direction)
 
 ---
 
@@ -83,21 +84,22 @@ This file contains invalid flowchart test fixtures with:
 | 24 | [missing arrow](#24-missing-arrow) | INVALID | INVALID | ✅ all |
 | 25 | [mixed brackets](#25-mixed-brackets) | INVALID | INVALID | ✅ safe |
 | 26 | [mixed quotes in labels](#26-mixed-quotes-in-labels) | INVALID | INVALID | — |
-| 27 | [no diagram type](#27-no-diagram-type) | INVALID | INVALID | — |
-| 28 | [quotes double inside single](#28-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
-| 29 | [quotes in node labels](#29-quotes-in-node-labels) | INVALID | INVALID | — |
-| 30 | [round parens unquoted](#30-round-parens-unquoted) | INVALID | INVALID | ✅ safe |
-| 31 | [title unsupported](#31-title-unsupported) | INVALID | INVALID | ✅ all |
-| 32 | [typed shapes all](#32-typed-shapes-all) | INVALID | INVALID | — |
-| 33 | [typed shapes unknowns](#33-typed-shapes-unknowns) | INVALID | INVALID | — |
-| 34 | [unclosed bracket](#34-unclosed-bracket) | INVALID | INVALID | ✅ safe |
-| 35 | [unclosed quote in label](#35-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
-| 36 | [unescaped quotes in decision](#36-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
-| 37 | [unmatched end](#37-unmatched-end) | INVALID | INVALID | — |
-| 38 | [unquoted label with quotes](#38-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
-| 39 | [unquoted parens in labels](#39-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
-| 40 | [unquoted parens with backticks](#40-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
-| 41 | [wrong direction](#41-wrong-direction) | INVALID | INVALID | — |
+| 27 | [model initialize call](#27-model-initialize-call) | INVALID | INVALID | ✅ safe |
+| 28 | [no diagram type](#28-no-diagram-type) | INVALID | INVALID | — |
+| 29 | [quotes double inside single](#29-quotes-double-inside-single) | INVALID | INVALID | ✅ safe |
+| 30 | [quotes in node labels](#30-quotes-in-node-labels) | INVALID | INVALID | — |
+| 31 | [round parens unquoted](#31-round-parens-unquoted) | INVALID | INVALID | ✅ safe |
+| 32 | [title unsupported](#32-title-unsupported) | INVALID | INVALID | ✅ all |
+| 33 | [typed shapes all](#33-typed-shapes-all) | INVALID | INVALID | — |
+| 34 | [typed shapes unknowns](#34-typed-shapes-unknowns) | INVALID | INVALID | — |
+| 35 | [unclosed bracket](#35-unclosed-bracket) | INVALID | INVALID | ✅ safe |
+| 36 | [unclosed quote in label](#36-unclosed-quote-in-label) | INVALID | INVALID | ✅ all |
+| 37 | [unescaped quotes in decision](#37-unescaped-quotes-in-decision) | INVALID | INVALID | ✅ safe |
+| 38 | [unmatched end](#38-unmatched-end) | INVALID | INVALID | — |
+| 39 | [unquoted label with quotes](#39-unquoted-label-with-quotes) | INVALID | INVALID | ✅ safe |
+| 40 | [unquoted parens in labels](#40-unquoted-parens-in-labels) | INVALID | INVALID | ✅ safe |
+| 41 | [unquoted parens with backticks](#41-unquoted-parens-with-backticks) | INVALID | INVALID | ✅ safe |
+| 42 | [wrong direction](#42-wrong-direction) | INVALID | INVALID | — |
 
 ---
 
@@ -329,6 +331,30 @@ at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:112:282
       |                                                                                                                                                                                                                                                                                          ^^
   113 |     
 hint: Prefer &quot; inside quoted labels, e.g., A["He said &quot;Hi&quot;"]
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:38:45
+   37 |     
+   38 |     SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {\"name\": \"John Doe\", \"age\": 25}<br/>NOT: {\"type\": \"object\", \"properties\": ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+      |                                             ^
+   39 |     
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:116:42
+  115 |     
+  116 |     SchemaDefPrompt --> RecursiveCorrect[Recursive answer() call<br/>with _schemaFormatted: true]
+      |                                          ^
+  117 |     
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/agent-schema-workflow.mmd:128:43
+  127 |     
+  128 |     CreateCorrection --> RecursiveAttempt[Recursive answer()<br/>with correction prompt<br/>_schemaFormatted: true<br/>lines 2043-2046]
+      |                                           ^
+  129 |     
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -375,7 +401,7 @@ graph TB
     
     SchemaProcessing -->|No| SkipSchema[Skip schema processing]
     
-    SchemaProcessing -->|Yes| RecursiveCall["Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 25}<br/>NOT: {&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
+    SchemaProcessing -->|Yes| RecursiveCall["&quot;Recursive answer() call<br/>with schema prompt:<br/><br/>'CRITICAL: You MUST respond with<br/>ONLY valid JSON DATA that conforms<br/>to this schema structure.<br/>DO NOT return the schema<br/>definition itself.<br/><br/>Schema to follow:<br/>[schema"]<br/><br/>REQUIREMENTS:<br/>- Return ONLY the JSON object/array<br/>with REAL DATA<br/>- DO NOT return the schema definition<br/>- NO additional text, explanations,<br/>or markdown formatting<br/>- NO code blocks or backticks<br/>- The JSON must be parseable<br/>- Fill in actual values<br/><br/>EXAMPLE:<br/>If schema defines type object<br/>with properties name, age<br/>Return: {&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 25}<br/>NOT: {&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: ...}'<br/><br/>Options: _schemaFormatted = true<br/>lines 1717-1741"]
     
     RecursiveCall --> CleanResponse1[cleanSchemaResponse<br/>Extract JSON from markdown<br/>line 1744]
     
@@ -2312,6 +2338,14 @@ at test-fixtures/flowchart/invalid/label-with-function-call.mmd:7:22
      |                      ^
    8 |     G --> H[Template Found in dist/output/]
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/label-with-function-call.mmd:7:13
+   6 |     E[Runtime: CheckExecutionEngine] --> F[Template Loading]
+   7 |     F --> G[path.join(__dirname, 'output/{schema}/template.liquid')]
+     |             ^
+   8 |     G --> H[Template Found in dist/output/]
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -2727,11 +2761,19 @@ Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
 **Result**: ❌ INVALID
 
 ```
-error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
-at test-fixtures/flowchart/invalid/method-parens-in-unquoted-label.mmd:5:54
-   4 |     C -- Yes --> D{Value is an error type?};
+error[FL-LABEL-QUOTE-IN-UNQUOTED]: Quotes are not allowed inside unquoted node labels. Use &apos; for single quotes or &quot; for double quotes.
+at test-fixtures/flowchart/invalid/method-parens-in-unquoted-label.mmd:4:32
+   3 |     B --> C{entry.Data has logrus.ErrorKey?};
+   4 |     C -- Yes --> D{Value is an 'error' type?};
+     |                                ^^^^^^^
    5 |     D -- Yes --> E[Convert error to string via .Error()];
-     |                                                      ^
+hint: Example: B{Does &apos;B&apos; depend on a forEach check &apos;A&apos;?}
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/method-parens-in-unquoted-label.mmd:5:20
+   4 |     C -- Yes --> D{Value is an 'error' type?};
+   5 |     D -- Yes --> E[Convert error to string via .Error()];
+     |                    ^
    6 |     D -- No --> F[Use value as-is];
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
@@ -2746,7 +2788,7 @@ hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with 
 graph TD
     A[Log Entry with Error] --> B{JSONFormatter.Format};
     B --> C{entry.Data has logrus.ErrorKey?};
-    C -- Yes --> D{Value is an error type?};
+    C -- Yes --> D{Value is an 'error' type?};
     D -- Yes --> E["Convert error to string via .Error()"];
     D -- No --> F[Use value as-is];
     E --> G[Add string to log data];
@@ -3067,7 +3109,140 @@ flowchart TD
 
 ---
 
-## 27. No Diagram Type
+## 27. Model Initialize Call
+
+📄 **Source**: [`model-initialize-call.mmd`](./invalid/model-initialize-call.mmd)
+
+### GitHub Render Attempt
+
+> **Note**: This invalid diagram may not render or may render incorrectly.
+
+```mermaid
+graph TD
+    A[ProbeAgent Constructor] --> B[Store options.model in clientApiModel]
+    B --> C[initializeModel() called]
+    C --> D{Model selection logic}
+    D --> E[clientApiModel?]
+    E -->|Yes| F[Use options.model]
+    E -->|No| G[MODEL_NAME env var?]
+    G -->|Yes| H[Use environment variable]
+    G -->|No| I[Use provider default]
+    
+    J[Agent.clone()] --> K[Preserve model in overrides]
+    K --> L[New agent with correct model]
+
+```
+
+### Error Comparison: mermaid-cli vs maid
+
+<table>
+<tr>
+<th width="50%">mermaid-cli</th>
+<th width="50%">maid</th>
+</tr>
+<tr>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+Error: Parse error on line 3:
+...-> C[initializeModel() called]    C -->
+-----------------------^
+Expecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PS'
+Parser3.parseError (node_modules/mermaid/dist/mermaid.js:91236:28)
+    at #evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:388:19)
+    at async ExecutionContext.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/ExecutionContext.js:275:16)
+    at async IsolatedWorld.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/cdp/IsolatedWorld.js:97:16)
+    at async CdpJSHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/JSHandle.js:146:20)
+    at async CdpElementHandle.evaluate (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:340:20)
+    at async CdpElementHandle.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/ElementHandle.js:494:24)
+    at async CdpFrame.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Frame.js:450:20)
+    at async CdpPage.$eval (node_modules/puppeteer-core/lib/esm/puppeteer/api/Page.js:450:20)
+    at async renderMermaid (node_modules/@mermaid-js/mermaid-cli/src/index.js:266:22)
+    at fromText (node_modules/mermaid/dist/mermaid.js:153955:21)
+```
+
+</td>
+<td valign="top">
+
+**Result**: ❌ INVALID
+
+```
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/model-initialize-call.mmd:3:28
+   2 |     A[ProbeAgent Constructor] --> B[Store options.model in clientApiModel]
+   3 |     B --> C[initializeModel() called]
+     |                            ^
+   4 |     C --> D{Model selection logic}
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/model-initialize-call.mmd:3:13
+   2 |     A[ProbeAgent Constructor] --> B[Store options.model in clientApiModel]
+   3 |     B --> C[initializeModel() called]
+     |             ^
+   4 |     C --> D{Model selection logic}
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/model-initialize-call.mmd:11:7
+  10 |     
+  11 |     J[Agent.clone()] --> K[Preserve model in overrides]
+     |       ^
+  12 |     K --> L[New agent with correct model]
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+```
+
+</td>
+</tr>
+</table>
+
+### maid Auto-fix (`--fix`) Preview
+
+```mermaid
+graph TD
+    A[ProbeAgent Constructor] --> B[Store options.model in clientApiModel]
+    B --> C["initializeModel() called"]
+    C --> D{Model selection logic}
+    D --> E[clientApiModel?]
+    E -->|Yes| F[Use options.model]
+    E -->|No| G[MODEL_NAME env var?]
+    G -->|Yes| H[Use environment variable]
+    G -->|No| I[Use provider default]
+    
+    J["Agent.clone()"] --> K[Preserve model in overrides]
+    K --> L[New agent with correct model]
+
+```
+
+### maid Auto-fix (`--fix=all`) Preview
+
+Shown above (safe changes applied).
+
+<details>
+<summary>View source code</summary>
+
+```
+graph TD
+    A[ProbeAgent Constructor] --> B[Store options.model in clientApiModel]
+    B --> C[initializeModel() called]
+    C --> D{Model selection logic}
+    D --> E[clientApiModel?]
+    E -->|Yes| F[Use options.model]
+    E -->|No| G[MODEL_NAME env var?]
+    G -->|Yes| H[Use environment variable]
+    G -->|No| I[Use provider default]
+    
+    J[Agent.clone()] --> K[Preserve model in overrides]
+    K --> L[New agent with correct model]
+
+```
+</details>
+
+---
+
+## 28. No Diagram Type
 
 📄 **Source**: [`no-diagram-type.mmd`](./invalid/no-diagram-type.mmd)
 
@@ -3145,7 +3320,7 @@ B --> C
 
 ---
 
-## 28. Quotes Double Inside Single
+## 29. Quotes Double Inside Single
 
 📄 **Source**: [`quotes-double-inside-single.mmd`](./invalid/quotes-double-inside-single.mmd)
 
@@ -3235,7 +3410,7 @@ flowchart LR
 
 ---
 
-## 29. Quotes In Node Labels
+## 30. Quotes In Node Labels
 
 📄 **Source**: [`quotes-in-node-labels.mmd`](./invalid/quotes-in-node-labels.mmd)
 
@@ -3368,7 +3543,7 @@ graph TD
 
 ---
 
-## 30. Round Parens Unquoted
+## 31. Round Parens Unquoted
 
 📄 **Source**: [`round-parens-unquoted.mmd`](./invalid/round-parens-unquoted.mmd)
 
@@ -3458,7 +3633,7 @@ flowchart TD
 
 ---
 
-## 31. Title Unsupported
+## 32. Title Unsupported
 
 📄 **Source**: [`title-unsupported.mmd`](./invalid/title-unsupported.mmd)
 
@@ -3547,7 +3722,7 @@ flowchart TD
 
 ---
 
-## 32. Typed Shapes All
+## 33. Typed Shapes All
 
 📄 **Source**: [`typed-shapes-all.mmd`](./invalid/typed-shapes-all.mmd)
 
@@ -3679,7 +3854,7 @@ flowchart LR
 
 ---
 
-## 33. Typed Shapes Unknowns
+## 34. Typed Shapes Unknowns
 
 📄 **Source**: [`typed-shapes-unknowns.mmd`](./invalid/typed-shapes-unknowns.mmd)
 
@@ -3791,7 +3966,7 @@ flowchart TD
 
 ---
 
-## 34. Unclosed Bracket
+## 35. Unclosed Bracket
 
 📄 **Source**: [`unclosed-bracket.mmd`](./invalid/unclosed-bracket.mmd)
 
@@ -3878,7 +4053,7 @@ flowchart LR
 
 ---
 
-## 35. Unclosed Quote In Label
+## 36. Unclosed Quote In Label
 
 📄 **Source**: [`unclosed-quote-in-label.mmd`](./invalid/unclosed-quote-in-label.mmd)
 
@@ -3971,7 +4146,7 @@ flowchart TD
 
 ---
 
-## 36. Unescaped Quotes In Decision
+## 37. Unescaped Quotes In Decision
 
 📄 **Source**: [`unescaped-quotes-in-decision.mmd`](./invalid/unescaped-quotes-in-decision.mmd)
 
@@ -4064,7 +4239,7 @@ flowchart TD
 
 ---
 
-## 37. Unmatched End
+## 38. Unmatched End
 
 📄 **Source**: [`unmatched-end.mmd`](./invalid/unmatched-end.mmd)
 
@@ -4146,7 +4321,7 @@ flowchart TD
 
 ---
 
-## 38. Unquoted Label With Quotes
+## 39. Unquoted Label With Quotes
 
 📄 **Source**: [`unquoted-label-with-quotes.mmd`](./invalid/unquoted-label-with-quotes.mmd)
 
@@ -4278,7 +4453,7 @@ flowchart TD
 
 ---
 
-## 39. Unquoted Parens In Labels
+## 40. Unquoted Parens In Labels
 
 📄 **Source**: [`unquoted-parens-in-labels.mmd`](./invalid/unquoted-parens-in-labels.mmd)
 
@@ -4428,7 +4603,7 @@ flowchart TD
 
 ---
 
-## 40. Unquoted Parens With Backticks
+## 41. Unquoted Parens With Backticks
 
 📄 **Source**: [`unquoted-parens-with-backticks.mmd`](./invalid/unquoted-parens-with-backticks.mmd)
 
@@ -4488,6 +4663,14 @@ at test-fixtures/flowchart/invalid/unquoted-parens-with-backticks.mmd:3:22
     |                      ^
   4 |   end
 hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
+
+error[FL-LABEL-PARENS-UNQUOTED]: Parentheses inside an unquoted label are not supported by Mermaid.
+at test-fixtures/flowchart/invalid/unquoted-parens-with-backticks.mmd:3:7
+  2 |   subgraph "Check Execution Flow"
+  3 |     G[JS Expressions (`fail_if`, `value_js`)] -- read via `memory` object --> C
+    |       ^
+  4 |   end
+hint: Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.
 ```
 
 </td>
@@ -4524,7 +4707,7 @@ flowchart TD
 
 ---
 
-## 41. Wrong Direction
+## 42. Wrong Direction
 
 📄 **Source**: [`wrong-direction.mmd`](./invalid/wrong-direction.mmd)
 

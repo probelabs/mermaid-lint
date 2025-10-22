@@ -1,0 +1,12 @@
+graph TD
+    A[ProbeAgent Constructor] --> B[Store options.model in clientApiModel]
+    B --> C[initializeModel() called]
+    C --> D{Model selection logic}
+    D --> E[clientApiModel?]
+    E -->|Yes| F[Use options.model]
+    E -->|No| G[MODEL_NAME env var?]
+    G -->|Yes| H[Use environment variable]
+    G -->|No| I[Use provider default]
+    
+    J[Agent.clone()] --> K[Preserve model in overrides]
+    K --> L[New agent with correct model]

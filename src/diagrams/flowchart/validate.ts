@@ -127,7 +127,8 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
       // Heuristic sweep: parens inside an unquoted square-bracket node label anywhere in the file.
       // This ensures we still surface FL-LABEL-PARENS-UNQUOTED even when an earlier parser error short-circuited detailed mapping.
       {
-        const reported = new Set(errs.filter(e => (e as any).code === 'FL-LABEL-PARENS-UNQUOTED').map(e => `${(e as any).line}`));
+        const already = ([] as any[]).concat(prevErrors || [], errs).filter((e: any) => e && e.code === 'FL-LABEL-PARENS-UNQUOTED').map((e: any) => `${e.line}:${e.column ?? 1}`);
+        const reported = new Set(already);
         const lines2 = text.split(/\r?\n/);
         for (let ii = 0; ii < lines2.length; ii++) {
           const raw2 = lines2[ii] || '';
@@ -143,8 +144,10 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
             const isSlashPair = ((lsp === '/' || lsp === '\\') && (rsp === '/' || rsp === '\\'));
             const isParenWrapped = (lsp === '(' && rsp === ')');
             if (isSlashPair || isParenWrapped) { continue; }
-            if (!reported.has(String(ln2)) && !(/^\".*\"$/.test(trimmed2)) && (seg2.includes('(') || seg2.includes(')'))) {
-              errs.push({ line: ln2, column: open2 + 2, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A[\"Mark (X)\"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
+            const col2 = open2 + 2;
+            if (!reported.has(`${ln2}:${col2}`) && !(/^\".*\"$/.test(trimmed2)) && (seg2.includes('(') || seg2.includes(')'))) {
+              errs.push({ line: ln2, column: col2, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A[\"Mark (X)\"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
+              reported.add(`${ln2}:${col2}`);
             }
           }
         }
