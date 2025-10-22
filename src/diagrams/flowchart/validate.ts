@@ -123,6 +123,61 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
           }
         }
       }
+      
+      // Heuristic sweep: parens inside an unquoted square-bracket node label anywhere in the file.
+      // This ensures we still surface FL-LABEL-PARENS-UNQUOTED even when an earlier parser error short-circuited detailed mapping.
+      {
+        // Collect already-reported positions (line:column) from parser-mapped errors and our own augmentations
+        const byLine = new Map<number, number[]>();
+        const collect = (arr: any[]) => {
+          for (const e of (arr || [])) {
+            if (e && (e as any).code === 'FL-LABEL-PARENS-UNQUOTED') {
+              const ln = (e as any).line ?? 0;
+              const col = (e as any).column ?? 1;
+              const list = byLine.get(ln) || [];
+              list.push(col);
+              byLine.set(ln, list);
+            }
+          }
+        };
+        collect(prevErrors as any[]);
+        collect(errs as any[]);
+
+        const lines2 = text.split(/\r?\n/);
+        for (let ii = 0; ii < lines2.length; ii++) {
+          const raw2 = lines2[ii] || '';
+          if (!raw2.includes('[') || !raw2.includes(']')) continue;
+          let search = 0;
+          while (true) {
+            const open2 = raw2.indexOf('[', search);
+            if (open2 === -1) break;
+            const close2 = raw2.indexOf(']', open2 + 1);
+            if (close2 === -1) break;
+
+            const seg2 = raw2.slice(open2 + 1, close2);
+            const trimmed2 = seg2.trim();
+            const ln2 = ii + 1;
+
+            // Skip typed/compound shapes inside label (parallelogram/trapezoid or cylinder/stadium within square)
+            const lsp = trimmed2.slice(0,1); const rsp = trimmed2.slice(-1);
+            const isSlashPair = ((lsp === '/' || lsp === '\\') && (rsp === '/' || rsp === '\\'));
+            const isParenWrapped = (lsp === '(' && rsp === ')');
+
+            const segStartCol = open2 + 2;
+            const segEndCol = close2 + 1;
+            const existing = byLine.get(ln2) || [];
+            const covered = existing.some((c) => c >= segStartCol && c <= segEndCol);
+
+            if (!covered && !(/^".*"$/.test(trimmed2)) && (seg2.includes('(') || seg2.includes(')')) && !isSlashPair && !isParenWrapped) {
+              errs.push({ line: ln2, column: segStartCol, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
+              byLine.set(ln2, existing.concat([segStartCol]));
+            }
+
+            search = close2 + 1;
+          }
+        }
+      }
+
 
       // File-level unclosed quote detection: only if overall quote count is odd (Mermaid treats
         // per-line mismatches as OK as long as the file balances quotes overall).

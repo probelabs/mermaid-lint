@@ -127,7 +127,6 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
           const beforeQuoteUntrimmed = lineText.slice(0, quoteStart);
           const linkStartIdx = beforeQuoteUntrimmed.lastIndexOf(linkStart);
           if (linkStartIdx === -1) continue;
-
           // Extract parts (preserve spaces and node before link)
           const prefix = lineText.slice(0, linkStartIdx);
 
@@ -150,6 +149,21 @@ export function computeFixes(text: string, errors: ValidationError[], level: Fix
             newText: fixedLine
           });
         }
+      }
+      continue;
+    }
+        if (is('FL-EDGE-LABEL-BRACKET', e)) {
+      const lineText = lineTextAt(text, e.line);
+      const firstBar = lineText.indexOf('|');
+      const secondBar = firstBar >= 0 ? lineText.indexOf('|', firstBar + 1) : -1;
+      if (firstBar >= 0 && secondBar > firstBar) {
+        const before = lineText.slice(0, firstBar + 1);
+        const label = lineText.slice(firstBar + 1, secondBar);
+        const after = lineText.slice(secondBar);
+        const fixedLabel = label.replace(/\[/g, '&#91;').replace(/\]/g, '&#93;');
+        const fixedLine = before + fixedLabel + after;
+        const finalLine = fixedLine.replace(/\[([^\]]*)\]/g, (m, seg) => '[' + String(seg).replace(/`/g, '') + ']');
+        edits.push({ start: { line: e.line, column: 1 }, end: { line: e.line, column: lineText.length + 1 }, newText: finalLine });
       }
       continue;
     }

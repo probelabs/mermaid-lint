@@ -1,0 +1,11 @@
+graph TD
+    A[forEach Check] -->|Outputs Array| B[Dependent Checks]
+    B -->|Run N Times| C[Individual Results]
+    C -->|All Complete| D[on_finish Hook]
+    D -->|run: [aggregate]| E[Aggregation Check]
+    D -->|goto_js Evaluation| F[Routing Decision]
+    E -->|Aggregated Data| F
+    F -->|Based on Results| G[Next Action]
+    G -->|Retry| H[Original Check]
+    G -->|Continue| I[Downstream Checks]
+    H --> A

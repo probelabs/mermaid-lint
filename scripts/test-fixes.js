@@ -149,6 +149,12 @@ const cases = [
     before: 'flowchart TD\nA --> B -- Detects `tip` --> C\n',
     after:  'flowchart TD\nA --> B --|Detects tip|--> C\n'
   },
+
+  {
+    name: 'FL-EDGE-LABEL-BRACKET (encode square brackets)',
+    before: 'flowchart TD\nA -->|run: [aggregate]| B\n',
+    after:  'flowchart TD\nA -->|run: &#91;aggregate&#93;| B\n'
+  },
   // FL-LABEL-CURLY-IN-QUOTED is not auto-fixable because:
   // 1. Curly braces work perfectly in quoted labels
   // 2. Mermaid doesn't decode numeric HTML entities (&#123;/&#125;)
@@ -164,6 +170,12 @@ const cases = [
     name: 'FL-LABEL-PARENS-UNQUOTED (trapezoid with quotes)',
     before: 'flowchart LR\n  T[\\Calls logger.debug("msg")/]\n',
     after:  'flowchart LR\n  T[\\Calls logger.debug&#40;&quot;msg&quot;&#41;/]\n'
+  },
+
+  {
+    name: 'FL-LABEL-PARENS-UNQUOTED (method call)',
+    before: 'flowchart TD\n  X --> E[Convert error to string via .Error()]\n',
+    after:  'flowchart TD\n  X --> E[\"Convert error to string via .Error()\"]\n'
   },
   // Double-in-double auto-fix is intentionally disabled (unsafe). We still validate escaped-quote cases.
   { name: 'PI-QUOTE-UNCLOSED (all)', before: 'pie\n"Dogs : 10\n', afterLevel: 'all' },

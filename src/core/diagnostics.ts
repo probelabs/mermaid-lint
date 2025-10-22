@@ -197,7 +197,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     };
   }
 // 3) Edge label with quotes instead of pipes
-  if (tokType === 'QuotedString') {
+  if (tokType === 'QuotedString' || tokType === 'SquareOpen' || tokType === 'SquareClose') {
     // Check context to see if we're in a link rule
     const context = (err as any)?.context;
     const inLinkRule = context?.ruleStack?.includes('linkTextInline') ||
@@ -210,6 +210,17 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     const hasLinkBefore = beforeQuote.match(/--\s*$|==\s*$|-\.\s*$|-\.-\s*$|\[\s*$/);
 
     if (inLinkRule || hasLinkBefore) {
+      if (tokType === 'SquareOpen' || tokType === 'SquareClose') {
+        return {
+          line,
+          column,
+          severity: 'error',
+          code: 'FL-EDGE-LABEL-BRACKET',
+          message: 'Square brackets [ ] are not supported inside inline edge labels.',
+          hint: 'Use HTML entities &#91; and &#93; inside |...|, e.g., --|run: &#91;aggregate&#93;|-->',
+          length: len
+        };
+      }
       const quotedText = found.startsWith('"') ? found.slice(1, -1) : found;
       return {
         line,
@@ -312,7 +323,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
         }
       }
       // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
-      if (tokType === 'QuotedString') {
+      if (tokType === 'QuotedString' || tokType === 'SquareOpen' || tokType === 'SquareClose') {
         return {
           line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
           message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
@@ -331,7 +342,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     }
     if (expecting(err, 'RoundClose')) {
       // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
-      if (tokType === 'QuotedString') {
+      if (tokType === 'QuotedString' || tokType === 'SquareOpen' || tokType === 'SquareClose') {
         return {
           line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
           message: 'Quotes are not allowed inside unquoted node labels. Use &quot; for quotes or wrap the entire label in quotes.',
@@ -370,7 +381,7 @@ export function mapFlowchartParserError(err: IRecognitionException, text: string
     }
     if (expecting(err, 'DiamondClose')) {
       // Check if the actual token found is a QuotedString - this means there's a quote in the middle of an unquoted label
-      if (tokType === 'QuotedString') {
+      if (tokType === 'QuotedString' || tokType === 'SquareOpen' || tokType === 'SquareClose') {
         return {
           line, column, severity: 'error', code: 'FL-LABEL-QUOTE-IN-UNQUOTED',
           message: 'Quotes are not allowed inside unquoted node labels. Use &apos; for single quotes or &quot; for double quotes.',
