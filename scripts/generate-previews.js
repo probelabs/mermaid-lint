@@ -63,12 +63,15 @@ function runMermaidCli(filepath) {
   try {
     const puppeteerCfg = path.resolve(__dirname, 'puppeteer-ci.json');
     const pFlag = fs.existsSync(puppeteerCfg) ? ` -p "${puppeteerCfg}"` : '';
-    execSync(`npx @mermaid-js/mermaid-cli${pFlag} -i "${filepath}" -o "${outSvg}"`, {
-      stdio: 'pipe',
-      encoding: 'utf8',
-      timeout: 12000,
-      cwd: path.resolve(__dirname, '..'),
-    });
+    const timeoutMs = Number(process.env.PREVIEW_MERMAID_CLI_TIMEOUT_MS || 60000);
+    const cmd = `npx @mermaid-js/mermaid-cli${pFlag} -i "${filepath}" -o "${outSvg}"`;
+    try {
+      execSync(cmd, { stdio: 'pipe', encoding: 'utf8', timeout: timeoutMs, cwd: path.resolve(__dirname, '..') });
+    } catch (firstErr) {
+      // Retry once (Chromium spin-up flakes); short backoff
+      try { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 250); } catch {}
+      execSync(cmd, { stdio: 'pipe', encoding: 'utf8', timeout: timeoutMs, cwd: path.resolve(__dirname, '..') });
+    }
   } catch (error) {
     const raw = (error.stderr || error.stdout || error.message || '').toString();
     const msg = sanitizeMermaidMessage(raw);
