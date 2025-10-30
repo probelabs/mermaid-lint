@@ -63,7 +63,7 @@ function runMermaidCli(filepath) {
   try {
     const puppeteerCfg = path.resolve(__dirname, 'puppeteer-ci.json');
     const pFlag = fs.existsSync(puppeteerCfg) ? ` -p "${puppeteerCfg}"` : '';
-    const timeoutMs = Number(process.env.PREVIEW_MERMAID_CLI_TIMEOUT_MS || 60000);
+    const timeoutMs = Number(process.env.PREVIEW_MERMAID_CLI_TIMEOUT_MS || 120000);
     const cmd = `npx @mermaid-js/mermaid-cli${pFlag} -i "${filepath}" -o "${outSvg}"`;
     try {
       execSync(cmd, { stdio: 'pipe', encoding: 'utf8', timeout: timeoutMs, cwd: path.resolve(__dirname, '..') });
