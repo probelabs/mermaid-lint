@@ -186,7 +186,11 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
                 const isQuoted = /^"[\s\S]*"$/.test(trimmed);
                 const existing = byLine.get(ln) || [];
                 const covered = existing.some(r => !(endCol < r.start || startCol > r.end));
-                if (!covered && !isQuoted && !isSlashPair && !isParenWrapped && (seg.includes('(') || seg.includes(')'))) {
+                // Report parentheses in unquoted labels for all square-bracket segments, including
+                // parallelogram/trapezoid typed labels like [/ ... /]. Those shapes do not accept
+                // quotes in Mermaid; our autofix encodes parens/quotes for them. For parenthesis-
+                // wrapped content ( ( ... ) ) we continue to skip to avoid flagging the shape itself.
+                if (!covered && !isQuoted && !isParenWrapped && (seg.includes('(') || seg.includes(')'))) {
                   errs.push({ line: ln, column: startCol, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
                   existing.push({ start: startCol, end: endCol });
                   byLine.set(ln, existing);
