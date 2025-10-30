@@ -25,7 +25,7 @@ jobs:
 
       - name: PR Review Bot
         id: visor_review
-        uses: probelabs/visor@main
+        uses: probelabs/visor@a096beaee76be6ce61cbf8dae7e810baea2d1db1
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
