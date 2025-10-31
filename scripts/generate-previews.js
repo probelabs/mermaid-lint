@@ -46,6 +46,25 @@ function sanitizeMermaidMessage(input) {
   return out;
 }
 
+// Reduce mermaid-cli error output to a single canonical message line so previews don't drift
+function canonicalizeMermaidError(input) {
+  if (!input) return 'INVALID (no message)';
+  const s = sanitizeMermaidMessage(String(input));
+  const lines = s.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  // Prefer the explicit parse error line if present
+  const parseLine = lines.find((l) => /^Error:\s*Parse error on line\s*\d+/.test(l));
+  if (parseLine) return parseLine;
+  // Fallback to the generic syntax error line
+  const syntax = lines.find((l) => /Syntax error in text/i.test(l));
+  if (syntax) return 'Syntax error in text';
+  // Strip the boilerplate mermaid-cli banner if that's all we got
+  if (lines.length === 1 && /Generating single mermaid chart/.test(lines[0])) {
+    return 'Syntax error in text';
+  }
+  // Last resort: first non-empty line
+  return lines[0] || 'INVALID (no message)';
+}
+
 // Choose a safe backtick fence length so inner backticks in content don't break the block.
 function codeFence(content, lang = '') {
   const matches = content.match(/`+/g) || [];
@@ -74,9 +93,9 @@ function runMermaidCli(filepath) {
     }
   } catch (error) {
     const raw = (error.stderr || error.stdout || error.message || '').toString();
-    const msg = sanitizeMermaidMessage(raw);
+    const msg = canonicalizeMermaidError(raw);
     try { fs.unlinkSync(outSvg); } catch {}
-    return { valid: false, message: msg.trim() || 'INVALID (no message)' };
+    return { valid: false, message: msg };
   }
   // Inspect SVG even on success: mermaid-cli can render an error page with exit code 0
   try {
@@ -84,7 +103,7 @@ function runMermaidCli(filepath) {
     const isError = /aria-roledescription\s*=\s*"error"/.test(svg) || /class=\"error-text\"/.test(svg);
     if (isError) {
       const texts = Array.from(svg.matchAll(/<text[^>]*class=\"error-text\"[^>]*>([^<]*)<\/text>/g)).map(m => m[1].trim()).filter(Boolean);
-      const message = texts[0] || 'Syntax error (from mermaid-cli error SVG)';
+      const message = canonicalizeMermaidError(texts[0] || 'Syntax error in text');
       try { fs.unlinkSync(outSvg); } catch {}
       return { valid: false, message };
     }
@@ -428,7 +447,16 @@ async function main() {
 
       // Enforce aggressive '--fix=all' auto-fixes that changed content must be VALID under mermaid-cli
       // Safe-level fixes may be partial; we report them in the preview but do not fail CI.
-  const allFailures = fixFailures.filter((f) => f.level === 'all' && !invalidCompatSet.has(f.file));
+      // Optional allowlist for flaky cases per type.
+      const compatFile = path.resolve(__dirname, '..', 'test-fixtures', type, 'invalid-compat.json');
+      let invalidCompatSet = new Set();
+      if (fs.existsSync(compatFile)) {
+        try {
+          const jc = JSON.parse(fs.readFileSync(compatFile, 'utf8'));
+          invalidCompatSet = new Set((jc.items || []).map((x) => typeof x === 'string' ? x : x.file));
+        } catch {}
+      }
+      const allFailures = fixFailures.filter((f) => f.level === 'all' && !invalidCompatSet.has(f.file));
       if (allFailures.length) {
         console.error(`\n❌ Found ${allFailures.length} auto-fix validation failure(s) in '${type}/invalid':`);
         for (const f of allFailures) {

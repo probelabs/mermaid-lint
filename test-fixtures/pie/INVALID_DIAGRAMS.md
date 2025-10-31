@@ -61,7 +61,7 @@ pie
 **Result**: ❌ INVALID
 
 ```
-Generating single mermaid chart
+Syntax error in text
 ```
 
 </td>
