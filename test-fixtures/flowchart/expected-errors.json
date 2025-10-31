@@ -82,6 +82,9 @@
   "typed-parallelogram-parens.mmd": [
     "FL-LABEL-PARENS-UNQUOTED"
   ],
+  "label-with-at-slash.mmd": [
+    "FL-LABEL-AT-IN-UNQUOTED"
+  ],
   "round-parens-unquoted.mmd": [
     "FL-LABEL-PARENS-UNQUOTED"
   ]

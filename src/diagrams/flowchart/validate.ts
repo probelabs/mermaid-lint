@@ -131,7 +131,7 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
         const byLine = new Map<number, {start:number,end:number}[]>();
         const collect = (arr: any[]) => {
           for (const e of (arr || [])) {
-            if (e && (e as any).code === 'FL-LABEL-PARENS-UNQUOTED') {
+            if (e && ((e as any).code === 'FL-LABEL-PARENS-UNQUOTED' || (e as any).code === 'FL-LABEL-AT-IN-UNQUOTED')) {
               const ln = (e as any).line ?? 0;
               const col = (e as any).column ?? 1;
               const list = byLine.get(ln) || [];
@@ -186,12 +186,18 @@ export function validateFlowchart(text: string, options: ValidateOptions = {}): 
                 const isQuoted = /^"[\s\S]*"$/.test(trimmed);
                 const existing = byLine.get(ln) || [];
                 const covered = existing.some(r => !(endCol < r.start || startCol > r.end));
-                // Report parentheses in unquoted labels for all square-bracket segments, including
-                // parallelogram/trapezoid typed labels like [/ ... /]. Those shapes do not accept
-                // quotes in Mermaid; our autofix encodes parens/quotes for them. For parenthesis-
-                // wrapped content ( ( ... ) ) we continue to skip to avoid flagging the shape itself.
-                if (!covered && !isQuoted && !isParenWrapped && (seg.includes('(') || seg.includes(')'))) {
+                // Report hazards in unquoted labels.
+                // - Parentheses: for both normal and typed [/…/] labels (we can encode for typed shapes)
+                // - At-sign: only for normal labels; parallelogram/trapezoid do not support quotes
+                const hasParens = seg.includes('(') || seg.includes(')');
+                const hasAt = seg.includes('@');
+                if (!covered && !isQuoted && !isParenWrapped && hasParens) {
                   errs.push({ line: ln, column: startCol, severity: 'error', code: 'FL-LABEL-PARENS-UNQUOTED', message: 'Parentheses inside an unquoted label are not supported by Mermaid.', hint: 'Wrap the label in quotes, e.g., A["Mark (X)"] — or replace ( and ) with HTML entities: &#40; and &#41;.' } as any);
+                  existing.push({ start: startCol, end: endCol });
+                  byLine.set(ln, existing);
+                }
+                if (!covered && !isQuoted && !isSlashPair && hasAt) {
+                  errs.push({ line: ln, column: startCol, severity: 'error', code: 'FL-LABEL-AT-IN-UNQUOTED', message: "'@' inside an unquoted label can be misparsed by Mermaid.", hint: 'Wrap the label in quotes, e.g., B["@probelabs/probe v0.6.0-rc149"]' } as any);
                   existing.push({ start: startCol, end: endCol });
                   byLine.set(ln, existing);
                 }
